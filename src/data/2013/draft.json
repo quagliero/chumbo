@@ -1,0 +1,47 @@
+{
+  "type": "snake",
+  "status": "complete",
+  "start_time": 1357689600000,
+  "sport": "nfl",
+  "season_type": "regular",
+  "season": "2013",
+  "metadata": { "scoring_type": "std", "name": "2013 Chumbo Draft" },
+  "league_id": "chumbo_2013",
+  "settings": {
+    "teams": 10,
+    "rounds": 15,
+    "slots_wr": 2,
+    "slots_te": 1,
+    "slots_rb": 2,
+    "slots_qb": 1,
+    "slots_k": 1,
+    "slots_flex": 1,
+    "slots_def": 1,
+    "slots_bn": 6,
+    "reversal_round": 0
+  },
+  "draft_order": {
+    "704708035829895168": 1,
+    "337222928615612416": 2,
+    "428943291145265152": 3,
+    "77140390129844224": 4,
+    "337297176361201664": 5,
+    "337221174670938112": 6,
+    "337210029620883456": 7,
+    "77361676378587136": 8,
+    "337226046606704640": 9,
+    "438629899490553856": 10
+  },
+  "slots_to_roster_id": {
+    "1": 7,
+    "2": 10,
+    "3": 2,
+    "4": 1,
+    "5": 6,
+    "6": 5,
+    "7": 3,
+    "8": 8,
+    "9": 9,
+    "10": 4
+  }
+}
