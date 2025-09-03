@@ -123,7 +123,7 @@ const AllTimeTable = () => {
   });
 
   return (
-    <div>
+    <div className="overflow-x-scroll">
       <table className="w-full text-right">
         <thead className="text-sm font-medium">
           <tr>
@@ -148,7 +148,7 @@ const AllTimeTable = () => {
                       : ""
                   }
                 >
-                  <span className="flex justify-end">
+                  <span className="flex justify-end whitespace-nowrap">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -181,8 +181,8 @@ const AllTimeTable = () => {
         <tfoot className="border-t border-gray-200">
           <tr>
             <td colSpan={columns.length} className="py-2 text-left text-xs">
-              <div className="flex justify-between">
-                <label className="flex items-center gap-2 select-none cursor-pointer">
+              <div className="flex flex-wrap justify-between gap-4">
+                <label className="flex items-center gap-1 select-none cursor-pointer">
                   <input
                     id="showOnlyActiveTeams"
                     type="checkbox"
@@ -191,9 +191,11 @@ const AllTimeTable = () => {
                       setShowOnlyActiveTeams(!showOnlyActiveTeams)
                     }
                   />
-                  <span>Show only active teams</span>
+                  <span className="whitespace-nowrap">
+                    Show only active teams
+                  </span>
                 </label>
-                <div className="flex gap-1">
+                <div className="flex flex-wrap gap-1">
                   {Object.keys(seasons).map((year) => (
                     <button
                       key={year}
