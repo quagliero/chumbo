@@ -1,5 +1,4 @@
 import { useFormatter } from "use-intl";
-import { seasons } from "../../../data";
 import {
   createColumnHelper,
   flexRender,
@@ -7,73 +6,38 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useState, useMemo } from "react";
+import { seasons } from "../../../data";
+import { getCumulativeStandings, TeamStats } from "../../../utils/standings";
 
-interface TeamStats {
-  owner_id: string;
-  team_name: string;
-  wins: number;
-  losses: number;
-  ties: number;
-  winPerc: number;
-  points_for: number;
-  points_for_avg: number;
-  points_against: number;
-  points_against_avg: number;
-}
-
-const teamStats: Record<string, TeamStats> = {};
-Object.entries(seasons).forEach(([, season]) => {
-  season.rosters.forEach((roster) => {
-    const { owner_id, settings } = roster;
-    const user = season.users.find((user) => user.user_id === owner_id);
-
-    if (!user) return;
-
-    if (!teamStats[owner_id]) {
-      teamStats[owner_id] = {
-        owner_id,
-        team_name: user.metadata.team_name,
-        wins: settings.wins,
-        losses: settings.losses,
-        ties: settings.ties,
-        winPerc: 0,
-        points_for: settings.fpts + settings.fpts_decimal / 100,
-        points_for_avg: 0,
-        points_against:
-          settings.fpts_against + settings.fpts_against_decimal / 100,
-        points_against_avg: 0,
-      };
-    } else {
-      teamStats[owner_id].team_name = user.metadata.team_name;
-      teamStats[owner_id].wins += settings.wins;
-      teamStats[owner_id].losses += settings.losses;
-      teamStats[owner_id].ties += settings.ties;
-      teamStats[owner_id].points_for +=
-        settings.fpts + settings.fpts_decimal / 100;
-      teamStats[owner_id].points_against +=
-        settings.fpts_against + settings.fpts_against_decimal / 100;
-    }
-  });
-});
-
-const sortedStats = Object.values(teamStats)
-  .map((t) => ({
-    ...t,
-    winPerc: (t.wins / (t.wins + t.losses + t.ties)) * 100,
-    points_for_avg: t.points_for / (t.wins + t.losses + t.ties),
-    points_against_avg: t.points_against / (t.wins + t.losses + t.ties),
-  }))
-  .sort((a, b) => {
-    if (a.winPerc !== b.winPerc) return b.winPerc - a.winPerc;
-    if (a.wins !== b.wins) return b.wins - a.wins;
-    if (a.points_for !== b.points_for) return b.points_for - a.points_for;
-    return a.points_against - b.points_against;
-  });
+// Get the most recent season's active teams
+const mostRecentSeason = Object.entries(seasons).sort(
+  (a, b) => Number(b[0]) - Number(a[0])
+)[0][1];
+const activeTeamIds = new Set(
+  mostRecentSeason.rosters.map((roster) => roster.owner_id)
+);
 
 const AllTimeTable = () => {
+  const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
+  const [years, setYears] = useState<number[]>(
+    Object.keys(seasons).map((year) => Number(year))
+  );
   const { number } = useFormatter();
 
   const columnHelper = createColumnHelper<TeamStats>();
+
+  const stats = useMemo(() => {
+    return getCumulativeStandings(years);
+  }, [years]);
+
+  const filteredData = useMemo(
+    () =>
+      showOnlyActiveTeams
+        ? stats.filter((team) => activeTeamIds.has(team.owner_id))
+        : stats,
+    [showOnlyActiveTeams, stats]
+  );
 
   const columns = [
     columnHelper.accessor("team_name", {
@@ -132,19 +96,46 @@ const AllTimeTable = () => {
       sortingFn: "alphanumeric",
       enableSorting: true,
     }),
+    columnHelper.accessor("champion", {
+      header: () => "Trophies",
+      cell: (info) => {
+        const row = info.row.original;
+        const accolades = [];
+
+        if (row.champion?.length > 0)
+          accolades.push(row.champion.map(() => "🏆"));
+        if (row.runnerUp?.length > 0)
+          accolades.push(row.runnerUp.map(() => "🥈"));
+        if (row.scoringCrown?.length > 0)
+          accolades.push(row.scoringCrown.map(() => "🎯"));
+
+        return accolades.flat().join("");
+      },
+      enableSorting: false,
+    }),
   ];
 
   const table = useReactTable({
-    data: sortedStats,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
   return (
-    <div className="container mx-auto">
+    <div>
       <table className="w-full text-right">
         <thead className="text-sm font-medium">
+          <tr>
+            <th colSpan={columns.length} className="text-left pb-2">
+              {"All Time Standings"}
+              {years.length !== Object.keys(seasons).length && (
+                <span className="text-xs text-gray-500 ml-1">
+                  ({years.join(", ")})
+                </span>
+              )}
+            </th>
+          </tr>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -187,6 +178,55 @@ const AllTimeTable = () => {
             </tr>
           ))}
         </tbody>
+        <tfoot className="border-t border-gray-200">
+          <tr>
+            <td colSpan={columns.length} className="py-2 text-left text-xs">
+              <div className="flex justify-between">
+                <label className="flex items-center gap-2 select-none cursor-pointer">
+                  <input
+                    id="showOnlyActiveTeams"
+                    type="checkbox"
+                    checked={showOnlyActiveTeams}
+                    onChange={() =>
+                      setShowOnlyActiveTeams(!showOnlyActiveTeams)
+                    }
+                  />
+                  <span>Show only active teams</span>
+                </label>
+                <div className="flex gap-1">
+                  {Object.keys(seasons).map((year) => (
+                    <button
+                      key={year}
+                      className={`text-xs border rounded-md px-2 py-1 hover:bg-opacity-80 ${
+                        years.includes(Number(year))
+                          ? "bg-blue-800 text-white border-white/50"
+                          : "border-gray-200 "
+                      }`}
+                      onClick={() =>
+                        setYears(
+                          years.includes(Number(year))
+                            ? years.filter((y) => y !== Number(year))
+                            : [...years, Number(year)]
+                        )
+                      }
+                    >
+                      {year}
+                    </button>
+                  ))}
+                  <button
+                    className="text-xs underline rounded-md px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() =>
+                      setYears(Object.keys(seasons).map((year) => Number(year)))
+                    }
+                    disabled={years.length === Object.keys(seasons).length}
+                  >
+                    {"Reset"}
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

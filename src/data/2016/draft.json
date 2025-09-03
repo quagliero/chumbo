@@ -1,1 +1,51 @@
-{"type":"snake","status":"complete","start_time":1452297600000,"sport":"nfl","season_type":"regular","season":"2016","metadata":{"scoring_type":"std","name":"2016 Chumbo Draft"},"league_id":"chumbo_2016","settings":{"teams":12,"rounds":15,"slots_wr":2,"slots_te":1,"slots_rb":2,"slots_qb":1,"slots_k":1,"slots_flex":1,"slots_def":1,"slots_bn":6,"reversal_round":0},"draft_order":{"411186928751230976":1,"337297176361201664":2,"337226046606704640":12,"337221174670938112":4,"428943291145265152":5,"77140390129844224":6,"438629899490553856":7,"chumbolegacy_phil":8,"337222928615612416":9,"77361676378587136":10,"chumbolegacy_sudio":11},"slots_to_roster_id":{"1":7,"2":6,"3":9,"4":5,"5":2,"6":1,"7":4,"8":11,"9":10,"10":8,"11":12,"12":9}}
+{
+  "type": "snake",
+  "status": "complete",
+  "start_time": 1452297600000,
+  "sport": "nfl",
+  "season_type": "regular",
+  "season": "2016",
+  "metadata": { "scoring_type": "std", "name": "2016 Chumbo Draft" },
+  "league_id": "chumbo_2016",
+  "settings": {
+    "teams": 12,
+    "rounds": 15,
+    "slots_wr": 2,
+    "slots_te": 1,
+    "slots_rb": 2,
+    "slots_qb": 1,
+    "slots_k": 1,
+    "slots_flex": 1,
+    "slots_def": 1,
+    "slots_bn": 6,
+    "reversal_round": 0,
+    "pick_timer": 90
+  },
+  "draft_order": {
+    "411186928751230976": 1,
+    "337297176361201664": 2,
+    "337226046606704640": 12,
+    "337221174670938112": 4,
+    "428943291145265152": 5,
+    "77140390129844224": 6,
+    "438629899490553856": 7,
+    "chumbolegacy_phil": 8,
+    "337222928615612416": 9,
+    "77361676378587136": 10,
+    "chumbolegacy_sudio": 11
+  },
+  "slots_to_roster_id": {
+    "1": 7,
+    "2": 6,
+    "3": 9,
+    "4": 5,
+    "5": 2,
+    "6": 1,
+    "7": 4,
+    "8": 11,
+    "9": 10,
+    "10": 8,
+    "11": 12,
+    "12": 9
+  }
+}

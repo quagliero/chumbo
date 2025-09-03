@@ -83,8 +83,8 @@ const allData = (() => {
             league: {} as ExtendedLeague,
             rosters: [],
             users: [],
-            winners_bracket: {} as WinnersBracket,
-            losers_bracket: {} as LosersBracket,
+            winners_bracket: [] as WinnersBracket,
+            losers_bracket: [] as LosersBracket,
             matchups: {},
           };
         }

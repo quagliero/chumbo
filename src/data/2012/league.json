@@ -16,7 +16,8 @@
     "start_week": 1,
     "divisions": 0,
     "playoff_teams": 4,
-    "num_teams": 10
+    "num_teams": 10,
+    "playoff_week_start": 15
   },
   "total_rosters": 10,
   "roster_positions": [
@@ -39,8 +40,8 @@
   "scoring_settings": {
     "blk_kick": 0,
     "def_2pt": 0,
-    "def_kr_td": 6,
-    "def_pr_td": 6,
+    "def_kr_td": 0,
+    "def_pr_td": 0,
     "def_st_ff": 0,
     "def_st_fum_rec": 2,
     "def_st_td": 6,

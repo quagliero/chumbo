@@ -18,7 +18,8 @@
     "slots_flex": 1,
     "slots_def": 1,
     "slots_bn": 6,
-    "reversal_round": 0
+    "reversal_round": 0,
+    "pick_timer": 90
   },
   "draft_order": {
     "77361676378587136": 1,
