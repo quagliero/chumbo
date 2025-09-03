@@ -64,6 +64,7 @@ const allData = (() => {
   const seasons: Partial<Record<ValidYear, Partial<SeasonData>>> = {};
 
   Object.entries(jsonFiles).forEach(([path, module]) => {
+    // Skip players.json as it's not currently used
     if (path.includes("/players.json")) return;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -114,9 +115,3 @@ const allData = (() => {
 
 // Export the structured data
 export const { managers, seasons } = allData;
-
-// Dynamically load players.json when needed
-export const getPlayers = async () => {
-  const players = await import("./players.json");
-  return players.default;
-};
