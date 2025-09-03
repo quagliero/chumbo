@@ -21,7 +21,11 @@ export default defineConfig({
             }
             return "vendor";
           }
-          // Separate data chunks
+          // Separate players.json into its own chunk
+          if (id.includes("/data/players.json")) {
+            return "players";
+          }
+          // Keep other data files in the main chunk
           if (id.includes("/data/") && id.includes(".json")) {
             return "data";
           }
