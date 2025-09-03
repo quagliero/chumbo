@@ -43,7 +43,7 @@ const WikiOverview = () => {
 
 const Wiki = () => {
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="">
       <h1 className="text-3xl font-bold mb-8">Chumbo Wiki</h1>
 
       {/* Wiki Navigation */}

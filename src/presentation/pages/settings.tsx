@@ -153,7 +153,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="">
       <h1 className="text-3xl font-bold mb-8">League Settings</h1>
 
       {/* Current League Settings */}
