@@ -97,14 +97,37 @@ const Rules = () => {
                 Verbal agreements are not enforceable. Neither are public
                 announcements.
               </li>
+              <li className="pl-1 [counter-increment:section]">
+                You cannot drop a player received via trade - that has been
+                roster locked that gameweek - until all weekly games have
+                finished. In the event of this, the trade will be reverted by
+                the commissioner.
+                <br />
+                <span className="italic">
+                  (Added Week 1, 2025 with a 9:2 vote in favour, to prevent the
+                  swapping of locked players to free up a roster spot during a
+                  gameweek.)
+                </span>
+              </li>
             </ol>
           </li>
           <li className="[counter-increment:section]">
             <h2 className="font-semibold ml-1">Playoffs</h2>
             <ol className="pl-4 [counter-reset:section] space-y-2 ml-4">
               <li className="pl-1 [counter-increment:section]">
-                The top 6 teams make the playoffs with the top 2 seeds receiving
-                byes.
+                The top 6 teams (ordered by wins) make the playoffs, with the
+                top 2 seeds receiving byes.
+                <ol className="pl-4 [counter-reset:section] space-y-2 ml-4">
+                  <li className="pl-1 [counter-increment:section]">
+                    Tie break order:
+                    <div>
+                      <div>1. Points for (highest)</div>
+                      <div>2. Points against (highest)</div>
+                      <div>3. Strength of schedule (highest)</div>
+                      <div>4. Random</div>
+                    </div>
+                  </li>
+                </ol>
               </li>
               <li className="pl-1 [counter-increment:section]">
                 The highest seed plays the lowest seed, and we re-seed each
