@@ -116,7 +116,8 @@ const Rules = () => {
             <ol className="pl-4 [counter-reset:section] space-y-2 ml-4">
               <li className="pl-1 [counter-increment:section]">
                 The top 6 teams (ordered by wins) make the playoffs, with the
-                top 2 seeds receiving byes.
+                top 2 seeds receiving byes. If more than one team are tied, the
+                following tie break order is used for seeding:
                 <ol className="pl-4 [counter-reset:section] space-y-2 ml-4">
                   <li className="pl-1 [counter-increment:section]">
                     Tie break order:
@@ -136,6 +137,10 @@ const Rules = () => {
               <li className="pl-1 [counter-increment:section]">
                 Teams that do not make the playoffs do not compete in a
                 consolation bracket and their season is over.
+              </li>
+              <li className="pl-1 [counter-increment:section]">
+                In the event of a tie in any playoff match, the team with the
+                higher playoff seed is the winner.
               </li>
             </ol>
           </li>
