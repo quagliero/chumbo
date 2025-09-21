@@ -20,12 +20,16 @@ const activeTeamIds = new Set(
 
 const AllTimeTable = () => {
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
-  const [years, setYears] = useState<number[]>(
-    Object.keys(seasons).map((year) => Number(year))
-  );
+  const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const { number } = useFormatter();
 
   const columnHelper = createColumnHelper<TeamStats>();
+
+  const years = useMemo(() => {
+    return selectedYears.length === 0
+      ? Object.keys(seasons).map((year) => Number(year))
+      : selectedYears;
+  }, [selectedYears]);
 
   const stats = useMemo(() => {
     return getCumulativeStandings(years);
@@ -129,9 +133,9 @@ const AllTimeTable = () => {
           <tr>
             <th colSpan={columns.length} className="text-left pb-2">
               {"All Time Standings"}
-              {years.length !== Object.keys(seasons).length && (
+              {selectedYears.length > 0 && (
                 <span className="text-xs text-gray-500 ml-1">
-                  ({years.join(", ")})
+                  ({selectedYears.join(", ")})
                 </span>
               )}
             </th>
@@ -200,15 +204,15 @@ const AllTimeTable = () => {
                     <button
                       key={year}
                       className={`text-xs border rounded-md px-2 py-1 hover:bg-opacity-80 ${
-                        years.includes(Number(year))
+                        selectedYears.includes(Number(year))
                           ? "bg-blue-800 text-white border-white/50"
                           : "border-gray-200 "
                       }`}
                       onClick={() =>
-                        setYears(
-                          years.includes(Number(year))
-                            ? years.filter((y) => y !== Number(year))
-                            : [...years, Number(year)]
+                        setSelectedYears(
+                          selectedYears.includes(Number(year))
+                            ? selectedYears.filter((y) => y !== Number(year))
+                            : [...selectedYears, Number(year)]
                         )
                       }
                     >
@@ -217,10 +221,8 @@ const AllTimeTable = () => {
                   ))}
                   <button
                     className="text-xs underline rounded-md px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() =>
-                      setYears(Object.keys(seasons).map((year) => Number(year)))
-                    }
-                    disabled={years.length === Object.keys(seasons).length}
+                    onClick={() => setSelectedYears([])}
+                    disabled={selectedYears.length === 0}
                   >
                     {"Reset"}
                   </button>
