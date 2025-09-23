@@ -10,7 +10,13 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "fetch-data": "node scripts/fetch-sleeper-data.js",
+    "fetch-latest": "node scripts/fetch-sleeper-data.js --latest",
+    "fetch-week": "node scripts/fetch-sleeper-data.js --week",
+    "fetch-brackets": "node scripts/fetch-sleeper-data.js --brackets",
+    "fetch-season": "node scripts/fetch-sleeper-data.js --end-of-season",
+    "fetch-matchup": "node scripts/fetch-matchup.js"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.20.6",

@@ -23,11 +23,15 @@ export const getCumulativeStandings = (years: number[]) => {
 
     const champion = season.winners_bracket.find((x) => x.p === 1)?.w;
     const runnerUp = season.winners_bracket.find((x) => x.p === 1)?.l;
-    const scoringCrown = season.rosters.sort(
-      (a, b) =>
-        Number(`${b.settings.fpts}.${b.settings.fpts_decimal}`) -
-        Number(`${a.settings.fpts}.${a.settings.fpts_decimal}`)
-    )[0].roster_id;
+    // Only calculate scoringCrown for completed seasons
+    const scoringCrown =
+      season.league.status === "complete"
+        ? season.rosters.sort(
+            (a, b) =>
+              Number(`${b.settings.fpts}.${b.settings.fpts_decimal}`) -
+              Number(`${a.settings.fpts}.${a.settings.fpts_decimal}`)
+          )[0].roster_id
+        : null;
 
     season.rosters.forEach((roster) => {
       const { owner_id, settings } = roster;
@@ -51,7 +55,8 @@ export const getCumulativeStandings = (years: number[]) => {
           points_against_avg: 0,
           champion: champion === roster.roster_id ? [year] : [],
           runnerUp: runnerUp === roster.roster_id ? [year] : [],
-          scoringCrown: scoringCrown === roster.roster_id ? [year] : [],
+          scoringCrown:
+            scoringCrown && scoringCrown === roster.roster_id ? [year] : [],
         };
       } else {
         teamStats[owner_id].team_name = user.metadata.team_name;
@@ -77,7 +82,7 @@ export const getCumulativeStandings = (years: number[]) => {
         ) {
           teamStats[owner_id].runnerUp.push(year);
         }
-        if (scoringCrown === roster.roster_id) {
+        if (scoringCrown && scoringCrown === roster.roster_id) {
           teamStats[owner_id].scoringCrown.push(year);
         }
       }
