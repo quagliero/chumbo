@@ -21,27 +21,41 @@ const activeTeamIds = new Set(
 const AllTimeTable = () => {
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
+  const [showTiers, setShowTiers] = useState(false);
   const { number } = useFormatter();
 
   const columnHelper = createColumnHelper<TeamStats>();
 
   const years = useMemo(() => {
+    if (showTiers) {
+      // When tiers are active, use the last 3 seasons
+      const allYears = Object.keys(seasons)
+        .map((year) => Number(year))
+        .sort((a, b) => b - a);
+      return allYears.slice(0, 3);
+    }
     return selectedYears.length === 0
       ? Object.keys(seasons).map((year) => Number(year))
       : selectedYears;
-  }, [selectedYears]);
+  }, [selectedYears, showTiers]);
 
   const stats = useMemo(() => {
     return getCumulativeStandings(years);
   }, [years]);
 
-  const filteredData = useMemo(
-    () =>
-      showOnlyActiveTeams
+  const filteredData = useMemo(() => {
+    const data =
+      showOnlyActiveTeams || showTiers
         ? stats.filter((team) => activeTeamIds.has(team.owner_id))
-        : stats,
-    [showOnlyActiveTeams, stats]
-  );
+        : stats;
+
+    // Sort by points for for tier coloring
+    if (showTiers) {
+      return [...data].sort((a, b) => b.points_for - a.points_for);
+    }
+
+    return data;
+  }, [showOnlyActiveTeams, showTiers, stats]);
 
   const columns = [
     columnHelper.accessor("team_name", {
@@ -172,33 +186,65 @@ const AllTimeTable = () => {
           ))}
         </thead>
         <tbody className="text-xs divide-y divide-gray-100">
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="py-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {table.getRowModel().rows.map((row, index) => {
+            let tierClass = "";
+            if (showTiers) {
+              if (index < 3) {
+                tierClass = "bg-green-50"; // Top 3 - pale green
+              } else if (index < 6) {
+                tierClass = "bg-blue-50"; // Second 3 - pale blue
+              } else if (index < 9) {
+                tierClass = "bg-yellow-50"; // Next 3 - pale yellow
+              } else {
+                tierClass = "bg-red-50"; // Bottom 3 - pale red
+              }
+            }
+
+            return (
+              <tr key={row.id} className={tierClass}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="py-2">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
         <tfoot className="border-t border-gray-200">
           <tr>
             <td colSpan={columns.length} className="py-2 text-left text-xs">
               <div className="flex flex-wrap justify-between gap-4">
-                <label className="flex items-center gap-1 select-none cursor-pointer">
-                  <input
-                    id="showOnlyActiveTeams"
-                    type="checkbox"
-                    checked={showOnlyActiveTeams}
-                    onChange={() =>
-                      setShowOnlyActiveTeams(!showOnlyActiveTeams)
-                    }
-                  />
-                  <span className="whitespace-nowrap">
-                    Show only active teams
-                  </span>
-                </label>
+                <div className="flex flex-wrap gap-4">
+                  <label className="flex items-center gap-1 select-none cursor-pointer">
+                    <input
+                      id="showOnlyActiveTeams"
+                      type="checkbox"
+                      checked={showOnlyActiveTeams}
+                      onChange={() =>
+                        setShowOnlyActiveTeams(!showOnlyActiveTeams)
+                      }
+                    />
+                    <span className="whitespace-nowrap">
+                      Show only active teams
+                    </span>
+                  </label>
+                  <label className="flex items-center gap-1 select-none cursor-pointer">
+                    <input
+                      id="showTiers"
+                      type="checkbox"
+                      checked={showTiers}
+                      onChange={() => {
+                        setShowTiers(!showTiers);
+                        if (!showTiers) {
+                          // When enabling tiers, also enable active teams
+                          setShowOnlyActiveTeams(true);
+                        }
+                      }}
+                    />
+                    <span className="whitespace-nowrap">Tiers</span>
+                  </label>
+                </div>
                 <div className="flex flex-wrap gap-1">
                   {Object.keys(seasons).map((year) => (
                     <button
