@@ -141,7 +141,7 @@ const AllTimeTable = () => {
   });
 
   return (
-    <div className="overflow-x-scroll">
+    <div className="overflow-x-scroll container mx-auto">
       <table className="w-full text-right">
         <thead className="text-sm font-medium">
           <tr>

@@ -26,7 +26,7 @@ export interface Draft {
   draft_order: {
     [key: string]: number;
   };
-  slots_to_roster_id: {
+  slot_to_roster_id: {
     [key: number]: number;
   };
 }

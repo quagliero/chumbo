@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Header />
         <div className="px-4">
-          <main className="container mx-auto mt-4">
+          <main className="mx-auto mt-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/wiki" element={<Wiki />}>

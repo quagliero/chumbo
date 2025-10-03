@@ -5,6 +5,7 @@ import { ExtendedLeague } from "../types/league";
 import { Manager } from "../types/manager";
 import { ExtendedMatchup } from "../types/matchup";
 import { ExtendedPick } from "../types/pick";
+import { Player } from "../types/player";
 import { ExtendedRoster } from "../types/roster";
 import { ExtendedUser } from "../types/user";
 
@@ -60,12 +61,18 @@ const allData = (() => {
     jsonFiles["./managers.json"] as { default: Manager[] }
   ).default;
 
+  // Load players data
+  const players: Record<string, Player> = (
+    jsonFiles["./players.json"] as { default: Record<string, Player> }
+  ).default;
+
   // Use Partial to allow flexibility during construction
   const seasons: Partial<Record<ValidYear, Partial<SeasonData>>> = {};
 
   Object.entries(jsonFiles).forEach(([path, module]) => {
-    // Skip players.json as it's not currently used
-    if (path.includes("/players.json")) return;
+    // Skip players.json and managers.json as they're handled separately
+    if (path.includes("/players.json") || path.includes("/managers.json"))
+      return;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = (module as { default: any }).default;
@@ -110,8 +117,17 @@ const allData = (() => {
     }
   });
 
-  return { managers, seasons: seasons as Record<ValidYear, SeasonData> };
+  return {
+    managers,
+    seasons: seasons as Record<ValidYear, SeasonData>,
+    players,
+  };
 })();
 
 // Export the structured data
-export const { managers, seasons } = allData;
+export const { managers, seasons, players } = allData;
+
+// Helper function to get player info by ID
+export const getPlayer = (playerId: string | number): Player | undefined => {
+  return players[playerId.toString()];
+};
