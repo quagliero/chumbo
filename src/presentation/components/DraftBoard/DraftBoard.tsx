@@ -39,34 +39,26 @@ const DraftBoard = ({
     // Create a map of slot -> roster_id
     const slotToRoster = draft.slot_to_roster_id;
 
-    // Group picks by round
-    const picksByRound: Record<number, ExtendedPick[]> = {};
-    picks.forEach((pick) => {
-      if (!picksByRound[pick.round]) {
-        picksByRound[pick.round] = [];
-      }
-      picksByRound[pick.round].push(pick);
-    });
-
-    // Sort picks within each round by draft_slot
-    Object.keys(picksByRound).forEach((round) => {
-      picksByRound[Number(round)].sort((a, b) => a.draft_slot - b.draft_slot);
-    });
+    // Sort picks by pick_no
+    const sortedPicks = [...picks].sort((a, b) => a.pick_no - b.pick_no);
 
     // Build grid structure
     const grid: Array<Array<ExtendedPick | null>> = [];
+    let pickIndex = 0;
+
     for (let round = 1; round <= numRounds; round++) {
       const row: Array<ExtendedPick | null> = [];
-      const roundPicks = picksByRound[round] || [];
-
-      // Snake pattern: odd rounds go left-to-right, even rounds go right-to-left
-      const isOddRound = round % 2 === 1;
 
       for (let slot = 1; slot <= numSlots; slot++) {
-        const targetSlot = isOddRound ? slot : numSlots - slot + 1;
-        const pick =
-          roundPicks.find((p) => p.draft_slot === targetSlot) || null;
+        const pick = sortedPicks[pickIndex] || null;
         row.push(pick);
+        pickIndex++;
+      }
+
+      // Reverse even rounds for snake draft display
+      const isEvenRound = round % 2 === 0;
+      if (isEvenRound) {
+        row.reverse();
       }
 
       grid.push(row);
