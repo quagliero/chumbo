@@ -137,7 +137,8 @@ const DraftBoard = ({
 
                     const player = getPlayer(pick.player_id);
                     const position =
-                      player?.fantasy_positions?.[0] ||
+                      pick?.position ||
+                      player?.position ||
                       pick.metadata?.position ||
                       "UNK";
                     const bgColor = POSITION_COLORS[position] || "bg-white";

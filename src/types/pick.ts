@@ -5,6 +5,7 @@ export interface Pick {
   draft_slot: number;
   player_id: string;
   roster_id: number;
+  position?: string;
 }
 
 export interface ExtendedPick extends Pick {
