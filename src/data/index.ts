@@ -42,6 +42,7 @@ type SeasonData = {
   winners_bracket: WinnersBracket;
   losers_bracket: LosersBracket;
   matchups: Matchups;
+  players?: Record<string, Player>; // Year-specific players
 };
 
 const validKeys: (keyof SeasonData)[] = [
@@ -70,14 +71,14 @@ const allData = (() => {
   const seasons: Partial<Record<ValidYear, Partial<SeasonData>>> = {};
 
   Object.entries(jsonFiles).forEach(([path, module]) => {
-    // Skip players.json and managers.json as they're handled separately
-    if (path.includes("/players.json") || path.includes("/managers.json"))
-      return;
+    // Skip root-level players.json and managers.json as they're handled separately
+    if (path === "./players.json" || path === "./managers.json") return;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = (module as { default: any }).default;
     const matchYear = path.match(/\/(\d{4})\//);
     const matchWeek = path.match(/\/matchups\/(\d+)\.json$/);
+    const isYearPlayers = path.match(/\/(\d{4})\/players\.json$/);
 
     if (matchYear) {
       const year = parseInt(matchYear[1], 10) as ValidYear;
@@ -102,7 +103,10 @@ const allData = (() => {
           seasons[year]!.matchups = {};
         }
 
-        if (matchWeek) {
+        // Check if this is a year-specific players.json
+        if (isYearPlayers) {
+          seasons[year]!.players = data as Record<string, Player>;
+        } else if (matchWeek) {
           const week = matchWeek[1];
           if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
             seasons[year]!.matchups[week as WeekKeys] = data;
@@ -128,6 +132,21 @@ const allData = (() => {
 export const { managers, seasons, players } = allData;
 
 // Helper function to get player info by ID
-export const getPlayer = (playerId: string | number): Player | undefined => {
-  return players[playerId.toString()];
+// First checks year-specific players.json, then falls back to root players.json
+export const getPlayer = (
+  playerId: string | number,
+  year?: number
+): Player | undefined => {
+  const playerIdStr = playerId.toString();
+
+  // If a year is provided, try to get the player from that year's data first
+  if (year && seasons[year as ValidYear]?.players) {
+    const yearPlayer = seasons[year as ValidYear].players![playerIdStr];
+    if (yearPlayer) {
+      return yearPlayer;
+    }
+  }
+
+  // Fall back to root players.json
+  return players[playerIdStr];
 };

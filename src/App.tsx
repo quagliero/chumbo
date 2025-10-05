@@ -14,7 +14,7 @@ function App() {
       <Router>
         <Header />
         <div className="px-4">
-          <main className="mx-auto mt-4">
+          <main className="mx-auto my-4">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/wiki" element={<Wiki />}>
@@ -24,6 +24,11 @@ function App() {
                 {/* Add more wiki sub-routes here */}
               </Route>
               <Route path="/history" element={<History />} />
+              <Route path="/history/:year/:tab" element={<History />} />
+              <Route
+                path="/history/:year/:tab/:week/:matchupId"
+                element={<History />}
+              />
             </Routes>
           </main>
         </div>

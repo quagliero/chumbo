@@ -1,11 +1,5 @@
 import { seasons } from "../data";
-import managers from "../data/managers.json";
-
-// Create a lookup map for team names by Sleeper user ID
-const getTeamNameBySleeperId = (sleeperUserId: string): string => {
-  const manager = managers.find((m) => m.sleeper?.id === sleeperUserId);
-  return manager?.teamName || "Unknown Team";
-};
+import { getTeamName } from "./teamName";
 
 export interface TeamStats {
   owner_id: string;
@@ -49,7 +43,7 @@ export const getCumulativeStandings = (years: number[]) => {
       if (!teamStats[owner_id]) {
         teamStats[owner_id] = {
           owner_id,
-          team_name: getTeamNameBySleeperId(owner_id),
+          team_name: getTeamName(owner_id),
           wins: settings.wins,
           losses: settings.losses,
           ties: settings.ties,
@@ -66,7 +60,7 @@ export const getCumulativeStandings = (years: number[]) => {
             scoringCrown && scoringCrown === roster.roster_id ? [year] : [],
         };
       } else {
-        teamStats[owner_id].team_name = getTeamNameBySleeperId(owner_id);
+        teamStats[owner_id].team_name = getTeamName(owner_id);
         teamStats[owner_id].wins += settings.wins;
         teamStats[owner_id].losses += settings.losses;
         teamStats[owner_id].ties += settings.ties;

@@ -3,29 +3,23 @@ import { getPlayer } from "../../../data";
 import { ExtendedDraft } from "../../../types/draft";
 import { ExtendedPick } from "../../../types/pick";
 import { ExtendedRoster } from "../../../types/roster";
-import managers from "../../../data/managers.json";
+import { getManagerAbbr } from "../../../utils/managerUtils";
+import { POSITION_COLORS } from "../../../constants/fantasy";
 
 interface DraftBoardProps {
   draft: ExtendedDraft;
   picks: ExtendedPick[];
   rosters: ExtendedRoster[];
   getTeamName: (ownerId: string) => string;
+  year: number;
 }
-
-const POSITION_COLORS: Record<string, string> = {
-  RB: "bg-green-100",
-  WR: "bg-blue-100",
-  QB: "bg-red-100",
-  TE: "bg-orange-100",
-  K: "bg-purple-100",
-  DEF: "bg-amber-700/20",
-};
 
 const DraftBoard = ({
   draft,
   picks,
   rosters,
   getTeamName,
+  year,
 }: DraftBoardProps) => {
   const [selectedRosterId, setSelectedRosterId] = useState<number | null>(null);
 
@@ -79,18 +73,9 @@ const DraftBoard = ({
     const rosterId = slotToRoster[slot];
     const roster = rosters.find((r) => r.roster_id === rosterId);
     const teamName = roster ? getTeamName(roster.owner_id) : "Unknown";
-    return { slot, teamName, rosterId };
+    const managerAbbr = roster ? getManagerAbbr(roster.owner_id) : "??";
+    return { slot, teamName, rosterId, managerAbbr };
   });
-
-  // Get manager initials/abbreviation
-  const getManagerAbbr = (ownerId: string) => {
-    const manager = managers.find((m) => m.sleeper?.id === ownerId);
-    if (manager?.teamName) {
-      // Return first 2 letters of team name
-      return manager.sleeper.display_name;
-    }
-    return "??";
-  };
 
   return (
     <div className="overflow-x-auto">
@@ -99,7 +84,7 @@ const DraftBoard = ({
           {/* Header row with team names */}
           <thead>
             <tr>
-              {slotHeaders.map(({ slot, teamName, rosterId }) => (
+              {slotHeaders.map(({ slot, teamName, rosterId, managerAbbr }) => (
                 <th
                   key={slot}
                   onClick={() =>
@@ -114,6 +99,15 @@ const DraftBoard = ({
                   }`}
                 >
                   <div className="truncate">{teamName}</div>
+                  <div
+                    className={`text-[8px] ${
+                      selectedRosterId === rosterId
+                        ? "text-white"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    {managerAbbr}
+                  </div>
                 </th>
               ))}
             </tr>
@@ -135,7 +129,7 @@ const DraftBoard = ({
                       );
                     }
 
-                    const player = getPlayer(pick.player_id);
+                    const player = getPlayer(pick.player_id, year);
                     const position =
                       pick?.position ||
                       player?.position ||
@@ -147,7 +141,7 @@ const DraftBoard = ({
                     const positionRank = picks
                       .filter((p) => p.pick_no <= pick.pick_no)
                       .filter((p) => {
-                        const pPlayer = getPlayer(p.player_id);
+                        const pPlayer = getPlayer(p.player_id, year);
                         const pPosition =
                           pPlayer?.fantasy_positions?.[0] ||
                           p.metadata?.position ||
