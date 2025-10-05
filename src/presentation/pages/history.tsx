@@ -241,6 +241,7 @@ const History = () => {
                 matchups={seasonData.matchups}
                 league={seasonData.league}
                 year={selectedYear}
+                users={seasonData?.users}
               />
             ) : (
               <div className="text-center text-gray-500 py-8">

@@ -14,6 +14,7 @@ interface StandingsProps {
   league: League | undefined;
   winnersBracket: BracketMatch[] | undefined;
   users?: ExtendedUser[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   matchups?: Record<string, any[]>; // For league record calculations
   currentYear?: number; // Current year being viewed
 }
