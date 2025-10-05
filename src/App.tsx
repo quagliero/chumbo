@@ -7,6 +7,8 @@ import Wiki, { WikiOverview } from "./presentation/pages/wiki";
 import Settings from "./presentation/pages/settings";
 import History from "./presentation/pages/history";
 import Rules from "./presentation/pages/rules";
+import ManagerDetail from "./presentation/pages/managerDetail";
+import Managers from "./presentation/pages/managers";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
                 path="/history/:year/:tab/:week/:matchupId"
                 element={<History />}
               />
+              <Route path="/managers" element={<Managers />} />
+              <Route path="/managers/:managerId" element={<ManagerDetail />} />
             </Routes>
           </main>
         </div>

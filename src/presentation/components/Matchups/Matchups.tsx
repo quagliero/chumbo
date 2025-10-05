@@ -2,7 +2,9 @@ import { useFormatter } from "use-intl";
 import { useNavigate } from "react-router-dom";
 import { ExtendedMatchup } from "../../../types/matchup";
 import { ExtendedRoster } from "../../../types/roster";
+import { ExtendedUser } from "../../../types/user";
 import { getRecordUpToWeek } from "../../../utils/matchupStats";
+import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
 
 interface MatchupsProps {
   weekMatchups: ExtendedMatchup[][];
@@ -13,6 +15,7 @@ interface MatchupsProps {
   getTeamName: (ownerId: string) => string;
   year: number;
   allMatchups: Record<string, ExtendedMatchup[]>; // For record calculations
+  users?: ExtendedUser[];
 }
 
 const Matchups = ({
@@ -24,6 +27,7 @@ const Matchups = ({
   getTeamName,
   year,
   allMatchups,
+  users,
 }: MatchupsProps) => {
   const { number } = useFormatter();
   const navigate = useNavigate();
@@ -95,11 +99,35 @@ const Matchups = ({
                     winner === team1.roster_id ? "bg-green-50" : ""
                   }`}
                 >
-                  <div className="font-medium">
-                    <div>{team1Name}</div>
-                    <div className="text-xs text-gray-500">
-                      ({team1Record.wins}-{team1Record.losses}
-                      {team1Record.ties > 0 && `-${team1Record.ties}`})
+                  <div className="flex items-center space-x-2">
+                    {(() => {
+                      const team1OwnerId =
+                        rosters.find((r) => r.roster_id === team1.roster_id)
+                          ?.owner_id || "";
+                      const user = getUserByOwnerId(team1OwnerId, users);
+                      const avatarUrl = getUserAvatarUrl(user);
+                      return avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt={`${team1Name} avatar`}
+                          className="w-6 h-6 rounded-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display =
+                              "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-500">
+                          {team1Name.charAt(0).toUpperCase()}
+                        </div>
+                      );
+                    })()}
+                    <div className="font-medium">
+                      <div>{team1Name}</div>
+                      <div className="text-xs text-gray-500">
+                        ({team1Record.wins}-{team1Record.losses}
+                        {team1Record.ties > 0 && `-${team1Record.ties}`})
+                      </div>
                     </div>
                   </div>
                   <span className="text-lg font-bold">
@@ -111,11 +139,35 @@ const Matchups = ({
                     winner === team2.roster_id ? "bg-green-50" : ""
                   }`}
                 >
-                  <div className="font-medium">
-                    <div>{team2Name}</div>
-                    <div className="text-xs text-gray-500">
-                      ({team2Record.wins}-{team2Record.losses}
-                      {team2Record.ties > 0 && `-${team2Record.ties}`})
+                  <div className="flex items-center space-x-2">
+                    {(() => {
+                      const team2OwnerId =
+                        rosters.find((r) => r.roster_id === team2.roster_id)
+                          ?.owner_id || "";
+                      const user = getUserByOwnerId(team2OwnerId, users);
+                      const avatarUrl = getUserAvatarUrl(user);
+                      return avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt={`${team2Name} avatar`}
+                          className="w-6 h-6 rounded-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display =
+                              "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-500">
+                          {team2Name.charAt(0).toUpperCase()}
+                        </div>
+                      );
+                    })()}
+                    <div className="font-medium">
+                      <div>{team2Name}</div>
+                      <div className="text-xs text-gray-500">
+                        ({team2Record.wins}-{team2Record.losses}
+                        {team2Record.ties > 0 && `-${team2Record.ties}`})
+                      </div>
                     </div>
                   </div>
                   <span className="text-lg font-bold">

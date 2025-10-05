@@ -2,9 +2,11 @@ import { useFormatter } from "use-intl";
 import { useNavigate } from "react-router-dom";
 import { ExtendedMatchup } from "../../../types/matchup";
 import { ExtendedRoster } from "../../../types/roster";
+import { ExtendedUser } from "../../../types/user";
 import { managers } from "../../../data";
 import { getAllTimeH2HRecord } from "../../../utils/h2h";
 import { getPlayerImageUrl } from "../../../utils/playerImage";
+import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
 import {
   getRecordUpToWeek,
   getCurrentStreak,
@@ -18,6 +20,7 @@ interface MatchupDetailProps {
   week: number;
   year: number;
   allMatchups: Record<string, ExtendedMatchup[]>; // For H2H calculations
+  users?: ExtendedUser[];
 }
 
 const MatchupDetail = ({
@@ -27,6 +30,7 @@ const MatchupDetail = ({
   week,
   year,
   allMatchups,
+  users,
 }: MatchupDetailProps) => {
   const { number } = useFormatter();
   const navigate = useNavigate();
@@ -103,8 +107,35 @@ const MatchupDetail = ({
                 : "bg-gray-50"
             } ${teamIdx === 0 ? "order-1" : "order-3"}`}
           >
-            <h2 className="text-xl font-bold mb-0">{team.name}</h2>
-            <h3 className="text-xs text-gray-600 mb-2">{team.manager?.name}</h3>
+            <div className="flex items-center space-x-3 mb-2">
+              {(() => {
+                const user = getUserByOwnerId(
+                  team.data.roster_id === team1Data.roster_id
+                    ? team1Roster?.owner_id || ""
+                    : team2Roster?.owner_id || "",
+                  users
+                );
+                const avatarUrl = getUserAvatarUrl(user);
+                return avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt={`${team.name} avatar`}
+                    className="w-10 h-10 rounded-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium text-gray-500">
+                    {team.name.charAt(0).toUpperCase()}
+                  </div>
+                );
+              })()}
+              <div>
+                <h2 className="text-xl font-bold mb-0">{team.name}</h2>
+                <h3 className="text-xs text-gray-600">{team.manager?.name}</h3>
+              </div>
+            </div>
             <div className="text-3xl font-bold mb-2">
               {number(team.data.points, { maximumFractionDigits: 2 })}
             </div>

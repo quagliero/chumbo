@@ -1,4 +1,5 @@
 import { useFormatter } from "use-intl";
+import { useNavigate } from "react-router-dom";
 import {
   createColumnHelper,
   flexRender,
@@ -9,6 +10,7 @@ import {
 import { useState, useMemo } from "react";
 import { seasons } from "../../../data";
 import { getCumulativeStandings, TeamStats } from "../../../utils/standings";
+import managers from "../../../data/managers.json";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -23,6 +25,7 @@ const AllTimeTable = () => {
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [showTiers, setShowTiers] = useState(false);
   const { number } = useFormatter();
+  const navigate = useNavigate();
 
   const columnHelper = createColumnHelper<TeamStats>();
 
@@ -59,7 +62,26 @@ const AllTimeTable = () => {
 
   const columns = [
     columnHelper.accessor("team_name", {
-      cell: (info) => <div className="text-left">{info.getValue()}</div>,
+      cell: (info) => {
+        const row = info.row.original;
+        const manager = managers.find((m) => m.sleeper.id === row.owner_id);
+        const managerId = manager?.id;
+
+        return (
+          <div className="text-left">
+            {managerId ? (
+              <button
+                onClick={() => navigate(`/managers/${managerId}`)}
+                className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+              >
+                {info.getValue()}
+              </button>
+            ) : (
+              <span>{info.getValue()}</span>
+            )}
+          </div>
+        );
+      },
       header: () => <span className="mr-auto">Team</span>,
       enableSorting: false,
     }),

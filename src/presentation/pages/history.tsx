@@ -170,6 +170,9 @@ const History = () => {
             getTeamName={getTeamName}
             league={seasonData?.league}
             winnersBracket={seasonData?.winners_bracket}
+            users={seasonData?.users}
+            matchups={seasonData?.matchups}
+            currentYear={selectedYear}
           />
         )}
 
@@ -204,6 +207,7 @@ const History = () => {
                     week={weekNum}
                     year={selectedYear}
                     allMatchups={seasonData.matchups || {}}
+                    users={seasonData?.users}
                   />
                 );
               })()
@@ -218,6 +222,7 @@ const History = () => {
                 getTeamName={getTeamName}
                 year={selectedYear}
                 allMatchups={seasonData.matchups || {}}
+                users={seasonData?.users}
               />
             )}
           </>
