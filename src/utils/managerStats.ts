@@ -142,14 +142,9 @@ export const getManagerStats = (
       // For combined, calculate regular season + playoff stats separately
       const regularSeasonStats = getRegularSeasonStats(
         manager.sleeper.id,
-        year,
         seasonData
       );
-      const playoffStats = getPlayoffStats(
-        manager.sleeper.id,
-        year,
-        seasonData
-      );
+      const playoffStats = getPlayoffStats(manager.sleeper.id, seasonData);
 
       totalWins += regularSeasonStats.wins + playoffStats.wins;
       totalLosses += regularSeasonStats.losses + playoffStats.losses;
@@ -393,7 +388,6 @@ const getSeasonStats = (
  */
 const getRegularSeasonStats = (
   managerId: string,
-  year: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   seasonData: any
 ) => {
@@ -451,7 +445,6 @@ const getRegularSeasonStats = (
  */
 const getPlayoffStats = (
   managerId: string,
-  year: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   seasonData: any
 ) => {

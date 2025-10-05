@@ -1,5 +1,5 @@
-import { ExtendedMatchup } from "../../types/matchup";
-import { Player } from "../../types/player";
+import { ExtendedMatchup } from "../types/matchup";
+import { Player } from "../types/player";
 import { getPlayer } from "../data";
 
 export interface PlayerRow {
