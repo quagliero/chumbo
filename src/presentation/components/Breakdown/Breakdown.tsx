@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFormatter } from "use-intl";
 import { ExtendedRoster } from "../../../types/roster";
 import { ExtendedMatchup } from "../../../types/matchup";
@@ -17,6 +18,7 @@ const Breakdown = ({
   getTeamName,
 }: BreakdownProps) => {
   const { number } = useFormatter();
+  const [showLuck, setShowLuck] = useState(false);
 
   if (!matchups || !league) {
     return (
@@ -84,6 +86,79 @@ const Breakdown = ({
     return { totalWins, totalLosses, totalTies, totalPoints };
   };
 
+  // Get actual result for a team in a specific week (W/L/T)
+  const getActualResult = (roster: ExtendedRoster, week: number) => {
+    const weekMatchups = matchups[week.toString()];
+    if (!weekMatchups) return null;
+
+    const teamMatchup = weekMatchups.find(
+      (m) => m.roster_id === roster.roster_id
+    );
+    if (!teamMatchup) return null;
+
+    // Find the opponent in this matchup
+    const opponent = weekMatchups.find(
+      (m) =>
+        m.matchup_id === teamMatchup.matchup_id &&
+        m.roster_id !== roster.roster_id
+    );
+    if (!opponent) return null;
+
+    const teamScore = teamMatchup.points;
+    const opponentScore = opponent.points;
+
+    if (teamScore > opponentScore) return "W";
+    if (teamScore < opponentScore) return "L";
+    return "T";
+  };
+
+  // Calculate luck for a week (positive = lucky, negative = unlucky)
+  const getLuckValue = (roster: ExtendedRoster, week: number) => {
+    const weekRecord = getWeeklyRecord(roster, week);
+    const actualResult = getActualResult(roster, week);
+
+    if (!actualResult) return 0;
+
+    const totalGames = weekRecord.wins + weekRecord.losses + weekRecord.ties;
+    if (totalGames === 0) return 0;
+
+    const winPercentage = weekRecord.wins / totalGames;
+
+    // Only show luck when result is opposite of expectation
+    if (actualResult === "W") {
+      // Won the game - only lucky if had losing record vs league (win% < 0.5)
+      if (winPercentage < 0.5) {
+        return 0.5 - winPercentage; // Positive = lucky (green)
+      }
+      return 0; // Expected result, no luck
+    } else if (actualResult === "L") {
+      // Lost the game - only unlucky if had winning record vs league (win% > 0.5)
+      if (winPercentage > 0.5) {
+        return -(winPercentage - 0.5); // Negative = unlucky (red)
+      }
+      return 0; // Expected result, no luck
+    } else {
+      // Tie - neutral luck
+      return 0;
+    }
+  };
+
+  // Get luck color style based on luck value
+  const getLuckStyle = (luckValue: number) => {
+    if (luckValue === 0) return {};
+
+    const intensity = Math.abs(luckValue) * 2; // Scale to 0-1
+    const opacity = Math.min(0.8, 0.3 + intensity * 0.5); // Base opacity + intensity
+
+    if (luckValue > 0) {
+      // Lucky (green) - won when had low win %
+      return { backgroundColor: `rgba(34, 197, 94, ${opacity})` }; // green-500 with opacity
+    } else {
+      // Unlucky (red) - lost when had high win %
+      return { backgroundColor: `rgba(239, 68, 68, ${opacity})` }; // red-500 with opacity
+    }
+  };
+
   // Sort rosters by season total (best to worst)
   const sortedRosters = [...rosters].sort((a, b) => {
     const aSeasonTotals = getSeasonTotals(a);
@@ -108,9 +183,33 @@ const Breakdown = ({
   return (
     <div className="container mx-auto p-4">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Weekly Breakdown
-        </h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-2xl font-bold text-gray-800">Weekly Breakdown</h2>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <span className="text-sm font-medium text-gray-700">
+              Schedule Luck
+            </span>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={showLuck}
+                onChange={(e) => setShowLuck(e.target.checked)}
+                className="sr-only"
+              />
+              <div
+                className={`flex w-11 h-6 rounded-full transition-colors duration-200 ${
+                  showLuck ? "bg-blue-600" : "bg-gray-300"
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-200 ${
+                    showLuck ? "translate-x-5 ml-0.5" : "translate-x-0.5"
+                  } mt-0.5 `}
+                ></div>
+              </div>
+            </div>
+          </label>
+        </div>
         <p className="text-gray-600">
           See how each team performed against the league each week. Each cell
           shows wins-losses-ties against all other teams that week.
@@ -148,11 +247,14 @@ const Breakdown = ({
                   </td>
                   {regularSeasonWeeks.map((week) => {
                     const weekRecord = getWeeklyRecord(roster, week);
+                    const luckValue = showLuck ? getLuckValue(roster, week) : 0;
+                    const luckStyle = showLuck ? getLuckStyle(luckValue) : {};
 
                     return (
                       <td
                         key={week}
                         className="text-center p-2 border-b border-gray-200"
+                        style={luckStyle}
                       >
                         <div className="text-xs">
                           <div className="font-medium">
@@ -188,6 +290,17 @@ const Breakdown = ({
           </tbody>
         </table>
       </div>
+
+      {showLuck && (
+        <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
+          <p className="text-sm text-gray-600">
+            <span className="text-green-600 font-medium">Green</span> = Lucky
+            wins (won despite having a losing record against the league),
+            <span className="text-red-600 font-medium"> Red</span> = Unlucky
+            losses (lost despite having a winning record against the league).
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -84,17 +84,36 @@ const ScheduleComparison = ({
 
       if (!opponentOpponent) return;
 
-      // Skip if the opponent's opponent is the same as our team (would be comparing against ourselves)
-      if (opponentOpponent.roster_id === teamRoster.roster_id) return;
+      // If the opponent's opponent is our team, we need to handle this differently
+      // This means our team played the opponent this week, so we should compare our score vs the opponent's score
+      if (opponentOpponent.roster_id === teamRoster.roster_id) {
+        // Get our team's score for this week
+        const teamMatchup = weekMatchups.find(
+          (m) => m.roster_id === teamRoster.roster_id
+        );
+        if (!teamMatchup) return;
+
+        totalPoints += teamMatchup.points;
+
+        // Compare our team's score vs the opponent's score (direct H2H)
+        const teamScore = teamMatchup.points;
+        const opponentScore = opponentMatchup.points;
+
+        if (teamScore > opponentScore) {
+          wins++;
+        } else if (teamScore < opponentScore) {
+          losses++;
+        } else {
+          ties++;
+        }
+        return;
+      }
 
       // Get our team's score for this week
       const teamMatchup = weekMatchups.find(
         (m) => m.roster_id === teamRoster.roster_id
       );
-      if (!teamMatchup) {
-        // If our team didn't play this week (bye week), skip this week
-        return;
-      }
+      if (!teamMatchup) return;
 
       totalPoints += teamMatchup.points;
 
@@ -124,7 +143,7 @@ const ScheduleComparison = ({
         <p className="text-gray-600">
           See what each team's record would be if they played every other team's
           schedule. Each cell shows the record if the row team played the column
-          team's opponents. Ties are highlighted in orange.
+          team's opponents.
         </p>
       </div>
 
@@ -132,7 +151,16 @@ const ScheduleComparison = ({
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr>
-              <th className="text-left p-2 border-b border-gray-300 bg-gray-50 sticky left-0 z-10">
+              <th className="text-left p-2 border-gray-300 sticky left-0 z-10"></th>
+              <th
+                colSpan={sortedRosters.length}
+                className="text-center p-2 border-b border-gray-300 bg-gray-100 font-bold"
+              >
+                Vs Schedule
+              </th>
+            </tr>
+            <tr>
+              <th className="text-left p-2 border-b border-gray-300 bg-gray-100 sticky left-0 z-10">
                 Team
               </th>
               {sortedRosters.map((roster) => (
@@ -147,8 +175,11 @@ const ScheduleComparison = ({
           </thead>
           <tbody>
             {sortedRosters.map((teamRoster) => (
-              <tr key={teamRoster.roster_id}>
-                <td className="text-left p-2 border-b border-gray-200 bg-gray-50 sticky left-0 z-10 font-medium">
+              <tr
+                key={teamRoster.roster_id}
+                className="hover:bg-gray-50 transition-colors"
+              >
+                <td className="text-left p-2 border-b border-gray-200 bg-gray-50 sticky left-0 z-10 font-medium hover:bg-gray-100 transition-colors">
                   {getTeamName(teamRoster.owner_id)}
                 </td>
                 {sortedRosters.map((opponentRoster) => {
