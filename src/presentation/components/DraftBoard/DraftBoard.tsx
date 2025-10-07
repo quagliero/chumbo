@@ -185,7 +185,10 @@ const DraftBoard = ({
                           {/* Pick number and position badge */}
                           <div className="flex justify-between items-start mb-1">
                             <span className="text-xs text-gray-500 font-medium">
-                              {roundIndex + 1}.{pick.draft_slot}
+                              {roundIndex + 1}.
+                              {pick.round % 2 === 0
+                                ? numSlots - pick.draft_slot + 1
+                                : pick.draft_slot}
                             </span>
                             <span className="text-xs font-bold text-gray-700 bg-white/50 px-1 rounded">
                               {position}
