@@ -88,9 +88,9 @@ const Managers = () => {
     });
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Managers</h1>
+        <h1 className="text-2xl font-bold">Managers</h1>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-600">Data Mode:</span>

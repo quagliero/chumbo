@@ -1,5 +1,5 @@
 import { useFormatter } from "use-intl";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ExtendedMatchup } from "../../../types/matchup";
 import { ExtendedRoster } from "../../../types/roster";
 import { ExtendedUser } from "../../../types/user";
@@ -30,7 +30,6 @@ const Matchups = ({
   users,
 }: MatchupsProps) => {
   const { number } = useFormatter();
-  const navigate = useNavigate();
 
   return (
     <div className="space-y-4 container mx-auto">
@@ -84,14 +83,10 @@ const Matchups = ({
               : null;
 
           return (
-            <div
+            <Link
               key={index}
-              className="border rounded-lg p-4 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() =>
-                navigate(
-                  `/history/${year}/matchups/${selectedWeek}/${team1.matchup_id}`
-                )
-              }
+              to={`/history/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
+              className="border rounded-lg p-4 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow block"
             >
               <div className="space-y-2">
                 <div
@@ -175,7 +170,7 @@ const Matchups = ({
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

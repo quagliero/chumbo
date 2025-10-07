@@ -44,6 +44,19 @@ const createPlayerRow = (
   positionLabel?: string
 ): PlayerRow => {
   const playerIdStr = playerId.toString();
+
+  // Handle empty starter slot (playerId is 0)
+  if (playerId === 0 || playerId === "0") {
+    return {
+      playerId,
+      player: undefined,
+      points: 0,
+      isStarter,
+      name: "—", // Em dash for empty slot
+      position: positionLabel || "UNK",
+    };
+  }
+
   const player = getPlayer(playerIdStr, year);
   const points = matchupData.players_points?.[playerIdStr] || 0;
 
@@ -83,7 +96,42 @@ export const getPlayerRows = (
     (p) => !starterIds.includes(p.toString())
   );
 
-  // Determine position labels for starters (including FLEX)
+  // Check if the team benched their entire starting lineup
+  // If sum of starters_points is 0, all starters are benched
+  const startersPoints = matchupData.starters_points || [];
+  const totalStartersPoints = startersPoints.reduce(
+    (sum, points) => sum + points,
+    0
+  );
+  const isEntireTeamBenched = totalStartersPoints === 0;
+
+  if (isEntireTeamBenched) {
+    // All actual players go to bench, starters show as empty slots with position labels
+    const allPlayers = matchupData.players || [];
+    const benchWithAllPlayers = allPlayers.map((p) =>
+      createPlayerRow(p, matchupData, false, year)
+    );
+
+    // Create empty starter slots with position labels
+    const emptyStarterRows = [
+      createPlayerRow(0, matchupData, true, year, "QB"),
+      createPlayerRow(0, matchupData, true, year, "RB"),
+      createPlayerRow(0, matchupData, true, year, "RB"),
+      createPlayerRow(0, matchupData, true, year, "WR"),
+      createPlayerRow(0, matchupData, true, year, "WR"),
+      createPlayerRow(0, matchupData, true, year, "TE"),
+      createPlayerRow(0, matchupData, true, year, "FLEX"),
+      createPlayerRow(0, matchupData, true, year, "K"),
+      createPlayerRow(0, matchupData, true, year, "DEF"),
+    ];
+
+    return {
+      starters: emptyStarterRows,
+      bench: benchWithAllPlayers,
+    };
+  }
+
+  // Normal case - determine position labels for starters (including FLEX)
   const starterRows = starters.map((p, idx) => {
     const playerIdStr = p.toString();
     const player = getPlayer(playerIdStr, year);

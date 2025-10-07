@@ -13,7 +13,9 @@ export const getPlayerImageUrl = (
   // Check if it's a defense (position is DEF or ID matches defense pattern)
   if (
     position === "DEF" ||
-    (playerIdStr.length <= 3 && playerIdStr === playerIdStr.toUpperCase())
+    (isNaN(Number(playerIdStr)) &&
+      playerIdStr.length <= 3 &&
+      playerIdStr === playerIdStr.toUpperCase())
   ) {
     return `https://sleepercdn.com/images/team_logos/nfl/${playerIdStr.toLowerCase()}.png`;
   }

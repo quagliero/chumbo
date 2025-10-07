@@ -312,7 +312,7 @@ const History = () => {
   return (
     <div className="space-y-6">
       {/* Year Selector */}
-      <div className="container mx-auto space-y-2">
+      <div className="container mx-auto space-y-4">
         <h1 className="text-2xl font-bold mr-4">League History</h1>
         <div className="flex flex-wrap gap-2">
           {YEARS.map((year) => (

@@ -9,55 +9,138 @@ import {
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "../../../data";
-import { getCumulativeStandings, TeamStats } from "../../../utils/standings";
 import managers from "../../../data/managers.json";
+import { ExtendedRoster } from "../../../types/roster";
+import { Matchup } from "../../../types/matchup";
+import { getTeamName } from "../../../utils/teamName";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
   (a, b) => Number(b[0]) - Number(a[0])
 )[0][1];
 const activeTeamIds = new Set(
-  mostRecentSeason.rosters.map((roster) => roster.owner_id)
+  mostRecentSeason.rosters.map((roster) => roster.owner_id.toString())
 );
 
-const AllTimeTable = () => {
+interface AllTimeBreakdownStats {
+  owner_id: string;
+  team_name: string;
+  totalWins: number;
+  totalLosses: number;
+  totalTies: number;
+  totalPoints: number;
+  winPercentage: number;
+}
+
+const AllTimeBreakdown = () => {
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
-  const [showTiers, setShowTiers] = useState(false);
   const { number } = useFormatter();
 
-  const columnHelper = createColumnHelper<TeamStats>();
+  const columnHelper = createColumnHelper<AllTimeBreakdownStats>();
 
   const years = useMemo(() => {
-    if (showTiers) {
-      // When tiers are active, use the last 3 seasons
-      const allYears = Object.keys(seasons)
-        .map((year) => Number(year))
-        .sort((a, b) => b - a);
-      return allYears.slice(0, 3);
-    }
     return selectedYears.length === 0
       ? Object.keys(seasons).map((year) => Number(year))
       : selectedYears;
-  }, [selectedYears, showTiers]);
+  }, [selectedYears]);
 
   const stats = useMemo(() => {
-    return getCumulativeStandings(years);
+    const teamStats = new Map<string, AllTimeBreakdownStats>();
+
+    // Process each year
+    years.forEach((year) => {
+      const seasonData = seasons[year];
+      if (!seasonData?.rosters || !seasonData?.matchups) return;
+
+      const rosters = seasonData.rosters as ExtendedRoster[];
+      const matchups = seasonData.matchups as { [key: string]: Matchup[] };
+
+      // Get playoff week start to filter out playoff games
+      const playoffWeekStart =
+        seasonData.league?.settings?.playoff_week_start || 15;
+
+      // Get all regular season weeks
+      const regularSeasonWeeks = Object.keys(matchups)
+        .map(Number)
+        .filter((week) => week < playoffWeekStart)
+        .sort((a, b) => a - b);
+
+      // Process each roster
+      rosters.forEach((roster) => {
+        if (!teamStats.has(roster.owner_id)) {
+          teamStats.set(roster.owner_id, {
+            owner_id: roster.owner_id,
+            team_name: getTeamName(roster.owner_id),
+            totalWins: 0,
+            totalLosses: 0,
+            totalTies: 0,
+            totalPoints: 0,
+            winPercentage: 0,
+          });
+        }
+
+        const teamStat = teamStats.get(roster.owner_id)!;
+
+        // Calculate weekly records against the league for this roster
+        regularSeasonWeeks.forEach((week) => {
+          const weekMatchups = matchups[week.toString()];
+          if (!weekMatchups) return;
+
+          const rosterMatchup = weekMatchups.find(
+            (m) => m.roster_id === roster.roster_id
+          );
+          if (!rosterMatchup) return;
+
+          const teamPoints = rosterMatchup.points;
+          let weeklyWins = 0;
+          let weeklyLosses = 0;
+          let weeklyTies = 0;
+
+          // Compare this roster's score against all other rosters this week
+          weekMatchups.forEach((otherMatchup) => {
+            if (otherMatchup.roster_id === roster.roster_id) return;
+
+            if (teamPoints > otherMatchup.points) {
+              weeklyWins++;
+            } else if (teamPoints < otherMatchup.points) {
+              weeklyLosses++;
+            } else {
+              weeklyTies++;
+            }
+          });
+
+          // Add to totals
+          teamStat.totalWins += weeklyWins;
+          teamStat.totalLosses += weeklyLosses;
+          teamStat.totalTies += weeklyTies;
+        });
+
+        // Add total points
+        teamStat.totalPoints +=
+          roster.settings.fpts + roster.settings.fpts_decimal / 100;
+      });
+    });
+
+    // Calculate win percentages
+    const result = Array.from(teamStats.values()).map((stat) => {
+      const totalGames = stat.totalWins + stat.totalLosses + stat.totalTies;
+      return {
+        ...stat,
+        winPercentage: totalGames > 0 ? stat.totalWins / totalGames : 0,
+      };
+    });
+
+    return result;
   }, [years]);
 
   const filteredData = useMemo(() => {
-    const data =
-      showOnlyActiveTeams || showTiers
-        ? stats.filter((team) => activeTeamIds.has(team.owner_id))
-        : stats;
-
-    // Sort by points for for tier coloring
-    if (showTiers) {
-      return [...data].sort((a, b) => b.points_for - a.points_for);
-    }
+    const data = showOnlyActiveTeams
+      ? stats.filter((team) => activeTeamIds.has(team.owner_id))
+      : stats;
 
     return data;
-  }, [showOnlyActiveTeams, showTiers, stats]);
+  }, [showOnlyActiveTeams, stats]);
 
   const columns = [
     columnHelper.accessor("team_name", {
@@ -84,73 +167,38 @@ const AllTimeTable = () => {
       header: () => <span className="mr-auto">Team</span>,
       enableSorting: false,
     }),
-    columnHelper.accessor("wins", {
+    columnHelper.accessor("totalWins", {
       header: () => "Wins",
       cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
+      sortingFn: "basic",
       enableSorting: true,
     }),
-    columnHelper.accessor("losses", {
+    columnHelper.accessor("totalLosses", {
       header: () => "Losses",
       cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
+      sortingFn: "basic",
       enableSorting: true,
     }),
-    columnHelper.accessor("ties", {
+    columnHelper.accessor("totalTies", {
       header: () => "Ties",
       cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
+      sortingFn: "basic",
       enableSorting: true,
     }),
-    columnHelper.accessor("winPerc", {
+    columnHelper.accessor("winPercentage", {
       header: () => "Win %",
       cell: (info) =>
         number(info.getValue(), {
           maximumFractionDigits: 2,
         }),
-      sortingFn: "alphanumeric",
+      sortingFn: "basic",
       enableSorting: true,
     }),
-    columnHelper.accessor("points_for", {
-      header: () => "For",
+    columnHelper.accessor("totalPoints", {
+      header: () => "Total Points",
       cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
+      sortingFn: "basic",
       enableSorting: true,
-    }),
-    columnHelper.accessor("points_for_avg", {
-      header: () => "Avg.",
-      cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
-      sortingFn: "alphanumeric",
-      enableSorting: true,
-    }),
-    columnHelper.accessor("points_against", {
-      header: () => "Against",
-      cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
-      enableSorting: true,
-    }),
-    columnHelper.accessor("points_against_avg", {
-      header: () => "Avg.",
-      cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
-      sortingFn: "alphanumeric",
-      enableSorting: true,
-    }),
-    columnHelper.accessor("champion", {
-      header: () => "Trophies",
-      cell: (info) => {
-        const row = info.row.original;
-        const accolades = [];
-
-        if (row.champion?.length > 0)
-          accolades.push(row.champion.map(() => "🏆"));
-        if (row.runnerUp?.length > 0)
-          accolades.push(row.runnerUp.map(() => "🥈"));
-        if (row.scoringCrown?.length > 0)
-          accolades.push(row.scoringCrown.map(() => "🎯"));
-
-        return accolades.flat().join("");
-      },
-      enableSorting: false,
     }),
   ];
 
@@ -159,6 +207,9 @@ const AllTimeTable = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    initialState: {
+      sorting: [{ id: "winPercentage", desc: true }],
+    },
   });
 
   return (
@@ -197,30 +248,15 @@ const AllTimeTable = () => {
           ))}
         </thead>
         <tbody className="text-xs divide-y divide-gray-100">
-          {table.getRowModel().rows.map((row, index) => {
-            let tierClass = "";
-            if (showTiers) {
-              if (index < 3) {
-                tierClass = "bg-green-50"; // Top 3 - pale green
-              } else if (index < 6) {
-                tierClass = "bg-blue-50"; // Second 3 - pale blue
-              } else if (index < 9) {
-                tierClass = "bg-yellow-50"; // Next 3 - pale yellow
-              } else {
-                tierClass = "bg-red-50"; // Bottom 3 - pale red
-              }
-            }
-
-            return (
-              <tr key={row.id} className={tierClass}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="py-2">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="py-2">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
         <tfoot className="border-t border-gray-200">
           <tr>
@@ -239,21 +275,6 @@ const AllTimeTable = () => {
                     <span className="whitespace-nowrap">
                       Show only active teams
                     </span>
-                  </label>
-                  <label className="flex items-center gap-1 select-none cursor-pointer">
-                    <input
-                      id="showTiers"
-                      type="checkbox"
-                      checked={showTiers}
-                      onChange={() => {
-                        setShowTiers(!showTiers);
-                        if (!showTiers) {
-                          // When enabling tiers, also enable active teams
-                          setShowOnlyActiveTeams(true);
-                        }
-                      }}
-                    />
-                    <span className="whitespace-nowrap">Tiers</span>
                   </label>
                 </div>
                 <div className="flex flex-wrap gap-1">
@@ -293,4 +314,4 @@ const AllTimeTable = () => {
   );
 };
 
-export default AllTimeTable;
+export default AllTimeBreakdown;

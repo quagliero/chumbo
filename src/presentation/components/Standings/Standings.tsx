@@ -1,5 +1,5 @@
 import { useFormatter } from "use-intl";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ExtendedRoster } from "../../../types/roster";
 import { BracketMatch } from "../../../types/bracket";
 import { League } from "../../../types/league";
@@ -29,7 +29,6 @@ const Standings = ({
   currentYear,
 }: StandingsProps) => {
   const { number } = useFormatter();
-  const navigate = useNavigate();
 
   // Only show awards if season is complete
   const isSeasonComplete = league?.status === "complete";
@@ -546,14 +545,12 @@ const Standings = ({
                                 </div>
                               )}
                               {managerId ? (
-                                <button
-                                  onClick={() =>
-                                    navigate(`/managers/${managerId}`)
-                                  }
+                                <Link
+                                  to={`/managers/${managerId}`}
                                   className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
                                 >
                                   {teamName}
-                                </button>
+                                </Link>
                               ) : (
                                 <span>{teamName}</span>
                               )}
@@ -674,14 +671,12 @@ const Standings = ({
 
                 return championManager ? (
                   <div>
-                    <button
-                      onClick={() =>
-                        navigate(`/managers/${championManager.id}`)
-                      }
+                    <Link
+                      to={`/managers/${championManager.id}`}
                       className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-semibold"
                     >
                       {championName}
-                    </button>
+                    </Link>
                     <div className="text-sm text-yellow-600 mt-1">
                       {championshipHistory()}
                     </div>
@@ -712,14 +707,12 @@ const Standings = ({
                 const scoringCrownName = getTeamName(topScorer.owner_id);
 
                 return scoringCrownManager ? (
-                  <button
-                    onClick={() =>
-                      navigate(`/managers/${scoringCrownManager.id}`)
-                    }
+                  <Link
+                    to={`/managers/${scoringCrownManager.id}`}
                     className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-semibold"
                   >
                     {scoringCrownName}
-                  </button>
+                  </Link>
                 ) : (
                   <span className="font-semibold">{scoringCrownName}</span>
                 );
@@ -747,12 +740,12 @@ const Standings = ({
                 const scumboName = getTeamName(scumbo.roster.owner_id);
 
                 return scumboManager ? (
-                  <button
-                    onClick={() => navigate(`/managers/${scumboManager.id}`)}
+                  <Link
+                    to={`/managers/${scumboManager.id}`}
                     className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-semibold"
                   >
                     {scumboName}
-                  </button>
+                  </Link>
                 ) : (
                   <span className="font-semibold">{scumboName}</span>
                 );

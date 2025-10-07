@@ -173,6 +173,9 @@ const MatchupDetail = ({
 
         {/* VS and H2H */}
         <div className="order-2 text-center">
+          <div className="text-xs text-gray-500 mb-1">
+            {year}, Week {week}
+          </div>
           <div className="text-2xl font-bold text-gray-400 mb-2">VS</div>
           <div className="text-sm text-gray-600">
             <div className="font-semibold mb-1">
@@ -237,24 +240,32 @@ const MatchupDetail = ({
                     <tr key={idx}>
                       <td className="py-2 font-medium">{player.position}</td>
                       <td className="py-2 w-8">
-                        <span className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mr-1">
-                          <img
-                            src={getPlayerImageUrl(
-                              player.playerId,
-                              player.position
-                            )}
-                            alt={player.name}
-                            className="w-8 h-8 rounded-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display =
-                                "none";
-                            }}
-                          />
-                        </span>
+                        {player.playerId === 0 || player.playerId === "0" ? (
+                          <span className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-1">
+                            <span className="text-gray-400 text-xs">—</span>
+                          </span>
+                        ) : (
+                          <span className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center mr-1">
+                            <img
+                              src={getPlayerImageUrl(
+                                player.playerId,
+                                player.position
+                              )}
+                              alt={player.name}
+                              className="w-8 h-8 rounded-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display =
+                                  "none";
+                              }}
+                            />
+                          </span>
+                        )}
                       </td>
                       <td className="py-2">{player.name}</td>
                       <td className="py-2 text-right font-semibold">
-                        {number(player.points, { maximumFractionDigits: 2 })}
+                        {player.playerId === 0 || player.playerId === "0"
+                          ? "—"
+                          : number(player.points, { maximumFractionDigits: 2 })}
                       </td>
                     </tr>
                   ))}
