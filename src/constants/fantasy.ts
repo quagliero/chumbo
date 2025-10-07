@@ -25,7 +25,13 @@ export const STANDARD_LINEUP_REQUIREMENTS = {
 /**
  * Tab types for the history page
  */
-export type TabType = "standings" | "matchups" | "playoffs" | "draft";
+export type TabType =
+  | "standings"
+  | "matchups"
+  | "playoffs"
+  | "draft"
+  | "schedule-comparison"
+  | "breakdown";
 
 /**
  * Valid years for the application

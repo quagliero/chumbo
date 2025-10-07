@@ -11,6 +11,8 @@ import Standings from "../components/Standings/Standings";
 import Matchups from "../components/Matchups/Matchups";
 import PlayoffBracket from "../components/PlayoffBracket/PlayoffBracket";
 import MatchupDetail from "../components/MatchupDetail/MatchupDetail";
+import ScheduleComparison from "../components/ScheduleComparison/ScheduleComparison";
+import Breakdown from "../components/Breakdown/Breakdown";
 
 const History = () => {
   const { year, tab, week, matchupId } = useParams<{
@@ -45,7 +47,17 @@ const History = () => {
         setSelectedYear(parsedYear);
       }
     }
-    if (tab && ["standings", "matchups", "playoffs", "draft"].includes(tab)) {
+    if (
+      tab &&
+      [
+        "standings",
+        "matchups",
+        "playoffs",
+        "draft",
+        "schedule-comparison",
+        "breakdown",
+      ].includes(tab)
+    ) {
       setActiveTab(tab as TabType);
     }
   }, [year, tab]);
@@ -323,7 +335,14 @@ const History = () => {
       <div className="border-b border-gray-200">
         <div className="container mx-auto">
           <nav className="flex gap-8">
-            {["standings", "matchups", "playoffs", "draft"].map((tab) => (
+            {[
+              "standings",
+              "matchups",
+              "playoffs",
+              "draft",
+              "schedule-comparison",
+              "breakdown",
+            ].map((tab) => (
               <button
                 key={tab}
                 className={`py-2 px-1 font-medium capitalize transition-colors ${
@@ -333,7 +352,11 @@ const History = () => {
                 }`}
                 onClick={() => handleTabChange(tab as TabType)}
               >
-                {tab}
+                {tab === "schedule-comparison"
+                  ? "Schedule Comparison"
+                  : tab === "breakdown"
+                  ? "Breakdown"
+                  : tab}
               </button>
             ))}
           </nav>
@@ -449,6 +472,26 @@ const History = () => {
               </div>
             )}
           </div>
+        )}
+
+        {/* Schedule Comparison Tab */}
+        {activeTab === "schedule-comparison" && (
+          <ScheduleComparison
+            rosters={seasonData?.rosters || []}
+            matchups={seasonData?.matchups}
+            league={seasonData?.league}
+            getTeamName={getTeamName}
+          />
+        )}
+
+        {/* Breakdown Tab */}
+        {activeTab === "breakdown" && (
+          <Breakdown
+            rosters={seasonData?.rosters || []}
+            matchups={seasonData?.matchups}
+            league={seasonData?.league}
+            getTeamName={getTeamName}
+          />
         )}
       </div>
     </div>
