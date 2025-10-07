@@ -36,6 +36,17 @@ const MatchupDetail = ({
   const navigate = useNavigate();
   const [team1Data, team2Data] = matchup;
 
+  // Helper function to get player nickname from roster metadata
+  const getPlayerNickname = (
+    playerId: string | number,
+    roster: ExtendedRoster | undefined
+  ): string | null => {
+    if (!roster?.metadata || !playerId) return null;
+    const nicknameKey = `p_nick_${playerId}`;
+    const nickname = roster.metadata[nicknameKey];
+    return nickname && nickname.trim() !== "" ? nickname : null;
+  };
+
   // Get team info
   const team1Roster = rosters.find((r) => r.roster_id === team1Data.roster_id);
   const team2Roster = rosters.find((r) => r.roster_id === team2Data.roster_id);
@@ -261,7 +272,20 @@ const MatchupDetail = ({
                           </span>
                         )}
                       </td>
-                      <td className="py-2">{player.name}</td>
+                      <td className="py-2">
+                        {player.name}
+                        {(() => {
+                          const nickname = getPlayerNickname(
+                            player.playerId,
+                            teamIdx === 0 ? team1Roster : team2Roster
+                          );
+                          return nickname ? (
+                            <span className="text-gray-500 ml-1">
+                              ({nickname})
+                            </span>
+                          ) : null;
+                        })()}
+                      </td>
                       <td className="py-2 text-right font-semibold">
                         {player.playerId === 0 || player.playerId === "0"
                           ? "—"
@@ -310,7 +334,20 @@ const MatchupDetail = ({
                             />
                           </span>
                         </td>
-                        <td className="py-2">{player.name}</td>
+                        <td className="py-2">
+                          {player.name}
+                          {(() => {
+                            const nickname = getPlayerNickname(
+                              player.playerId,
+                              teamIdx === 0 ? team1Roster : team2Roster
+                            );
+                            return nickname ? (
+                              <span className="text-gray-500 ml-1">
+                                ({nickname})
+                              </span>
+                            ) : null;
+                          })()}
+                        </td>
                         <td className="py-2 text-right">
                           {number(player.points, { maximumFractionDigits: 2 })}
                         </td>
