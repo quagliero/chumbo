@@ -11,6 +11,7 @@ export interface Roster {
     fpts_against: number;
     fpts_against_decimal: number;
     total_moves: number;
+    division?: number;
   };
   players: (string | number)[];
   metadata: {

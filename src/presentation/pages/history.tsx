@@ -5,6 +5,7 @@ import { TabType } from "../../constants/fantasy";
 import { useSeasonData } from "../../hooks/useSeasonData";
 import { useTeamName } from "../../hooks/useTeamName";
 import { ExtendedMatchup } from "../../types/matchup";
+import { ExtendedRoster } from "../../types/roster";
 import DraftBoard from "../components/DraftBoard/DraftBoard";
 import Standings from "../components/Standings/Standings";
 import Matchups from "../components/Matchups/Matchups";
@@ -81,12 +82,188 @@ const History = () => {
     });
   }, [seasonData]);
 
-  // Get playoff seeds
+  // Calculate H2H record between two teams
+  const getH2HRecord = (
+    team1: ExtendedRoster,
+    team2: ExtendedRoster,
+    matchups: Record<string, ExtendedMatchup[]> | undefined,
+    playoffWeekStart?: number
+  ) => {
+    if (!matchups) return { wins: 0, losses: 0, ties: 0 };
+
+    let wins = 0;
+    let losses = 0;
+    let ties = 0;
+
+    Object.keys(matchups).forEach((weekKey) => {
+      const weekNum = parseInt(weekKey);
+
+      // Skip playoff weeks if playoffWeekStart is provided
+      if (playoffWeekStart && weekNum >= playoffWeekStart) return;
+
+      const weekMatchups = matchups[weekKey];
+      const team1Matchup = weekMatchups.find(
+        (m: ExtendedMatchup) => m.roster_id === team1.roster_id
+      );
+      const team2Matchup = weekMatchups.find(
+        (m: ExtendedMatchup) => m.roster_id === team2.roster_id
+      );
+
+      if (!team1Matchup || !team2Matchup) return;
+
+      // Check if they played each other this week
+      if (team1Matchup.matchup_id === team2Matchup.matchup_id) {
+        const team1Score = team1Matchup.points;
+        const team2Score = team2Matchup.points;
+
+        if (team1Score > team2Score) {
+          wins++;
+        } else if (team1Score < team2Score) {
+          losses++;
+        } else {
+          ties++;
+        }
+      }
+    });
+
+    return { wins, losses, ties };
+  };
+
+  // Get playoff seeds using bracket-based analysis
   const getPlayoffSeed = (rosterId: number) => {
-    if (!seasonData?.rosters || !seasonData?.league) return null;
-    const playoffTeams = seasonData.league.settings?.playoff_teams || 6;
-    const seedIndex = standings.findIndex((r) => r.roster_id === rosterId);
-    return seedIndex < playoffTeams ? seedIndex + 1 : null;
+    if (
+      !seasonData?.winners_bracket ||
+      !seasonData?.league?.settings?.playoff_teams
+    )
+      return null;
+
+    const playoffTeams = new Set<number>();
+    const playoffTeamSeeds: Record<number, number> = {};
+
+    // Get all teams that appear in the winners bracket (these are the playoff teams)
+    seasonData.winners_bracket.forEach((match) => {
+      if (match.t1) playoffTeams.add(match.t1);
+      if (match.t2) playoffTeams.add(match.t2);
+    });
+
+    if (!playoffTeams.has(rosterId)) return null;
+
+    const hasDivisions = seasonData.league.settings.divisions > 0;
+
+    if (hasDivisions) {
+      // For division-based leagues, analyze bracket structure to determine seeds
+      const firstRoundTeams = new Set<number>();
+      const byeTeams = new Set<number>();
+
+      // Find the first round (lowest round number)
+      const firstRound = Math.min(
+        ...seasonData.winners_bracket.map((m) => m.r)
+      );
+
+      seasonData.winners_bracket.forEach((match) => {
+        if (match.r === firstRound) {
+          if (match.t1) firstRoundTeams.add(match.t1);
+          if (match.t2) firstRoundTeams.add(match.t2);
+        }
+      });
+
+      // Teams with byes are playoff teams that don't appear in first round
+      playoffTeams.forEach((teamId) => {
+        if (!firstRoundTeams.has(teamId)) {
+          byeTeams.add(teamId);
+        }
+      });
+
+      // Assign seeds 1-2 to bye teams (sorted by their standings)
+      const byeTeamRosters = [...seasonData.rosters]
+        .filter((r) => byeTeams.has(r.roster_id))
+        .sort((a, b) => {
+          const aWinPct =
+            a.settings.wins /
+            (a.settings.wins + a.settings.losses + a.settings.ties);
+          const bWinPct =
+            b.settings.wins /
+            (b.settings.wins + b.settings.losses + b.settings.ties);
+
+          if (aWinPct !== bWinPct) return bWinPct - aWinPct;
+
+          const aPoints = a.settings.fpts + a.settings.fpts_decimal / 100;
+          const bPoints = b.settings.fpts + b.settings.fpts_decimal / 100;
+          return bPoints - aPoints;
+        });
+
+      let seed = 1;
+      byeTeamRosters.forEach((roster) => {
+        playoffTeamSeeds[roster.roster_id] = seed;
+        seed++;
+      });
+
+      // Assign seeds 3-6 to remaining playoff teams (first round participants)
+      const firstRoundRosters = [...seasonData.rosters]
+        .filter((r) => firstRoundTeams.has(r.roster_id))
+        .sort((a, b) => {
+          const aWinPct =
+            a.settings.wins /
+            (a.settings.wins + a.settings.losses + a.settings.ties);
+          const bWinPct =
+            b.settings.wins /
+            (b.settings.wins + b.settings.losses + b.settings.ties);
+
+          if (aWinPct !== bWinPct) return bWinPct - aWinPct;
+
+          const aPoints = a.settings.fpts + a.settings.fpts_decimal / 100;
+          const bPoints = b.settings.fpts + b.settings.fpts_decimal / 100;
+          return bPoints - aPoints;
+        });
+
+      firstRoundRosters.forEach((roster) => {
+        playoffTeamSeeds[roster.roster_id] = seed;
+        seed++;
+      });
+    } else {
+      // For non-division leagues, use H2H tiebreaking like standings
+      const sortedStandings = [...seasonData.rosters].sort((a, b) => {
+        const aWinPct =
+          a.settings.wins /
+          (a.settings.wins + a.settings.losses + a.settings.ties);
+        const bWinPct =
+          b.settings.wins /
+          (b.settings.wins + b.settings.losses + b.settings.ties);
+
+        // First tiebreaker: Win percentage
+        if (aWinPct !== bWinPct) return bWinPct - aWinPct;
+
+        // Second tiebreaker: H2H record
+        const h2hRecord = getH2HRecord(
+          a,
+          b,
+          seasonData.matchups,
+          seasonData.league?.settings?.playoff_week_start
+        );
+        const totalH2HGames =
+          h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
+
+        // Only use H2H if teams actually played each other
+        if (totalH2HGames > 0 && h2hRecord.wins !== h2hRecord.losses) {
+          return h2hRecord.losses - h2hRecord.wins; // Team A wins if they have more H2H wins
+        }
+
+        // Final tiebreaker: Points
+        const aPoints = a.settings.fpts + a.settings.fpts_decimal / 100;
+        const bPoints = b.settings.fpts + b.settings.fpts_decimal / 100;
+        return bPoints - aPoints;
+      });
+
+      let seed = 1;
+      sortedStandings.forEach((roster) => {
+        if (playoffTeams.has(roster.roster_id)) {
+          playoffTeamSeeds[roster.roster_id] = seed;
+          seed++;
+        }
+      });
+    }
+
+    return playoffTeamSeeds[rosterId] || null;
   };
 
   // Get available weeks for the selected year

@@ -27,9 +27,21 @@ export interface League {
     divisions: number;
     playoff_teams: number;
     num_teams: number;
+    playoff_week_start?: number;
   };
   total_rosters: number;
   roster_positions: RosterPosition[];
+  metadata?: {
+    [key: string]: string | undefined;
+    division_1?: string;
+    division_2?: string;
+    division_3?: string;
+    division_4?: string;
+    division_1_avatar?: string;
+    division_2_avatar?: string;
+    division_3_avatar?: string;
+    division_4_avatar?: string;
+  };
   scoring_settings: {
     blk_kick: number;
     def_2pt: number;
