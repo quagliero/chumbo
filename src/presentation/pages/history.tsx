@@ -233,19 +233,21 @@ const History = () => {
         // First tiebreaker: Win percentage
         if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
-        // Second tiebreaker: H2H record
-        const h2hRecord = getH2HRecord(
-          a,
-          b,
-          seasonData.matchups,
-          seasonData.league?.settings?.playoff_week_start
-        );
-        const totalH2HGames =
-          h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
+        // For non-division years, only use H2H for 2012
+        if (year && parseInt(year) === 2012) {
+          const h2hRecord = getH2HRecord(
+            a,
+            b,
+            seasonData.matchups,
+            seasonData.league?.settings?.playoff_week_start
+          );
+          const totalH2HGames =
+            h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
 
-        // Only use H2H if teams actually played each other
-        if (totalH2HGames > 0 && h2hRecord.wins !== h2hRecord.losses) {
-          return h2hRecord.losses - h2hRecord.wins; // Team A wins if they have more H2H wins
+          // Only use H2H if teams actually played each other
+          if (totalH2HGames > 0 && h2hRecord.wins !== h2hRecord.losses) {
+            return h2hRecord.losses - h2hRecord.wins; // Team A wins if they have more H2H wins
+          }
         }
 
         // Final tiebreaker: Points

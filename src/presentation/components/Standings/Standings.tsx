@@ -39,12 +39,21 @@ const Standings = ({
     league?.settings?.divisions && league.settings.divisions > 0
   );
 
-  // Get division names from metadata
-  const getDivisionName = (divisionNumber: number) => {
-    if (!hasDivisions || !league.metadata) return `Division ${divisionNumber}`;
+  // Get division names and avatars from metadata
+  const getDivisionInfo = (divisionNumber: number) => {
+    if (!hasDivisions || !league.metadata) {
+      return { name: `Division ${divisionNumber}`, avatar: null };
+    }
+
     const divisionKey =
       `division_${divisionNumber}` as keyof typeof league.metadata;
-    return league.metadata[divisionKey] || `Division ${divisionNumber}`;
+    const avatarKey =
+      `division_${divisionNumber}_avatar` as keyof typeof league.metadata;
+
+    return {
+      name: league.metadata[divisionKey] || `Division ${divisionNumber}`,
+      avatar: league.metadata[avatarKey] || null,
+    };
   };
 
   // Group standings by division if divisions exist
@@ -161,18 +170,19 @@ const Standings = ({
         // First tiebreaker: Win percentage
         if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
-        // Second tiebreaker: H2H record (for both division and non-division years)
-        const h2hRecord = getH2HRecord(a, b);
-        const totalH2HGames =
-          h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
-
-        // Only use H2H if teams actually played each other
-        if (totalH2HGames > 0 && h2hRecord.wins !== h2hRecord.losses) {
-          return h2hRecord.losses - h2hRecord.wins; // Team A wins if they have more H2H wins
-        }
-
-        // If divisions exist, use division record as third tiebreaker
+        // For division years, use division-specific tiebreakers
         if (hasDivisions) {
+          // Second tiebreaker: H2H record
+          const h2hRecord = getH2HRecord(a, b);
+          const totalH2HGames =
+            h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
+
+          // Only use H2H if teams actually played each other
+          if (totalH2HGames > 0 && h2hRecord.wins !== h2hRecord.losses) {
+            return h2hRecord.losses - h2hRecord.wins; // Team A wins if they have more H2H wins
+          }
+
+          // Third tiebreaker: Division record
           const aDivRecord = getDivisionRecord(a, teams);
           const bDivRecord = getDivisionRecord(b, teams);
           const aDivWinPct =
@@ -183,6 +193,18 @@ const Standings = ({
             (bDivRecord.wins + bDivRecord.losses + bDivRecord.ties);
 
           if (aDivWinPct !== bDivWinPct) return bDivWinPct - aDivWinPct;
+        } else {
+          // For non-division years, only use H2H for 2012
+          if (currentYear === 2012) {
+            const h2hRecord = getH2HRecord(a, b);
+            const totalH2HGames =
+              h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
+
+            // Only use H2H if teams actually played each other
+            if (totalH2HGames > 0 && h2hRecord.wins !== h2hRecord.losses) {
+              return h2hRecord.losses - h2hRecord.wins; // Team A wins if they have more H2H wins
+            }
+          }
         }
 
         // Final tiebreaker: Points
@@ -402,8 +424,22 @@ const Standings = ({
         <div key={division} className={hasDivisions ? "mb-8" : ""}>
           {hasDivisions && (
             <div className="mb-4">
-              <h2 className="text-xl font-bold text-gray-800 mb-2">
-                {getDivisionName(division)}
+              <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+                {(() => {
+                  const divisionInfo = getDivisionInfo(division);
+                  return (
+                    <>
+                      {divisionInfo.avatar && (
+                        <img
+                          src={divisionInfo.avatar}
+                          alt={`${divisionInfo.name} avatar`}
+                          className="w-6 h-6 rounded-full object-cover"
+                        />
+                      )}
+                      {divisionInfo.name}
+                    </>
+                  );
+                })()}
               </h2>
               <div className="border-b-2 border-gray-300"></div>
             </div>
@@ -532,7 +568,10 @@ const Standings = ({
                     </td>
                     <td className="text-center p-3">{roster.settings.ties}</td>
                     <td className="text-center p-3">
-                      {number(winPerc, { maximumFractionDigits: 3 })}
+                      {number(winPerc, {
+                        maximumFractionDigits: 3,
+                        minimumFractionDigits: 3,
+                      })}
                     </td>
                     {hasDivisions && divisionRecord && (
                       <td className="text-center p-3 text-xs">

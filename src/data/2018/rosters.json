@@ -4,6 +4,7 @@
     "owner_id": "77140390129844224",
     "roster_id": 1,
     "settings": {
+      "division": 1,
       "wins": 6,
       "losses": 7,
       "ties": 0,
@@ -48,6 +49,7 @@
     "owner_id": "428943291145265152",
     "roster_id": 2,
     "settings": {
+      "division": 3,
       "wins": 12,
       "losses": 1,
       "ties": 0,
@@ -92,6 +94,7 @@
     "owner_id": "337210029620883456",
     "roster_id": 3,
     "settings": {
+      "division": 2,
       "wins": 5,
       "losses": 8,
       "ties": 0,
@@ -136,6 +139,7 @@
     "owner_id": "438629899490553856",
     "roster_id": 4,
     "settings": {
+      "division": 3,
       "wins": 4,
       "losses": 9,
       "ties": 0,
@@ -180,6 +184,7 @@
     "owner_id": "337221174670938112",
     "roster_id": 5,
     "settings": {
+      "division": 4,
       "wins": 9,
       "losses": 4,
       "ties": 0,
@@ -224,6 +229,7 @@
     "owner_id": "337297176361201664",
     "roster_id": 6,
     "settings": {
+      "division": 2,
       "wins": 5,
       "losses": 8,
       "ties": 0,
@@ -268,6 +274,7 @@
     "owner_id": "411186928751230976",
     "roster_id": 7,
     "settings": {
+      "division": 2,
       "wins": 10,
       "losses": 3,
       "ties": 0,
@@ -312,6 +319,7 @@
     "owner_id": "77361676378587136",
     "roster_id": 8,
     "settings": {
+      "division": 3,
       "wins": 3,
       "losses": 10,
       "ties": 0,
@@ -356,6 +364,7 @@
     "owner_id": "337226046606704640",
     "roster_id": 9,
     "settings": {
+      "division": 4,
       "wins": 4,
       "losses": 9,
       "ties": 0,
@@ -398,6 +407,7 @@
     "owner_id": "337222928615612416",
     "roster_id": 10,
     "settings": {
+      "division": 1,
       "wins": 9,
       "losses": 4,
       "ties": 0,
@@ -441,6 +451,7 @@
     "owner_id": "429243125446230016",
     "roster_id": 11,
     "settings": {
+      "division": 1,
       "wins": 7,
       "losses": 6,
       "ties": 0,
@@ -485,6 +496,7 @@
     "owner_id": "chumbolegacy_sudio",
     "roster_id": 12,
     "settings": {
+      "division": 4,
       "wins": 4,
       "losses": 9,
       "ties": 0,

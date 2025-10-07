@@ -37,6 +37,13 @@
     "BN",
     "BN"
   ],
+  "metadata": {
+    "division_1": "To Be Insured",
+    "division_2": "Potate Cash Romie",
+    "division_3": "T'Northern Quarter",
+    "division_4": "The West Wing",
+    "continued": "yes"
+  },
   "scoring_settings": {
     "blk_kick": 1,
     "def_2pt": 2,
