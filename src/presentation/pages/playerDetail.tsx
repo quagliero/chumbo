@@ -213,11 +213,6 @@ const PlayerDetail = () => {
     return { allNicknames };
   }, [playerId]);
 
-  // Helper function to get team name for a given owner ID
-  const getTeamNameForOwner = (ownerId: string): string => {
-    return getTeamName(ownerId);
-  };
-
   // Helper function to get position for string-named players from matchup data
   const getPlayerPositionFromMatchups = (playerId: string): string => {
     // Look through all seasons to find position information for this player
@@ -297,7 +292,7 @@ const PlayerDetail = () => {
             if (!roster) return;
 
             const wasStarted = matchup.starters?.includes(playerId) || false;
-            const teamName = getTeamNameForOwner(roster.owner_id);
+            const teamName = getTeamName(roster.owner_id, seasonData.users);
 
             // Find opponent - look for the other matchup with the same matchup_id but different roster_id
             const opponentMatchup = weekMatchups.find(
@@ -311,7 +306,7 @@ const PlayerDetail = () => {
                     (r) => r.roster_id === opponentMatchup.roster_id
                   );
                   return opponentRoster
-                    ? getTeamNameForOwner(opponentRoster.owner_id)
+                    ? getTeamName(opponentRoster.owner_id, seasonData.users)
                     : "Unknown Team";
                 })()
               : "Unknown";
