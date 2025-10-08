@@ -1,5 +1,6 @@
 import { useFormatter } from "use-intl";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ExtendedMatchup } from "../../../types/matchup";
 import { ExtendedRoster } from "../../../types/roster";
 import { ExtendedUser } from "../../../types/user";
@@ -273,18 +274,40 @@ const MatchupDetail = ({
                         )}
                       </td>
                       <td className="py-2">
-                        {player.name}
-                        {(() => {
-                          const nickname = getPlayerNickname(
-                            player.playerId,
-                            teamIdx === 0 ? team1Roster : team2Roster
-                          );
-                          return nickname ? (
-                            <span className="text-gray-500 ml-1">
-                              ({nickname})
-                            </span>
-                          ) : null;
-                        })()}
+                        {player.playerId === 0 || player.playerId === "0" ? (
+                          <>
+                            {player.name}
+                            {(() => {
+                              const nickname = getPlayerNickname(
+                                player.playerId,
+                                teamIdx === 0 ? team1Roster : team2Roster
+                              );
+                              return nickname ? (
+                                <span className="text-gray-500 ml-1">
+                                  ({nickname})
+                                </span>
+                              ) : null;
+                            })()}
+                          </>
+                        ) : (
+                          <Link
+                            to={`/players/${player.playerId}`}
+                            className="text-blue-600 hover:text-blue-800 hover:underline"
+                          >
+                            {player.name}
+                            {(() => {
+                              const nickname = getPlayerNickname(
+                                player.playerId,
+                                teamIdx === 0 ? team1Roster : team2Roster
+                              );
+                              return nickname ? (
+                                <span className="text-gray-500 ml-1">
+                                  ({nickname})
+                                </span>
+                              ) : null;
+                            })()}
+                          </Link>
+                        )}
                       </td>
                       <td className="py-2 text-right font-semibold">
                         {player.playerId === 0 || player.playerId === "0"
@@ -335,18 +358,40 @@ const MatchupDetail = ({
                           </span>
                         </td>
                         <td className="py-2">
-                          {player.name}
-                          {(() => {
-                            const nickname = getPlayerNickname(
-                              player.playerId,
-                              teamIdx === 0 ? team1Roster : team2Roster
-                            );
-                            return nickname ? (
-                              <span className="text-gray-500 ml-1">
-                                ({nickname})
-                              </span>
-                            ) : null;
-                          })()}
+                          {player.playerId === 0 || player.playerId === "0" ? (
+                            <>
+                              {player.name}
+                              {(() => {
+                                const nickname = getPlayerNickname(
+                                  player.playerId,
+                                  teamIdx === 0 ? team1Roster : team2Roster
+                                );
+                                return nickname ? (
+                                  <span className="text-gray-500 ml-1">
+                                    ({nickname})
+                                  </span>
+                                ) : null;
+                              })()}
+                            </>
+                          ) : (
+                            <Link
+                              to={`/players/${player.playerId}`}
+                              className="text-blue-600 hover:text-blue-800 hover:underline"
+                            >
+                              {player.name}
+                              {(() => {
+                                const nickname = getPlayerNickname(
+                                  player.playerId,
+                                  teamIdx === 0 ? team1Roster : team2Roster
+                                );
+                                return nickname ? (
+                                  <span className="text-gray-500 ml-1">
+                                    ({nickname})
+                                  </span>
+                                ) : null;
+                              })()}
+                            </Link>
+                          )}
                         </td>
                         <td className="py-2 text-right">
                           {number(player.points, { maximumFractionDigits: 2 })}

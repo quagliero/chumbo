@@ -1,1 +1,73 @@
-{"type":"snake","status":"complete","start_time":1662142369896,"sport":"nfl","slot_to_roster_id":{"9":12,"8":7,"7":8,"6":9,"5":4,"4":1,"3":11,"2":2,"12":3,"11":5,"10":10,"1":6},"settings":{"teams":12,"slots_wr":2,"slots_te":1,"slots_rb":2,"slots_qb":1,"slots_k":1,"slots_flex":1,"slots_def":1,"slots_bn":6,"rounds":15,"reversal_round":0,"player_type":0,"pick_timer":0,"nomination_timer":60,"enforce_position_limits":1,"cpu_autopick":1,"autostart":0,"autopause_start_time":1260,"autopause_end_time":540,"autopause_enabled":0,"alpha_sort":0},"season_type":"regular","season":"2022","metadata":{"scoring_type":"std","name":"The Chumbo","description":""},"league_id":"802312943839580160","last_picked":1662151771748,"last_message_time":1662151772460,"last_message_id":"871531337624920064","draft_order":{"77361676378587136":6,"77140390129844224":4,"704708035829895168":10,"438629899490553856":9,"428943291145265152":12,"411186928751230976":1,"359110473351696384":11,"337297176361201664":8,"337226046606704640":5,"337222928615612416":3,"337221174670938112":7,"337210029620883456":2},"draft_id":"802312943839580161","creators":["77140390129844224"],"created":1645648821366}
+{
+  "created": 1645648821366,
+  "creators": [
+    "77140390129844224"
+  ],
+  "draft_id": "802312943839580161",
+  "draft_order": {
+    "337210029620883456": 2,
+    "337221174670938112": 7,
+    "337222928615612416": 3,
+    "337226046606704640": 5,
+    "337297176361201664": 8,
+    "359110473351696384": 11,
+    "411186928751230976": 1,
+    "428943291145265152": 12,
+    "438629899490553856": 9,
+    "704708035829895168": 10,
+    "77140390129844224": 4,
+    "77361676378587136": 6
+  },
+  "last_message_id": "871531337624920064",
+  "last_message_time": 1662151772460,
+  "last_picked": 1662151771748,
+  "league_id": "802312943839580160",
+  "metadata": {
+    "description": "",
+    "name": "The Chumbo",
+    "scoring_type": "std"
+  },
+  "season": "2022",
+  "season_type": "regular",
+  "settings": {
+    "alpha_sort": 0,
+    "autopause_enabled": 0,
+    "autopause_end_time": 540,
+    "autopause_start_time": 1260,
+    "autostart": 0,
+    "cpu_autopick": 1,
+    "enforce_position_limits": 1,
+    "nomination_timer": 60,
+    "pick_timer": 0,
+    "player_type": 0,
+    "reversal_round": 0,
+    "rounds": 15,
+    "slots_bn": 6,
+    "slots_def": 1,
+    "slots_flex": 1,
+    "slots_k": 1,
+    "slots_qb": 1,
+    "slots_rb": 2,
+    "slots_te": 1,
+    "slots_wr": 2,
+    "teams": 12
+  },
+  "slot_to_roster_id": {
+    "1": 6,
+    "2": 2,
+    "3": 11,
+    "4": 1,
+    "5": 4,
+    "6": 9,
+    "7": 8,
+    "8": 7,
+    "9": 12,
+    "10": 10,
+    "11": 5,
+    "12": 3
+  },
+  "sport": "nfl",
+  "start_time": 1662142369896,
+  "status": "complete",
+  "type": "snake"
+}

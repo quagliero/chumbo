@@ -35,6 +35,7 @@ export interface ManagerStats {
   thirdPlace: number;
   scoringCrowns: number;
   firstPlaceStandings: number;
+  playoffs: number;
 
   // Best seasons
   bestWinsSeason: { year: number; wins: number };
@@ -54,6 +55,7 @@ export interface SeasonStats {
   finalStanding: number;
   championshipResult?: "champion" | "runner-up" | "third-place";
   scoringCrown?: boolean;
+  madePlayoffs?: boolean;
 }
 
 export interface H2HRecord {
@@ -89,7 +91,8 @@ export const getManagerStats = (
     runnerUps = 0,
     thirdPlace = 0;
   let scoringCrowns = 0,
-    firstPlaceStandings = 0;
+    firstPlaceStandings = 0,
+    playoffs = 0;
 
   const h2hRecords: Record<string, H2HRecord> = {};
   let bestWinsSeason = { year: 0, wins: 0 };
@@ -164,6 +167,29 @@ export const getManagerStats = (
     if (seasonStat.scoringCrown) scoringCrowns++;
     if (seasonStat.finalStanding === 1) firstPlaceStandings++;
 
+    // Count playoff appearances (years they made the playoffs)
+    // Check if they played in winners_bracket (first round or had bye and played second round)
+    if (seasonData.winners_bracket) {
+      // Check if they played in round 1 (first round)
+      const round1Match = seasonData.winners_bracket.find(
+        (bm: BracketMatch) =>
+          (bm.t1 === roster.roster_id || bm.t2 === roster.roster_id) &&
+          bm.r === 1
+      );
+
+      // Check if they had a bye in round 1 and played in round 2
+      const round2Match = seasonData.winners_bracket.find(
+        (bm: BracketMatch) =>
+          (bm.t1 === roster.roster_id || bm.t2 === roster.roster_id) &&
+          bm.r === 2
+      );
+
+      // Count as playoff appearance if they played in round 1 OR had bye and played in round 2
+      if (round1Match || round2Match) {
+        playoffs++;
+      }
+    }
+
     // Track best seasons
     if (seasonStat.wins > bestWinsSeason.wins) {
       bestWinsSeason = { year, wins: seasonStat.wins };
@@ -211,6 +237,7 @@ export const getManagerStats = (
     thirdPlace,
     scoringCrowns,
     firstPlaceStandings,
+    playoffs,
     bestWinsSeason,
     bestPointsSeason,
   };
@@ -367,6 +394,25 @@ const getSeasonStats = (
 
   const scoringCrown = allTeamsByPoints[0]?.rosterId === roster.roster_id;
 
+  // Check if they made the playoffs (played in round 1 or had bye and played in round 2)
+  let madePlayoffs = false;
+  if (seasonData.winners_bracket) {
+    // Check if they played in round 1 (first round)
+    const round1Match = seasonData.winners_bracket.find(
+      (bm: BracketMatch) =>
+        (bm.t1 === roster.roster_id || bm.t2 === roster.roster_id) && bm.r === 1
+    );
+
+    // Check if they had a bye in round 1 and played in round 2
+    const round2Match = seasonData.winners_bracket.find(
+      (bm: BracketMatch) =>
+        (bm.t1 === roster.roster_id || bm.t2 === roster.roster_id) && bm.r === 2
+    );
+
+    // Count as playoff appearance if they played in round 1 OR had bye and played in round 2
+    madePlayoffs = !!(round1Match || round2Match);
+  }
+
   return {
     year,
     wins,
@@ -380,6 +426,7 @@ const getSeasonStats = (
     finalStanding,
     championshipResult,
     scoringCrown,
+    madePlayoffs,
   };
 };
 

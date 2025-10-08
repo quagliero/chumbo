@@ -55,6 +55,11 @@ const PlayoffBracket = ({
               <div key={round} className="flex flex-col justify-around">
                 <div className="text-center font-semibold text-sm text-gray-600 mb-4">
                   Round {round}
+                  <br />
+                  <span className="text-xs text-gray-500">
+                    Week{" "}
+                    {(league?.settings.playoff_week_start || 15) - 1 + round}
+                  </span>
                 </div>
               </div>
             );
@@ -62,6 +67,11 @@ const PlayoffBracket = ({
           <div className="flex flex-col justify-center">
             <div className="text-center font-semibold text-sm text-gray-600 mb-4">
               Championship
+              <br />
+              <span className="text-xs text-gray-500">
+                Week{" "}
+                {(league?.settings.playoff_week_start || 15) + roundData.length}
+              </span>
             </div>
           </div>
         </div>

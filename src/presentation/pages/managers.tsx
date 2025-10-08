@@ -11,7 +11,8 @@ type SortOption =
   | "leagueRecordPct"
   | "pointsTotal"
   | "pointsAverage"
-  | "championships";
+  | "championships"
+  | "playoffs";
 
 const Managers = () => {
   const navigate = useNavigate();
@@ -82,6 +83,13 @@ const Managers = () => {
           if (a!.runnerUps !== b!.runnerUps) return b!.runnerUps - a!.runnerUps;
           return b!.scoringCrowns - a!.scoringCrowns;
         }
+        case "playoffs": {
+          // Sort by playoff appearances, then championships, then runner-ups
+          if (a!.playoffs !== b!.playoffs) return b!.playoffs - a!.playoffs;
+          if (a!.championships !== b!.championships)
+            return b!.championships - a!.championships;
+          return b!.runnerUps - a!.runnerUps;
+        }
         default:
           return 0;
       }
@@ -118,6 +126,7 @@ const Managers = () => {
               <option value="pointsTotal">Points Total</option>
               <option value="pointsAverage">Points Average</option>
               <option value="championships">Championships</option>
+              <option value="playoffs">Playoffs</option>
             </select>
           </div>
         </div>
@@ -177,6 +186,10 @@ const Managers = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
+                  <span className="text-gray-600">Playoffs:</span>
+                  <span className="font-semibold">{manager!.playoffs}</span>
+                </div>
+                <div className="flex justify-between">
                   <span className="text-gray-600">Scoring Crowns:</span>
                   <span className="font-semibold">
                     {manager!.scoringCrowns}
@@ -224,6 +237,7 @@ const Managers = () => {
                 <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
                   <span>🏆 {manager!.championships}</span>
                   <span>🥈 {manager!.runnerUps}</span>
+                  <span>🏈 {manager!.playoffs}</span>
                   <span>👑 {manager!.scoringCrowns}</span>
                 </div>
               </div>

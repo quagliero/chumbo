@@ -148,7 +148,7 @@ const ManagerDetail = () => {
       {/* Achievements */}
       <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-2xl font-bold mb-4">Achievements</h2>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-3xl font-bold text-yellow-600">🏆</div>
             <div className="text-lg font-semibold">
@@ -162,6 +162,11 @@ const ManagerDetail = () => {
               {managerStats.runnerUps}
             </div>
             <div className="text-sm text-gray-500">Runner-ups</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-600">🏈</div>
+            <div className="text-lg font-semibold">{managerStats.playoffs}</div>
+            <div className="text-sm text-gray-500">Playoffs</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-purple-600">👑</div>
@@ -219,6 +224,11 @@ const ManagerDetail = () => {
                     </span>
                   </td>
                   <td className="py-2 space-x-2">
+                    {season.madePlayoffs && (
+                      <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
+                        🏈 Playoffs
+                      </span>
+                    )}
                     {season.championshipResult && (
                       <span
                         className={`px-2 py-1 rounded text-xs ${

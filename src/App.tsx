@@ -9,6 +9,8 @@ import History from "./presentation/pages/history";
 import Rules from "./presentation/pages/rules";
 import ManagerDetail from "./presentation/pages/managerDetail";
 import Managers from "./presentation/pages/managers";
+import PlayerDetail from "./presentation/pages/playerDetail";
+import Players from "./presentation/pages/players";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
               />
               <Route path="/managers" element={<Managers />} />
               <Route path="/managers/:managerId" element={<ManagerDetail />} />
+              <Route path="/players" element={<Players />} />
+              <Route path="/players/:playerId" element={<PlayerDetail />} />
             </Routes>
           </main>
         </div>

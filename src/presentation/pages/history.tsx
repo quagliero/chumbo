@@ -297,16 +297,25 @@ const History = () => {
       ];
     if (!matchups) return [];
 
-    // Group matchups by matchup_id
-    const grouped: { [key: number]: ExtendedMatchup[] } = {};
+    // Group matchups by matchup_id, but handle null matchup_ids (byes) properly
+    const grouped: { [key: string]: ExtendedMatchup[] } = {};
     matchups.forEach((m: ExtendedMatchup) => {
-      if (!grouped[m.matchup_id]) {
-        grouped[m.matchup_id] = [];
+      // Use a string key to handle null values properly
+      const key =
+        m.matchup_id === null ? `bye_${m.roster_id}` : m.matchup_id.toString();
+      if (!grouped[key]) {
+        grouped[key] = [];
       }
-      grouped[m.matchup_id].push(m);
+      grouped[key].push(m);
     });
 
-    return Object.values(grouped);
+    // Only return actual matchups (pairs of teams), filter out bye weeks
+    return Object.values(grouped).filter(
+      (group) =>
+        group.length === 2 &&
+        group[0].matchup_id !== null &&
+        group[1].matchup_id !== null
+    );
   }, [seasonData, selectedWeek]);
 
   return (
@@ -425,6 +434,8 @@ const History = () => {
                 year={selectedYear}
                 allMatchups={seasonData.matchups || {}}
                 users={seasonData?.users}
+                league={seasonData?.league}
+                winnersBracket={seasonData?.winners_bracket}
               />
             )}
           </>

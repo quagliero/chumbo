@@ -689,9 +689,12 @@ const TopScores = () => {
                 {player.player_name.charAt(0).toUpperCase()}
               </div>
             )}
-            <div className="font-medium text-gray-900 text-sm">
+            <Link
+              to={`/players/${player.player_id}`}
+              className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
+            >
               {player.player_name}
-            </div>
+            </Link>
           </div>
           <div className="flex items-center">
             {avatarUrl ? (
