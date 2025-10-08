@@ -14,11 +14,8 @@ export const getTeamName = (
   // First try to get team name from users metadata
   if (users) {
     const user = users.find((u) => u.user_id === ownerId);
-    if (user?.metadata?.team_name) {
+    if (user?.metadata?.team_name && user.metadata.team_name.trim() !== "") {
       return user.metadata.team_name;
-    }
-    if (user?.display_name) {
-      return user.display_name;
     }
   }
 
@@ -26,6 +23,14 @@ export const getTeamName = (
   const manager = managers.find((m) => m.sleeper?.id === ownerId);
   if (manager?.teamName) {
     return manager.teamName;
+  }
+
+  // Final fallback to user display name if available
+  if (users) {
+    const user = users.find((u) => u.user_id === ownerId);
+    if (user?.display_name) {
+      return user.display_name;
+    }
   }
 
   return "Unknown";

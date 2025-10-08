@@ -424,7 +424,7 @@ const PlayerDetail = () => {
       // Achievements are now counted per game, not per season
     });
 
-    // Mark bye weeks (first 0-point bench game per year) in performances
+    // Mark bye weeks (first 0-point bench game per year, week 4 or later) in performances
     const performancesWithBye = performances.map((performance) => {
       // Only consider bench games (not started) with 0 points as potential bye weeks
       if (performance.wasStarted || performance.points > 0) {
@@ -434,9 +434,22 @@ const PlayerDetail = () => {
         };
       }
 
-      // Group bench 0-point games by year to track bye weeks per year
+      // Only consider weeks 4-14 as potential bye weeks (NFL bye weeks typically occur weeks 4-14)
+      if (performance.week < 4 || performance.week > 14) {
+        return {
+          ...performance,
+          isByeWeek: false,
+        };
+      }
+
+      // Group bench 0-point games by year (weeks 4-14) to track bye weeks per year
       const yearPerformances = performances.filter(
-        (p) => p.year === performance.year && !p.wasStarted && p.points === 0
+        (p) =>
+          p.year === performance.year &&
+          !p.wasStarted &&
+          p.points === 0 &&
+          p.week >= 4 &&
+          p.week <= 14
       );
       const isFirstZeroBenchInYear =
         yearPerformances.findIndex(
