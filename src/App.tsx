@@ -23,6 +23,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/:tab" element={<Home />} />
               <Route path="/:tab/:subTab" element={<Home />} />
+              <Route path="/schedule-comparison/:view" element={<Home />} />
               <Route path="/wiki" element={<Wiki />}>
                 <Route index element={<WikiOverview />} />
                 <Route path="settings" element={<Settings />} />

@@ -565,10 +565,16 @@ const Standings = ({
                     </td>
                     <td className="text-center p-3">{roster.settings.ties}</td>
                     <td className="text-center p-3">
-                      {number(winPerc, {
-                        maximumFractionDigits: 3,
-                        minimumFractionDigits: 3,
-                      })}
+                      {(() => {
+                        const formatted = number(winPerc, {
+                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 3,
+                        });
+                        // Remove leading zero if present (e.g., "0.500" -> ".500")
+                        return formatted.startsWith("0.")
+                          ? formatted.substring(1)
+                          : formatted;
+                      })()}
                     </td>
                     {hasDivisions && divisionRecord && (
                       <td className="text-center p-3 text-xs">

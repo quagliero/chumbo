@@ -104,10 +104,14 @@ const AllTimeTable = () => {
     }),
     columnHelper.accessor("winPerc", {
       header: () => "Win %",
-      cell: (info) =>
-        number(info.getValue(), {
-          maximumFractionDigits: 2,
-        }),
+      cell: (info) => {
+        const value = info.getValue() / 100;
+        const formatted = number(value, {
+          maximumFractionDigits: 3,
+        });
+        // Remove leading zero if present (e.g., "0.500" -> ".500")
+        return formatted.startsWith("0.") ? formatted.substring(1) : formatted;
+      },
       sortingFn: "alphanumeric",
       enableSorting: true,
     }),
@@ -162,133 +166,156 @@ const AllTimeTable = () => {
   });
 
   return (
-    <div className="overflow-x-scroll container mx-auto">
-      <table className="w-full text-right">
-        <thead className="text-sm font-medium">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className={
-                    header.column.getCanSort()
-                      ? "cursor-pointer select-none"
-                      : ""
+    <div className="container mx-auto space-y-6">
+      {/* Controls */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex flex-wrap justify-between gap-4">
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center gap-1 select-none cursor-pointer">
+              <input
+                id="showOnlyActiveTeams"
+                type="checkbox"
+                checked={showOnlyActiveTeams}
+                onChange={() => setShowOnlyActiveTeams(!showOnlyActiveTeams)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <span className="whitespace-nowrap text-sm text-gray-700">
+                Show only active teams
+              </span>
+            </label>
+            <label className="flex items-center gap-1 select-none cursor-pointer">
+              <input
+                id="showTiers"
+                type="checkbox"
+                checked={showTiers}
+                onChange={() => {
+                  setShowTiers(!showTiers);
+                  if (!showTiers) {
+                    // When enabling tiers, also enable active teams
+                    setShowOnlyActiveTeams(true);
                   }
-                >
-                  <span className="flex justify-end whitespace-nowrap">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {header.column.getCanSort()
-                      ? {
-                          asc: " 🔼",
-                          desc: " 🔽",
-                        }[header.column.getIsSorted() as string] ?? " ↕️"
-                      : ""}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody className="text-xs divide-y divide-gray-100">
-          {table.getRowModel().rows.map((row, index) => {
-            let tierClass = "";
-            if (showTiers) {
-              if (index < 3) {
-                tierClass = "bg-green-50"; // Top 3 - pale green
-              } else if (index < 6) {
-                tierClass = "bg-blue-50"; // Second 3 - pale blue
-              } else if (index < 9) {
-                tierClass = "bg-yellow-50"; // Next 3 - pale yellow
-              } else {
-                tierClass = "bg-red-50"; // Bottom 3 - pale red
-              }
-            }
+                }}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <span className="whitespace-nowrap text-sm text-gray-700">
+                Tiers
+              </span>
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-1">
+            {Object.keys(seasons).map((year) => (
+              <button
+                key={year}
+                className={`text-xs border rounded-md px-2 py-1 hover:bg-opacity-80 ${
+                  selectedYears.includes(Number(year))
+                    ? "bg-blue-800 text-white border-white/50"
+                    : "border-gray-200 "
+                }`}
+                onClick={() =>
+                  setSelectedYears(
+                    selectedYears.includes(Number(year))
+                      ? selectedYears.filter((y) => y !== Number(year))
+                      : [...selectedYears, Number(year)]
+                  )
+                }
+              >
+                {year}
+              </button>
+            ))}
+            <button
+              className="text-xs underline rounded-md px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setSelectedYears([])}
+              disabled={selectedYears.length === 0}
+            >
+              {"Reset"}
+            </button>
+          </div>
+        </div>
+      </div>
 
-            return (
-              <tr key={row.id} className={tierClass}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="py-2">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-        <tfoot className="border-t border-gray-200">
-          <tr>
-            <td colSpan={columns.length} className="py-2 text-left text-xs">
-              <div className="flex flex-wrap justify-between gap-4">
-                <div className="flex flex-wrap gap-4">
-                  <label className="flex items-center gap-1 select-none cursor-pointer">
-                    <input
-                      id="showOnlyActiveTeams"
-                      type="checkbox"
-                      checked={showOnlyActiveTeams}
-                      onChange={() =>
-                        setShowOnlyActiveTeams(!showOnlyActiveTeams)
-                      }
-                    />
-                    <span className="whitespace-nowrap">
-                      Show only active teams
-                    </span>
-                  </label>
-                  <label className="flex items-center gap-1 select-none cursor-pointer">
-                    <input
-                      id="showTiers"
-                      type="checkbox"
-                      checked={showTiers}
-                      onChange={() => {
-                        setShowTiers(!showTiers);
-                        if (!showTiers) {
-                          // When enabling tiers, also enable active teams
-                          setShowOnlyActiveTeams(true);
-                        }
-                      }}
-                    />
-                    <span className="whitespace-nowrap">Tiers</span>
-                  </label>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  {Object.keys(seasons).map((year) => (
-                    <button
-                      key={year}
-                      className={`text-xs border rounded-md px-2 py-1 hover:bg-opacity-80 ${
-                        selectedYears.includes(Number(year))
-                          ? "bg-blue-800 text-white border-white/50"
-                          : "border-gray-200 "
+      {/* Table */}
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">
+            All-Time Standings
+          </h2>
+          <p className="text-sm text-gray-600 mt-1">
+            Cumulative statistics across all seasons
+          </p>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      className={`px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${
+                        header.column.getCanSort()
+                          ? "cursor-pointer hover:bg-gray-100"
+                          : ""
                       }`}
-                      onClick={() =>
-                        setSelectedYears(
-                          selectedYears.includes(Number(year))
-                            ? selectedYears.filter((y) => y !== Number(year))
-                            : [...selectedYears, Number(year)]
-                        )
-                      }
                     >
-                      {year}
-                    </button>
+                      <div className="flex items-center justify-end">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                        {header.column.getCanSort() && (
+                          <span className="ml-1">
+                            {header.column.getIsSorted() === "asc"
+                              ? "↑"
+                              : header.column.getIsSorted() === "desc"
+                              ? "↓"
+                              : "↕️"}
+                          </span>
+                        )}
+                      </div>
+                    </th>
                   ))}
-                  <button
-                    className="text-xs underline rounded-md px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => setSelectedYears([])}
-                    disabled={selectedYears.length === 0}
-                  >
-                    {"Reset"}
-                  </button>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+                </tr>
+              ))}
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {table.getRowModel().rows.map((row, index) => {
+                let tierClass = "";
+                if (showTiers) {
+                  if (index < 3) {
+                    tierClass = "bg-green-50"; // Top 3 - pale green
+                  } else if (index < 6) {
+                    tierClass = "bg-blue-50"; // Second 3 - pale blue
+                  } else if (index < 9) {
+                    tierClass = "bg-yellow-50"; // Next 3 - pale yellow
+                  } else {
+                    tierClass = "bg-red-50"; // Bottom 3 - pale red
+                  }
+                }
+
+                return (
+                  <tr key={row.id} className={`hover:bg-gray-50 ${tierClass}`}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900"
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
