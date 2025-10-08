@@ -70,13 +70,23 @@ const createPlayerRow = (
     name = playerIdStr;
   }
 
+  // Determine the position - check unmatched_players first for string-named players
+  let position = positionLabel || player?.position || "UNK";
+  if (
+    position === "UNK" &&
+    matchupData.unmatched_players &&
+    matchupData.unmatched_players[playerIdStr]
+  ) {
+    position = matchupData.unmatched_players[playerIdStr];
+  }
+
   return {
     playerId,
     player,
     points,
     isStarter,
     name,
-    position: positionLabel || player?.position || "UNK",
+    position,
   };
 };
 

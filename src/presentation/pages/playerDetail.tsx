@@ -218,9 +218,43 @@ const PlayerDetail = () => {
     return getTeamName(ownerId);
   };
 
+  // Helper function to get position for string-named players from matchup data
+  const getPlayerPositionFromMatchups = (playerId: string): string => {
+    // Look through all seasons to find position information for this player
+    for (const [, seasonData] of Object.entries(seasons)) {
+      for (const [, weekMatchups] of Object.entries(
+        seasonData.matchups || {}
+      )) {
+        for (const matchup of weekMatchups) {
+          if (
+            matchup.unmatched_players &&
+            matchup.unmatched_players[playerId]
+          ) {
+            return matchup.unmatched_players[playerId];
+          }
+        }
+      }
+    }
+    return "UNK";
+  };
+
   const player = useMemo(() => {
     if (!playerId) return null;
-    return getPlayer(playerId);
+    const playerData = getPlayer(playerId);
+
+    // If player has unknown position, try to get it from matchup data
+    if (playerData && playerData.position === "UNK") {
+      const positionFromMatchups = getPlayerPositionFromMatchups(playerId);
+      if (positionFromMatchups !== "UNK") {
+        return {
+          ...playerData,
+          position: positionFromMatchups,
+          fantasy_positions: [positionFromMatchups],
+        };
+      }
+    }
+
+    return playerData;
   }, [playerId]);
 
   const playerStats = useMemo((): PlayerStats | null => {

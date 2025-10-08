@@ -13,4 +13,7 @@ export interface ExtendedMatchup extends Matchup {
   players_points: {
     [key: string]: number;
   };
+  unmatched_players?: {
+    [key: string]: string;
+  };
 }
