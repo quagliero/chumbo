@@ -1,10 +1,52 @@
-import { seasons } from "../data";
+import { seasons, getPlayer } from "../data";
 import { YEARS } from "../domain/constants";
 import { ExtendedMatchup } from "../types/matchup";
 import { ExtendedRoster } from "../types/roster";
 import { BracketMatch } from "../types/bracket";
 
 export type DataMode = "regular" | "playoffs" | "combined";
+
+export interface AllStarSlot {
+  position: string;
+  player?: {
+    playerId: string;
+    playerName: string;
+    totalPoints: number;
+    averagePoints: number;
+    games: number;
+  };
+}
+
+export interface MostDraftedPlayer {
+  playerId: string;
+  playerName: string;
+  timesDrafted: number;
+  years: number[];
+  bestPick: {
+    year: number;
+    round: number;
+    pick: number;
+  };
+}
+
+export interface MostCappedPlayer {
+  playerId: string;
+  playerName: string;
+  starts: number;
+  years: number[];
+  averageScore: number;
+}
+
+export interface TopPerformance {
+  playerId: string;
+  playerName: string;
+  year: number;
+  week: number;
+  points: number;
+  result: "W" | "L" | "T";
+  opponentName: string;
+  matchup_id: number;
+}
 
 export interface ManagerStats {
   managerId: string;
@@ -40,6 +82,12 @@ export interface ManagerStats {
   // Best seasons
   bestWinsSeason: { year: number; wins: number };
   bestPointsSeason: { year: number; points: number };
+
+  // Player stats
+  allStarLineup: AllStarSlot[];
+  mostDraftedPlayers: MostDraftedPlayer[];
+  mostCappedPlayers: MostCappedPlayer[];
+  topPerformances: TopPerformance[];
 }
 
 export interface SeasonStats {
@@ -286,6 +334,330 @@ export const getManagerStats = (
     }
   });
 
+  // Calculate player stats
+  const playerPerformances = new Map<
+    string,
+    {
+      playerId: string;
+      playerName: string;
+      totalPoints: number;
+      games: number;
+      allScores: Array<{
+        score: number;
+        year: number;
+        week: number;
+        result: string;
+        opponentName: string;
+        matchup_id: number;
+      }>;
+    }
+  >();
+
+  const draftHistory = new Map<
+    string,
+    Array<{ year: number; round: number; pick: number }>
+  >();
+
+  // Process all seasons to collect player data
+  YEARS.forEach((year) => {
+    const seasonData = seasons[year];
+    if (!seasonData) return;
+
+    const roster = seasonData.rosters.find(
+      (r: ExtendedRoster) => r.owner_id === manager.sleeper.id
+    );
+    if (!roster) return;
+
+    // Process matchups to collect player performances
+    Object.keys(seasonData.matchups).forEach((weekKey) => {
+      const weekNum = parseInt(weekKey);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const weekMatchups = (seasonData.matchups as any)[weekKey];
+
+      const teamMatchup = weekMatchups.find(
+        (m: ExtendedMatchup) => m.roster_id === roster.roster_id
+      );
+      if (!teamMatchup) return;
+
+      // Find opponent matchup to determine result
+      const opponentMatchup = weekMatchups.find(
+        (m: ExtendedMatchup) =>
+          m.matchup_id === teamMatchup.matchup_id &&
+          m.roster_id !== roster.roster_id
+      );
+
+      let result = "T";
+      if (opponentMatchup) {
+        if (teamMatchup.points > opponentMatchup.points) result = "W";
+        else if (teamMatchup.points < opponentMatchup.points) result = "L";
+      }
+
+      // Process starters
+      teamMatchup.starters.forEach((playerId: string, index: number) => {
+        if (playerId === "0") return; // Skip empty slots
+
+        const points = teamMatchup.starters_points[index] || 0;
+
+        // Get player name using the shared getPlayer function
+        const player = getPlayer(playerId, year);
+        let playerName = playerId;
+
+        if (player) {
+          if (player.position === "DEF") {
+            // For DST, combine first_name + last_name (e.g., "New England Patriots")
+            playerName = `${player.first_name} ${player.last_name}`;
+          } else {
+            // For regular players, use full_name or construct from first/last name
+            playerName =
+              player.full_name ||
+              (player.first_name && player.last_name
+                ? `${player.first_name} ${player.last_name}`
+                : playerId);
+          }
+        }
+
+        // If still not found and it's a string name, use it directly
+        if (
+          playerName === playerId &&
+          typeof playerId === "string" &&
+          playerId.includes(" ")
+        ) {
+          playerName = playerId;
+        }
+
+        if (!playerPerformances.has(playerId)) {
+          playerPerformances.set(playerId, {
+            playerId,
+            playerName,
+            totalPoints: 0,
+            games: 0,
+            allScores: [],
+          });
+        }
+
+        // Get opponent name
+        let opponentName = "Unknown";
+        if (opponentMatchup) {
+          const opponentRoster = seasonData.rosters.find(
+            (r: ExtendedRoster) => r.roster_id === opponentMatchup.roster_id
+          );
+          if (opponentRoster) {
+            const opponentManager = managers.find(
+              (m) => m.sleeper.id === opponentRoster.owner_id
+            );
+            if (opponentManager) {
+              opponentName =
+                opponentManager.teamName ||
+                opponentManager.sleeper.display_name ||
+                "Unknown";
+            }
+          }
+        }
+
+        const playerData = playerPerformances.get(playerId)!;
+        playerData.totalPoints += points;
+        playerData.games++;
+        playerData.allScores.push({
+          score: points,
+          year,
+          week: weekNum,
+          result,
+          opponentName,
+          matchup_id: teamMatchup.matchup_id,
+        });
+      });
+    });
+
+    // Process draft data
+    if (seasonData.picks) {
+      seasonData.picks.forEach((pick) => {
+        if (pick.roster_id === roster.roster_id) {
+          const playerId = pick.player_id;
+          if (!draftHistory.has(playerId)) {
+            draftHistory.set(playerId, []);
+          }
+          draftHistory.get(playerId)!.push({
+            year,
+            round: pick.round,
+            pick: pick.draft_slot,
+          });
+        }
+      });
+    }
+  });
+
+  // Create All-Star lineup
+  const allStarLineup: AllStarSlot[] = [
+    { position: "QB" },
+    { position: "RB" },
+    { position: "RB" },
+    { position: "WR" },
+    { position: "WR" },
+    { position: "TE" },
+    { position: "FLEX" },
+    { position: "K" },
+    { position: "DEF" },
+  ];
+
+  // Helper function to get player position
+  const getPlayerPosition = (playerId: string): string => {
+    // Try to find in players data using getPlayer
+    const player = getPlayer(playerId);
+    if (player && player.position) {
+      return player.position;
+    }
+
+    // Check unmatched players from matchups
+    for (const year of YEARS) {
+      const seasonData = seasons[year];
+      if (seasonData?.matchups) {
+        for (const weekKey of Object.keys(seasonData.matchups)) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const weekMatchups = (seasonData.matchups as any)[weekKey];
+          for (const matchup of weekMatchups) {
+            if (matchup.unmatched_players?.[playerId]) {
+              return matchup.unmatched_players[playerId].position;
+            }
+          }
+        }
+      }
+    }
+
+    return "UNK";
+  };
+
+  // Fill All-Star lineup
+  const usedPlayers = new Set<string>();
+
+  allStarLineup.forEach((slot) => {
+    const availablePlayers = Array.from(playerPerformances.values()).filter(
+      (p) => {
+        if (usedPlayers.has(p.playerId)) return false; // Skip already used players
+
+        const position = getPlayerPosition(p.playerId);
+        if (slot.position === "FLEX") {
+          return position === "RB" || position === "WR" || position === "TE";
+        }
+        return position === slot.position;
+      }
+    );
+
+    if (availablePlayers.length > 0) {
+      const bestPlayer = availablePlayers.reduce((best, current) =>
+        current.totalPoints > best.totalPoints ? current : best
+      );
+
+      slot.player = {
+        playerId: bestPlayer.playerId,
+        playerName: bestPlayer.playerName,
+        totalPoints: bestPlayer.totalPoints,
+        averagePoints:
+          bestPlayer.games > 0 ? bestPlayer.totalPoints / bestPlayer.games : 0,
+        games: bestPlayer.games,
+      };
+
+      // Mark this player as used
+      usedPlayers.add(bestPlayer.playerId);
+    }
+  });
+
+  // Create most drafted players list
+  const mostDraftedPlayers: MostDraftedPlayer[] = Array.from(
+    draftHistory.entries()
+  )
+    .map(([playerId, picks]) => {
+      const playerData = playerPerformances.get(playerId);
+      let playerName = playerData?.playerName;
+
+      // If player not found in performances, try to get name from getPlayer
+      if (!playerName) {
+        const player = getPlayer(playerId);
+        if (player) {
+          if (player.position === "DEF") {
+            playerName = `${player.first_name} ${player.last_name}`;
+          } else {
+            playerName =
+              player.full_name ||
+              (player.first_name && player.last_name
+                ? `${player.first_name} ${player.last_name}`
+                : `Player ${playerId}`);
+          }
+        } else {
+          playerName = `Player ${playerId}`;
+        }
+      }
+
+      const bestPick = picks.reduce((best, current) =>
+        current.round < best.round ||
+        (current.round === best.round && current.pick < best.pick)
+          ? current
+          : best
+      );
+
+      return {
+        playerId,
+        playerName,
+        timesDrafted: picks.length,
+        years: [...new Set(picks.map((p) => p.year))].sort(),
+        bestPick,
+      };
+    })
+    .sort((a, b) => {
+      // First sort by times drafted (descending)
+      if (b.timesDrafted !== a.timesDrafted) {
+        return b.timesDrafted - a.timesDrafted;
+      }
+      // If tied, sort by most recent year (descending)
+      const aMostRecent = Math.max(...a.years);
+      const bMostRecent = Math.max(...b.years);
+      return bMostRecent - aMostRecent;
+    });
+
+  // Create most capped players list
+  const mostCappedPlayers: MostCappedPlayer[] = Array.from(
+    playerPerformances.values()
+  )
+    .map((player) => {
+      // Count starts by counting all scores (since allScores only includes started games)
+      const starts = player.allScores.length;
+      return {
+        playerId: player.playerId,
+        playerName: player.playerName,
+        starts,
+        years: [...new Set(player.allScores.map((score) => score.year))].sort(),
+        averageScore: starts > 0 ? player.totalPoints / starts : 0, // Average points per start
+      };
+    })
+    .filter((player) => player.starts > 0) // Only include players who started at least once
+    .sort((a, b) => {
+      // First sort by starts (descending)
+      if (b.starts !== a.starts) {
+        return b.starts - a.starts;
+      }
+      // If tied, sort by most recent year (descending)
+      const aMostRecent = Math.max(...a.years);
+      const bMostRecent = Math.max(...b.years);
+      return bMostRecent - aMostRecent;
+    });
+
+  // Create top performances list
+  const topPerformances: TopPerformance[] = Array.from(
+    playerPerformances.values()
+  )
+    .flatMap((player) =>
+      player.allScores.map((score) => ({
+        playerId: player.playerId,
+        playerName: player.playerName,
+        year: score.year,
+        week: score.week,
+        points: score.score,
+        result: score.result as "W" | "L" | "T",
+        opponentName: score.opponentName,
+        matchup_id: score.matchup_id,
+      }))
+    )
+    .sort((a, b) => b.points - a.points);
+
   return {
     managerId,
     managerName: manager.name,
@@ -308,6 +680,10 @@ export const getManagerStats = (
     playoffs,
     bestWinsSeason,
     bestPointsSeason,
+    allStarLineup,
+    mostDraftedPlayers,
+    mostCappedPlayers,
+    topPerformances,
   };
 };
 

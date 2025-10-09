@@ -454,7 +454,9 @@ const Standings = ({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHeaderCell className="text-left">Rank</TableHeaderCell>
+                <TableHeaderCell className="text-left pr-0">
+                  Rank
+                </TableHeaderCell>
                 <TableHeaderCell className="text-left">Team</TableHeaderCell>
                 <TableHeaderCell className="text-center">W</TableHeaderCell>
                 <TableHeaderCell className="text-center">L</TableHeaderCell>
@@ -521,7 +523,7 @@ const Standings = ({
 
                 return (
                   <TableRow key={roster.roster_id} className={rowClassName}>
-                    <TableCell className="font-medium">
+                    <TableCell className="font-medium pr-0">
                       {index + 1}
                       {isChampion && " 🥇"}
                       {isRunnerUp && " 🥈"}

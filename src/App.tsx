@@ -63,6 +63,14 @@ function App() {
                   path="/managers/:managerId"
                   element={<ManagerDetail />}
                 />
+                <Route
+                  path="/managers/:managerId/:tab"
+                  element={<ManagerDetail />}
+                />
+                <Route
+                  path="/managers/:managerId/:tab/:section"
+                  element={<ManagerDetail />}
+                />
                 <Route path="/players" element={<Players />} />
                 <Route path="/players/:playerId" element={<PlayerDetail />} />
                 <Route path="/h2h" element={<H2H />} />

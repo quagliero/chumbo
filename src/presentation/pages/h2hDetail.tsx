@@ -9,7 +9,7 @@ export default function H2HDetail() {
 
   if (!managerA || !managerB) {
     return (
-      <div className="max-w-6xl mx-auto">
+      <div className="container mx-auto">
         <div className="text-center py-12">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
             Invalid Matchup
@@ -23,7 +23,7 @@ export default function H2HDetail() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="container mx-auto">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">

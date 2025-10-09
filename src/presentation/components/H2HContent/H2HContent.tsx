@@ -390,7 +390,11 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
       return b.week - a.week;
     });
 
-    let currentStreak = { type: "W" as "W" | "L" | "T", count: 0 };
+    let currentStreak = {
+      type: "W" as "W" | "L" | "T",
+      count: 0,
+      manager: "A" as "A" | "B",
+    };
     if (sortedMatchups.length > 0) {
       const mostRecentResult = sortedMatchups[0].result;
       let streakCount = 1;
@@ -403,7 +407,14 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
         }
       }
 
-      currentStreak = { type: mostRecentResult, count: streakCount };
+      // Determine which manager the streak belongs to
+      const streakManager =
+        mostRecentResult === "W" ? "A" : mostRecentResult === "L" ? "B" : "A";
+      currentStreak = {
+        type: mostRecentResult,
+        count: streakCount,
+        manager: streakManager,
+      };
     }
 
     // Process player scores into All-Stars format
@@ -457,28 +468,32 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
 
       // Helper function to get player position
       const getPlayerPosition = (playerName: string) => {
-        // First, try to find player in any year's players.json
-        let player = null;
+        // Try to find player using getPlayer by searching for matching names
+        // This is a bit tricky since getPlayer expects an ID, but we have a name
+        // So we'll search through all players to find one with matching name
         for (const [, seasonData] of Object.entries(seasons)) {
           if (seasonData.players) {
-            player = Object.values(seasonData.players).find(
-              (p) => `${p.first_name} ${p.last_name}` === playerName
+            const player = Object.values(seasonData.players).find(
+              (p) =>
+                p.full_name === playerName ||
+                `${p.first_name} ${p.last_name}` === playerName
             );
-            if (player) break;
+            if (player) {
+              return player.position;
+            }
           }
         }
 
         // Also try root players.json
-        if (!player && players) {
-          // players is a Record<string, Player>
-          player = Object.values(players).find(
-            (p) => `${p.first_name} ${p.last_name}` === playerName
+        if (players) {
+          const player = Object.values(players).find(
+            (p) =>
+              p.full_name === playerName ||
+              `${p.first_name} ${p.last_name}` === playerName
           );
-        }
-
-        // If found in players.json, return the position
-        if (player) {
-          return player.position;
+          if (player) {
+            return player.position;
+          }
         }
 
         // If not found in players.json, check if it's a string-named player in unmatched_players
@@ -651,7 +666,12 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             {/* Manager A Stats */}
             <div className="text-center md:pb-4">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                {managerAData?.teamName}
+                <Link
+                  to={`/managers/${managerAData?.id}`}
+                  className="text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  {managerAData?.teamName}
+                </Link>
               </h3>
               <div className="grid grid-cols-4 gap-4">
                 <div>
@@ -686,7 +706,12 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             {/* Manager B Stats */}
             <div className="text-center pt-4 md:pt-0 pb-4">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                {managerBData?.teamName}
+                <Link
+                  to={`/managers/${managerBData?.id}`}
+                  className="text-purple-600 hover:text-purple-800 hover:underline"
+                >
+                  {managerBData?.teamName}
+                </Link>
               </h3>
               <div className="grid grid-cols-4 gap-4">
                 <div>
@@ -726,9 +751,9 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
               </span>
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  stats.currentStreak.type === "W"
+                  stats.currentStreak.manager === "A"
                     ? "bg-blue-100 text-blue-800"
-                    : stats.currentStreak.type === "L"
+                    : stats.currentStreak.manager === "B"
                     ? "bg-purple-100 text-purple-800"
                     : "bg-gray-100 text-gray-800"
                 }`}
@@ -736,7 +761,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                 {stats.currentStreak.type === "W"
                   ? managerAData?.teamName
                   : stats.currentStreak.type === "L"
-                  ? managerAData?.teamName
+                  ? managerBData?.teamName
                   : "Tie"}{" "}
                 {stats.currentStreak.type}
                 {stats.currentStreak.count}
@@ -751,7 +776,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
-              Regular Season Matchups
+              Regular Season Matchups ({regularSeasonMatchups.length})
             </h2>
             {regularSeasonMatchups.length > 5 && (
               <button
@@ -990,16 +1015,34 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                       <TableCell className="pr-0">{slot.position}</TableCell>
                       <TableCell className="font-medium">
                         <div className="flex items-center gap-2">
-                          {slot.player && (
-                            <img
-                              src={getPlayerImageUrl(slot.player.playerId)}
-                              alt={slot.player.playerName}
-                              className="w-6 h-6 rounded-full flex-none object-cover"
-                              onError={(e) => {
-                                e.currentTarget.style.display = "none";
-                              }}
-                            />
-                          )}
+                          {slot.player &&
+                            (() => {
+                              const imageUrl = getPlayerImageUrl(
+                                slot.player.playerId
+                              );
+                              return imageUrl ? (
+                                <img
+                                  src={imageUrl}
+                                  alt={`${slot.player.playerName} photo`}
+                                  className={`w-6 h-6 object-cover ${
+                                    slot.position === "DEF"
+                                      ? ""
+                                      : "rounded-full"
+                                  }`}
+                                  onError={(e) => {
+                                    (
+                                      e.target as HTMLImageElement
+                                    ).style.display = "none";
+                                  }}
+                                />
+                              ) : (
+                                <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
+                                  {(slot.player.playerName || "?")
+                                    .charAt(0)
+                                    .toUpperCase()}
+                                </div>
+                              );
+                            })()}
                           {slot.player ? slot.player.playerName : "—"}
                         </div>
                       </TableCell>
@@ -1078,14 +1121,27 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                     <TableRow key={index}>
                       <TableCell className="font-medium">
                         <div className="flex items-center gap-2">
-                          <img
-                            src={getPlayerImageUrl(performance.playerId)}
-                            alt={performance.playerName}
-                            className="w-6 h-6 rounded-full flex-none object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = "none";
-                            }}
-                          />
+                          {(() => {
+                            const imageUrl = getPlayerImageUrl(
+                              performance.playerId
+                            );
+                            return imageUrl ? (
+                              <img
+                                src={imageUrl}
+                                alt={performance.playerName}
+                                className="w-6 h-6 rounded-full flex-none object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                }}
+                              />
+                            ) : (
+                              <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
+                                {(performance.playerName || "?")
+                                  .charAt(0)
+                                  .toUpperCase()}
+                              </div>
+                            );
+                          })()}
                           {performance.playerName}
                         </div>
                       </TableCell>
