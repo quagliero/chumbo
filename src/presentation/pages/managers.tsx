@@ -159,7 +159,7 @@ const Managers = () => {
           return (
             <div
               key={manager!.managerId}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer"
+              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
               onClick={() => navigate(`/managers/${manager!.managerId}`)}
             >
               <div className="flex items-center justify-between mb-4">

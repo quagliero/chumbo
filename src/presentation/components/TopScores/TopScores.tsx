@@ -419,7 +419,7 @@ const TopScores = () => {
       <Link
         key={`${score.year}-${score.week}-${score.owner_id}-${index}`}
         to={getMatchupUrl(score)}
-        className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer group block"
+        className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer group block overflow-hidden"
       >
         {/* Rank Badge */}
         <div className="flex items-center justify-between mb-3">
@@ -547,7 +547,7 @@ const TopScores = () => {
       <Link
         key={`${match.year}-${match.week}-${match.matchup_id}-${index}`}
         to={getMatchupUrl(match)}
-        className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer group block"
+        className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer group block overflow-hidden"
       >
         {/* Rank Badge */}
         <div className="flex items-center justify-between mb-3">
@@ -656,7 +656,7 @@ const TopScores = () => {
       <Link
         key={`${player.year}-${player.week}-${player.player_id}-${index}`}
         to={getMatchupUrl(player)}
-        className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer group block"
+        className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg hover:border-blue-300 transition-all cursor-pointer group block overflow-hidden"
       >
         {/* Rank Badge */}
         <div className="flex items-center justify-between mb-3">

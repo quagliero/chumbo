@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "./App.css";
 import Header from "./presentation/components/Header/Header";
+import ScrollToTop from "./presentation/components/ScrollToTop/ScrollToTop";
 
 // Lazy load heavy components
 const Home = lazy(() => import("./presentation/pages/home"));
@@ -14,6 +15,7 @@ const ManagerDetail = lazy(() => import("./presentation/pages/managerDetail"));
 const Managers = lazy(() => import("./presentation/pages/managers"));
 const PlayerDetail = lazy(() => import("./presentation/pages/playerDetail"));
 const Players = lazy(() => import("./presentation/pages/players"));
+const H2HDetail = lazy(() => import("./presentation/pages/h2hDetail"));
 
 // Lazy load WikiOverview separately
 const WikiOverview = lazy(() =>
@@ -26,6 +28,7 @@ function App() {
   return (
     <IntlProvider locale="en">
       <Router>
+        <ScrollToTop />
         <Header />
         <div className="px-4">
           <main className="mx-auto my-4">
@@ -61,6 +64,10 @@ function App() {
                 />
                 <Route path="/players" element={<Players />} />
                 <Route path="/players/:playerId" element={<PlayerDetail />} />
+                <Route
+                  path="/h2h/:managerA/:managerB"
+                  element={<H2HDetail />}
+                />
               </Routes>
             </Suspense>
           </main>

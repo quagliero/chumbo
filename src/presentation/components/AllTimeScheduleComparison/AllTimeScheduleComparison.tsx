@@ -324,7 +324,7 @@ const AllTimeScheduleComparison = () => {
   return (
     <div className="container mx-auto space-y-6">
       {/* View Toggle */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow overflow-hidden p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
             {viewMode === "byTeam"
@@ -377,7 +377,7 @@ const AllTimeScheduleComparison = () => {
 
       {/* Team Selection - Only for By Team View */}
       {viewMode === "byTeam" && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Select Team
           </h3>
@@ -693,7 +693,7 @@ const AllTimeScheduleComparison = () => {
 
       {/* Instructions */}
       {viewMode === "byTeam" && !selectedTeam && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             How it works
           </h3>

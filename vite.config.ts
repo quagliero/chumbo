@@ -16,9 +16,6 @@ export default defineConfig({
         manualChunks: (id) => {
           // Separate vendor chunks
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-router")) {
-              return "vendor-react";
-            }
             if (id.includes("@tanstack")) {
               return "vendor-table";
             }

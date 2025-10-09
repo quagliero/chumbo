@@ -53,6 +53,7 @@ export interface SeasonStats {
   leagueLosses: number;
   leagueTies: number;
   finalStanding: number;
+  pointsStanding: number;
   championshipResult?: "champion" | "runner-up" | "third-place";
   scoringCrown?: boolean;
   madePlayoffs?: boolean;
@@ -61,11 +62,23 @@ export interface SeasonStats {
 export interface H2HRecord {
   managerId: string;
   managerName: string;
+  teamName: string;
   wins: number;
   losses: number;
   ties: number;
   avgPointsFor: number;
   avgPointsAgainst: number;
+  currentStreak: {
+    type: "W" | "L" | "T";
+    count: number;
+  };
+  mostRecent: {
+    year: number;
+    week: number;
+    result: "W" | "L" | "T";
+    pointsFor: number;
+    pointsAgainst: number;
+  } | null;
 }
 
 /**
@@ -95,6 +108,14 @@ export const getManagerStats = (
     playoffs = 0;
 
   const h2hRecords: Record<string, H2HRecord> = {};
+  const h2hGames: Array<{
+    opponentId: string;
+    year: number;
+    week: number;
+    result: "W" | "L" | "T";
+    pointsFor: number;
+    pointsAgainst: number;
+  }> = [];
   let bestWinsSeason = { year: 0, wins: 0 };
   let bestPointsSeason = { year: 0, points: 0 };
 
@@ -214,8 +235,55 @@ export const getManagerStats = (
       year,
       seasonData,
       h2hRecords,
+      h2hGames,
       dataMode
     );
+  });
+
+  // Calculate averages and streaks for H2H records
+  Object.values(h2hRecords).forEach((record) => {
+    const totalGames = record.wins + record.losses + record.ties;
+    if (totalGames > 0) {
+      record.avgPointsFor = record.avgPointsFor / totalGames;
+      record.avgPointsAgainst = record.avgPointsAgainst / totalGames;
+    }
+
+    // Get games for this opponent, sorted by year and week (most recent first)
+    const opponentGames = h2hGames
+      .filter((game) => game.opponentId === record.managerId)
+      .sort((a, b) => {
+        if (a.year !== b.year) return b.year - a.year;
+        return b.week - a.week;
+      });
+
+    if (opponentGames.length > 0) {
+      // Set most recent game
+      const mostRecentGame = opponentGames[0];
+      record.mostRecent = {
+        year: mostRecentGame.year,
+        week: mostRecentGame.week,
+        result: mostRecentGame.result,
+        pointsFor: mostRecentGame.pointsFor,
+        pointsAgainst: mostRecentGame.pointsAgainst,
+      };
+
+      // Calculate current streak
+      let streakCount = 1;
+      const streakType = mostRecentGame.result;
+
+      for (let i = 1; i < opponentGames.length; i++) {
+        if (opponentGames[i].result === streakType) {
+          streakCount++;
+        } else {
+          break;
+        }
+      }
+
+      record.currentStreak = {
+        type: streakType,
+        count: streakCount,
+      };
+    }
   });
 
   return {
@@ -362,6 +430,25 @@ const getSeasonStats = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     standings.findIndex((s: any) => s.rosterId === roster.roster_id) + 1; // TODO: Add proper type
 
+  // Calculate points standing (ranking by total points scored)
+  const pointsStandings = seasonData.rosters
+    .map((r: ExtendedRoster) => ({
+      rosterId: r.roster_id,
+      pointsFor: r.settings.fpts + r.settings.fpts_decimal / 100,
+    }))
+    .sort(
+      (
+        a: { rosterId: string; pointsFor: number },
+        b: { rosterId: string; pointsFor: number }
+      ) => b.pointsFor - a.pointsFor
+    );
+
+  const pointsStanding =
+    pointsStandings.findIndex(
+      (s: { rosterId: string; pointsFor: number }) =>
+        s.rosterId === roster.roster_id
+    ) + 1;
+
   // Check championship results
   let championshipResult: "champion" | "runner-up" | "third-place" | undefined;
   if (seasonData.winners_bracket) {
@@ -424,6 +511,7 @@ const getSeasonStats = (
     leagueLosses,
     leagueTies,
     finalStanding,
+    pointsStanding,
     championshipResult,
     scoringCrown,
     madePlayoffs,
@@ -564,6 +652,14 @@ const calculateH2HForSeason = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   seasonData: any, // TODO: Add proper SeasonData type
   h2hRecords: Record<string, H2HRecord>,
+  h2hGames: Array<{
+    opponentId: string;
+    year: number;
+    week: number;
+    result: "W" | "L" | "T";
+    pointsFor: number;
+    pointsAgainst: number;
+  }>,
   dataMode: DataMode = "regular"
 ) => {
   const roster = seasonData.rosters.find(
@@ -636,22 +732,44 @@ const calculateH2HForSeason = (
           h2hRecords[opponentId] = {
             managerId: opponentId,
             managerName: opponentManager.name,
+            teamName: opponentManager.teamName,
             wins: 0,
             losses: 0,
             ties: 0,
             avgPointsFor: 0,
             avgPointsAgainst: 0,
+            currentStreak: { type: "W", count: 0 },
+            mostRecent: null,
           };
         }
 
         const record = h2hRecords[opponentId];
 
-        if (teamMatchup.points > opponentMatchup.points) record.wins++;
-        else if (teamMatchup.points < opponentMatchup.points) record.losses++;
-        else record.ties++;
+        // Determine result
+        let result: "W" | "L" | "T";
+        if (teamMatchup.points > opponentMatchup.points) {
+          record.wins++;
+          result = "W";
+        } else if (teamMatchup.points < opponentMatchup.points) {
+          record.losses++;
+          result = "L";
+        } else {
+          record.ties++;
+          result = "T";
+        }
 
         record.avgPointsFor += teamMatchup.points;
         record.avgPointsAgainst += opponentMatchup.points;
+
+        // Store game for streak calculation
+        h2hGames.push({
+          opponentId,
+          year,
+          week: weekNum,
+          result,
+          pointsFor: teamMatchup.points,
+          pointsAgainst: opponentMatchup.points,
+        });
       }
     }
   });

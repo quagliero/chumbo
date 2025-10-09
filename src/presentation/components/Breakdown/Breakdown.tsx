@@ -210,7 +210,7 @@ const Breakdown = ({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-200 ${
+                  className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-200 overflow-hidden ${
                     showLuck ? "translate-x-5 ml-0.5" : "translate-x-0.5"
                   } mt-0.5 `}
                 ></div>

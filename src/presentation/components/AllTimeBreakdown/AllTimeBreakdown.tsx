@@ -228,7 +228,7 @@ const AllTimeBreakdown = () => {
   return (
     <div className="container mx-auto space-y-6">
       {/* Controls */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow overflow-hidden p-6">
         <div className="flex flex-wrap justify-between gap-4">
           <div className="flex flex-wrap gap-4">
             <label className="flex items-center gap-1 select-none cursor-pointer">

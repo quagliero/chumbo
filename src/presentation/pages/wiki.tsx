@@ -10,7 +10,7 @@ const WikiOverview = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6 overflow-hidden">
           <h3 className="text-lg font-medium mb-3">League Settings</h3>
           <p className="text-gray-600 mb-4">
             Complete documentation of league settings, the scoring system, and
@@ -24,7 +24,7 @@ const WikiOverview = () => {
           </NavLink>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-6 overflow-hidden">
           <h3 className="text-lg font-medium mb-3">League Rules</h3>
           <p className="text-gray-600 mb-4">
             If you're not cheating, you're not trying.

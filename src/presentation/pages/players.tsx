@@ -129,7 +129,7 @@ const Players = () => {
         to={`/players/${player.player_id}`}
         className="block"
       >
-        <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-4 cursor-pointer group">
+        <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-4 cursor-pointer group overflow-hidden">
           <div className="flex items-center gap-3">
             <div className="flex-shrink-0">
               {playerImageUrl ? (

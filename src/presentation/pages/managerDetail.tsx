@@ -2,6 +2,15 @@ import { useFormatter } from "use-intl";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { getManagerStats, DataMode } from "../../utils/managerStats";
+import { managers } from "../../data";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "../components/Table";
 
 const ManagerDetail = () => {
   const { managerId } = useParams<{ managerId: string }>();
@@ -77,7 +86,7 @@ const ManagerDetail = () => {
 
       {/* Overall Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Overall Record
           </h3>
@@ -90,7 +99,7 @@ const ManagerDetail = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             League Performance
           </h3>
@@ -104,7 +113,7 @@ const ManagerDetail = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Points For
           </h3>
@@ -123,7 +132,7 @@ const ManagerDetail = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow">
+        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Points Against
           </h3>
@@ -146,7 +155,7 @@ const ManagerDetail = () => {
       </div>
 
       {/* Achievements */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
         <h2 className="text-2xl font-bold mb-4">Achievements</h2>
         <div className="grid grid-cols-4 gap-4">
           <div className="text-center">
@@ -179,128 +188,225 @@ const ManagerDetail = () => {
       </div>
 
       {/* Season Breakdown */}
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4">Season Breakdown</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-2">Year</th>
-                <th className="text-left py-2">Record</th>
-                <th className="text-left py-2">League Record</th>
-                <th className="text-left py-2">Points</th>
-                <th className="text-left py-2">Standing</th>
-                <th className="text-left py-2">Result</th>
-              </tr>
-            </thead>
-            <tbody>
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <h2 className="text-2xl font-bold px-6 py-4">Season Breakdown</h2>
+        <div className="overflow-x-auto border-t border-gray-200">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell className="text-left">Year</TableHeaderCell>
+                <TableHeaderCell className="text-left">Record</TableHeaderCell>
+                <TableHeaderCell className="text-left">
+                  League Record
+                </TableHeaderCell>
+                <TableHeaderCell className="text-left">Points</TableHeaderCell>
+                <TableHeaderCell className="text-left">
+                  Standings
+                </TableHeaderCell>
+                <TableHeaderCell className="text-left">Result</TableHeaderCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {managerStats.seasonStats.map((season) => (
-                <tr key={season.year} className="border-b">
-                  <td className="py-2 font-medium">{season.year}</td>
-                  <td className="py-2">
+                <TableRow key={season.year}>
+                  <TableCell className="font-medium">{season.year}</TableCell>
+                  <TableCell>
                     {season.wins}-{season.losses}
                     {season.ties > 0 && `-${season.ties}`}
-                  </td>
-                  <td className="py-2">
+                  </TableCell>
+                  <TableCell>
                     {season.leagueWins}-{season.leagueLosses}
                     {season.leagueTies > 0 && `-${season.leagueTies}`}
-                  </td>
-                  <td className="py-2">
+                  </TableCell>
+                  <TableCell>
                     {number(season.pointsFor, { maximumFractionDigits: 0 })}
-                  </td>
-                  <td className="py-2">
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${
-                        season.finalStanding === 1
-                          ? "bg-yellow-100 text-yellow-800"
-                          : season.finalStanding <= 3
-                          ? "bg-green-100 text-green-800"
-                          : season.finalStanding <= 6
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {season.finalStanding}
-                    </span>
-                  </td>
-                  <td className="py-2 space-x-2">
-                    {season.madePlayoffs && (
-                      <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
-                        🏈 Playoffs
-                      </span>
-                    )}
-                    {season.championshipResult && (
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-1">
                       <span
-                        className={`px-2 py-1 rounded text-xs ${
-                          season.championshipResult === "champion"
+                        className={`px-2 py-1 rounded text-xs cursor-help relative group ${
+                          season.finalStanding === 1
                             ? "bg-yellow-100 text-yellow-800"
-                            : season.championshipResult === "runner-up"
-                            ? "bg-gray-100 text-gray-800"
-                            : "bg-orange-100 text-orange-800"
+                            : season.finalStanding <= 3
+                            ? "bg-green-100 text-green-800"
+                            : season.finalStanding <= 6
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
                         }`}
                       >
-                        {season.championshipResult === "champion"
-                          ? "🏆 Champion"
-                          : season.championshipResult === "runner-up"
-                          ? "🥈 Runner-up"
-                          : ""}
+                        {season.finalStanding}
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                          Regular season finish
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+                        </div>
                       </span>
-                    )}
-                    {season.scoringCrown && (
-                      <span className="px-2 py-1 rounded text-xs bg-purple-100 text-purple-800">
-                        👑 Scoring Crown
+                      <span
+                        className={`px-2 py-1 rounded text-xs cursor-help relative group ${
+                          season.pointsStanding === 1
+                            ? "bg-yellow-100 text-yellow-800"
+                            : season.pointsStanding <= 3
+                            ? "bg-green-100 text-green-800"
+                            : season.pointsStanding <= 6
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {season.pointsStanding}
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+                          Points scored rank
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+                        </div>
                       </span>
-                    )}
-                  </td>
-                </tr>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {season.madePlayoffs && (
+                        <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
+                          🏈 Playoffs
+                        </span>
+                      )}
+                      {season.championshipResult && (
+                        <span
+                          className={`px-2 py-1 rounded text-xs ${
+                            season.championshipResult === "champion"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : season.championshipResult === "runner-up"
+                              ? "bg-gray-100 text-gray-800"
+                              : "bg-orange-100 text-orange-800"
+                          }`}
+                        >
+                          {season.championshipResult === "champion"
+                            ? "🏆 Champion"
+                            : season.championshipResult === "runner-up"
+                            ? "🥈 Runner-up"
+                            : ""}
+                        </span>
+                      )}
+                      {season.scoringCrown && (
+                        <span className="px-2 py-1 rounded text-xs bg-purple-100 text-purple-800">
+                          👑 Scoring Crown
+                        </span>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
 
       {/* H2H Records */}
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-2xl font-bold mb-4">Head-to-Head Records</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-2">Manager</th>
-                <th className="text-left py-2">Record</th>
-                <th className="text-left py-2">Avg Points For</th>
-                <th className="text-left py-2">Avg Points Against</th>
-              </tr>
-            </thead>
-            <tbody>
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <h2 className="text-2xl font-bold px-6 py-4">Head-to-Head Records</h2>
+        <div className="overflow-x-auto border-t border-gray-200">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell className="text-left">Team</TableHeaderCell>
+                <TableHeaderCell className="text-left">Record</TableHeaderCell>
+                <TableHeaderCell className="text-left">
+                  Avg Points For
+                </TableHeaderCell>
+                <TableHeaderCell className="text-left">
+                  Avg Points Against
+                </TableHeaderCell>
+                <TableHeaderCell className="text-left">
+                  Current Streak
+                </TableHeaderCell>
+                <TableHeaderCell className="text-left">
+                  Most Recent
+                </TableHeaderCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {Object.values(managerStats.h2hRecords)
                 .sort((a, b) => b.wins - a.wins)
                 .map((record) => (
-                  <tr key={record.managerId} className="border-b">
-                    <td className="py-2 font-medium">{record.managerName}</td>
-                    <td className="py-2">
+                  <TableRow
+                    key={record.managerId}
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => {
+                      // Convert sleeper ID to manager ID
+                      const opponentManager = managers.find(
+                        (m) => m.sleeper.id === record.managerId
+                      );
+                      if (opponentManager) {
+                        navigate(`/h2h/${managerId}/${opponentManager.id}`);
+                      }
+                    }}
+                  >
+                    <TableCell className="font-medium">
+                      {record.teamName}
+                    </TableCell>
+                    <TableCell>
                       {record.wins}-{record.losses}
                       {record.ties > 0 && `-${record.ties}`}
-                    </td>
-                    <td className="py-2">
+                    </TableCell>
+                    <TableCell>
                       {number(record.avgPointsFor, {
                         maximumFractionDigits: 1,
                       })}
-                    </td>
-                    <td className="py-2">
+                    </TableCell>
+                    <TableCell>
                       {number(record.avgPointsAgainst, {
                         maximumFractionDigits: 1,
                       })}
-                    </td>
-                  </tr>
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${
+                          record.currentStreak.type === "W"
+                            ? "bg-green-100 text-green-800"
+                            : record.currentStreak.type === "L"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {record.currentStreak.type === "W"
+                          ? "W"
+                          : record.currentStreak.type === "L"
+                          ? "L"
+                          : "T"}
+                        {record.currentStreak.count}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      {record.mostRecent ? (
+                        <div className="text-sm">
+                          <div className="font-medium">
+                            {record.mostRecent.year}, Week{" "}
+                            {record.mostRecent.week}
+                          </div>
+                          <div className="text-gray-600">
+                            {record.mostRecent.result === "W"
+                              ? "W"
+                              : record.mostRecent.result === "L"
+                              ? "L"
+                              : "T"}{" "}
+                            {number(record.mostRecent.pointsFor, {
+                              maximumFractionDigits: 1,
+                            })}
+                            -
+                            {number(record.mostRecent.pointsAgainst, {
+                              maximumFractionDigits: 1,
+                            })}
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </TableCell>
+                  </TableRow>
                 ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </div>
 
       {/* Best Seasons */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
         <h2 className="text-2xl font-bold mb-4">Best Seasons</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>

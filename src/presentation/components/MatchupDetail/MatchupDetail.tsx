@@ -227,7 +227,10 @@ const MatchupDetail = ({
       {/* Score sheets */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {teams.map((team, teamIdx) => (
-          <div key={teamIdx} className="bg-white rounded-lg shadow">
+          <div
+            key={teamIdx}
+            className="bg-white rounded-lg shadow overflow-hidden"
+          >
             <div className="p-4 border-b">
               <h3 className="font-bold">{team.name}</h3>
             </div>

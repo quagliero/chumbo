@@ -812,7 +812,7 @@ const PlayerDetail = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Seasons Played
           </h3>
@@ -820,7 +820,7 @@ const PlayerDetail = () => {
             {playerStats.seasonsPlayed}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Total Games
           </h3>
@@ -828,19 +828,19 @@ const PlayerDetail = () => {
             {playerStats.totalGames}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">Starts</h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalStarts}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">Bench</h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalBench}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Total Points
           </h3>
@@ -848,7 +848,7 @@ const PlayerDetail = () => {
             {number(playerStats.totalPoints, { maximumFractionDigits: 1 })}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Average Points
           </h3>
@@ -856,7 +856,7 @@ const PlayerDetail = () => {
             {number(playerStats.averagePoints, { maximumFractionDigits: 2 })}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Highest Score
           </h3>
@@ -878,7 +878,7 @@ const PlayerDetail = () => {
             </div>
           )}
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">Start Rate</h3>
           <p className="text-3xl font-bold text-gray-900">
             {(() => {
@@ -895,7 +895,7 @@ const PlayerDetail = () => {
       </div>
 
       {/* Achievements */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg shadow overflow-hidden p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Achievements</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-yellow-50 rounded-lg">
@@ -920,7 +920,7 @@ const PlayerDetail = () => {
       </div>
 
       {/* Ownership Breakdown */}
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg shadow overflow-hidden">
         <h2 className="text-xl font-bold text-gray-900 px-6 py-4  border-b border-gray-200">
           Ownership Breakdown
         </h2>
@@ -976,7 +976,7 @@ const PlayerDetail = () => {
 
       {/* Draft Breakdown Table */}
       {draftPicks.length > 0 && (
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white rounded-lg shadow overflow-hidden">
           <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
             Draft Breakdown
           </h2>
