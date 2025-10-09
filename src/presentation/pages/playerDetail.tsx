@@ -547,8 +547,9 @@ const PlayerDetail = () => {
 
               const ownerStats = ownerMap.get(roster.owner_id)!;
               ownerStats.gamesPlayed++;
-              ownerStats.totalPoints += playerPoints;
+              // Only add points if player was started
               if (wasStarted) {
+                ownerStats.totalPoints += playerPoints;
                 ownerStats.starts++;
               } else if (playerPoints > 0) {
                 // Only count as bench if player scored points (exclude 0-point bench games)
@@ -616,21 +617,22 @@ const PlayerDetail = () => {
         });
       }
       const ownerStats = ownerMapWithBye.get(performance.ownerId)!;
-      ownerStats.totalPoints += performance.points;
+      // Only add points if player was started
       if (performance.wasStarted) {
+        ownerStats.totalPoints += performance.points;
         ownerStats.starts++;
       } else if (!performance.wasStarted && !performance.isByeWeek) {
         ownerStats.bench++;
       }
     });
 
-    // Calculate averages for owner stats (games = starts + bench, average = points / games)
+    // Calculate averages for owner stats (games = starts + bench, average = points / starts only)
     const ownerStats = Array.from(ownerMapWithBye.values()).map((stats) => {
       const gamesPlayed = stats.starts + stats.bench;
       return {
         ...stats,
         gamesPlayed,
-        averagePoints: gamesPlayed > 0 ? stats.totalPoints / gamesPlayed : 0,
+        averagePoints: stats.starts > 0 ? stats.totalPoints / stats.starts : 0,
       };
     });
 
@@ -640,11 +642,11 @@ const PlayerDetail = () => {
       (p) => !p.wasStarted && !p.isByeWeek
     ).length;
     const totalGames = totalStarts + totalBench;
-    const totalPoints = performancesWithBye.reduce(
-      (sum, p) => sum + p.points,
-      0
-    );
-    const averagePoints = totalGames > 0 ? totalPoints / totalGames : 0;
+    // Only include points from games where the player started
+    const totalPoints = performancesWithBye
+      .filter((p) => p.wasStarted)
+      .reduce((sum, p) => sum + p.points, 0);
+    const averagePoints = totalStarts > 0 ? totalPoints / totalStarts : 0;
 
     return {
       seasonsPlayed: new Set(performancesWithBye.map((p) => p.year)).size,
@@ -862,11 +864,18 @@ const PlayerDetail = () => {
             {number(playerStats.highestScore, { maximumFractionDigits: 2 })}
           </p>
           {playerStats.highestScoreGame && (
-            <p className="text-sm text-gray-600 mt-1">
-              vs {playerStats.highestScoreGame.opponent} (
-              {playerStats.highestScoreGame.year}, Week{" "}
-              {playerStats.highestScoreGame.week})
-            </p>
+            <div className="mt-1">
+              <p className="text-sm text-gray-600">
+                vs {playerStats.highestScoreGame.opponent} (
+                {playerStats.highestScoreGame.year}, Week{" "}
+                {playerStats.highestScoreGame.week})
+              </p>
+              {!playerStats.highestScoreGame.wasStarted && (
+                <span className="inline-block mt-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
+                  On the Bench!
+                </span>
+              )}
+            </div>
           )}
         </div>
         <div className="bg-white rounded-lg shadow p-6">
