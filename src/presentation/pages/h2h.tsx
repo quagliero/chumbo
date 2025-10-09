@@ -1,22 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { managers } from "../../data";
-import H2HContent from "../components/H2HContent/H2HContent";
 
 export default function H2H() {
   const [selectedManagerA, setSelectedManagerA] = useState<string>("");
   const [selectedManagerB, setSelectedManagerB] = useState<string>("");
   const navigate = useNavigate();
-
-  const handleCompare = () => {
-    if (
-      selectedManagerA &&
-      selectedManagerB &&
-      selectedManagerA !== selectedManagerB
-    ) {
-      navigate(`/h2h/${selectedManagerA}/${selectedManagerB}`);
-    }
-  };
 
   const handleManagerASelect = (managerId: string) => {
     setSelectedManagerA(managerId);
@@ -33,34 +22,6 @@ export default function H2H() {
       navigate(`/h2h/${selectedManagerA}/${managerId}`);
     }
   };
-
-  // If both managers are selected, show the content directly
-  if (
-    selectedManagerA &&
-    selectedManagerB &&
-    selectedManagerA !== selectedManagerB
-  ) {
-    return (
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => {
-                  setSelectedManagerA("");
-                  setSelectedManagerB("");
-                }}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                ← Back to Manager Selection
-              </button>
-            </div>
-          </div>
-        </div>
-        <H2HContent managerA={selectedManagerA} managerB={selectedManagerB} />
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -140,27 +101,6 @@ export default function H2H() {
                 ))}
               </div>
             </div>
-          </div>
-
-          {/* Compare Button */}
-          <div className="mt-6 text-center">
-            <button
-              onClick={handleCompare}
-              disabled={
-                !selectedManagerA ||
-                !selectedManagerB ||
-                selectedManagerA === selectedManagerB
-              }
-              className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-                selectedManagerA &&
-                selectedManagerB &&
-                selectedManagerA !== selectedManagerB
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-            >
-              Compare Managers
-            </button>
           </div>
 
           {/* Selected Managers Display */}

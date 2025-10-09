@@ -29,10 +29,10 @@ export default function H2HDetail() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-4">
             <Link
-              to="/managers"
+              to="/h2h"
               className="text-blue-600 hover:text-blue-800 text-sm font-medium"
             >
-              ← Back to Managers
+              ← Go to H2H
             </Link>
           </div>
         </div>

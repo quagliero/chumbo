@@ -339,6 +339,10 @@ const ManagerDetail = () => {
                   >
                     <TableCell className="font-medium">
                       {record.teamName}
+                      <br />
+                      <span className="text-gray-500">
+                        {record.managerName}
+                      </span>
                     </TableCell>
                     <TableCell>
                       {record.wins}-{record.losses}
