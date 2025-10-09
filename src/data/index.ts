@@ -147,6 +147,13 @@ export const getPlayer = (
     }
   }
 
+  // Search through all year-specific players.json files
+  for (const [, seasonData] of Object.entries(seasons)) {
+    if (seasonData.players && seasonData.players[playerIdStr]) {
+      return seasonData.players[playerIdStr];
+    }
+  }
+
   // Fall back to root players.json
   const player = players[playerIdStr];
   if (player) {

@@ -15,12 +15,15 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           // Separate vendor chunks
-          // if (id.includes("node_modules")) {
-          //   if (id.includes("react") || id.includes("react-router")) {
-          //     return "vendor-react";
-          //   }
-          //   return "vendor";
-          // }
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-router")) {
+              return "vendor-react";
+            }
+            if (id.includes("@tanstack")) {
+              return "vendor-table";
+            }
+            return "vendor";
+          }
           // Separate players.json into its own chunk
           if (id.includes("/data/players.json")) {
             return "players";

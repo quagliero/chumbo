@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { players, seasons } from "../../data";
 import { getPlayerImageUrl } from "../../utils/playerImage";
+import { Player } from "../../types/player";
 
 interface PlayerSearchResult {
   player_id: string;
@@ -20,8 +21,28 @@ const Players = () => {
     const searchLower = searchTerm.toLowerCase();
     const results: PlayerSearchResult[] = [];
 
-    // Search through regular players from players.json
+    // Search through regular players from all players.json files (root + year-specific)
+    const allPlayers = new Map<string, Player>();
+
+    // Add root players.json
     Object.entries(players).forEach(([playerId, player]) => {
+      allPlayers.set(playerId, player);
+    });
+
+    // Add year-specific players.json files
+    Object.entries(seasons).forEach(([, seasonData]) => {
+      if (seasonData.players) {
+        Object.entries(seasonData.players).forEach(([playerId, player]) => {
+          // Only add if not already present (year-specific takes precedence)
+          if (!allPlayers.has(playerId)) {
+            allPlayers.set(playerId, player);
+          }
+        });
+      }
+    });
+
+    // Search through all collected players
+    allPlayers.forEach((player, playerId) => {
       const fullName =
         player.full_name ||
         `${player.first_name || ""} ${player.last_name || ""}`.trim();
