@@ -1,6 +1,14 @@
 import { ExtendedRoster } from "../../../types/roster";
 import { ExtendedMatchup } from "../../../types/matchup";
 import { League } from "../../../types/league";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "../Table";
 
 interface ScheduleComparisonProps {
   rosters: ExtendedRoster[];
@@ -148,40 +156,42 @@ const ScheduleComparison = ({
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr>
-              <th className="text-left p-2 border-gray-300 sticky left-0 z-10"></th>
-              <th
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderCell className="text-left sticky left-0 z-10">
+                {" "}
+              </TableHeaderCell>
+              <TableHeaderCell
                 colSpan={sortedRosters.length}
-                className="text-center p-2 border-b border-gray-300 bg-gray-100 font-bold"
+                className="text-center bg-gray-100 font-bold"
               >
                 Vs Schedule
-              </th>
-            </tr>
-            <tr>
-              <th className="text-left p-2 border-b border-gray-300 bg-gray-100 sticky left-0 z-10">
+              </TableHeaderCell>
+            </TableRow>
+            <TableRow>
+              <TableHeaderCell className="text-left bg-gray-100 sticky left-0 z-10">
                 Team
-              </th>
+              </TableHeaderCell>
               {sortedRosters.map((roster) => (
-                <th
+                <TableHeaderCell
                   key={roster.roster_id}
-                  className="text-center p-2 border-b border-gray-300 bg-gray-50 min-w-24"
+                  className="text-center bg-gray-50 min-w-24"
                 >
                   {getTeamName(roster.owner_id)}
-                </th>
+                </TableHeaderCell>
               ))}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {sortedRosters.map((teamRoster) => (
-              <tr
+              <TableRow
                 key={teamRoster.roster_id}
                 className="hover:bg-gray-50 transition-colors"
               >
-                <td className="text-left p-2 border-b border-gray-200 bg-gray-50 sticky left-0 z-10 font-medium hover:bg-gray-100 transition-colors">
+                <TableCell className="text-left bg-gray-50 sticky left-0 z-10 font-medium hover:bg-gray-100 transition-colors">
                   {getTeamName(teamRoster.owner_id)}
-                </td>
+                </TableCell>
                 {sortedRosters.map((opponentRoster) => {
                   const crossRecord = calculateCrossScheduleRecord(
                     teamRoster,
@@ -191,9 +201,9 @@ const ScheduleComparison = ({
                     teamRoster.roster_id === opponentRoster.roster_id;
 
                   return (
-                    <td
+                    <TableCell
                       key={opponentRoster.roster_id}
-                      className={`text-center p-2 border-b border-gray-200 ${
+                      className={`text-center ${
                         isSameTeam ? "bg-gray-100" : ""
                       }`}
                     >
@@ -203,13 +213,13 @@ const ScheduleComparison = ({
                           {crossRecord.ties > 0 && `-${crossRecord.ties}`}
                         </div>
                       </div>
-                    </td>
+                    </TableCell>
                   );
                 })}
-              </tr>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

@@ -13,6 +13,15 @@ import managers from "../../../data/managers.json";
 import { ExtendedRoster } from "../../../types/roster";
 import { Matchup } from "../../../types/matchup";
 import { getTeamName } from "../../../utils/teamName";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+  SortIcon,
+} from "../Table";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -277,62 +286,58 @@ const AllTimeBreakdown = () => {
           </p>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      onClick={header.column.getToggleSortingHandler()}
-                      className={`px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                        header.column.getCanSort()
-                          ? "cursor-pointer hover:bg-gray-100"
-                          : ""
-                      }`}
-                    >
-                      <div className="flex items-center justify-end">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        {header.column.getCanSort() && (
-                          <span className="ml-1">
-                            {header.column.getIsSorted() === "asc"
-                              ? "↑"
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHeaderCell
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={`text-right ${
+                      header.column.getCanSort()
+                        ? "cursor-pointer hover:bg-gray-100"
+                        : ""
+                    }`}
+                    isSorted={!!header.column.getIsSorted()}
+                  >
+                    <div className="flex items-center justify-end">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      {header.column.getCanSort() && (
+                        <SortIcon
+                          sortDirection={
+                            header.column.getIsSorted() === "asc"
+                              ? "asc"
                               : header.column.getIsSorted() === "desc"
-                              ? "↓"
-                              : "↕️"}
-                          </span>
-                        )}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="hover:bg-gray-50">
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
+                              ? "desc"
+                              : false
+                          }
+                          className="ml-1"
+                        />
                       )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                  </TableHeaderCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="text-right">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { ExtendedDraft } from "../../../types/draft";
 import { ExtendedPick } from "../../../types/pick";
 import { ExtendedRoster } from "../../../types/roster";
 import { getManagerAbbr } from "../../../utils/managerUtils";
+import { getPlayerImageUrl } from "../../../utils/playerImage";
 import { POSITION_COLORS } from "../../../constants/fantasy";
 
 interface DraftBoardProps {
@@ -195,9 +196,53 @@ const DraftBoard = ({
                             </span>
                           </div>
 
-                          {/* Player name */}
-                          <div className="text-xs font-medium leading-tight flex-1 truncate">
-                            {playerName}
+                          {/* Player name with image */}
+                          <div className="text-xs font-medium leading-tight flex-1 truncate flex items-center gap-1">
+                            <div
+                              className={`flex-none w-5 h-5 ${
+                                position === "DEF"
+                                  ? ""
+                                  : "rounded-full bg-gray-100"
+                              }  flex items-center justify-center overflow-hidden`}
+                            >
+                              {(() => {
+                                const imageUrl = getPlayerImageUrl(
+                                  pick.player_id,
+                                  position
+                                );
+                                if (!imageUrl) {
+                                  return (
+                                    <div className="w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center text-[8px] text-gray-600 font-bold">
+                                      ?
+                                    </div>
+                                  );
+                                }
+                                return (
+                                  <img
+                                    src={imageUrl}
+                                    alt={playerName}
+                                    className="w-5 h-5 object-cover flex-shrink-0"
+                                    onError={(e) => {
+                                      // Fallback to a gray circle if image fails to load
+                                      const target =
+                                        e.target as HTMLImageElement;
+                                      target.style.display = "none";
+                                      const fallback =
+                                        target.nextElementSibling as HTMLElement;
+                                      if (fallback)
+                                        fallback.style.display = "block";
+                                    }}
+                                  />
+                                );
+                              })()}
+                              <div
+                                className="w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center text-[8px] text-gray-600 font-bold"
+                                style={{ display: "none" }}
+                              >
+                                ?
+                              </div>
+                            </div>
+                            <span className="truncate">{playerName}</span>
                           </div>
 
                           {/* Position number picked */}

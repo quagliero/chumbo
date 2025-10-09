@@ -7,6 +7,14 @@ import { ExtendedUser } from "../../../types/user";
 import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
 import managers from "../../../data/managers.json";
 import { seasons } from "../../../data";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "../Table";
 
 interface StandingsProps {
   standings: ExtendedRoster[];
@@ -443,23 +451,29 @@ const Standings = ({
               <div className="border-b-2 border-gray-300"></div>
             </div>
           )}
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="text-left p-3">Rank</th>
-                <th className="text-left p-3">Team</th>
-                <th className="text-center p-3">W</th>
-                <th className="text-center p-3">L</th>
-                <th className="text-center p-3">T</th>
-                <th className="text-center p-3">Win %</th>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell className="text-left">Rank</TableHeaderCell>
+                <TableHeaderCell className="text-left">Team</TableHeaderCell>
+                <TableHeaderCell className="text-center">W</TableHeaderCell>
+                <TableHeaderCell className="text-center">L</TableHeaderCell>
+                <TableHeaderCell className="text-center">T</TableHeaderCell>
+                <TableHeaderCell className="text-center">Win %</TableHeaderCell>
                 {hasDivisions && (
-                  <th className="text-center p-3">Div Record</th>
+                  <TableHeaderCell className="text-center">
+                    Div Record
+                  </TableHeaderCell>
                 )}
-                <th className="text-right p-3">Points For</th>
-                <th className="text-right p-3">Points Against</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
+                <TableHeaderCell className="text-right">
+                  Points For
+                </TableHeaderCell>
+                <TableHeaderCell className="text-right">
+                  Points Against
+                </TableHeaderCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {teams.map((roster: ExtendedRoster, index: number) => {
                 const winPerc =
                   roster.settings.wins /
@@ -506,16 +520,16 @@ const Standings = ({
                 }`;
 
                 return (
-                  <tr key={roster.roster_id} className={rowClassName}>
-                    <td className="p-3 font-medium">
+                  <TableRow key={roster.roster_id} className={rowClassName}>
+                    <TableCell className="font-medium">
                       {index + 1}
                       {isChampion && " 🥇"}
                       {isRunnerUp && " 🥈"}
                       {isThirdPlace && " 🥉"}
                       {isTopScorer && " 🎯"}
                       {isBottomScorer && " 💩"}
-                    </td>
-                    <td className="p-3">
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center space-x-3">
                         {(() => {
                           const user = getUserByOwnerId(roster.owner_id, users);
@@ -558,13 +572,17 @@ const Standings = ({
                           );
                         })()}
                       </div>
-                    </td>
-                    <td className="text-center p-3">{roster.settings.wins}</td>
-                    <td className="text-center p-3">
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {roster.settings.wins}
+                    </TableCell>
+                    <TableCell className="text-center">
                       {roster.settings.losses}
-                    </td>
-                    <td className="text-center p-3">{roster.settings.ties}</td>
-                    <td className="text-center p-3">
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {roster.settings.ties}
+                    </TableCell>
+                    <TableCell className="text-center">
                       {(() => {
                         const formatted = number(winPerc, {
                           maximumFractionDigits: 3,
@@ -575,24 +593,24 @@ const Standings = ({
                           ? formatted.substring(1)
                           : formatted;
                       })()}
-                    </td>
+                    </TableCell>
                     {hasDivisions && divisionRecord && (
-                      <td className="text-center p-3 text-xs">
+                      <TableCell className="text-center text-xs">
                         {divisionRecord.wins}-{divisionRecord.losses}
                         {divisionRecord.ties > 0 && `-${divisionRecord.ties}`}
-                      </td>
+                      </TableCell>
                     )}
-                    <td className="text-right p-3">
+                    <TableCell className="text-right">
                       {number(pointsFor, { maximumFractionDigits: 2 })}
-                    </td>
-                    <td className="text-right p-3">
+                    </TableCell>
+                    <TableCell className="text-right">
                       {number(pointsAgainst, { maximumFractionDigits: 2 })}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       ))}
 

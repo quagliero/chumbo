@@ -12,6 +12,16 @@ import { getPlayer, seasons } from "../../data";
 import managers from "../../data/managers.json";
 import { getPlayerImageUrl } from "../../utils/playerImage";
 import { getTeamName } from "../../utils/teamName";
+import {
+  StandardTable,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+  SortIcon,
+} from "../components/Table";
 
 interface PlayerPerformance {
   year: number;
@@ -33,6 +43,17 @@ interface OwnerStats {
   averagePoints: number;
   starts: number;
   bench: number;
+}
+
+interface DraftPick {
+  year: number;
+  round: number;
+  pickNo: number;
+  draftSlot: number;
+  ownerId: string;
+  teamName: string;
+  managerName: string;
+  position?: string;
 }
 
 interface PlayerStats {
@@ -104,61 +125,60 @@ const OwnershipTable = ({ data }: { data: OwnerStats[] }) => {
   });
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="border-b">
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className={`py-2 ${
-                    header.column.getCanSort()
-                      ? "cursor-pointer select-none"
-                      : ""
-                  } ${header.id === "teamName" ? "text-left" : "text-right"}`}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {header.column.getCanSort() && (
-                      <span className="text-gray-400">
-                        {header.column.getIsSorted() === "asc"
-                          ? "↑"
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHeaderCell
+                key={header.id}
+                className={`${
+                  header.column.getCanSort() ? "cursor-pointer select-none" : ""
+                } ${header.id === "teamName" ? "text-left" : "text-right"}`}
+                onClick={header.column.getToggleSortingHandler()}
+                isSorted={!!header.column.getIsSorted()}
+              >
+                <div className="inline-flex items-center gap-1">
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                  {header.column.getCanSort() && (
+                    <SortIcon
+                      sortDirection={
+                        header.column.getIsSorted() === "asc"
+                          ? "asc"
                           : header.column.getIsSorted() === "desc"
-                          ? "↓"
-                          : "↕"}
-                      </span>
-                    )}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row, idx) => (
-            <tr key={row.id} className={idx % 2 === 0 ? "bg-gray-50" : ""}>
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className={`py-2 ${
-                    cell.column.id === "teamName"
-                      ? "text-left font-medium"
-                      : "text-right"
-                  }`}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                          ? "desc"
+                          : false
+                      }
+                    />
+                  )}
+                </div>
+              </TableHeaderCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell
+                key={cell.id}
+                className={`${
+                  cell.column.id === "teamName"
+                    ? "text-left font-medium"
+                    : "text-right"
+                }`}
+              >
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
@@ -212,6 +232,124 @@ const PlayerDetail = () => {
 
     return { allNicknames };
   }, [playerId]);
+
+  // Extract draft picks for this player
+  const draftPicks = useMemo(() => {
+    const picks: DraftPick[] = [];
+
+    Object.entries(seasons).forEach(([yearStr, seasonData]) => {
+      const year = parseInt(yearStr);
+
+      // Check if this season has draft data
+      if (seasonData.draft && seasonData.picks) {
+        // Find picks for this player
+        const playerPicks = seasonData.picks.filter(
+          (pick) => pick.player_id === playerId
+        );
+
+        playerPicks.forEach((pick) => {
+          // Find the roster/owner who made this pick
+          const roster = seasonData.rosters?.find(
+            (r) => r.roster_id === pick.roster_id
+          );
+
+          if (roster) {
+            const manager = managers.find(
+              (m) => m.sleeper.id === roster.owner_id
+            );
+
+            if (manager) {
+              picks.push({
+                year,
+                round: pick.round,
+                pickNo: pick.pick_no,
+                draftSlot: pick.draft_slot,
+                ownerId: roster.owner_id,
+                teamName: getTeamName(roster.owner_id, seasonData.users),
+                managerName: manager.name,
+                position: pick.position || pick.metadata?.position,
+              });
+            }
+          }
+        });
+      }
+    });
+
+    // Sort by year, then by pick number
+    return picks.sort((a, b) => {
+      if (a.year !== b.year) return a.year - b.year;
+      return a.pickNo - b.pickNo;
+    });
+  }, [playerId]);
+
+  // Calculate most drafted by team
+  const mostDraftedBy = useMemo(() => {
+    if (draftPicks.length === 0) return null;
+
+    const teamCounts = draftPicks.reduce((acc, pick) => {
+      acc[pick.teamName] = (acc[pick.teamName] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const maxCount = Math.max(...Object.values(teamCounts));
+    const mostFrequentTeams = Object.entries(teamCounts)
+      .filter(([, count]) => count === maxCount)
+      .map(([teamName]) => teamName);
+
+    return {
+      teams: mostFrequentTeams,
+      count: maxCount,
+    };
+  }, [draftPicks]);
+
+  // Calculate earliest and latest round with pick numbers
+  const draftRoundStats = useMemo(() => {
+    if (draftPicks.length === 0) return null;
+
+    const earliestRound = Math.min(...draftPicks.map((p) => p.round));
+    const latestRound = Math.max(...draftPicks.map((p) => p.round));
+
+    // Get picks for earliest round
+    const earliestPicks = draftPicks.filter((p) => p.round === earliestRound);
+    const earliestPickNumbers = earliestPicks.map(
+      (p) => `${earliestRound}.${p.draftSlot}`
+    );
+
+    // Count occurrences of each pick number
+    const earliestPickCounts = earliestPickNumbers.reduce((acc, pick) => {
+      acc[pick] = (acc[pick] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Format earliest round display
+    const earliestDisplay = Object.entries(earliestPickCounts)
+      .map(([pick, count]) => (count > 1 ? `${pick} ${count}x` : pick))
+      .join(", ");
+
+    // Get picks for latest round
+    const latestPicks = draftPicks.filter((p) => p.round === latestRound);
+    const latestPickNumbers = latestPicks.map(
+      (p) => `${latestRound}.${p.draftSlot}`
+    );
+
+    // Count occurrences of each pick number
+    const latestPickCounts = latestPickNumbers.reduce((acc, pick) => {
+      acc[pick] = (acc[pick] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Format latest round display
+    const latestDisplay = Object.entries(latestPickCounts)
+      .map(([pick, count]) => (count > 1 ? `${pick} ${count}x` : pick))
+      .join(", ");
+
+    return {
+      earliestRound,
+      earliestDisplay,
+      latestRound,
+      latestDisplay,
+    };
+  }, [draftPicks]);
 
   // Helper function to get position for string-named players from matchup data
   const getPlayerPositionFromMatchups = (playerId: string): string => {
@@ -529,6 +667,44 @@ const PlayerDetail = () => {
     };
   }, [player, playerId]);
 
+  // Calculate ownership statistics
+  const ownershipStats = useMemo(() => {
+    if (!playerStats || playerStats.ownerStats.length === 0) return null;
+
+    const totalOwners = playerStats.ownerStats.length;
+
+    // Find owner with most starts
+    const mostStartsOwner = playerStats.ownerStats.reduce((max, owner) =>
+      owner.starts > max.starts ? owner : max
+    );
+
+    // Find owner with most points
+    const mostPointsOwner = playerStats.ownerStats.reduce((max, owner) =>
+      owner.totalPoints > max.totalPoints ? owner : max
+    );
+
+    // Find owner with best average
+    const bestAverageOwner = playerStats.ownerStats.reduce((max, owner) =>
+      owner.averagePoints > max.averagePoints ? owner : max
+    );
+
+    return {
+      totalOwners,
+      mostStarts: {
+        count: mostStartsOwner.starts,
+        manager: mostStartsOwner.teamName,
+      },
+      mostPoints: {
+        amount: mostPointsOwner.totalPoints,
+        manager: mostPointsOwner.teamName,
+      },
+      bestAverage: {
+        amount: bestAverageOwner.averagePoints,
+        manager: bestAverageOwner.teamName,
+      },
+    };
+  }, [playerStats]);
+
   if (!player || !playerStats) {
     return (
       <div className="container mx-auto py-8">
@@ -547,7 +723,7 @@ const PlayerDetail = () => {
   const playerImageUrl = getPlayerImageUrl(playerId!, player.position);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 space-y-6">
       {/* Back Link */}
       <div className="mb-4">
         <Link
@@ -572,14 +748,16 @@ const PlayerDetail = () => {
       </div>
 
       {/* Player Header */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+      <div className="">
         <div className="flex items-center gap-6">
           <div className="flex-shrink-0">
             {playerImageUrl ? (
               <img
                 src={playerImageUrl}
                 alt={`${player.full_name || player.last_name} photo`}
-                className="w-24 h-24 rounded-full object-cover"
+                className={`w-24 h-24 object-cover ${
+                  player.position === "DEF" ? "" : "rounded-full"
+                }`}
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
                 }}
@@ -631,7 +809,7 @@ const PlayerDetail = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Seasons Played
@@ -708,7 +886,7 @@ const PlayerDetail = () => {
       </div>
 
       {/* Achievements */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
+      <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Achievements</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-yellow-50 rounded-lg">
@@ -733,16 +911,154 @@ const PlayerDetail = () => {
       </div>
 
       {/* Ownership Breakdown */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
+      <div className="bg-white rounded-lg shadow">
+        <h2 className="text-xl font-bold text-gray-900 px-6 py-4  border-b border-gray-200">
           Ownership Breakdown
         </h2>
         <OwnershipTable data={playerStats.ownerStats} />
+
+        {/* Ownership Statistics */}
+        {ownershipStats && (
+          <div className="border-t border-gray-200 grid grid-cols-1 md:grid-cols-4 gap-4 px-6 py-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">
+                Total Owners
+              </h3>
+              <p className="text-2xl font-bold text-gray-900">
+                {ownershipStats.totalOwners}
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">Most Starts</h3>
+              <p className="text-lg font-bold text-gray-900">
+                {ownershipStats.mostStarts.count}
+                <span className="text-sm font-normal text-gray-600 ml-1">
+                  ({ownershipStats.mostStarts.manager})
+                </span>
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">Most Points</h3>
+              <p className="text-lg font-bold text-gray-900">
+                {number(ownershipStats.mostPoints.amount, {
+                  maximumFractionDigits: 1,
+                })}
+                <span className="text-sm font-normal text-gray-600 ml-1">
+                  ({ownershipStats.mostPoints.manager})
+                </span>
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">
+                Best Average
+              </h3>
+              <p className="text-lg font-bold text-gray-900">
+                {number(ownershipStats.bestAverage.amount, {
+                  maximumFractionDigits: 1,
+                })}
+                <span className="text-sm font-normal text-gray-600 ml-1">
+                  ({ownershipStats.bestAverage.manager})
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
+      {/* Draft Breakdown Table */}
+      {draftPicks.length > 0 && (
+        <div className="bg-white rounded-lg shadow">
+          <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
+            Draft Breakdown
+          </h2>
+          <StandardTable
+            headers={[
+              { key: "year", label: "Year" },
+              { key: "round", label: "Round" },
+              { key: "slot", label: "Pick" },
+              { key: "pick", label: "Overall" },
+              { key: "team", label: "Team" },
+            ]}
+            rows={draftPicks.map((pick) => ({
+              key: `${pick.year}-${pick.pickNo}`,
+              cells: [
+                { content: pick.year, className: "font-medium" },
+                { content: pick.round },
+                { content: pick.draftSlot },
+                { content: `#${pick.pickNo}` },
+                { content: pick.teamName },
+              ],
+            }))}
+          />
+
+          {/* Draft Statistics */}
+          <div className="border-t border-gray-200 grid grid-cols-1 md:grid-cols-4 gap-4 px-6 py-6">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">
+                Total Drafts
+              </h3>
+              <p className="text-2xl font-bold text-gray-900">
+                {draftPicks.length}
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">
+                Most Drafted By
+              </h3>
+              <p className="text-lg font-bold text-gray-900">
+                {mostDraftedBy ? (
+                  <>
+                    {mostDraftedBy.teams.join(", ")}
+                    <span className="text-sm font-normal text-gray-600 ml-1">
+                      ({mostDraftedBy.count}x)
+                    </span>
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">
+                Earliest Round
+              </h3>
+              <p className="text-lg font-bold text-gray-900">
+                {draftRoundStats ? (
+                  <>
+                    {draftRoundStats.earliestRound}
+                    <span className="text-sm font-normal text-gray-600 ml-1">
+                      ({draftRoundStats.earliestDisplay})
+                    </span>
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </p>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-500">
+                Latest Round
+              </h3>
+              <p className="text-lg font-bold text-gray-900">
+                {draftRoundStats ? (
+                  <>
+                    {draftRoundStats.latestRound}
+                    <span className="text-sm font-normal text-gray-600 ml-1">
+                      ({draftRoundStats.latestDisplay})
+                    </span>
+                  </>
+                ) : (
+                  "N/A"
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Performances Table */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900">Game Performances</h2>
           <button
             onClick={() => setShowAllPerformances(!showAllPerformances)}
@@ -753,62 +1069,61 @@ const PlayerDetail = () => {
               : `Show All (${playerStats.performances.length})`}
           </button>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-2">Year</th>
-                <th className="text-left py-2">Week</th>
-                <th className="text-left py-2">Team</th>
-                <th className="text-left py-2">Opponent</th>
-                <th className="text-right py-2">Points</th>
-                <th className="text-center py-2">Started</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(showAllPerformances
-                ? playerStats.performances
-                : playerStats.performances.slice(0, 10)
-              ).map((performance, idx) => (
-                <tr
-                  key={`${performance.year}-${performance.week}-${performance.ownerId}`}
-                  className={idx % 2 === 0 ? "bg-gray-50" : ""}
-                >
-                  <td className="py-2">{performance.year}</td>
-                  <td className="py-2">{performance.week}</td>
-                  <td className="py-2 font-medium">{performance.teamName}</td>
-                  <td className="py-2">{performance.opponent}</td>
-                  <td className="py-2 text-right font-semibold">
-                    {performance.isByeWeek
-                      ? "—"
-                      : number(performance.points, {
-                          maximumFractionDigits: 2,
-                        })}
-                  </td>
-                  <td className="py-2 text-center">
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${
-                        performance.isByeWeek
-                          ? "bg-blue-100 text-blue-800"
-                          : performance.wasStarted
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {performance.isByeWeek
-                        ? "Bye"
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderCell className="text-left">Year</TableHeaderCell>
+              <TableHeaderCell className="text-left">Week</TableHeaderCell>
+              <TableHeaderCell className="text-left">Team</TableHeaderCell>
+              <TableHeaderCell className="text-left">Opponent</TableHeaderCell>
+              <TableHeaderCell className="text-right">Points</TableHeaderCell>
+              <TableHeaderCell className="text-center">Started</TableHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {(showAllPerformances
+              ? playerStats.performances
+              : playerStats.performances.slice(0, 10)
+            ).map((performance) => (
+              <TableRow
+                key={`${performance.year}-${performance.week}-${performance.ownerId}`}
+              >
+                <TableCell>{performance.year}</TableCell>
+                <TableCell>{performance.week}</TableCell>
+                <TableCell className="font-medium">
+                  {performance.teamName}
+                </TableCell>
+                <TableCell>{performance.opponent}</TableCell>
+                <TableCell className="text-right font-semibold">
+                  {performance.isByeWeek
+                    ? "—"
+                    : number(performance.points, {
+                        maximumFractionDigits: 2,
+                      })}
+                </TableCell>
+                <TableCell className="text-center">
+                  <span
+                    className={`px-2 py-1 rounded text-xs ${
+                      performance.isByeWeek
+                        ? "bg-blue-100 text-blue-800"
                         : performance.wasStarted
-                        ? "Yes"
-                        : "No"}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {performance.isByeWeek
+                      ? "Bye"
+                      : performance.wasStarted
+                      ? "Yes"
+                      : "No"}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
         {!showAllPerformances && playerStats.performances.length > 10 && (
-          <div className="text-center mt-4">
+          <div className="text-center pt-4 pb-6 border-t border-gray-200">
             <p className="text-sm text-gray-600">
               Showing 10 of {playerStats.performances.length} games
             </p>

@@ -11,6 +11,15 @@ import { useState, useMemo } from "react";
 import { seasons } from "../../../data";
 import { getCumulativeStandings, TeamStats } from "../../../utils/standings";
 import managers from "../../../data/managers.json";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+  SortIcon,
+} from "../Table";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -244,77 +253,76 @@ const AllTimeTable = () => {
           </p>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      onClick={header.column.getToggleSortingHandler()}
-                      className={`px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                        header.column.getCanSort()
-                          ? "cursor-pointer hover:bg-gray-100"
-                          : ""
-                      }`}
-                    >
-                      <div className="flex items-center justify-end">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                        {header.column.getCanSort() && (
-                          <span className="ml-1">
-                            {header.column.getIsSorted() === "asc"
-                              ? "↑"
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHeaderCell
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={`text-right ${
+                      header.column.getCanSort()
+                        ? "cursor-pointer hover:bg-gray-100"
+                        : ""
+                    }`}
+                    isSorted={!!header.column.getIsSorted()}
+                  >
+                    <div className="flex items-center justify-end">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      {header.column.getCanSort() && (
+                        <SortIcon
+                          sortDirection={
+                            header.column.getIsSorted() === "asc"
+                              ? "asc"
                               : header.column.getIsSorted() === "desc"
-                              ? "↓"
-                              : "↕️"}
-                          </span>
-                        )}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {table.getRowModel().rows.map((row, index) => {
-                let tierClass = "";
-                if (showTiers) {
-                  if (index < 3) {
-                    tierClass = "bg-green-50"; // Top 3 - pale green
-                  } else if (index < 6) {
-                    tierClass = "bg-blue-50"; // Second 3 - pale blue
-                  } else if (index < 9) {
-                    tierClass = "bg-yellow-50"; // Next 3 - pale yellow
-                  } else {
-                    tierClass = "bg-red-50"; // Bottom 3 - pale red
-                  }
+                              ? "desc"
+                              : false
+                          }
+                          className="ml-1"
+                        />
+                      )}
+                    </div>
+                  </TableHeaderCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row, index) => {
+              let tierClass = "";
+              if (showTiers) {
+                if (index < 3) {
+                  tierClass = "bg-green-50"; // Top 3 - pale green
+                } else if (index < 6) {
+                  tierClass = "bg-blue-50"; // Second 3 - pale blue
+                } else if (index < 9) {
+                  tierClass = "bg-yellow-50"; // Next 3 - pale yellow
+                } else {
+                  tierClass = "bg-red-50"; // Bottom 3 - pale red
                 }
+              }
 
-                return (
-                  <tr key={row.id} className={`hover:bg-gray-50 ${tierClass}`}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        key={cell.id}
-                        className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900"
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+              return (
+                <TableRow key={row.id} className={tierClass}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="text-right">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

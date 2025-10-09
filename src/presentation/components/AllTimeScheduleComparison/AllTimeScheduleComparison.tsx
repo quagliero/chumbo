@@ -3,6 +3,15 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { seasons } from "../../../data";
 import { getTeamName } from "../../../utils/teamName";
 import { ExtendedMatchup } from "../../../types/matchup";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+  SortIcon,
+} from "../Table";
 
 type SortField = "team" | "wins" | "losses" | "ties" | "winPercentage";
 type SortDirection = "asc" | "desc";
@@ -400,169 +409,171 @@ const AllTimeScheduleComparison = () => {
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort("team")}
-                  >
-                    <div className="flex items-center">
-                      Team
-                      {sortField === "team" && (
-                        <span className="ml-1">
-                          {sortDirection === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
-                    </div>
-                  </th>
-                  <th
-                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort("wins")}
-                  >
-                    <div className="flex items-center justify-end">
-                      W
-                      {sortField === "wins" && (
-                        <span className="ml-1">
-                          {sortDirection === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
-                    </div>
-                  </th>
-                  <th
-                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort("losses")}
-                  >
-                    <div className="flex items-center justify-end">
-                      L
-                      {sortField === "losses" && (
-                        <span className="ml-1">
-                          {sortDirection === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
-                    </div>
-                  </th>
-                  <th
-                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort("ties")}
-                  >
-                    <div className="flex items-center justify-end">
-                      T
-                      {sortField === "ties" && (
-                        <span className="ml-1">
-                          {sortDirection === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
-                    </div>
-                  </th>
-                  <th
-                    className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort("winPercentage")}
-                  >
-                    <div className="flex items-center justify-end">
-                      Win %
-                      {sortField === "winPercentage" && (
-                        <span className="ml-1">
-                          {sortDirection === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
-                    </div>
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Vs Schedule
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {sortedTeams.map((team) => {
-                  const isSelectedTeam = team.ownerId === selectedTeam;
-                  const record = isSelectedTeam
-                    ? team.actualRecord
-                    : selectedTeamStats.crossScheduleRecords[team.ownerId];
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell
+                  className="text-left cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("team")}
+                  isSorted={sortField === "team"}
+                >
+                  <div className="flex items-center">
+                    Team
+                    {sortField === "team" && (
+                      <SortIcon
+                        sortDirection={sortDirection}
+                        className="ml-1"
+                      />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-right cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("wins")}
+                  isSorted={sortField === "wins"}
+                >
+                  <div className="flex items-center justify-end">
+                    W
+                    {sortField === "wins" && (
+                      <SortIcon
+                        sortDirection={sortDirection}
+                        className="ml-1"
+                      />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-right cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("losses")}
+                  isSorted={sortField === "losses"}
+                >
+                  <div className="flex items-center justify-end">
+                    L
+                    {sortField === "losses" && (
+                      <SortIcon
+                        sortDirection={sortDirection}
+                        className="ml-1"
+                      />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-right cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("ties")}
+                  isSorted={sortField === "ties"}
+                >
+                  <div className="flex items-center justify-end">
+                    T
+                    {sortField === "ties" && (
+                      <SortIcon
+                        sortDirection={sortDirection}
+                        className="ml-1"
+                      />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-right cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("winPercentage")}
+                  isSorted={sortField === "winPercentage"}
+                >
+                  <div className="flex items-center justify-end">
+                    Win %
+                    {sortField === "winPercentage" && (
+                      <SortIcon
+                        sortDirection={sortDirection}
+                        className="ml-1"
+                      />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell className="text-right">
+                  Vs Schedule
+                </TableHeaderCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sortedTeams.map((team) => {
+                const isSelectedTeam = team.ownerId === selectedTeam;
+                const record = isSelectedTeam
+                  ? team.actualRecord
+                  : selectedTeamStats.crossScheduleRecords[team.ownerId];
 
-                  if (!record) return null;
+                if (!record) return null;
 
-                  const recordDifference =
-                    record.winPercentage -
-                    selectedTeamStats.actualRecord.winPercentage;
-                  const isBetter = recordDifference > 0.001;
-                  const isWorse = recordDifference < -0.001;
+                const recordDifference =
+                  record.winPercentage -
+                  selectedTeamStats.actualRecord.winPercentage;
+                const isBetter = recordDifference > 0.001;
+                const isWorse = recordDifference < -0.001;
 
-                  return (
-                    <tr
-                      key={team.ownerId}
-                      className={`hover:bg-gray-50 ${
-                        isSelectedTeam ? "bg-blue-50" : ""
-                      }`}
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="text-sm font-medium text-gray-900">
-                            {isSelectedTeam ? (
-                              team.teamName
-                            ) : (
-                              <Link
-                                to={`/managers/${team.ownerId}`}
-                                className="text-blue-600 hover:text-blue-800"
-                              >
-                                {team.teamName}
-                              </Link>
-                            )}
-                          </div>
-                          {isSelectedTeam && (
-                            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
-                              Actual
-                            </span>
+                return (
+                  <TableRow
+                    key={team.ownerId}
+                    className={isSelectedTeam ? "bg-blue-50" : ""}
+                  >
+                    <TableCell>
+                      <div className="flex items-center">
+                        <div className="text-sm font-medium text-gray-900">
+                          {isSelectedTeam ? (
+                            team.teamName
+                          ) : (
+                            <Link
+                              to={`/managers/${team.ownerId}`}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              {team.teamName}
+                            </Link>
                           )}
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
-                        {record.wins}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
-                        {record.losses}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
-                        {record.ties}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900">
-                        {(() => {
-                          const formatted = record.winPercentage.toFixed(3);
-                          // Remove leading zero if present (e.g., "0.500" -> ".500")
-                          return formatted.startsWith("0.")
-                            ? formatted.substring(1)
-                            : formatted;
-                        })()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                        {isSelectedTeam ? (
-                          <span className="text-gray-500">—</span>
-                        ) : record.wins === 0 &&
-                          record.losses === 0 &&
-                          record.ties === 0 ? (
-                          <span className="text-gray-500">—</span>
-                        ) : (
-                          <span
-                            className={`font-medium ${
-                              isBetter
-                                ? "text-green-600"
-                                : isWorse
-                                ? "text-red-600"
-                                : "text-gray-600"
-                            }`}
-                          >
-                            {isBetter && "+"}
-                            {(recordDifference * 100).toFixed(1)}%
+                        {isSelectedTeam && (
+                          <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
+                            Actual
                           </span>
                         )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">{record.wins}</TableCell>
+                    <TableCell className="text-right">
+                      {record.losses}
+                    </TableCell>
+                    <TableCell className="text-right">{record.ties}</TableCell>
+                    <TableCell className="text-right">
+                      {(() => {
+                        const formatted = record.winPercentage.toFixed(3);
+                        // Remove leading zero if present (e.g., "0.500" -> ".500")
+                        return formatted.startsWith("0.")
+                          ? formatted.substring(1)
+                          : formatted;
+                      })()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {isSelectedTeam ? (
+                        <span className="text-gray-500">—</span>
+                      ) : record.wins === 0 &&
+                        record.losses === 0 &&
+                        record.ties === 0 ? (
+                        <span className="text-gray-500">—</span>
+                      ) : (
+                        <span
+                          className={`font-medium ${
+                            isBetter
+                              ? "text-green-600"
+                              : isWorse
+                              ? "text-red-600"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          {isBetter && "+"}
+                          {(recordDifference * 100).toFixed(1)}%
+                        </span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
         </div>
       )}
 
@@ -579,107 +590,104 @@ const AllTimeScheduleComparison = () => {
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10">
-                    Team
-                  </th>
-                  {allTimeStats.map((team) => (
-                    <th
-                      key={team.ownerId}
-                      className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider min-w-24 max-w-32"
-                    >
-                      <div className="break-words leading-tight">
-                        {team.teamName}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {allTimeStats.map((rowTeam) => (
-                  <tr key={rowTeam.ownerId} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900 sticky left-0 bg-white z-10">
-                      <Link
-                        to={`/managers/${rowTeam.ownerId}`}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        {rowTeam.teamName}
-                      </Link>
-                    </td>
-                    {allTimeStats.map((colTeam) => {
-                      const isSameTeam = rowTeam.ownerId === colTeam.ownerId;
-                      const record = isSameTeam
-                        ? rowTeam.actualRecord
-                        : rowTeam.crossScheduleRecords[colTeam.ownerId];
-
-                      if (!record) return null;
-
-                      const recordDifference = isSameTeam
-                        ? 0
-                        : record.winPercentage -
-                          rowTeam.actualRecord.winPercentage;
-                      const isBetter = recordDifference > 0.001;
-                      const isWorse = recordDifference < -0.001;
-
-                      return (
-                        <td
-                          key={colTeam.ownerId}
-                          className={`px-2 py-3 text-center text-xs ${
-                            isSameTeam ? "bg-gray-100" : ""
-                          }`}
-                        >
-                          <div className="space-y-1">
-                            <div className="font-medium">
-                              {record.wins}-{record.losses}-{record.ties}
-                            </div>
-                            <div className="text-gray-500">
-                              {(() => {
-                                const formatted =
-                                  record.winPercentage.toFixed(3);
-                                // Remove leading zero if present (e.g., "0.500" -> ".500")
-                                return formatted.startsWith("0.")
-                                  ? formatted.substring(1)
-                                  : formatted;
-                              })()}
-                            </div>
-                            {!isSameTeam &&
-                            record.wins === 0 &&
-                            record.losses === 0 &&
-                            record.ties === 0 ? (
-                              <div className="text-xs text-gray-500">—</div>
-                            ) : (
-                              !isSameTeam && (
-                                <div
-                                  className={`text-xs font-medium ${
-                                    isBetter
-                                      ? "text-green-600"
-                                      : isWorse
-                                      ? "text-red-600"
-                                      : "text-gray-600"
-                                  }`}
-                                >
-                                  {isBetter && "+"}
-                                  {(recordDifference * 100).toFixed(1)}%
-                                </div>
-                              )
-                            )}
-                            {isSameTeam && (
-                              <div className="text-xs text-blue-600 font-medium">
-                                Actual
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                      );
-                    })}
-                  </tr>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderCell className="sticky left-0 bg-gray-50 z-10">
+                  Team
+                </TableHeaderCell>
+                {allTimeStats.map((team) => (
+                  <TableHeaderCell
+                    key={team.ownerId}
+                    className="text-center min-w-24 max-w-32"
+                  >
+                    <div className="break-words leading-tight">
+                      {team.teamName}
+                    </div>
+                  </TableHeaderCell>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {allTimeStats.map((rowTeam) => (
+                <TableRow key={rowTeam.ownerId}>
+                  <TableCell className="sticky left-0 bg-white z-10 font-medium">
+                    <Link
+                      to={`/managers/${rowTeam.ownerId}`}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      {rowTeam.teamName}
+                    </Link>
+                  </TableCell>
+                  {allTimeStats.map((colTeam) => {
+                    const isSameTeam = rowTeam.ownerId === colTeam.ownerId;
+                    const record = isSameTeam
+                      ? rowTeam.actualRecord
+                      : rowTeam.crossScheduleRecords[colTeam.ownerId];
+
+                    if (!record) return null;
+
+                    const recordDifference = isSameTeam
+                      ? 0
+                      : record.winPercentage -
+                        rowTeam.actualRecord.winPercentage;
+                    const isBetter = recordDifference > 0.001;
+                    const isWorse = recordDifference < -0.001;
+
+                    return (
+                      <TableCell
+                        key={colTeam.ownerId}
+                        className={`text-center text-xs ${
+                          isSameTeam ? "bg-gray-100" : ""
+                        }`}
+                      >
+                        <div className="space-y-1">
+                          <div className="font-medium">
+                            {record.wins}-{record.losses}-{record.ties}
+                          </div>
+                          <div className="text-gray-500">
+                            {(() => {
+                              const formatted = record.winPercentage.toFixed(3);
+                              // Remove leading zero if present (e.g., "0.500" -> ".500")
+                              return formatted.startsWith("0.")
+                                ? formatted.substring(1)
+                                : formatted;
+                            })()}
+                          </div>
+                          {!isSameTeam &&
+                          record.wins === 0 &&
+                          record.losses === 0 &&
+                          record.ties === 0 ? (
+                            <div className="text-xs text-gray-500">—</div>
+                          ) : (
+                            !isSameTeam && (
+                              <div
+                                className={`text-xs font-medium ${
+                                  isBetter
+                                    ? "text-green-600"
+                                    : isWorse
+                                    ? "text-red-600"
+                                    : "text-gray-600"
+                                }`}
+                              >
+                                {isBetter && "+"}
+                                {(recordDifference * 100).toFixed(1)}%
+                              </div>
+                            )
+                          )}
+                          {isSameTeam && (
+                            <div className="text-xs text-blue-600 font-medium">
+                              Actual
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       )}
 

@@ -646,9 +646,10 @@ const TopScores = () => {
   const renderPlayerScoreCard = (player: PlayerScore, index: number) => {
     const user = getUserByOwnerId(player.owner_id, seasons[player.year]?.users);
     const avatarUrl = getUserAvatarUrl(user);
+    const playerData = getPlayer(player.player_id, player.year);
     const playerImageUrl = getPlayerImageUrl(
       player.player_id,
-      player.year.toString()
+      playerData?.position
     );
 
     return (

@@ -3,6 +3,14 @@ import { useFormatter } from "use-intl";
 import { ExtendedRoster } from "../../../types/roster";
 import { ExtendedMatchup } from "../../../types/matchup";
 import { League } from "../../../types/league";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHeaderCell,
+  TableCell,
+} from "../Table";
 
 interface BreakdownProps {
   rosters: ExtendedRoster[];
@@ -217,43 +225,43 @@ const Breakdown = ({
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr>
-              <th className="text-left p-2 border-b border-gray-300 bg-gray-50 sticky left-0 z-10">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderCell className="text-left bg-gray-50 sticky left-0 z-10">
                 Team
-              </th>
+              </TableHeaderCell>
               {regularSeasonWeeks.map((week) => (
-                <th
+                <TableHeaderCell
                   key={week}
-                  className="text-center p-2 border-b border-gray-300 bg-gray-50 min-w-20"
+                  className="text-center bg-gray-50 min-w-20"
                 >
                   W{week}
-                </th>
+                </TableHeaderCell>
               ))}
-              <th className="text-center p-2 border-b border-gray-300 bg-gray-50 min-w-24 font-bold">
+              <TableHeaderCell className="text-center bg-gray-50 min-w-24 font-bold">
                 Season Total
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </TableHeaderCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {sortedRosters.map((roster) => {
               const seasonTotals = getSeasonTotals(roster);
 
               return (
-                <tr key={roster.roster_id}>
-                  <td className="text-left p-2 border-b border-gray-200 bg-gray-50 sticky left-0 z-10 font-medium">
+                <TableRow key={roster.roster_id}>
+                  <TableCell className="text-left bg-gray-50 sticky left-0 z-10 font-medium">
                     {getTeamName(roster.owner_id)}
-                  </td>
+                  </TableCell>
                   {regularSeasonWeeks.map((week) => {
                     const weekRecord = getWeeklyRecord(roster, week);
                     const luckValue = showLuck ? getLuckValue(roster, week) : 0;
                     const luckStyle = showLuck ? getLuckStyle(luckValue) : {};
 
                     return (
-                      <td
+                      <TableCell
                         key={week}
-                        className="text-center p-2 border-b border-gray-200"
+                        className="text-center"
                         style={luckStyle}
                       >
                         <div className="text-xs">
@@ -267,10 +275,10 @@ const Breakdown = ({
                             })}
                           </div>
                         </div>
-                      </td>
+                      </TableCell>
                     );
                   })}
-                  <td className="text-center p-2 border-b border-gray-200 bg-gray-100 font-bold">
+                  <TableCell className="text-center bg-gray-100 font-bold">
                     <div className="text-xs">
                       <div>
                         {seasonTotals.totalWins}-{seasonTotals.totalLosses}
@@ -283,12 +291,12 @@ const Breakdown = ({
                         })}
                       </div>
                     </div>
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {showLuck && (
