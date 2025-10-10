@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { seasons } from "@/data";
+import { CURRENT_YEAR } from "@/domain/constants";
 import {
   getPlayoffWeekStart,
   isPlayoffWeek,
@@ -232,6 +233,28 @@ export const usePlayerStats = (playerId: string | undefined) => {
         ownerStats.starts++;
       } else if (!performance.wasStarted && !performance.isByeWeek) {
         ownerStats.bench++;
+      }
+    });
+
+    // Update team names to current year team names for each owner
+    const currentYearTeamNames = new Map<string, string>();
+    ownerMapWithBye.forEach((ownerStats) => {
+      // Get current year team name for this owner
+      const currentYearData = seasons[CURRENT_YEAR];
+      if (currentYearData?.users) {
+        const currentTeamName = getTeamName(
+          ownerStats.ownerId,
+          currentYearData.users
+        );
+        currentYearTeamNames.set(ownerStats.ownerId, currentTeamName);
+      }
+    });
+
+    // Update team names in ownerMapWithBye
+    ownerMapWithBye.forEach((ownerStats) => {
+      const currentTeamName = currentYearTeamNames.get(ownerStats.ownerId);
+      if (currentTeamName) {
+        ownerStats.teamName = currentTeamName;
       }
     });
 

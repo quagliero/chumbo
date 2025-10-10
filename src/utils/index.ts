@@ -54,7 +54,7 @@ export {
   getH2HRecordForSeason,
   getH2HRecordWithGames,
   calculateH2HStreak,
-  type H2HRecord,
+  type H2HMatchupRecord,
   type H2HGame,
   type H2HRecordWithGames,
 } from "@/utils/h2h";

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useFormatter } from "use-intl";
 import {
   Table,
@@ -30,23 +30,83 @@ interface PerformanceTableProps {
 const PerformanceTable = ({ performances }: PerformanceTableProps) => {
   const { number } = useFormatter();
   const [showAllPerformances, setShowAllPerformances] = useState(false);
+  const [selectedManager, setSelectedManager] = useState<string>("all");
+
+  // Get unique managers from performances
+  const managers = useMemo(() => {
+    const managerSet = new Set<string>();
+    performances.forEach((perf) => {
+      managerSet.add(perf.ownerId);
+    });
+    return Array.from(managerSet)
+      .map((ownerId) => {
+        const perf = performances.find((p) => p.ownerId === ownerId);
+        return {
+          ownerId,
+          teamName: perf?.teamName || "Unknown",
+        };
+      })
+      .sort((a, b) => a.teamName.localeCompare(b.teamName));
+  }, [performances]);
+
+  // Filter performances by selected manager
+  const filteredPerformances = useMemo(() => {
+    if (selectedManager === "all") {
+      return performances;
+    }
+    return performances.filter((perf) => perf.ownerId === selectedManager);
+  }, [performances, selectedManager]);
 
   const displayedPerformances = showAllPerformances
-    ? performances
-    : performances.slice(0, 10);
+    ? filteredPerformances
+    : filteredPerformances.slice(0, 10);
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
-      <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900">Game Performances</h2>
-        <button
-          onClick={() => setShowAllPerformances(!showAllPerformances)}
-          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-        >
-          {showAllPerformances
-            ? "Show Less"
-            : `Show All (${performances.length})`}
-        </button>
+      <div className="px-6 py-4 border-b border-gray-200">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Game Performances</h2>
+          <button
+            onClick={() => setShowAllPerformances(!showAllPerformances)}
+            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          >
+            {showAllPerformances
+              ? "Show Less"
+              : `Show All (${filteredPerformances.length})`}
+          </button>
+        </div>
+
+        {/* Manager Filter Dropdown */}
+        {managers.length > 1 && (
+          <div className="flex items-center space-x-2">
+            <label
+              htmlFor="manager-filter"
+              className="text-sm font-medium text-gray-700"
+            >
+              Filter by Manager:
+            </label>
+            <select
+              id="manager-filter"
+              value={selectedManager}
+              onChange={(e) => setSelectedManager(e.target.value)}
+              className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">
+                All Managers ({performances.length} games)
+              </option>
+              {managers.map((manager) => {
+                const managerGames = performances.filter(
+                  (p) => p.ownerId === manager.ownerId
+                ).length;
+                return (
+                  <option key={manager.ownerId} value={manager.ownerId}>
+                    {manager.teamName} ({managerGames} games)
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        )}
       </div>
 
       <Table>
@@ -107,10 +167,15 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
         </TableBody>
       </Table>
 
-      {!showAllPerformances && performances.length > 10 && (
+      {!showAllPerformances && filteredPerformances.length > 10 && (
         <div className="text-center pt-4 pb-6 border-t border-gray-200">
           <p className="text-sm text-gray-600">
-            Showing 10 of {performances.length} games
+            Showing 10 of {filteredPerformances.length} games
+            {selectedManager !== "all" && (
+              <span className="ml-1 text-gray-500">
+                (filtered from {performances.length} total)
+              </span>
+            )}
           </p>
         </div>
       )}

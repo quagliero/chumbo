@@ -9,6 +9,7 @@ import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
   calculateH2HRecord,
   calculateDivisionRecord,
+  calculateLeagueRecord,
 } from "@/utils/recordUtils";
 import { seasons } from "@/data";
 import {
@@ -337,19 +338,10 @@ const Standings = ({
       );
       if (!teamMatchup) return;
 
-      const allScores = weekMatchups.map((m) => m.points);
-      const betterScores = allScores.filter(
-        (score) => score > teamMatchup.points
-      ).length;
-      const worseScores = allScores.filter(
-        (score) => score < teamMatchup.points
-      ).length;
-      const sameScores =
-        allScores.filter((score) => score === teamMatchup.points).length - 1; // -1 for self
-
-      leagueWins += worseScores;
-      leagueLosses += betterScores;
-      leagueTies += sameScores;
+      const leagueRecord = calculateLeagueRecord(teamMatchup, weekMatchups);
+      leagueWins += leagueRecord.leagueWins;
+      leagueLosses += leagueRecord.leagueLosses;
+      leagueTies += leagueRecord.leagueTies;
     });
 
     return {

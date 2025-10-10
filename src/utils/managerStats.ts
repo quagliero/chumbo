@@ -85,7 +85,7 @@ export interface ManagerStats {
   seasonStats: SeasonStats[];
 
   // H2H records against other managers
-  h2hRecords: Record<string, H2HRecord>;
+  h2hRecords: Record<string, ManagerH2HRecord>;
 
   // Achievements
   championships: number;
@@ -123,7 +123,7 @@ export interface SeasonStats {
   madePlayoffs?: boolean;
 }
 
-export interface H2HRecord {
+export interface ManagerH2HRecord {
   managerId: string;
   managerName: string;
   teamName: string;
@@ -171,7 +171,7 @@ export const getManagerStats = (
     firstPlaceStandings = 0,
     playoffs = 0;
 
-  const h2hRecords: Record<string, H2HRecord> = {};
+  const h2hRecords: Record<string, ManagerH2HRecord> = {};
   const h2hGames: Array<{
     opponentId: string;
     year: number;
@@ -383,6 +383,18 @@ export const getManagerStats = (
     // Process matchups to collect player performances
     Object.keys(seasonData.matchups).forEach((weekKey) => {
       const weekNum = parseInt(weekKey);
+
+      // Filter weeks based on data mode (same logic as season stats)
+      const playoffWeekStart = getPlayoffWeekStart(seasonData);
+
+      if (dataMode === "regular" && isPlayoffWeek(weekNum, playoffWeekStart))
+        return; // Skip playoff weeks
+      if (
+        dataMode === "playoffs" &&
+        isRegularSeasonWeek(weekNum, playoffWeekStart)
+      )
+        return; // Skip regular season weeks
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const weekMatchups = (seasonData.matchups as any)[weekKey];
 
@@ -390,6 +402,19 @@ export const getManagerStats = (
         (m: ExtendedMatchup) => m.roster_id === roster.roster_id
       );
       if (!teamMatchup) return;
+
+      // For playoffs mode, only include meaningful playoff games
+      if (dataMode === "playoffs" && isPlayoffWeek(weekNum, playoffWeekStart)) {
+        if (
+          !isMeaningfulPlayoffGame(
+            teamMatchup,
+            seasonData,
+            weekNum,
+            playoffWeekStart
+          )
+        )
+          return;
+      }
 
       // Find opponent matchup to determine result
       const opponentMatchup = weekMatchups.find(
@@ -718,15 +743,15 @@ const getSeasonStats = (
     )
       return; // Skip regular season weeks
 
+    const weekMatchups = seasonData.matchups[weekKey];
+    const teamMatchup = weekMatchups.find(
+      (m: ExtendedMatchup) => m.roster_id === roster.roster_id
+    );
+
+    if (!teamMatchup) return;
+
     // For playoffs mode, only include games that are in winners_bracket and are meaningful
     if (dataMode === "playoffs" && isPlayoffWeek(weekNum, playoffWeekStart)) {
-      const weekMatchups = seasonData.matchups[weekKey];
-      const teamMatchup = weekMatchups.find(
-        (m: ExtendedMatchup) => m.roster_id === roster.roster_id
-      );
-
-      if (!teamMatchup) return;
-
       // Check if this matchup is meaningful using the utility function
       if (
         !isMeaningfulPlayoffGame(
@@ -738,11 +763,6 @@ const getSeasonStats = (
       )
         return;
     }
-
-    const weekMatchups = seasonData.matchups[weekKey];
-    const teamMatchup = weekMatchups.find(
-      (m: ExtendedMatchup) => m.roster_id === roster.roster_id
-    );
 
     if (teamMatchup) {
       pointsFor += teamMatchup.points;
@@ -1006,13 +1026,21 @@ const getPlayoffStats = (
 
 /**
  * Calculate H2H records for a season
+ *
+ * Note: This function is separate from the H2H utilities in h2h.ts because it:
+ * - Accumulates records across multiple seasons
+ * - Supports different data modes (regular/playoffs/combined)
+ * - Tracks streaks and recent game details
+ * - Uses ManagerH2HRecord type structure
+ *
+ * The h2h.ts utilities are for single-season, matchup-focused calculations.
  */
 const calculateH2HForSeason = (
   managerId: string,
   year: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   seasonData: any,
-  h2hRecords: Record<string, H2HRecord>,
+  h2hRecords: Record<string, ManagerH2HRecord>,
   h2hGames: Array<{
     opponentId: string;
     year: number;

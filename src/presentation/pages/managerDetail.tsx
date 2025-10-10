@@ -7,7 +7,7 @@ import {
   TopPerformance,
   SeasonStats,
   ManagerStats,
-  H2HRecord,
+  ManagerH2HRecord,
 } from "@/utils/managerStats";
 import {
   Table,
@@ -25,11 +25,7 @@ import {
   MostCappedPlayers,
   TopPerformances,
 } from "@/presentation/components/ManagerDetail";
-import type {
-  ManagerStats,
-  H2HRecordWithOpponent,
-  TopPerformance,
-} from "@/presentation/components/ManagerDetail";
+import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDetail";
 
 const ManagerDetail = () => {
   const { managerId, tab, section } = useParams<{
@@ -77,7 +73,7 @@ const ManagerDetail = () => {
   const h2hRecords: H2HRecordWithOpponent[] = useMemo(() => {
     if (!managerStats) return [];
     return Object.entries((managerStats as ManagerStats).h2hRecords || {}).map(
-      ([opponentId, record]: [string, H2HRecord]) => ({
+      ([opponentId, record]: [string, ManagerH2HRecord]) => ({
         opponentId,
         opponentName: record.managerName || "Unknown",
         record: record,

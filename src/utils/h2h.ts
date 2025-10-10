@@ -15,7 +15,7 @@ interface SeasonData {
   year?: number;
 }
 
-export interface H2HRecord {
+export interface H2HMatchupRecord {
   team1Wins: number;
   team2Wins: number;
   ties: number;
@@ -31,7 +31,7 @@ export interface H2HGame {
   pointsAgainst: number;
 }
 
-export interface H2HRecordWithGames extends H2HRecord {
+export interface H2HRecordWithGames extends H2HMatchupRecord {
   games: H2HGame[];
 }
 
@@ -44,7 +44,7 @@ export interface H2HRecordWithGames extends H2HRecord {
 export const getAllTimeH2HRecord = (
   team1OwnerId: string,
   team2OwnerId: string
-): H2HRecord => {
+): H2HMatchupRecord => {
   let team1Wins = 0;
   let team2Wins = 0;
   let ties = 0;
@@ -144,7 +144,7 @@ export const getH2HRecordForSeason = (
   team1RosterId: number,
   team2RosterId: number,
   seasonData: SeasonData
-): H2HRecord => {
+): H2HMatchupRecord => {
   let team1Wins = 0;
   let team2Wins = 0;
   let ties = 0;
