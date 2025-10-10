@@ -1,18 +1,15 @@
 import { useFormatter } from "use-intl";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { ExtendedRoster } from "../../../types/roster";
-import { ExtendedUser } from "../../../types/user";
-import { managers } from "../../../data";
-import { getAllTimeH2HRecord } from "../../../utils/h2h";
-import { getPlayerImageUrl } from "../../../utils/playerImage";
-import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
-import {
-  getRecordUpToWeek,
-  getCurrentStreak,
-} from "../../../utils/matchupStats";
-import { getPlayerRows, getOptimalLineup } from "../../../utils/lineupAnalysis";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedUser } from "@/types/user";
+import { managers } from "@/data";
+import { getAllTimeH2HRecord } from "@/utils/h2h";
+import { getPlayerImageUrl } from "@/utils/playerImage";
+import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
+import { getRecordUpToWeek, getCurrentStreak } from "@/utils/matchupStats";
+import { getPlayerRows, getOptimalLineup } from "@/utils/lineupAnalysis";
 
 interface MatchupDetailProps {
   matchup: [ExtendedMatchup, ExtendedMatchup];

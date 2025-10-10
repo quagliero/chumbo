@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import H2HContent from "../components/H2HContent/H2HContent";
+import H2HContent from "@/presentation/components/H2HContent/H2HContent";
 
 export default function H2HDetail() {
   const { managerA, managerB } = useParams<{

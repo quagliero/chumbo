@@ -1,11 +1,11 @@
 import { useFormatter } from "use-intl";
 import { useNavigate } from "react-router-dom";
-import { BracketMatch } from "../../../types/bracket";
-import { ExtendedRoster } from "../../../types/roster";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { ExtendedLeague } from "../../../types/league";
-import { ExtendedUser } from "../../../types/user";
-import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
+import { BracketMatch } from "@/types/bracket";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedLeague } from "@/types/league";
+import { ExtendedUser } from "@/types/user";
+import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 
 interface PlayoffBracketProps {
   winnersBracket: BracketMatch[];

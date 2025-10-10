@@ -8,9 +8,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
-import { seasons } from "../../../data";
-import { getCumulativeStandings, TeamStats } from "../../../utils/standings";
-import managers from "../../../data/managers.json";
+import { seasons } from "@/data";
+import { getCumulativeStandings, TeamStats } from "@/utils/standings";
+import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
   Table,
   TableHeader,
@@ -72,8 +72,7 @@ const AllTimeTable = () => {
     columnHelper.accessor("team_name", {
       cell: (info) => {
         const row = info.row.original;
-        const manager = managers.find((m) => m.sleeper.id === row.owner_id);
-        const managerId = manager?.id;
+        const managerId = getManagerIdBySleeperOwnerId(row.owner_id);
 
         return (
           <div className="text-left">
@@ -116,6 +115,7 @@ const AllTimeTable = () => {
       cell: (info) => {
         const value = info.getValue() / 100;
         const formatted = number(value, {
+          minimumFractionDigits: 3,
           maximumFractionDigits: 3,
         });
         // Remove leading zero if present (e.g., "0.500" -> ".500")
@@ -132,7 +132,11 @@ const AllTimeTable = () => {
     }),
     columnHelper.accessor("points_for_avg", {
       header: () => "Avg.",
-      cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
+      cell: (info) =>
+        number(info.getValue(), {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        }),
       sortingFn: "alphanumeric",
       enableSorting: true,
     }),
@@ -144,7 +148,11 @@ const AllTimeTable = () => {
     }),
     columnHelper.accessor("points_against_avg", {
       header: () => "Avg.",
-      cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
+      cell: (info) =>
+        number(info.getValue(), {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2,
+        }),
       sortingFn: "alphanumeric",
       enableSorting: true,
     }),

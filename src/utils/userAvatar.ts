@@ -1,4 +1,4 @@
-import { ExtendedUser } from "../types/user";
+import { ExtendedUser } from "@/types/user";
 
 /**
  * Generates the avatar URL for a user

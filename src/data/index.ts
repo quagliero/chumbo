@@ -1,13 +1,13 @@
-import { CURRENT_YEAR, YEARS } from "../domain/constants";
-import { LosersBracket, WinnersBracket } from "../types/bracket";
-import { ExtendedDraft } from "../types/draft";
-import { ExtendedLeague } from "../types/league";
-import { Manager } from "../types/manager";
-import { ExtendedMatchup } from "../types/matchup";
-import { ExtendedPick } from "../types/pick";
-import { Player } from "../types/player";
-import { ExtendedRoster } from "../types/roster";
-import { ExtendedUser } from "../types/user";
+import { CURRENT_YEAR, YEARS } from "@/domain/constants";
+import { LosersBracket, WinnersBracket } from "@/types/bracket";
+import { ExtendedDraft } from "@/types/draft";
+import { ExtendedLeague } from "@/types/league";
+import { Manager } from "@/types/manager";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedPick } from "@/types/pick";
+import { Player } from "@/types/player";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedUser } from "@/types/user";
 
 type ValidYear = (typeof YEARS)[number];
 type WeekKeys =

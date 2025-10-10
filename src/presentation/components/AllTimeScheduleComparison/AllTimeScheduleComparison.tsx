@@ -1,8 +1,10 @@
 import { useMemo, useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { seasons } from "../../../data";
-import { getTeamName } from "../../../utils/teamName";
-import { ExtendedMatchup } from "../../../types/matchup";
+import { seasons } from "@/data";
+import { getTeamName } from "@/utils/teamName";
+import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
+import { calculateWinPercentage } from "@/utils/recordUtils";
+import { ExtendedMatchup } from "@/types/matchup";
 import {
   Table,
   TableHeader,
@@ -221,15 +223,19 @@ const AllTimeScheduleComparison = () => {
       });
 
       // Calculate win percentages
-      const totalGames = totalWins + totalLosses + totalTies;
-      const actualWinPercentage =
-        totalGames > 0 ? (totalWins + totalTies * 0.5) / totalGames : 0;
+      const actualWinPercentage = calculateWinPercentage(
+        totalWins,
+        totalLosses,
+        totalTies
+      );
 
       Object.keys(crossScheduleRecords).forEach((opponentId) => {
         const record = crossScheduleRecords[opponentId];
-        const games = record.wins + record.losses + record.ties;
-        record.winPercentage =
-          games > 0 ? (record.wins + record.ties * 0.5) / games : 0;
+        record.winPercentage = calculateWinPercentage(
+          record.wins,
+          record.losses,
+          record.ties
+        );
       });
 
       statsMap.set(ownerId, {
@@ -515,16 +521,23 @@ const AllTimeScheduleComparison = () => {
                     <TableCell>
                       <div className="flex items-center">
                         <div className="text-sm font-medium text-gray-900">
-                          {isSelectedTeam ? (
-                            team.teamName
-                          ) : (
-                            <Link
-                              to={`/managers/${team.ownerId}`}
-                              className="text-blue-600 hover:text-blue-800"
-                            >
-                              {team.teamName}
-                            </Link>
-                          )}
+                          {isSelectedTeam
+                            ? team.teamName
+                            : (() => {
+                                const managerId = getManagerIdBySleeperOwnerId(
+                                  team.ownerId
+                                );
+                                return managerId ? (
+                                  <Link
+                                    to={`/managers/${managerId}`}
+                                    className="text-blue-600 hover:text-blue-800"
+                                  >
+                                    {team.teamName}
+                                  </Link>
+                                ) : (
+                                  <span>{team.teamName}</span>
+                                );
+                              })()}
                         </div>
                         {isSelectedTeam && (
                           <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
@@ -612,12 +625,21 @@ const AllTimeScheduleComparison = () => {
               {allTimeStats.map((rowTeam) => (
                 <TableRow key={rowTeam.ownerId}>
                   <TableCell className="sticky left-0 bg-white z-10 font-medium">
-                    <Link
-                      to={`/managers/${rowTeam.ownerId}`}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      {rowTeam.teamName}
-                    </Link>
+                    {(() => {
+                      const managerId = getManagerIdBySleeperOwnerId(
+                        rowTeam.ownerId
+                      );
+                      return managerId ? (
+                        <Link
+                          to={`/managers/${managerId}`}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          {rowTeam.teamName}
+                        </Link>
+                      ) : (
+                        <span>{rowTeam.teamName}</span>
+                      );
+                    })()}
                   </TableCell>
                   {allTimeStats.map((colTeam) => {
                     const isSameTeam = rowTeam.ownerId === colTeam.ownerId;

@@ -2,25 +2,25 @@ import { IntlProvider } from "use-intl";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "./App.css";
-import Header from "./presentation/components/Header/Header";
-import ScrollToTop from "./presentation/components/ScrollToTop/ScrollToTop";
+import Header from "@/presentation/components/Header/Header";
+import ScrollToTop from "@/presentation/components/ScrollToTop/ScrollToTop";
 
 // Lazy load heavy components
-const Home = lazy(() => import("./presentation/pages/home"));
-const Wiki = lazy(() => import("./presentation/pages/wiki"));
-const Settings = lazy(() => import("./presentation/pages/settings"));
-const History = lazy(() => import("./presentation/pages/history"));
-const Rules = lazy(() => import("./presentation/pages/rules"));
-const ManagerDetail = lazy(() => import("./presentation/pages/managerDetail"));
-const Managers = lazy(() => import("./presentation/pages/managers"));
-const PlayerDetail = lazy(() => import("./presentation/pages/playerDetail"));
-const Players = lazy(() => import("./presentation/pages/players"));
-const H2H = lazy(() => import("./presentation/pages/h2h"));
-const H2HDetail = lazy(() => import("./presentation/pages/h2hDetail"));
+const Home = lazy(() => import("@/presentation/pages/home"));
+const Wiki = lazy(() => import("@/presentation/pages/wiki"));
+const Settings = lazy(() => import("@/presentation/pages/settings"));
+const History = lazy(() => import("@/presentation/pages/history"));
+const Rules = lazy(() => import("@/presentation/pages/rules"));
+const ManagerDetail = lazy(() => import("@/presentation/pages/managerDetail"));
+const Managers = lazy(() => import("@/presentation/pages/managers"));
+const PlayerDetail = lazy(() => import("@/presentation/pages/playerDetail"));
+const Players = lazy(() => import("@/presentation/pages/players"));
+const H2H = lazy(() => import("@/presentation/pages/h2h"));
+const H2HDetail = lazy(() => import("@/presentation/pages/h2hDetail"));
 
 // Lazy load WikiOverview separately
 const WikiOverview = lazy(() =>
-  import("./presentation/pages/wiki").then((module) => ({
+  import("@/presentation/pages/wiki").then((module) => ({
     default: module.WikiOverview,
   }))
 );

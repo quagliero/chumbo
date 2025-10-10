@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { ExtendedUser } from "../types/user";
-import { getTeamName } from "../utils/teamName";
+import { ExtendedUser } from "@/types/user";
+import { getTeamName } from "@/utils/teamName";
 
 /**
  * Custom hook for getting team names with user context

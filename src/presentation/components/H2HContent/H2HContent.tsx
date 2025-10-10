@@ -1,11 +1,17 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
-import { seasons, managers, getPlayer, players } from "../../../data";
-import { getPlayerImageUrl } from "../../../utils/playerImage";
-import { ExtendedRoster } from "../../../types/roster";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { BracketMatch } from "../../../types/bracket";
+import { seasons, managers, getPlayer } from "@/data";
+import { getPlayerImageUrl } from "@/utils/playerImage";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedMatchup } from "@/types/matchup";
+import { BracketMatch } from "@/types/bracket";
+import {
+  getPlayoffWeekStart,
+  isPlayoffWeek,
+  isRegularSeasonWeek,
+} from "@/utils/playoffUtils";
+import { getPlayerPositionComprehensive } from "@/utils/playerDataUtils";
 import {
   Table,
   TableHeader,
@@ -82,8 +88,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
       if (!managerARoster || !managerBRoster) return;
 
       // Get playoff week start for this season
-      const playoffWeekStart =
-        seasonData.league?.settings?.playoff_week_start || 15;
+      const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
       // Process regular season matchups
 
@@ -93,7 +98,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             const week = parseInt(weekStr);
 
             // Skip playoff weeks for regular season matchups
-            if (week >= playoffWeekStart) return;
+            if (isPlayoffWeek(week, playoffWeekStart)) return;
 
             // Find matchups between the two managers (avoid duplicates)
             const processedMatchupIds = new Set<string>();
@@ -213,7 +218,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             const week = parseInt(weekStr);
 
             // Only include playoff weeks
-            if (week < playoffWeekStart) return;
+            if (isRegularSeasonWeek(week, playoffWeekStart)) return;
 
             // Find playoff matchups between the two managers (avoid duplicates)
             const processedPlayoffMatchupIds = new Set<string>();
@@ -408,8 +413,11 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
       }
 
       // Determine which manager the streak belongs to
-      const streakManager =
-        mostRecentResult === "W" ? "A" : mostRecentResult === "L" ? "B" : "A";
+      // The result is from Manager A's perspective, so:
+      // - "W" streak belongs to Manager A
+      // - "L" streak belongs to Manager A (Manager A is losing)
+      // - "T" streak belongs to both (but we'll show Manager A)
+      const streakManager = "A";
       currentStreak = {
         type: mostRecentResult,
         count: streakCount,
@@ -467,52 +475,8 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
       const usedPlayers = new Set<string>();
 
       // Helper function to get player position
-      const getPlayerPosition = (playerName: string) => {
-        // Try to find player using getPlayer by searching for matching names
-        // This is a bit tricky since getPlayer expects an ID, but we have a name
-        // So we'll search through all players to find one with matching name
-        for (const [, seasonData] of Object.entries(seasons)) {
-          if (seasonData.players) {
-            const player = Object.values(seasonData.players).find(
-              (p) =>
-                p.full_name === playerName ||
-                `${p.first_name} ${p.last_name}` === playerName
-            );
-            if (player) {
-              return player.position;
-            }
-          }
-        }
-
-        // Also try root players.json
-        if (players) {
-          const player = Object.values(players).find(
-            (p) =>
-              p.full_name === playerName ||
-              `${p.first_name} ${p.last_name}` === playerName
-          );
-          if (player) {
-            return player.position;
-          }
-        }
-
-        // If not found in players.json, check if it's a string-named player in unmatched_players
-        for (const [, seasonData] of Object.entries(seasons)) {
-          for (const [, weekMatchups] of Object.entries(
-            seasonData.matchups || {}
-          )) {
-            for (const matchup of weekMatchups) {
-              if (
-                matchup.unmatched_players &&
-                matchup.unmatched_players[playerName]
-              ) {
-                return matchup.unmatched_players[playerName];
-              }
-            }
-          }
-        }
-
-        return "UNK"; // Default if position not found
+      const getPlayerPositionLocal = (playerName: string) => {
+        return getPlayerPositionComprehensive(playerName);
       };
 
       // Fill each position with the best available player
@@ -524,7 +488,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
         if (slot.position === "FLEX") {
           // FLEX can be RB, WR, or TE
           const flexPlayers = availablePlayers.filter((p) => {
-            const pos = getPlayerPosition(p.playerName);
+            const pos = getPlayerPositionLocal(p.playerName);
             return pos === "RB" || pos === "WR" || pos === "TE";
           });
           if (flexPlayers.length > 0) {
@@ -534,7 +498,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
         } else {
           // Specific position
           const positionPlayers = availablePlayers.filter((p) => {
-            const pos = getPlayerPosition(p.playerName);
+            const pos = getPlayerPositionLocal(p.playerName);
             return pos === slot.position;
           });
           if (positionPlayers.length > 0) {
@@ -758,11 +722,9 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                     : "bg-gray-100 text-gray-800"
                 }`}
               >
-                {stats.currentStreak.type === "W"
+                {stats.currentStreak.manager === "A"
                   ? managerAData?.teamName
-                  : stats.currentStreak.type === "L"
-                  ? managerBData?.teamName
-                  : "Tie"}{" "}
+                  : managerBData?.teamName}{" "}
                 {stats.currentStreak.type}
                 {stats.currentStreak.count}
               </span>

@@ -8,11 +8,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
-import { seasons } from "../../../data";
-import managers from "../../../data/managers.json";
-import { ExtendedRoster } from "../../../types/roster";
-import { Matchup } from "../../../types/matchup";
-import { getTeamName } from "../../../utils/teamName";
+import { seasons } from "@/data";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedMatchup } from "@/types/matchup";
+import { getTeamName } from "@/utils/teamName";
+import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
+import {
+  calculateWinPercentage,
+  getRosterPointsFor,
+  calculateWeeklyLeagueRecord,
+} from "@/utils/recordUtils";
 import {
   Table,
   TableHeader,
@@ -63,7 +68,9 @@ const AllTimeBreakdown = () => {
       if (!seasonData?.rosters || !seasonData?.matchups) return;
 
       const rosters = seasonData.rosters as ExtendedRoster[];
-      const matchups = seasonData.matchups as { [key: string]: Matchup[] };
+      const matchups = seasonData.matchups as {
+        [key: string]: ExtendedMatchup[];
+      };
 
       // Get playoff week start to filter out playoff games
       const playoffWeekStart =
@@ -93,50 +100,32 @@ const AllTimeBreakdown = () => {
 
         // Calculate weekly records against the league for this roster
         regularSeasonWeeks.forEach((week) => {
-          const weekMatchups = matchups[week.toString()];
-          if (!weekMatchups) return;
-
-          const rosterMatchup = weekMatchups.find(
-            (m) => m.roster_id === roster.roster_id
+          const weeklyRecord = calculateWeeklyLeagueRecord(
+            roster,
+            week,
+            matchups
           );
-          if (!rosterMatchup) return;
-
-          const teamPoints = rosterMatchup.points;
-          let weeklyWins = 0;
-          let weeklyLosses = 0;
-          let weeklyTies = 0;
-
-          // Compare this roster's score against all other rosters this week
-          weekMatchups.forEach((otherMatchup) => {
-            if (otherMatchup.roster_id === roster.roster_id) return;
-
-            if (teamPoints > otherMatchup.points) {
-              weeklyWins++;
-            } else if (teamPoints < otherMatchup.points) {
-              weeklyLosses++;
-            } else {
-              weeklyTies++;
-            }
-          });
 
           // Add to totals
-          teamStat.totalWins += weeklyWins;
-          teamStat.totalLosses += weeklyLosses;
-          teamStat.totalTies += weeklyTies;
+          teamStat.totalWins += weeklyRecord.wins;
+          teamStat.totalLosses += weeklyRecord.losses;
+          teamStat.totalTies += weeklyRecord.ties;
         });
 
         // Add total points
-        teamStat.totalPoints +=
-          roster.settings.fpts + roster.settings.fpts_decimal / 100;
+        teamStat.totalPoints += getRosterPointsFor(roster);
       });
     });
 
     // Calculate win percentages
     const result = Array.from(teamStats.values()).map((stat) => {
-      const totalGames = stat.totalWins + stat.totalLosses + stat.totalTies;
       return {
         ...stat,
-        winPercentage: totalGames > 0 ? stat.totalWins / totalGames : 0,
+        winPercentage: calculateWinPercentage(
+          stat.totalWins,
+          stat.totalLosses,
+          stat.totalTies
+        ),
       };
     });
 
@@ -155,8 +144,7 @@ const AllTimeBreakdown = () => {
     columnHelper.accessor("team_name", {
       cell: (info) => {
         const row = info.row.original;
-        const manager = managers.find((m) => m.sleeper.id === row.owner_id);
-        const managerId = manager?.id;
+        const managerId = getManagerIdBySleeperOwnerId(row.owner_id);
 
         return (
           <div className="text-left">

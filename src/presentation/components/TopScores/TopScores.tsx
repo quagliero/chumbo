@@ -1,13 +1,14 @@
 import { useMemo, useState, useEffect } from "react";
 import { Link, useParams, NavLink } from "react-router-dom";
 import { useFormatter } from "use-intl";
-import { seasons } from "../../../data";
-import managers from "../../../data/managers.json";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { ExtendedRoster } from "../../../types/roster";
-import { getUserByOwnerId, getUserAvatarUrl } from "../../../utils/userAvatar";
-import { getPlayer } from "../../../data";
-import { getPlayerImageUrl } from "../../../utils/playerImage";
+import { seasons } from "@/data";
+import managers from "@/data/managers.json";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedRoster } from "@/types/roster";
+import { getUserByOwnerId, getUserAvatarUrl } from "@/utils/userAvatar";
+import { getPlayer } from "@/data";
+import { getPlayerImageUrl } from "@/utils/playerImage";
+import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
 
 type ScoreMode = "team-score" | "match-total" | "player-score";
 type SortOrder = "high-to-low" | "low-to-high";
@@ -290,15 +291,14 @@ const TopScores = () => {
           [key: string]: ExtendedMatchup[];
         };
 
-        const playoffWeekStart =
-          seasonData.league?.settings?.playoff_week_start || 15;
+        const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
         // Process each week
         Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
           const week = parseInt(weekStr);
 
           // Skip playoff weeks except for elimination/championship games
-          if (week >= playoffWeekStart) {
+          if (isPlayoffWeek(week, playoffWeekStart)) {
             const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) => {
               const bracketMatch = seasonData.winners_bracket?.find(
                 (bm) =>

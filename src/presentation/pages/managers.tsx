@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormatter } from "use-intl";
-import { getManagerStats, DataMode } from "../../utils/managerStats";
-import managers from "../../data/managers.json";
+import { getManagerStats, DataMode } from "@/utils/managerStats";
+import managers from "@/data/managers.json";
 
 type SortOption =
   | "wins"

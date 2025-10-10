@@ -1,18 +1,19 @@
 import { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { YEARS } from "../../domain/constants";
-import { TabType } from "../../constants/fantasy";
-import { useSeasonData } from "../../hooks/useSeasonData";
-import { useTeamName } from "../../hooks/useTeamName";
-import { ExtendedMatchup } from "../../types/matchup";
-import { ExtendedRoster } from "../../types/roster";
-import DraftBoard from "../components/DraftBoard/DraftBoard";
-import Standings from "../components/Standings/Standings";
-import Matchups from "../components/Matchups/Matchups";
-import PlayoffBracket from "../components/PlayoffBracket/PlayoffBracket";
-import MatchupDetail from "../components/MatchupDetail/MatchupDetail";
-import ScheduleComparison from "../components/ScheduleComparison/ScheduleComparison";
-import Breakdown from "../components/Breakdown/Breakdown";
+import { YEARS } from "@/domain/constants";
+import { TabType } from "@/constants/fantasy";
+import { useSeasonData } from "@/hooks/useSeasonData";
+import { useTeamName } from "@/hooks/useTeamName";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedRoster } from "@/types/roster";
+import { getH2HRecordForSeason } from "@/utils/h2h";
+import DraftBoard from "@/presentation/components/DraftBoard/DraftBoard";
+import Standings from "@/presentation/components/Standings/Standings";
+import Matchups from "@/presentation/components/Matchups/Matchups";
+import PlayoffBracket from "@/presentation/components/PlayoffBracket/PlayoffBracket";
+import MatchupDetail from "@/presentation/components/MatchupDetail/MatchupDetail";
+import ScheduleComparison from "@/presentation/components/ScheduleComparison/ScheduleComparison";
+import Breakdown from "@/presentation/components/Breakdown/Breakdown";
 
 const History = () => {
   const { year, tab, week, matchupId } = useParams<{
@@ -94,51 +95,24 @@ const History = () => {
     });
   }, [seasonData]);
 
-  // Calculate H2H record between two teams
+  // Calculate H2H record between two teams using utility
   const getH2HRecord = (
     team1: ExtendedRoster,
     team2: ExtendedRoster,
-    matchups: Record<string, ExtendedMatchup[]> | undefined,
-    playoffWeekStart?: number
+    matchups: Record<string, ExtendedMatchup[]> | undefined
   ) => {
-    if (!matchups) return { wins: 0, losses: 0, ties: 0 };
+    if (!matchups || !seasonData) return { wins: 0, losses: 0, ties: 0 };
 
-    let wins = 0;
-    let losses = 0;
-    let ties = 0;
-
-    Object.keys(matchups).forEach((weekKey) => {
-      const weekNum = parseInt(weekKey);
-
-      // Skip playoff weeks if playoffWeekStart is provided
-      if (playoffWeekStart && weekNum >= playoffWeekStart) return;
-
-      const weekMatchups = matchups[weekKey];
-      const team1Matchup = weekMatchups.find(
-        (m: ExtendedMatchup) => m.roster_id === team1.roster_id
-      );
-      const team2Matchup = weekMatchups.find(
-        (m: ExtendedMatchup) => m.roster_id === team2.roster_id
-      );
-
-      if (!team1Matchup || !team2Matchup) return;
-
-      // Check if they played each other this week
-      if (team1Matchup.matchup_id === team2Matchup.matchup_id) {
-        const team1Score = team1Matchup.points;
-        const team2Score = team2Matchup.points;
-
-        if (team1Score > team2Score) {
-          wins++;
-        } else if (team1Score < team2Score) {
-          losses++;
-        } else {
-          ties++;
-        }
-      }
-    });
-
-    return { wins, losses, ties };
+    const h2hRecord = getH2HRecordForSeason(
+      team1.roster_id,
+      team2.roster_id,
+      seasonData
+    );
+    return {
+      wins: h2hRecord.team1Wins,
+      losses: h2hRecord.team2Wins,
+      ties: h2hRecord.ties,
+    };
   };
 
   // Get playoff seeds using bracket-based analysis
@@ -247,12 +221,7 @@ const History = () => {
 
         // For non-division years, only use H2H for 2012
         if (year && parseInt(year) === 2012) {
-          const h2hRecord = getH2HRecord(
-            a,
-            b,
-            seasonData.matchups,
-            seasonData.league?.settings?.playoff_week_start
-          );
+          const h2hRecord = getH2HRecord(a, b, seasonData.matchups);
           const totalH2HGames =
             h2hRecord.wins + h2hRecord.losses + h2hRecord.ties;
 

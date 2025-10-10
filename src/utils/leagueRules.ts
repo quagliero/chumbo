@@ -1,5 +1,5 @@
-import { YEARS } from "../domain/constants";
-import { ExtendedLeague } from "../types/league";
+import { YEARS } from "@/domain/constants";
+import { ExtendedLeague } from "@/types/league";
 
 export interface DraftSettings {
   rounds: number;

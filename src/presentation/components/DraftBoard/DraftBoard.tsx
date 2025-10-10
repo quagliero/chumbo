@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import { getPlayer } from "../../../data";
-import { ExtendedDraft } from "../../../types/draft";
-import { ExtendedPick } from "../../../types/pick";
-import { ExtendedRoster } from "../../../types/roster";
-import { getManagerAbbr } from "../../../utils/managerUtils";
-import { getPlayerImageUrl } from "../../../utils/playerImage";
-import { POSITION_COLORS } from "../../../constants/fantasy";
+import { getPlayer } from "@/data";
+import { ExtendedDraft } from "@/types/draft";
+import { ExtendedPick } from "@/types/pick";
+import { ExtendedRoster } from "@/types/roster";
+import { getManagerAbbr } from "@/utils/managerUtils";
+import { getPlayerImageUrl } from "@/utils/playerImage";
+import { POSITION_COLORS } from "@/constants/fantasy";
 
 interface DraftBoardProps {
   draft: ExtendedDraft;

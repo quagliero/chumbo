@@ -1,5 +1,5 @@
-import managers from "../data/managers.json";
-import { ExtendedUser } from "../types/user";
+import managers from "@/data/managers.json";
+import { ExtendedUser } from "@/types/user";
 
 /**
  * Get team name by owner ID with fallback hierarchy

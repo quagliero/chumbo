@@ -1,11 +1,12 @@
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { ExtendedRoster } from "../../../types/roster";
-import { ExtendedUser } from "../../../types/user";
-import { getRecordUpToWeek } from "../../../utils/matchupStats";
-import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedUser } from "@/types/user";
+import { getRecordUpToWeek } from "@/utils/matchupStats";
+import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
+import { getPlayoffWeekStart } from "@/utils/playoffUtils";
 
 interface MatchupsProps {
   weekMatchups: ExtendedMatchup[][];
@@ -37,7 +38,7 @@ const Matchups = ({
   const { number } = useFormatter();
 
   // Check if current week is a playoff week
-  const playoffWeekStart = league?.settings?.playoff_week_start || 15;
+  const playoffWeekStart = getPlayoffWeekStart({ league });
   const isPlayoffWeek = selectedWeek >= playoffWeekStart;
 
   // Classify matchups for playoff weeks

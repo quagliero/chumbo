@@ -1,6 +1,6 @@
-import { ExtendedRoster } from "../../../types/roster";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { League } from "../../../types/league";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedMatchup } from "@/types/matchup";
+import { League } from "@/types/league";
 import {
   Table,
   TableHeader,

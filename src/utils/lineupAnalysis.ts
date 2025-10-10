@@ -1,6 +1,7 @@
-import { ExtendedMatchup } from "../types/matchup";
-import { Player } from "../types/player";
-import { getPlayer } from "../data";
+import { ExtendedMatchup } from "@/types/matchup";
+import { Player } from "@/types/player";
+import { getPlayer } from "@/data";
+import { getPlayerName, getPlayerPosition } from "@/utils/playerDataUtils";
 
 export interface PlayerRow {
   playerId: string | number;
@@ -60,25 +61,9 @@ const createPlayerRow = (
   const player = getPlayer(playerIdStr, year);
   const points = matchupData.players_points?.[playerIdStr] || 0;
 
-  // Determine the name
-  let name: string;
-  if (player?.first_name || player?.last_name) {
-    // We have player data with at least a first or last name
-    name = `${player.first_name || ""} ${player.last_name || ""}`.trim();
-  } else {
-    // No player data - use ID as fallback
-    name = playerIdStr;
-  }
-
-  // Determine the position - check unmatched_players first for string-named players
-  let position = positionLabel || player?.position || "UNK";
-  if (
-    position === "UNK" &&
-    matchupData.unmatched_players &&
-    matchupData.unmatched_players[playerIdStr]
-  ) {
-    position = matchupData.unmatched_players[playerIdStr];
-  }
+  // Use utility functions for name and position resolution
+  const name = getPlayerName(playerIdStr, year);
+  const position = positionLabel || getPlayerPosition(playerIdStr, year);
 
   return {
     playerId,

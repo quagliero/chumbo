@@ -1,4 +1,4 @@
-import { ExtendedMatchup } from "../types/matchup";
+import { ExtendedMatchup } from "@/types/matchup";
 
 export interface RecordStats {
   wins: number;

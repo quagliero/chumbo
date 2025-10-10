@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useFormatter } from "use-intl";
-import { ExtendedRoster } from "../../../types/roster";
-import { ExtendedMatchup } from "../../../types/matchup";
-import { League } from "../../../types/league";
+import { ExtendedRoster } from "@/types/roster";
+import { ExtendedMatchup } from "@/types/matchup";
+import { League } from "@/types/league";
+import {
+  calculateWeeklyLeagueRecord,
+  determineMatchupResult,
+} from "@/utils/recordUtils";
 import {
   Table,
   TableHeader,
@@ -47,33 +51,7 @@ const Breakdown = ({
 
   // Calculate weekly record for a team
   const getWeeklyRecord = (roster: ExtendedRoster, week: number) => {
-    const weekMatchups = matchups[week.toString()];
-    if (!weekMatchups) return { wins: 0, losses: 0, ties: 0, points: 0 };
-
-    const teamMatchup = weekMatchups.find(
-      (m) => m.roster_id === roster.roster_id
-    );
-    if (!teamMatchup) return { wins: 0, losses: 0, ties: 0, points: 0 };
-
-    const teamPoints = teamMatchup.points;
-    let wins = 0;
-    let losses = 0;
-    let ties = 0;
-
-    // Compare against all other teams this week
-    weekMatchups.forEach((otherMatchup) => {
-      if (otherMatchup.roster_id === roster.roster_id) return;
-
-      if (teamPoints > otherMatchup.points) {
-        wins++;
-      } else if (teamPoints < otherMatchup.points) {
-        losses++;
-      } else {
-        ties++;
-      }
-    });
-
-    return { wins, losses, ties, points: teamPoints };
+    return calculateWeeklyLeagueRecord(roster, week, matchups || {});
   };
 
   // Calculate season totals for a team
@@ -112,12 +90,7 @@ const Breakdown = ({
     );
     if (!opponent) return null;
 
-    const teamScore = teamMatchup.points;
-    const opponentScore = opponent.points;
-
-    if (teamScore > opponentScore) return "W";
-    if (teamScore < opponentScore) return "L";
-    return "T";
+    return determineMatchupResult(teamMatchup.points, opponent.points);
   };
 
   // Calculate luck for a week (positive = lucky, negative = unlucky)

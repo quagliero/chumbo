@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { seasons } from "../data";
-import { ValidYear } from "../constants/fantasy";
+import { seasons } from "@/data";
+import { ValidYear } from "@/constants/fantasy";
 
 /**
  * Custom hook for getting season data

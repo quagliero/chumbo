@@ -1,8 +1,24 @@
-import { seasons, getPlayer } from "../data";
-import { YEARS } from "../domain/constants";
-import { ExtendedMatchup } from "../types/matchup";
-import { ExtendedRoster } from "../types/roster";
-import { BracketMatch } from "../types/bracket";
+import { seasons, getPlayer } from "@/data";
+import { YEARS } from "@/domain/constants";
+import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedRoster } from "@/types/roster";
+import { BracketMatch } from "@/types/bracket";
+import {
+  getPlayoffWeekStart,
+  isPlayoffWeek,
+  isRegularSeasonWeek,
+  isMeaningfulPlayoffGame,
+} from "@/utils/playoffUtils";
+import managers from "@/data/managers.json";
+import { getManagerBySleeperOwnerId } from "@/utils/managerUtils";
+import {
+  getRosterPointsFor,
+  getRosterPointsAgainst,
+  determineMatchupResult,
+  calculateLeagueRecord,
+  sortTeamsByRecord,
+} from "@/utils/recordUtils";
+import { getPlayerPosition } from "@/utils/playerDataUtils";
 
 export type DataMode = "regular" | "playoffs" | "combined";
 
@@ -201,12 +217,8 @@ export const getManagerStats = (
       totalLosses += roster.settings?.losses || 0;
       totalTies += roster.settings?.ties || 0;
 
-      const rosterPointsFor =
-        (roster.settings?.fpts || 0) +
-        (roster.settings?.fpts_decimal || 0) / 100;
-      const rosterPointsAgainst =
-        (roster.settings?.fpts_against || 0) +
-        (roster.settings?.fpts_against_decimal || 0) / 100;
+      const rosterPointsFor = getRosterPointsFor(roster);
+      const rosterPointsAgainst = getRosterPointsAgainst(roster);
 
       totalPointsFor += rosterPointsFor;
       totalPointsAgainst += rosterPointsAgainst;
@@ -388,8 +400,10 @@ export const getManagerStats = (
 
       let result = "T";
       if (opponentMatchup) {
-        if (teamMatchup.points > opponentMatchup.points) result = "W";
-        else if (teamMatchup.points < opponentMatchup.points) result = "L";
+        result = determineMatchupResult(
+          teamMatchup.points,
+          opponentMatchup.points
+        );
       }
 
       // Process starters
@@ -442,8 +456,8 @@ export const getManagerStats = (
             (r: ExtendedRoster) => r.roster_id === opponentMatchup.roster_id
           );
           if (opponentRoster) {
-            const opponentManager = managers.find(
-              (m) => m.sleeper.id === opponentRoster.owner_id
+            const opponentManager = getManagerBySleeperOwnerId(
+              opponentRoster.owner_id
             );
             if (opponentManager) {
               opponentName =
@@ -499,31 +513,9 @@ export const getManagerStats = (
     { position: "DEF" },
   ];
 
-  // Helper function to get player position
-  const getPlayerPosition = (playerId: string): string => {
-    // Try to find in players data using getPlayer
-    const player = getPlayer(playerId);
-    if (player && player.position) {
-      return player.position;
-    }
-
-    // Check unmatched players from matchups
-    for (const year of YEARS) {
-      const seasonData = seasons[year];
-      if (seasonData?.matchups) {
-        for (const weekKey of Object.keys(seasonData.matchups)) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const weekMatchups = (seasonData.matchups as any)[weekKey];
-          for (const matchup of weekMatchups) {
-            if (matchup.unmatched_players?.[playerId]) {
-              return matchup.unmatched_players[playerId].position;
-            }
-          }
-        }
-      }
-    }
-
-    return "UNK";
+  // Helper function to get player position using utility
+  const getPlayerPositionLocal = (playerId: string): string => {
+    return getPlayerPosition(playerId);
   };
 
   // Fill All-Star lineup
@@ -534,7 +526,7 @@ export const getManagerStats = (
       (p) => {
         if (usedPlayers.has(p.playerId)) return false; // Skip already used players
 
-        const position = getPlayerPosition(p.playerId);
+        const position = getPlayerPositionLocal(p.playerId);
         if (slot.position === "FLEX") {
           return position === "RB" || position === "WR" || position === "TE";
         }
@@ -694,7 +686,7 @@ const getSeasonStats = (
   managerId: string,
   year: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  seasonData: any, // TODO: Add proper SeasonData type
+  seasonData: any,
   dataMode: DataMode = "regular"
 ): SeasonStats | null => {
   const roster = seasonData.rosters.find(
@@ -712,17 +704,22 @@ const getSeasonStats = (
     leagueTies = 0;
 
   // Calculate record based on data mode
+  const playoffWeekStart = getPlayoffWeekStart(seasonData);
+
   Object.keys(seasonData.matchups).forEach((weekKey) => {
     const weekNum = parseInt(weekKey);
-    const playoffWeekStart =
-      seasonData.league?.settings?.playoff_week_start || 15;
 
     // Filter weeks based on data mode
-    if (dataMode === "regular" && weekNum >= playoffWeekStart) return; // Skip playoff weeks
-    if (dataMode === "playoffs" && weekNum < playoffWeekStart) return; // Skip regular season weeks
+    if (dataMode === "regular" && isPlayoffWeek(weekNum, playoffWeekStart))
+      return; // Skip playoff weeks
+    if (
+      dataMode === "playoffs" &&
+      isRegularSeasonWeek(weekNum, playoffWeekStart)
+    )
+      return; // Skip regular season weeks
 
     // For playoffs mode, only include games that are in winners_bracket and are meaningful
-    if (dataMode === "playoffs" && weekNum >= playoffWeekStart) {
+    if (dataMode === "playoffs" && isPlayoffWeek(weekNum, playoffWeekStart)) {
       const weekMatchups = seasonData.matchups[weekKey];
       const teamMatchup = weekMatchups.find(
         (m: ExtendedMatchup) => m.roster_id === roster.roster_id
@@ -730,16 +727,16 @@ const getSeasonStats = (
 
       if (!teamMatchup) return;
 
-      // Check if this matchup is in winners_bracket and is meaningful (elimination or championship)
-      const bracketMatch = seasonData.winners_bracket?.find(
-        (bm: BracketMatch) =>
-          (bm.t1 === teamMatchup.roster_id ||
-            bm.t2 === teamMatchup.roster_id) &&
-          bm.r === weekNum - playoffWeekStart + 1 // Convert week to round number
-      );
-
-      // Only include if it's in winners_bracket and is either elimination (no p property) or championship (p: 1)
-      if (!bracketMatch || (bracketMatch.p && bracketMatch.p !== 1)) return;
+      // Check if this matchup is meaningful using the utility function
+      if (
+        !isMeaningfulPlayoffGame(
+          teamMatchup,
+          seasonData,
+          weekNum,
+          playoffWeekStart
+        )
+      )
+        return;
     }
 
     const weekMatchups = seasonData.matchups[weekKey];
@@ -760,57 +757,43 @@ const getSeasonStats = (
       if (opponentMatchup) {
         pointsAgainst += opponentMatchup.points;
 
-        if (teamMatchup.points > opponentMatchup.points) wins++;
-        else if (teamMatchup.points < opponentMatchup.points) losses++;
+        const result = determineMatchupResult(
+          teamMatchup.points,
+          opponentMatchup.points
+        );
+        if (result === "W") wins++;
+        else if (result === "L") losses++;
         else ties++;
       }
 
       // Calculate league-wide performance
-      const allScores = weekMatchups.map((m: ExtendedMatchup) => m.points);
-      const betterScores = allScores.filter(
-        (score: number) => score > teamMatchup.points
-      ).length;
-      const worseScores = allScores.filter(
-        (score: number) => score < teamMatchup.points
-      ).length;
-      const sameScores =
-        allScores.filter((score: number) => score === teamMatchup.points)
-          .length - 1; // -1 for self
-
-      leagueWins += worseScores;
-      leagueLosses += betterScores;
-      leagueTies += sameScores;
+      const leagueRecord = calculateLeagueRecord(teamMatchup, weekMatchups);
+      leagueWins += leagueRecord.leagueWins;
+      leagueLosses += leagueRecord.leagueLosses;
+      leagueTies += leagueRecord.leagueTies;
     }
   });
 
   // Calculate final standing
-  const standings = seasonData.rosters
-    .map((r: ExtendedRoster) => ({
+  const standings = sortTeamsByRecord(
+    seasonData.rosters.map((r: ExtendedRoster) => ({
       rosterId: r.roster_id,
       wins: r.settings?.wins || 0,
       losses: r.settings?.losses || 0,
       ties: r.settings?.ties || 0,
-      pointsFor:
-        (r.settings?.fpts || 0) + (r.settings?.fpts_decimal || 0) / 100,
+      pointsFor: getRosterPointsFor(r),
     }))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .sort((a: any, b: any) => {
-      // TODO: Add proper type for standings
-      const aWinPct = a.wins / (a.wins + a.losses + a.ties);
-      const bWinPct = b.wins / (b.wins + b.losses + b.ties);
-      if (aWinPct !== bWinPct) return bWinPct - aWinPct;
-      return b.pointsFor - a.pointsFor;
-    });
+  );
 
   const finalStanding =
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    standings.findIndex((s: any) => s.rosterId === roster.roster_id) + 1; // TODO: Add proper type
+    standings.findIndex((s: any) => s.rosterId === roster.roster_id) + 1;
 
   // Calculate points standing (ranking by total points scored)
   const pointsStandings = seasonData.rosters
     .map((r: ExtendedRoster) => ({
       rosterId: r.roster_id,
-      pointsFor: r.settings.fpts + r.settings.fpts_decimal / 100,
+      pointsFor: getRosterPointsFor(r),
     }))
     .sort(
       (
@@ -849,11 +832,14 @@ const getSeasonStats = (
   const allTeamsByPoints = seasonData.rosters
     .map((r: ExtendedRoster) => ({
       rosterId: r.roster_id,
-      pointsFor:
-        (r.settings?.fpts || 0) + (r.settings?.fpts_decimal || 0) / 100,
+      pointsFor: getRosterPointsFor(r),
     }))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .sort((a: any, b: any) => b.pointsFor - a.pointsFor);
+    .sort(
+      (
+        a: { rosterId: string; pointsFor: number },
+        b: { rosterId: string; pointsFor: number }
+      ) => b.pointsFor - a.pointsFor
+    );
 
   const scoringCrown = allTeamsByPoints[0]?.rosterId === roster.roster_id;
 
@@ -908,8 +894,7 @@ const getRegularSeasonStats = (
   if (!roster)
     return { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 };
 
-  const playoffWeekStart =
-    seasonData.league?.settings?.playoff_week_start || 15;
+  const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
   let wins = 0,
     losses = 0,
@@ -921,7 +906,7 @@ const getRegularSeasonStats = (
     const weekNum = parseInt(weekKey);
 
     // Only include regular season weeks
-    if (weekNum >= playoffWeekStart) return;
+    if (isPlayoffWeek(weekNum, playoffWeekStart)) return;
 
     const weekMatchups = seasonData.matchups[weekKey];
     const teamMatchup = weekMatchups.find(
@@ -965,8 +950,7 @@ const getPlayoffStats = (
   if (!roster)
     return { wins: 0, losses: 0, ties: 0, pointsFor: 0, pointsAgainst: 0 };
 
-  const playoffWeekStart =
-    seasonData.league?.settings?.playoff_week_start || 15;
+  const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
   let wins = 0,
     losses = 0,
@@ -978,7 +962,7 @@ const getPlayoffStats = (
     const weekNum = parseInt(weekKey);
 
     // Only include playoff weeks
-    if (weekNum < playoffWeekStart) return;
+    if (isRegularSeasonWeek(weekNum, playoffWeekStart)) return;
 
     // Only include games that are in winners_bracket and are meaningful
     const weekMatchups = seasonData.matchups[weekKey];
@@ -988,15 +972,16 @@ const getPlayoffStats = (
 
     if (!teamMatchup) return;
 
-    // Check if this matchup is in winners_bracket and is meaningful (elimination or championship)
-    const bracketMatch = seasonData.winners_bracket?.find(
-      (bm: BracketMatch) =>
-        (bm.t1 === teamMatchup.roster_id || bm.t2 === teamMatchup.roster_id) &&
-        bm.r === weekNum - playoffWeekStart + 1 // Convert week to round number
-    );
-
-    // Only include if it's in winners_bracket and is either elimination (no p property) or championship (p: 1)
-    if (!bracketMatch || (bracketMatch.p && bracketMatch.p !== 1)) return;
+    // Check if this matchup is meaningful using the utility function
+    if (
+      !isMeaningfulPlayoffGame(
+        teamMatchup,
+        seasonData,
+        weekNum,
+        playoffWeekStart
+      )
+    )
+      return;
 
     pointsFor += teamMatchup.points;
 
@@ -1026,7 +1011,7 @@ const calculateH2HForSeason = (
   managerId: string,
   year: number,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  seasonData: any, // TODO: Add proper SeasonData type
+  seasonData: any,
   h2hRecords: Record<string, H2HRecord>,
   h2hGames: Array<{
     opponentId: string;
@@ -1055,11 +1040,16 @@ const calculateH2HForSeason = (
     const weekNum = parseInt(weekKey);
 
     // Filter weeks based on data mode
-    if (dataMode === "regular" && weekNum >= playoffWeekStart) return; // Skip playoff weeks
-    if (dataMode === "playoffs" && weekNum < playoffWeekStart) return; // Skip regular season weeks
+    if (dataMode === "regular" && isPlayoffWeek(weekNum, playoffWeekStart))
+      return; // Skip playoff weeks
+    if (
+      dataMode === "playoffs" &&
+      isRegularSeasonWeek(weekNum, playoffWeekStart)
+    )
+      return; // Skip regular season weeks
 
     // For playoffs mode, only include games that are in winners_bracket and are meaningful
-    if (dataMode === "playoffs" && weekNum >= playoffWeekStart) {
+    if (dataMode === "playoffs" && isPlayoffWeek(weekNum, playoffWeekStart)) {
       const weekMatchups = seasonData.matchups[weekKey];
       const teamMatchup = weekMatchups.find(
         (m: ExtendedMatchup) => m.roster_id === roster.roster_id
@@ -1067,16 +1057,16 @@ const calculateH2HForSeason = (
 
       if (!teamMatchup) return;
 
-      // Check if this matchup is in winners_bracket and is meaningful (elimination or championship)
-      const bracketMatch = seasonData.winners_bracket?.find(
-        (bm: BracketMatch) =>
-          (bm.t1 === teamMatchup.roster_id ||
-            bm.t2 === teamMatchup.roster_id) &&
-          bm.r === weekNum - playoffWeekStart + 1 // Convert week to round number
-      );
-
-      // Only include if it's in winners_bracket and is either elimination (no p property) or championship (p: 1)
-      if (!bracketMatch || (bracketMatch.p && bracketMatch.p !== 1)) return;
+      // Check if this matchup is meaningful using the utility function
+      if (
+        !isMeaningfulPlayoffGame(
+          teamMatchup,
+          seasonData,
+          weekNum,
+          playoffWeekStart
+        )
+      )
+        return;
     }
 
     const weekMatchups = seasonData.matchups[weekKey];
@@ -1097,8 +1087,8 @@ const calculateH2HForSeason = (
         );
         if (!opponentRoster) return;
 
-        const opponentManager = managers.find(
-          (m) => m.sleeper.id === opponentRoster.owner_id
+        const opponentManager = getManagerBySleeperOwnerId(
+          opponentRoster.owner_id
         );
         if (!opponentManager) return;
 
@@ -1150,6 +1140,3 @@ const calculateH2HForSeason = (
     }
   });
 };
-
-// Import managers at the top
-import managers from "../data/managers.json";

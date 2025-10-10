@@ -1,10 +1,10 @@
 import { useParams, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
-import AllTimeTable from "../components/AllTimeTable";
-import AllTimeBreakdown from "../components/AllTimeBreakdown";
-import TopScores from "../components/TopScores";
-import AllTimeScheduleComparison from "../components/AllTimeScheduleComparison/AllTimeScheduleComparison";
+import AllTimeTable from "@/presentation/components/AllTimeTable";
+import AllTimeBreakdown from "@/presentation/components/AllTimeBreakdown";
+import TopScores from "@/presentation/components/TopScores";
+import AllTimeScheduleComparison from "@/presentation/components/AllTimeScheduleComparison/AllTimeScheduleComparison";
 
 type HomeTabType =
   | "standings"

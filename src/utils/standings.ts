@@ -1,5 +1,10 @@
-import { seasons } from "../data";
-import { getTeamName } from "./teamName";
+import { seasons } from "@/data";
+import { getTeamName } from "@/utils/teamName";
+import {
+  calculateWinPercentageAsPercent,
+  getRosterPointsFor,
+  getRosterPointsAgainst,
+} from "@/utils/recordUtils";
 
 export interface TeamStats {
   owner_id: string;
@@ -48,11 +53,9 @@ export const getCumulativeStandings = (years: number[]) => {
           losses: settings.losses,
           ties: settings.ties,
           winPerc: 0,
-          points_for: settings.fpts + (settings.fpts_decimal || 0) / 100,
+          points_for: getRosterPointsFor(roster),
           points_for_avg: 0,
-          points_against:
-            (settings.fpts_against || 0) +
-            (settings.fpts_against_decimal || 0) / 100,
+          points_against: getRosterPointsAgainst(roster),
           points_against_avg: 0,
           champion: champion === roster.roster_id ? [year] : [],
           runnerUp: runnerUp === roster.roster_id ? [year] : [],
@@ -64,11 +67,8 @@ export const getCumulativeStandings = (years: number[]) => {
         teamStats[owner_id].wins += settings.wins;
         teamStats[owner_id].losses += settings.losses;
         teamStats[owner_id].ties += settings.ties;
-        teamStats[owner_id].points_for +=
-          settings.fpts + (settings.fpts_decimal || 0) / 100;
-        teamStats[owner_id].points_against +=
-          (settings.fpts_against || 0) +
-          (settings.fpts_against_decimal || 0) / 100;
+        teamStats[owner_id].points_for += getRosterPointsFor(roster);
+        teamStats[owner_id].points_against += getRosterPointsAgainst(roster);
         if (
           season.winners_bracket.some(
             (x) => x.p === 1 && x.w === roster.roster_id
@@ -93,7 +93,7 @@ export const getCumulativeStandings = (years: number[]) => {
   const sortedStats = Object.values(teamStats)
     .map((t) => ({
       ...t,
-      winPerc: (t.wins / (t.wins + t.losses + t.ties)) * 100,
+      winPerc: calculateWinPercentageAsPercent(t.wins, t.losses, t.ties),
       points_for_avg: t.points_for / (t.wins + t.losses + t.ties),
       points_against_avg: t.points_against / (t.wins + t.losses + t.ties),
     }))

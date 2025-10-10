@@ -1,12 +1,16 @@
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
-import { ExtendedRoster } from "../../../types/roster";
-import { BracketMatch } from "../../../types/bracket";
-import { League } from "../../../types/league";
-import { ExtendedUser } from "../../../types/user";
-import { getUserAvatarUrl, getUserByOwnerId } from "../../../utils/userAvatar";
-import managers from "../../../data/managers.json";
-import { seasons } from "../../../data";
+import { ExtendedRoster } from "@/types/roster";
+import { BracketMatch } from "@/types/bracket";
+import { League } from "@/types/league";
+import { ExtendedUser } from "@/types/user";
+import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
+import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
+import {
+  calculateH2HRecord,
+  calculateDivisionRecord,
+} from "@/utils/recordUtils";
+import { seasons } from "@/data";
 import {
   Table,
   TableHeader,
@@ -79,38 +83,13 @@ const Standings = ({
   const getH2HRecord = (team1: ExtendedRoster, team2: ExtendedRoster) => {
     if (!matchups) return { wins: 0, losses: 0, ties: 0 };
 
-    let wins = 0,
-      losses = 0,
-      ties = 0;
-
     const playoffWeekStart = league?.settings?.playoff_week_start || 15;
-
-    Object.keys(matchups).forEach((weekKey) => {
-      const weekNum = parseInt(weekKey);
-
-      // Skip playoff weeks - only count regular season games
-      if (weekNum >= playoffWeekStart) return;
-
-      const weekMatchups = matchups[weekKey];
-      const team1Matchup = weekMatchups.find(
-        (m) => m.roster_id === team1.roster_id
-      );
-      const team2Matchup = weekMatchups.find(
-        (m) => m.roster_id === team2.roster_id
-      );
-
-      if (
-        team1Matchup &&
-        team2Matchup &&
-        team1Matchup.matchup_id === team2Matchup.matchup_id
-      ) {
-        if (team1Matchup.points > team2Matchup.points) wins++;
-        else if (team1Matchup.points < team2Matchup.points) losses++;
-        else ties++;
-      }
-    });
-
-    return { wins, losses, ties };
+    return calculateH2HRecord(
+      team1.roster_id,
+      team2.roster_id,
+      matchups,
+      playoffWeekStart
+    );
   };
 
   // Calculate division record for a team
@@ -120,46 +99,13 @@ const Standings = ({
   ) => {
     if (!matchups) return { wins: 0, losses: 0, ties: 0 };
 
-    let wins = 0,
-      losses = 0,
-      ties = 0;
-
     const playoffWeekStart = league?.settings?.playoff_week_start || 15;
-
-    Object.keys(matchups).forEach((weekKey) => {
-      const weekNum = parseInt(weekKey);
-
-      // Skip playoff weeks - only count regular season games
-      if (weekNum >= playoffWeekStart) return;
-
-      const weekMatchups = matchups[weekKey];
-      const teamMatchup = weekMatchups.find(
-        (m) => m.roster_id === team.roster_id
-      );
-
-      if (teamMatchup) {
-        // Find opponent in this matchup
-        const opponentMatchup = weekMatchups.find(
-          (m) =>
-            m.matchup_id === teamMatchup.matchup_id &&
-            m.roster_id !== team.roster_id
-        );
-
-        if (opponentMatchup) {
-          // Check if opponent is in the same division
-          const opponentTeam = divisionTeams.find(
-            (t) => t.roster_id === opponentMatchup.roster_id
-          );
-          if (opponentTeam) {
-            if (teamMatchup.points > opponentMatchup.points) wins++;
-            else if (teamMatchup.points < opponentMatchup.points) losses++;
-            else ties++;
-          }
-        }
-      }
-    });
-
-    return { wins, losses, ties };
+    return calculateDivisionRecord(
+      team,
+      divisionTeams,
+      matchups,
+      playoffWeekStart
+    );
   };
 
   // Sort divisions and teams within each division
@@ -536,10 +482,9 @@ const Standings = ({
                         {(() => {
                           const user = getUserByOwnerId(roster.owner_id, users);
                           const avatarUrl = getUserAvatarUrl(user);
-                          const manager = managers.find(
-                            (m) => m.sleeper.id === roster.owner_id
+                          const managerId = getManagerIdBySleeperOwnerId(
+                            roster.owner_id
                           );
-                          const managerId = manager?.id;
                           const teamName = getTeamName(roster.owner_id);
 
                           return (
@@ -630,10 +575,8 @@ const Standings = ({
                 const championRoster = standings.find(
                   (r) => r.roster_id === firstPlace?.w
                 );
-                const championManager = championRoster
-                  ? managers.find(
-                      (m) => m.sleeper.id === championRoster.owner_id
-                    )
+                const championManagerId = championRoster
+                  ? getManagerIdBySleeperOwnerId(championRoster.owner_id)
                   : null;
                 const championName = championRoster
                   ? getTeamName(championRoster.owner_id)
@@ -695,10 +638,10 @@ const Standings = ({
                   }
                 };
 
-                return championManager ? (
+                return championManagerId ? (
                   <div>
                     <Link
-                      to={`/managers/${championManager.id}`}
+                      to={`/managers/${championManagerId}`}
                       className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-semibold"
                     >
                       {championName}
@@ -727,14 +670,14 @@ const Standings = ({
                 Scoring Crown
               </h3>
               {(() => {
-                const scoringCrownManager = managers.find(
-                  (m) => m.sleeper.id === topScorer.owner_id
+                const scoringCrownManagerId = getManagerIdBySleeperOwnerId(
+                  topScorer.owner_id
                 );
                 const scoringCrownName = getTeamName(topScorer.owner_id);
 
-                return scoringCrownManager ? (
+                return scoringCrownManagerId ? (
                   <Link
-                    to={`/managers/${scoringCrownManager.id}`}
+                    to={`/managers/${scoringCrownManagerId}`}
                     className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-semibold"
                   >
                     {scoringCrownName}
@@ -760,14 +703,14 @@ const Standings = ({
               <div className="text-4xl mb-2">💩</div>
               <h3 className="text-lg font-bold text-red-800 mb-2">Scumbo</h3>
               {(() => {
-                const scumboManager = managers.find(
-                  (m) => m.sleeper.id === scumbo.roster.owner_id
+                const scumboManagerId = getManagerIdBySleeperOwnerId(
+                  scumbo.roster.owner_id
                 );
                 const scumboName = getTeamName(scumbo.roster.owner_id);
 
-                return scumboManager ? (
+                return scumboManagerId ? (
                   <Link
-                    to={`/managers/${scumboManager.id}`}
+                    to={`/managers/${scumboManagerId}`}
                     className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer font-semibold"
                   >
                     {scumboName}
