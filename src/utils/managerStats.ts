@@ -403,8 +403,11 @@ export const getManagerStats = (
       );
       if (!teamMatchup) return;
 
-      // For playoffs mode, only include meaningful playoff games
-      if (dataMode === "playoffs" && isPlayoffWeek(weekNum, playoffWeekStart)) {
+      // For playoffs mode and combined mode, only include meaningful playoff games
+      if (
+        (dataMode === "playoffs" || dataMode === "combined") &&
+        isPlayoffWeek(weekNum, playoffWeekStart)
+      ) {
         if (
           !isMeaningfulPlayoffGame(
             teamMatchup,
