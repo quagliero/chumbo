@@ -8,6 +8,7 @@ import {
   TableHeaderCell,
   TableCell,
 } from "../Table";
+import { useNavigate } from "react-router-dom";
 
 export interface PlayerPerformance {
   year: number;
@@ -31,7 +32,7 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
   const { number } = useFormatter();
   const [showAllPerformances, setShowAllPerformances] = useState(false);
   const [selectedManager, setSelectedManager] = useState<string>("all");
-
+  const navigate = useNavigate();
   // Get unique managers from performances
   const managers = useMemo(() => {
     const managerSet = new Set<string>();
@@ -124,13 +125,18 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
           {displayedPerformances.map((performance) => (
             <TableRow
               key={`${performance.year}-${performance.week}-${performance.ownerId}`}
-              className={
+              className={`${
                 performance.isChampionshipGame
                   ? "bg-green-50"
                   : performance.isPlayoffGame
                   ? "bg-yellow-50"
                   : ""
-              }
+              } cursor-pointer`}
+              onClick={() => {
+                navigate(
+                  `/history/${performance.year}/matchups/${performance.week}/${performance.matchupId}`
+                );
+              }}
             >
               <TableCell>{performance.year}</TableCell>
               <TableCell>{performance.week}</TableCell>

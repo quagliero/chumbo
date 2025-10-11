@@ -42,7 +42,9 @@ export interface PlayerStats {
   achievements: {
     playoffGames: number;
     finalsAppearances: number;
+    finalsAppearancesYears: number[];
     finalsWins: number;
+    finalsWinsYears: number[];
   };
 }
 
@@ -173,12 +175,22 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
           </h3>
           <p className="text-2xl font-bold text-gray-900">
             {playerStats.achievements.finalsAppearances}
+            {playerStats.achievements.finalsAppearancesYears.length > 0 && (
+              <span className="text-sm font-normal text-gray-600 ml-1">
+                ({playerStats.achievements.finalsAppearancesYears.join(", ")})
+              </span>
+            )}
           </p>
         </div>
         <div className="bg-green-50 p-4 rounded-lg">
           <h3 className="text-sm font-medium text-gray-500">Championships</h3>
           <p className="text-2xl font-bold text-green-600">
             {playerStats.achievements.finalsWins}
+            {playerStats.achievements.finalsWinsYears.length > 0 && (
+              <span className="text-sm font-normal text-gray-600 ml-1">
+                ({playerStats.achievements.finalsWinsYears.join(", ")})
+              </span>
+            )}
           </p>
         </div>
       </div>

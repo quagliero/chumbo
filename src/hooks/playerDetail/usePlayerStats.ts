@@ -23,7 +23,9 @@ export const usePlayerStats = (playerId: string | undefined) => {
     let highestScoreGame: PlayerPerformance | null = null;
     let playoffGames = 0;
     let finalsAppearances = 0;
+    const finalsAppearancesYears: number[] = [];
     let finalsWins = 0;
+    const finalsWinsYears: number[] = [];
 
     // Iterate through all seasons
     Object.entries(seasons).forEach(([yearStr, seasonData]) => {
@@ -122,6 +124,7 @@ export const usePlayerStats = (playerId: string | undefined) => {
                 // Check if it's specifically a championship game (p: 1)
                 if (isChampionshipGame) {
                   finalsAppearances++;
+                  finalsAppearancesYears.push(year);
 
                   // Check if this team won the matchup (compare roster totals, not individual player points)
                   if (
@@ -129,6 +132,7 @@ export const usePlayerStats = (playerId: string | undefined) => {
                     matchup.points > opponentMatchup.points
                   ) {
                     finalsWins++;
+                    finalsWinsYears.push(year);
                   }
                 }
               }
@@ -296,7 +300,9 @@ export const usePlayerStats = (playerId: string | undefined) => {
       achievements: {
         playoffGames,
         finalsAppearances,
+        finalsAppearancesYears,
         finalsWins,
+        finalsWinsYears,
       },
     };
   }, [playerId]);
