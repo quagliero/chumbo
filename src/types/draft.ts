@@ -27,7 +27,7 @@ export interface Draft {
     [key: string]: number;
   };
   slot_to_roster_id: {
-    [key: number]: number;
+    [key: string]: number;
   };
 }
 

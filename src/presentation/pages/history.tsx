@@ -14,6 +14,9 @@ import PlayoffBracket from "@/presentation/components/PlayoffBracket/PlayoffBrac
 import MatchupDetail from "@/presentation/components/MatchupDetail/MatchupDetail";
 import ScheduleComparison from "@/presentation/components/ScheduleComparison/ScheduleComparison";
 import Breakdown from "@/presentation/components/Breakdown/Breakdown";
+import Trades from "@/presentation/components/Trades";
+import TradeCard from "@/presentation/components/TradeCard";
+import { getWeekTrades } from "@/utils/transactionUtils";
 
 const History = () => {
   const { year, tab, week, matchupId } = useParams<{
@@ -57,6 +60,7 @@ const History = () => {
         "draft",
         "schedule-comparison",
         "breakdown",
+        "trades",
       ].includes(tab)
     ) {
       setActiveTab(tab as TabType);
@@ -287,6 +291,29 @@ const History = () => {
     );
   }, [seasonData, selectedWeek]);
 
+  // Get trades for selected week (excluding draft pick trades for week 1)
+  const weekTrades = useMemo(() => {
+    if (!seasonData?.transactions || !selectedWeek) return [];
+    const weekTransactions =
+      seasonData.transactions[
+        selectedWeek.toString() as keyof typeof seasonData.transactions
+      ];
+
+    const trades = getWeekTrades(
+      weekTransactions,
+      selectedYear,
+      seasonData?.draft?.slot_to_roster_id,
+      seasonData?.draft?.start_time
+    );
+
+    // Filter out draft pick trades for week 1
+    if (selectedWeek === 1) {
+      return trades.filter((trade) => !trade.isDraftPickTrade);
+    }
+
+    return trades;
+  }, [seasonData, selectedWeek, selectedYear]);
+
   return (
     <div className="space-y-6">
       {/* Year Selector */}
@@ -320,6 +347,7 @@ const History = () => {
               "draft",
               "schedule-comparison",
               "breakdown",
+              "trades",
             ].map((tab) => (
               <button
                 key={tab}
@@ -393,19 +421,42 @@ const History = () => {
               })()
             ) : (
               // Show matchups list
-              <Matchups
-                weekMatchups={weekMatchups}
-                availableWeeks={availableWeeks}
-                selectedWeek={selectedWeek}
-                onWeekChange={setSelectedWeek}
-                rosters={seasonData.rosters}
-                getTeamName={getTeamName}
-                year={selectedYear}
-                allMatchups={seasonData.matchups || {}}
-                users={seasonData?.users}
-                league={seasonData?.league}
-                winnersBracket={seasonData?.winners_bracket}
-              />
+              <div className="space-y-6">
+                <Matchups
+                  weekMatchups={weekMatchups}
+                  availableWeeks={availableWeeks}
+                  selectedWeek={selectedWeek}
+                  onWeekChange={setSelectedWeek}
+                  rosters={seasonData.rosters}
+                  getTeamName={getTeamName}
+                  year={selectedYear}
+                  allMatchups={seasonData.matchups || {}}
+                  users={seasonData?.users}
+                  league={seasonData?.league}
+                  winnersBracket={seasonData?.winners_bracket}
+                />
+
+                {/* Week Trades */}
+                {weekTrades.length > 0 && (
+                  <div className="container mx-auto">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <span className="w-3 h-3 bg-green-600 rounded-full mr-2"></span>
+                      Week {selectedWeek} Trades
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {weekTrades.map((trade, index) => (
+                        <TradeCard
+                          key={`week-${selectedWeek}-${trade.transaction.transaction_id}-${index}`}
+                          trade={trade}
+                          rosters={seasonData.rosters}
+                          users={seasonData?.users}
+                          getTeamName={getTeamName}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </>
         )}
@@ -471,6 +522,19 @@ const History = () => {
             matchups={seasonData?.matchups}
             league={seasonData?.league}
             getTeamName={getTeamName}
+          />
+        )}
+
+        {/* Trades Tab */}
+        {activeTab === "trades" && (
+          <Trades
+            transactions={seasonData?.transactions}
+            rosters={seasonData?.rosters || []}
+            getTeamName={getTeamName}
+            year={selectedYear}
+            users={seasonData?.users}
+            slotToRosterId={seasonData?.draft?.slot_to_roster_id}
+            draftStartTime={seasonData?.draft?.start_time}
           />
         )}
       </div>

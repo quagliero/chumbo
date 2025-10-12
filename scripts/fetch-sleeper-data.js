@@ -107,6 +107,68 @@ async function fetchMatchupData(leagueId, year, week) {
   return matchupData;
 }
 
+// Fetch transaction data for a specific week
+async function fetchTransactionData(leagueId, year, week) {
+  const transactionUrl = `${SLEEPER_BASE_URL}/league/${leagueId}/transactions/${week}`;
+  const transactionData = await fetchFromAPI(transactionUrl);
+  
+  const transactionDir = path.join(__dirname, '..', 'src', 'data', year.toString(), 'transactions');
+  writeJsonFile(path.join(transactionDir, `${week}.json`), transactionData);
+  
+  return transactionData;
+}
+
+// Fetch all transactions for a season
+async function fetchAllTransactions(leagueId, year) {
+  console.log(`\n📋 Fetching all transactions for ${year}...`);
+  
+  const transactionDir = path.join(__dirname, '..', 'src', 'data', year.toString(), 'transactions');
+  
+  // Ensure transactions directory exists
+  if (!fs.existsSync(transactionDir)) {
+    fs.mkdirSync(transactionDir, { recursive: true });
+  }
+  
+  const allTransactions = [];
+  let week = 1;
+  let hasMoreWeeks = true;
+  
+  while (hasMoreWeeks && week <= 18) { // NFL season + playoffs
+    try {
+      console.log(`  Fetching transactions for week ${week}...`);
+      const transactionData = await fetchTransactionData(leagueId, year, week);
+      
+      if (transactionData && transactionData.length > 0) {
+        allTransactions.push(...transactionData);
+        console.log(`    ✓ Found ${transactionData.length} transactions`);
+      } else {
+        console.log(`    ✓ No transactions found`);
+      }
+      
+      week++;
+      
+      // Add a small delay to be respectful to the API
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+    } catch (error) {
+      if (error.message.includes('404') || error.message.includes('not found')) {
+        console.log(`    ✓ No more transactions found (week ${week} doesn't exist)`);
+        hasMoreWeeks = false;
+      } else {
+        console.error(`    ✗ Error fetching week ${week}:`, error.message);
+        week++; // Continue to next week
+      }
+    }
+  }
+  
+  // Write combined transactions file
+  const combinedPath = path.join(transactionDir, 'all.json');
+  writeJsonFile(combinedPath, allTransactions);
+  
+  console.log(`✓ Total transactions fetched: ${allTransactions.length}`);
+  return allTransactions;
+}
+
 // Fetch playoff bracket data
 async function fetchBracketData(leagueId, year) {
   const winnersUrl = `${SLEEPER_BASE_URL}/league/${leagueId}/winners_bracket`;
@@ -172,6 +234,19 @@ async function fetchYearData(year, options = {}) {
     const { league_id, draft_id } = getLeagueInfo(year);
     console.log(`League ID: ${league_id}, Draft ID: ${draft_id}`);
     
+    // If only fetching transactions, skip everything else
+    if (options.allTransactions) {
+      if (year >= 2020) {
+        console.log('Fetching all transactions only...');
+        await fetchAllTransactions(league_id, year);
+        console.log(`✅ Successfully fetched all transactions for year ${year}`);
+        return;
+      } else {
+        console.log(`⚠️  Transactions not available for year ${year} (requires 2020+)`);
+        return;
+      }
+    }
+    
     // Fetch draft and roster data (these are year-specific)
     await Promise.all([
       fetchDraftData(draft_id, year),
@@ -199,6 +274,26 @@ async function fetchYearData(year, options = {}) {
       );
     }
     
+    // Fetch transactions for 2020 and later
+    if (year >= 2020) {
+      if (options.weeks && options.weeks.length > 0) {
+        console.log(`Fetching transactions for weeks: ${options.weeks.join(', ')}`);
+        await Promise.all(
+          options.weeks.map(week => fetchTransactionData(league_id, year, week))
+        );
+      } else if (options.latestWeek) {
+        const latestWeek = await getLatestCompletedWeek(league_id);
+        console.log(`Fetching latest completed week transactions: ${latestWeek}`);
+        await fetchTransactionData(league_id, year, latestWeek);
+      } else {
+        console.log('Fetching all weeks transactions...');
+        const weeks = Array.from({ length: 18 }, (_, i) => i + 1);
+        await Promise.all(
+          weeks.map(week => fetchTransactionData(league_id, year, week))
+        );
+      }
+    }
+    
     // Fetch bracket data if requested or if it's end of season
     if (options.brackets || options.endOfSeason) {
       console.log('Fetching playoff bracket data...');
@@ -222,6 +317,7 @@ function parseArgs() {
     latestWeek: false,
     brackets: false,
     endOfSeason: false,
+    allTransactions: false,
     help: false
   };
   
@@ -262,6 +358,11 @@ function parseArgs() {
         options.endOfSeason = true;
         break;
         
+      case '--all-transactions':
+      case '-t':
+        options.allTransactions = true;
+        break;
+        
       case '--help':
       case '-h':
         options.help = true;
@@ -291,6 +392,7 @@ Options:
   -l, --latest             Fetch only the latest completed week (default behavior)
   -b, --brackets           Fetch playoff bracket data
   -e, --end-of-season      Fetch all data including brackets (end of season)
+  -t, --all-transactions   Fetch all transactions for the season (2020+ only)
   -h, --help               Show this help message
 
 Examples:
@@ -308,6 +410,9 @@ Examples:
 
   # Fetch brackets only
   node fetch-sleeper-data.js --year 2024 --brackets
+
+  # Fetch all transactions for a season
+  node fetch-sleeper-data.js --year 2024 --all-transactions
 
   # Fetch multiple years
   node fetch-sleeper-data.js --year 2023 --year 2024 --latest
@@ -344,7 +449,7 @@ async function main() {
     }
     
     // Set default behavior if no specific options
-    if (options.weeks.length === 0 && !options.latestWeek && !options.brackets && !options.endOfSeason) {
+    if (options.weeks.length === 0 && !options.latestWeek && !options.brackets && !options.endOfSeason && !options.allTransactions) {
       options.latestWeek = true;
     }
     
@@ -352,7 +457,8 @@ async function main() {
     console.log(`Options:`, {
       weeks: options.weeks.length > 0 ? options.weeks : 'latest',
       brackets: options.brackets,
-      endOfSeason: options.endOfSeason
+      endOfSeason: options.endOfSeason,
+      allTransactions: options.allTransactions
     });
     
     // Fetch data for each year

@@ -31,7 +31,8 @@ export type TabType =
   | "playoffs"
   | "draft"
   | "schedule-comparison"
-  | "breakdown";
+  | "breakdown"
+  | "trades";
 
 /**
  * Valid years for the application

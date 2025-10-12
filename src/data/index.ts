@@ -8,6 +8,7 @@ import { ExtendedPick } from "@/types/pick";
 import { Player } from "@/types/player";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedUser } from "@/types/user";
+import { Transaction } from "@/types/transaction";
 
 type ValidYear = (typeof YEARS)[number];
 type WeekKeys =
@@ -33,6 +34,10 @@ type Matchups = {
   [key in WeekKeys]?: ExtendedMatchup[];
 };
 
+type Transactions = {
+  [key in WeekKeys]?: Transaction[];
+};
+
 type SeasonData = {
   draft: ExtendedDraft;
   picks: ExtendedPick[];
@@ -42,6 +47,7 @@ type SeasonData = {
   winners_bracket: WinnersBracket;
   losers_bracket: LosersBracket;
   matchups: Matchups;
+  transactions?: Transactions;
   players?: Record<string, Player>; // Year-specific players
 };
 
@@ -78,6 +84,7 @@ const allData = (() => {
     const data = (module as { default: any }).default;
     const matchYear = path.match(/\/(\d{4})\//);
     const matchWeek = path.match(/\/matchups\/(\d+)\.json$/);
+    const matchTransaction = path.match(/\/transactions\/(\d+)\.json$/);
     const isYearPlayers = path.match(/\/(\d{4})\/players\.json$/);
 
     if (matchYear) {
@@ -103,6 +110,11 @@ const allData = (() => {
           seasons[year]!.matchups = {};
         }
 
+        // Ensure transactions is initialized
+        if (!seasons[year]!.transactions) {
+          seasons[year]!.transactions = {};
+        }
+
         // Check if this is a year-specific players.json
         if (isYearPlayers) {
           seasons[year]!.players = data as Record<string, Player>;
@@ -110,6 +122,11 @@ const allData = (() => {
           const week = matchWeek[1];
           if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
             seasons[year]!.matchups[week as WeekKeys] = data;
+          }
+        } else if (matchTransaction) {
+          const week = matchTransaction[1];
+          if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
+            seasons[year]!.transactions![week as WeekKeys] = data;
           }
         } else {
           const key = path.split("/").pop()?.replace(".json", "");
