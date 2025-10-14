@@ -215,7 +215,7 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
               <h3 className="text-sm font-medium text-gray-500">Most Points</h3>
               <p className="text-lg font-bold text-gray-900">
                 {number(ownershipStats.mostPoints.totalPoints, {
-                  maximumFractionDigits: 1,
+                  maximumFractionDigits: 2,
                 })}
                 <span className="text-sm font-normal text-gray-600 ml-1">
                   ({ownershipStats.mostPoints.teamName})
@@ -228,7 +228,7 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
               </h3>
               <p className="text-lg font-bold text-gray-900">
                 {number(ownershipStats.bestAverage.averagePoints, {
-                  maximumFractionDigits: 1,
+                  maximumFractionDigits: 2,
                 })}
                 <span className="text-sm font-normal text-gray-600 ml-1">
                   ({ownershipStats.bestAverage.teamName})
