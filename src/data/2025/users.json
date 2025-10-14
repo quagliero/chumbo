@@ -91,7 +91,7 @@
     "is_owner": false,
     "league_id": "1221557942864596992",
     "metadata": {
-      "allow_pn": "on",
+      "allow_pn": "off",
       "allow_sms": "on",
       "join_voice_pn": "on",
       "league_report_pn": "off",
