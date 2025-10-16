@@ -553,7 +553,7 @@
       "616",
       "1329",
       "1984",
-      "Devin Funchess",
+      "2346",
       "2430",
       "4455",
       "4985",
@@ -577,10 +577,10 @@
       "3327": 5.9,
       "4455": 5.1,
       "4985": 4.3,
-      "Devin Funchess": 4.1,
+      "2346": 4.1,
       "LAR": 17
     },
-    "unmatched_players": { "Devin Funchess": "WR" }
+    "unmatched_players": {}
   },
   {
     "matchup_id": 1,

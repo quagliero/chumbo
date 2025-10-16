@@ -345,7 +345,7 @@
       "2168",
       "2257",
       "2378",
-      "Devin Funchess",
+      "2346",
       "1214",
       "BUF"
     ],
@@ -365,10 +365,10 @@
       "2223": 3.1,
       "2257": 0,
       "2378": 0,
-      "Devin Funchess": 4.1,
+      "2346": 4.1,
       "BUF": 16
     },
-    "unmatched_players": { "Devin Funchess": "WR" }
+    "unmatched_players": {}
   },
   {
     "matchup_id": 1,
