@@ -304,57 +304,64 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                 });
 
                 // Track player scores for playoff matchups too
-                [managerAMatchup, managerBMatchup].forEach((matchup, index) => {
-                  const currentPlayerScores =
-                    index === 0 ? managerAPlayerScores : managerBPlayerScores;
+                [managerAMatchup, managerBMatchup].forEach(
+                  (matchup, managerIndex) => {
+                    const currentPlayerScores =
+                      managerIndex === 0
+                        ? managerAPlayerScores
+                        : managerBPlayerScores;
 
-                  if (matchup.starters_points && matchup.starters) {
-                    // Map starter positions to player IDs
-                    matchup.starters.forEach((playerId, index) => {
-                      // Skip empty starter slots (playerId is 0)
-                      if (playerId === "0") {
-                        return;
-                      }
-
-                      const points = matchup.starters_points?.[index];
-                      const pointsNum = typeof points === "number" ? points : 0;
-                      if (pointsNum > 0) {
-                        // Check if this is a string-named player (like "Danario Alexander")
-                        const isStringNamedPlayer =
-                          typeof playerId === "string" &&
-                          playerId.includes(" ");
-
-                        const player = isStringNamedPlayer
-                          ? null
-                          : getPlayer(playerId.toString(), year);
-                        const playerName = player
-                          ? `${player.first_name} ${player.last_name}`
-                          : playerId.toString(); // Use the ID as the name for string-named players
-
-                        // Add this score to the player's array with context
-                        if (!currentPlayerScores.has(playerName)) {
-                          currentPlayerScores.set(playerName, []);
+                    if (matchup.starters_points && matchup.starters) {
+                      // Map starter positions to player IDs
+                      matchup.starters.forEach((playerId, playerIndex) => {
+                        // Skip empty starter slots (playerId is 0)
+                        if (playerId === "0") {
+                          return;
                         }
-                        currentPlayerScores.get(playerName)!.push({
-                          score: pointsNum,
-                          year,
-                          week,
-                          result:
+
+                        const points = matchup.starters_points?.[playerIndex];
+                        const pointsNum =
+                          typeof points === "number" ? points : 0;
+                        if (pointsNum > 0) {
+                          // Check if this is a string-named player (like "Danario Alexander")
+                          const isStringNamedPlayer =
+                            typeof playerId === "string" &&
+                            playerId.includes(" ");
+
+                          const player = isStringNamedPlayer
+                            ? null
+                            : getPlayer(playerId.toString(), year);
+                          const playerName = player
+                            ? `${player.first_name} ${player.last_name}`
+                            : playerId.toString(); // Use the ID as the name for string-named players
+
+                          // Add this score to the player's array with context
+                          if (!currentPlayerScores.has(playerName)) {
+                            currentPlayerScores.set(playerName, []);
+                          }
+                          const result =
                             managerAMatchup.points > managerBMatchup.points
-                              ? index === 0
+                              ? managerIndex === 0
                                 ? "W"
                                 : "L"
                               : managerAMatchup.points < managerBMatchup.points
-                              ? index === 0
+                              ? managerIndex === 0
                                 ? "L"
                                 : "W"
-                              : "T",
-                          playerId: playerId.toString(),
-                        });
-                      }
-                    });
+                              : "T";
+
+                          currentPlayerScores.get(playerName)!.push({
+                            score: pointsNum,
+                            year,
+                            week,
+                            result,
+                            playerId: playerId.toString(),
+                          });
+                        }
+                      });
+                    }
                   }
-                });
+                );
               }
             });
           }
