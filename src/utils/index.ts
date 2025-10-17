@@ -59,6 +59,15 @@ export {
   type H2HRecordWithGames,
 } from "@/utils/h2h";
 
+// Stats explorer utilities
+export {
+  calculatePositionalStats,
+  getAvailableYears,
+  PRESET_FILTERS,
+  type PositionalFilter,
+  type StatsResult,
+} from "@/utils/statsExplorer";
+
 // Existing utilities (re-export for convenience)
 export { getPlayerImageUrl } from "@/utils/playerImage";
 export { getTeamName } from "@/utils/teamName";

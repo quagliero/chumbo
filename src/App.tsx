@@ -17,6 +17,7 @@ const PlayerDetail = lazy(() => import("@/presentation/pages/playerDetail"));
 const Players = lazy(() => import("@/presentation/pages/players"));
 const H2H = lazy(() => import("@/presentation/pages/h2h"));
 const H2HDetail = lazy(() => import("@/presentation/pages/h2hDetail"));
+const Stats = lazy(() => import("@/presentation/pages/stats"));
 
 // Lazy load WikiOverview separately
 const WikiOverview = lazy(() =>
@@ -78,6 +79,7 @@ function App() {
                   path="/h2h/:managerA/:managerB"
                   element={<H2HDetail />}
                 />
+                <Route path="/explorer" element={<Stats />} />
               </Routes>
             </Suspense>
           </main>
