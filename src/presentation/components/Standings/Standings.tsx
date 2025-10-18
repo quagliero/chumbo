@@ -1,9 +1,11 @@
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
-import { League } from "@/types/league";
+import { League, ExtendedLeague } from "@/types/league";
 import { ExtendedUser } from "@/types/user";
+import { ExtendedMatchup } from "@/types/matchup";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
@@ -11,6 +13,7 @@ import {
   calculateDivisionRecord,
   calculateLeagueRecord,
 } from "@/utils/recordUtils";
+import { calculateStrengthOfSchedule } from "@/utils/strengthOfSchedule";
 import { seasons } from "@/data";
 import {
   Table,
@@ -19,7 +22,9 @@ import {
   TableRow,
   TableHeaderCell,
   TableCell,
+  SortIcon,
 } from "../Table";
+import { YEARS } from "@/domain/constants";
 
 interface StandingsProps {
   standings: ExtendedRoster[];
@@ -42,6 +47,12 @@ const Standings = ({
   currentYear,
 }: StandingsProps) => {
   const { number } = useFormatter();
+
+  // Simple sorting state
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: "asc" | "desc";
+  } | null>(null);
 
   // Only show awards if season is complete
   const isSeasonComplete = league?.status === "complete";
@@ -288,6 +299,90 @@ const Standings = ({
 
   const { playoffTeams, playoffTeamSeeds } = getPlayoffTeams();
 
+  // Calculate strength of schedule remaining for current season only
+  const strengthOfScheduleRemaining =
+    currentYear && currentYear >= YEARS[YEARS.length - 1]
+      ? calculateStrengthOfSchedule({
+          matchups: matchups || {},
+          rosters: standings,
+          league: league || ({} as League),
+        } as {
+          matchups: Record<string, ExtendedMatchup[]>;
+          rosters: ExtendedRoster[];
+          league: ExtendedLeague;
+        })
+      : {};
+
+  // Simple sorting function
+  const handleSort = (key: string) => {
+    let direction: "asc" | "desc" = "asc";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "asc"
+    ) {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Sort teams within each division
+  const sortedTeamsByDivision = sortedDivisions.map(({ division, teams }) => {
+    if (!sortConfig) return { division, teams };
+
+    const sortedTeams = [...teams].sort((a, b) => {
+      let aValue: number;
+      let bValue: number;
+
+      switch (sortConfig.key) {
+        case "wins":
+          aValue = a.settings.wins;
+          bValue = b.settings.wins;
+          break;
+        case "losses":
+          aValue = a.settings.losses;
+          bValue = b.settings.losses;
+          break;
+        case "ties":
+          aValue = a.settings.ties;
+          bValue = b.settings.ties;
+          break;
+        case "winPerc":
+          aValue =
+            a.settings.wins /
+            (a.settings.wins + a.settings.losses + a.settings.ties);
+          bValue =
+            b.settings.wins /
+            (b.settings.wins + b.settings.losses + b.settings.ties);
+          break;
+        case "pointsFor":
+          aValue = a.settings.fpts + a.settings.fpts_decimal / 100;
+          bValue = b.settings.fpts + b.settings.fpts_decimal / 100;
+          break;
+        case "pointsAgainst":
+          aValue =
+            a.settings.fpts_against + a.settings.fpts_against_decimal / 100;
+          bValue =
+            b.settings.fpts_against + b.settings.fpts_against_decimal / 100;
+          break;
+        case "sosRank":
+          aValue = strengthOfScheduleRemaining[a.roster_id] || 0;
+          bValue = strengthOfScheduleRemaining[b.roster_id] || 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (sortConfig.direction === "asc") {
+        return aValue - bValue;
+      } else {
+        return bValue - aValue;
+      }
+    });
+
+    return { division, teams: sortedTeams };
+  });
+
   // Determine if a team gets a bye (top 2 seeds in 12-team leagues, or all playoff teams in 10-team leagues)
   const getPlayoffHighlight = (rosterId: number) => {
     if (!playoffTeams.has(rosterId)) return null;
@@ -365,7 +460,7 @@ const Standings = ({
 
   return (
     <div className="overflow-x-auto container mx-auto">
-      {sortedDivisions.map(({ division, teams }) => (
+      {sortedTeamsByDivision.map(({ division, teams }) => (
         <div key={division} className={hasDivisions ? "mb-8" : ""}>
           {hasDivisions && (
             <div className="mb-4">
@@ -396,21 +491,97 @@ const Standings = ({
                   Rank
                 </TableHeaderCell>
                 <TableHeaderCell className="text-left">Team</TableHeaderCell>
-                <TableHeaderCell className="text-center">W</TableHeaderCell>
-                <TableHeaderCell className="text-center">L</TableHeaderCell>
-                <TableHeaderCell className="text-center">T</TableHeaderCell>
-                <TableHeaderCell className="text-center">Win %</TableHeaderCell>
+                <TableHeaderCell
+                  className="text-center cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("wins")}
+                  isSorted={sortConfig?.key === "wins"}
+                >
+                  <div className="inline-flex items-center gap-1">
+                    W
+                    {sortConfig?.key === "wins" && (
+                      <SortIcon sortDirection={sortConfig.direction} />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-center cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("losses")}
+                  isSorted={sortConfig?.key === "losses"}
+                >
+                  <div className="inline-flex items-center gap-1">
+                    L
+                    {sortConfig?.key === "losses" && (
+                      <SortIcon sortDirection={sortConfig.direction} />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-center cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("ties")}
+                  isSorted={sortConfig?.key === "ties"}
+                >
+                  <div className="inline-flex items-center gap-1">
+                    T
+                    {sortConfig?.key === "ties" && (
+                      <SortIcon sortDirection={sortConfig.direction} />
+                    )}
+                  </div>
+                </TableHeaderCell>
+                <TableHeaderCell
+                  className="text-center cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("winPerc")}
+                  isSorted={sortConfig?.key === "winPerc"}
+                >
+                  <div className="inline-flex items-center gap-1">
+                    Win %
+                    {sortConfig?.key === "winPerc" && (
+                      <SortIcon sortDirection={sortConfig.direction} />
+                    )}
+                  </div>
+                </TableHeaderCell>
                 {hasDivisions && (
                   <TableHeaderCell className="text-center">
                     Div Record
                   </TableHeaderCell>
                 )}
-                <TableHeaderCell className="text-right">
-                  Points For
+                <TableHeaderCell
+                  className="text-right cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("pointsFor")}
+                  isSorted={sortConfig?.key === "pointsFor"}
+                >
+                  <div className="inline-flex items-center gap-1">
+                    Points For
+                    {sortConfig?.key === "pointsFor" && (
+                      <SortIcon sortDirection={sortConfig.direction} />
+                    )}
+                  </div>
                 </TableHeaderCell>
-                <TableHeaderCell className="text-right">
-                  Points Against
+                <TableHeaderCell
+                  className="text-right cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleSort("pointsAgainst")}
+                  isSorted={sortConfig?.key === "pointsAgainst"}
+                >
+                  <div className="inline-flex items-center gap-1">
+                    Points Against
+                    {sortConfig?.key === "pointsAgainst" && (
+                      <SortIcon sortDirection={sortConfig.direction} />
+                    )}
+                  </div>
                 </TableHeaderCell>
+                {currentYear && currentYear >= YEARS[YEARS.length - 1] && (
+                  <TableHeaderCell
+                    className="text-center cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleSort("sosRank")}
+                    isSorted={sortConfig?.key === "sosRank"}
+                  >
+                    <div className="inline-flex items-center gap-1">
+                      SOS
+                      {sortConfig?.key === "sosRank" && (
+                        <SortIcon sortDirection={sortConfig.direction} />
+                      )}
+                    </div>
+                  </TableHeaderCell>
+                )}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -527,7 +698,6 @@ const Standings = ({
                           maximumFractionDigits: 3,
                           minimumFractionDigits: 3,
                         });
-                        // Remove leading zero if present (e.g., "0.500" -> ".500")
                         return formatted.startsWith("0.")
                           ? formatted.substring(1)
                           : formatted;
@@ -545,6 +715,30 @@ const Standings = ({
                     <TableCell className="text-right">
                       {number(pointsAgainst, { maximumFractionDigits: 2 })}
                     </TableCell>
+                    {currentYear && currentYear >= YEARS[YEARS.length - 1] && (
+                      <TableCell className="text-center">
+                        {(() => {
+                          const sosRank =
+                            strengthOfScheduleRemaining[roster.roster_id];
+                          if (!sosRank) return "-";
+
+                          const normalized = (sosRank - 1) / 11;
+                          const red = Math.round(255 * (1 - normalized));
+                          const green = Math.round(255 * normalized);
+                          const blue = 0;
+                          const color = `rgb(${red}, ${green}, ${blue})`;
+
+                          return (
+                            <span
+                              className="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-sm"
+                              style={{ backgroundColor: color }}
+                            >
+                              {sosRank}
+                            </span>
+                          );
+                        })()}
+                      </TableCell>
+                    )}
                   </TableRow>
                 );
               })}
