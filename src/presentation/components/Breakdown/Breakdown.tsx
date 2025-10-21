@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useFormatter } from "use-intl";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
-import { League } from "@/types/league";
+import { ExtendedLeague } from "@/types/league";
 import {
   calculateWeeklyLeagueRecord,
   determineMatchupResult,
 } from "@/utils/recordUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import {
   Table,
   TableHeader,
@@ -19,7 +20,7 @@ import {
 interface BreakdownProps {
   rosters: ExtendedRoster[];
   matchups: Record<string, ExtendedMatchup[]> | undefined;
-  league: League | undefined;
+  league: ExtendedLeague | undefined;
   getTeamName: (ownerId: string) => string;
 }
 
@@ -43,10 +44,10 @@ const Breakdown = ({
   // Get playoff week start to filter out playoff games
   const playoffWeekStart = league.settings?.playoff_week_start || 15;
 
-  // Get all regular season weeks
+  // Get all regular season weeks (only completed ones)
   const regularSeasonWeeks = Object.keys(matchups)
     .map(Number)
-    .filter((week) => week < playoffWeekStart)
+    .filter((week) => week < playoffWeekStart && isWeekCompleted(week, league))
     .sort((a, b) => a - b);
 
   // Calculate weekly record for a team

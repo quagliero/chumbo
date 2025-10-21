@@ -18,6 +18,7 @@ import {
   getRosterPointsFor,
   calculateWeeklyLeagueRecord,
 } from "@/utils/recordUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import {
   Table,
   TableHeader,
@@ -76,10 +77,13 @@ const AllTimeBreakdown = () => {
       const playoffWeekStart =
         seasonData.league?.settings?.playoff_week_start || 15;
 
-      // Get all regular season weeks
+      // Get all regular season weeks (only completed ones)
       const regularSeasonWeeks = Object.keys(matchups)
         .map(Number)
-        .filter((week) => week < playoffWeekStart)
+        .filter(
+          (week) =>
+            week < playoffWeekStart && isWeekCompleted(week, seasonData.league)
+        )
         .sort((a, b) => a - b);
 
       // Process each roster

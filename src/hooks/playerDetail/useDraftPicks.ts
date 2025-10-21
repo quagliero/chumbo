@@ -95,6 +95,7 @@ export const useDraftPicks = (playerId: string | undefined) => {
     // Format earliest round display
     const earliestDisplay = Object.entries(earliestPickCounts)
       .map(([pick, count]) => (count > 1 ? `${pick} ${count}x` : pick))
+      .sort((a, b) => a.localeCompare(b))
       .join(", ");
 
     // Get picks for latest round

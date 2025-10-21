@@ -7,6 +7,7 @@ import {
   isMeaningfulPlayoffGame,
 } from "@/utils/playoffUtils";
 import { getTeamName } from "@/utils/teamName";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import type {
   PlayerPerformance,
   OwnerStats,
@@ -38,6 +39,15 @@ export const usePlayerStats = (playerId: string | undefined) => {
           ([weekStr, weekMatchups]) => {
             const week = parseInt(weekStr);
             const isPlayoffWeekCheck = isPlayoffWeek(week, playoffWeekStart);
+
+            // Only process completed weeks for regular season
+            // For playoff weeks, we still process them as they're handled by isMeaningfulPlayoffGame
+            if (
+              !isPlayoffWeekCheck &&
+              !isWeekCompleted(week, seasonData.league)
+            ) {
+              return;
+            }
 
             weekMatchups.forEach((matchup) => {
               // Check if player was in this matchup by looking at players_points

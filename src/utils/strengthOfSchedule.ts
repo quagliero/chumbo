@@ -2,6 +2,7 @@ import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "./playoffUtils";
+import { getCompletedWeek } from "./weekUtils";
 
 interface SeasonData {
   matchups: Record<string, ExtendedMatchup[]>;
@@ -23,27 +24,12 @@ export const calculateStrengthOfSchedule = (
 
   const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
-  // Determine current week - use the highest week number that has matchup data
-  const availableWeeks = Object.keys(seasonData.matchups)
-    .map(Number)
-    .filter((week) => week < playoffWeekStart)
-    .sort((a, b) => a - b);
+  // Get the most recent completed week from league data
+  const completedWeek = getCompletedWeek(seasonData.league);
 
-  if (availableWeeks.length === 0) {
+  // If no completed week info available, return empty
+  if (completedWeek === null) {
     return {};
-  }
-
-  // Find the most recent completed week by checking which weeks have actual matchup data
-  let currentWeek = 0;
-  for (const week of availableWeeks) {
-    const weekMatchups = seasonData.matchups[week.toString()];
-    if (weekMatchups && weekMatchups.length > 0) {
-      // Check if this week has actual scores (not just placeholder data)
-      const hasScores = weekMatchups.some((matchup) => matchup.points > 0);
-      if (hasScores) {
-        currentWeek = week;
-      }
-    }
   }
 
   // Calculate total points scored by each team so far (only completed games)
@@ -60,8 +46,8 @@ export const calculateStrengthOfSchedule = (
   Object.entries(seasonData.matchups).forEach(([weekStr, weekMatchups]) => {
     const week = parseInt(weekStr);
 
-    // Only count regular season weeks that are completed (up to current week)
-    if (week >= playoffWeekStart || week > currentWeek) return;
+    // Only count regular season weeks that are completed
+    if (week >= playoffWeekStart || week > completedWeek) return;
 
     weekMatchups.forEach((matchup: ExtendedMatchup) => {
       teamTotalPoints[matchup.roster_id] += matchup.points;
@@ -90,8 +76,8 @@ export const calculateStrengthOfSchedule = (
   Object.entries(seasonData.matchups).forEach(([weekStr, weekMatchups]) => {
     const week = parseInt(weekStr);
 
-    // Only look at regular season weeks that are in the future (after current week)
-    if (week >= playoffWeekStart || week <= currentWeek) return;
+    // Only look at regular season weeks that are in the future (after completed week)
+    if (week >= playoffWeekStart || week <= completedWeek) return;
 
     weekMatchups.forEach((matchup: ExtendedMatchup) => {
       // Find the opponent for this matchup

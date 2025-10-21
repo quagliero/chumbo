@@ -80,20 +80,23 @@ async function fetchDraftData(draftId, year) {
 
 // Fetch roster and user data
 async function fetchRosterData(leagueId, year) {
+  const leagueUrl = `${SLEEPER_BASE_URL}/league/${leagueId}`;
   const rostersUrl = `${SLEEPER_BASE_URL}/league/${leagueId}/rosters`;
   const usersUrl = `${SLEEPER_BASE_URL}/league/${leagueId}/users`;
   
-  const [rosters, users] = await Promise.all([
+  const [rosters, users,league] = await Promise.all([
     fetchFromAPI(rostersUrl),
-    fetchFromAPI(usersUrl)
+    fetchFromAPI(usersUrl),
+    fetchFromAPI(leagueUrl)
   ]);
   
   const yearDir = path.join(__dirname, '..', 'src', 'data', year.toString());
   
   writeJsonFile(path.join(yearDir, 'rosters.json'), rosters);
   writeJsonFile(path.join(yearDir, 'users.json'), users);
+  writeJsonFile(path.join(yearDir, 'league.json'), league);
   
-  return { rosters, users };
+  return { rosters, users, league };
 }
 
 // Fetch matchup data for a specific week
