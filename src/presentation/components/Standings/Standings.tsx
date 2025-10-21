@@ -1,6 +1,14 @@
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useCallback } from "react";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+  ColumnDef,
+} from "@tanstack/react-table";
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
 import { League, ExtendedLeague } from "@/types/league";
@@ -26,6 +34,139 @@ import {
 } from "../Table";
 import { YEARS } from "@/domain/constants";
 
+// Separate component for each division table to avoid hook issues
+const DivisionTable = ({
+  division,
+  data,
+  columns,
+  hasDivisions,
+  getDivisionInfo,
+}: {
+  division: number;
+  data: TeamStandingData[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  columns: ColumnDef<TeamStandingData, any>[];
+  hasDivisions: boolean;
+  getDivisionInfo: (division: number) => {
+    name: string;
+    avatar: string | null;
+  };
+}) => {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  return (
+    <div className={hasDivisions ? "mb-8" : ""}>
+      {hasDivisions && (
+        <div className="mb-4">
+          <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+            {(() => {
+              const divisionInfo = getDivisionInfo(division);
+              return (
+                <>
+                  {divisionInfo.avatar && (
+                    <img
+                      src={divisionInfo.avatar}
+                      alt={`${divisionInfo.name} avatar`}
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                  )}
+                  {divisionInfo.name}
+                </>
+              );
+            })()}
+          </h2>
+          <div className="border-b-2 border-gray-300"></div>
+        </div>
+      )}
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHeaderCell
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className={`${
+                    header.column.getCanSort()
+                      ? "cursor-pointer hover:bg-gray-100"
+                      : ""
+                  } ${
+                    header.id === "rank" || header.id === "teamName"
+                      ? "text-left"
+                      : "text-right"
+                  }`}
+                  isSorted={!!header.column.getIsSorted()}
+                >
+                  <div
+                    className={`flex items-center ${
+                      header.id === "rank" || header.id === "teamName"
+                        ? "justify-start"
+                        : "justify-end"
+                    }`}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    {header.column.getCanSort() && (
+                      <SortIcon
+                        sortDirection={
+                          header.column.getIsSorted() === "asc"
+                            ? "asc"
+                            : header.column.getIsSorted() === "desc"
+                            ? "desc"
+                            : false
+                        }
+                        className="ml-1"
+                      />
+                    )}
+                  </div>
+                </TableHeaderCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.map((row) => {
+            const playoffHighlight = row.original.playoffHighlight;
+            const rowClassName = `hover:bg-gray-50 ${
+              playoffHighlight === "bye"
+                ? "bg-green-50 border-l-4 border-green-500"
+                : playoffHighlight === "playoff"
+                ? "bg-yellow-50 border-l-4 border-yellow-500"
+                : ""
+            }`;
+
+            return (
+              <TableRow key={row.id} className={rowClassName}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    className={`${
+                      cell.column.id === "rank" || cell.column.id === "teamName"
+                        ? "text-left"
+                        : "text-right"
+                    }`}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
 interface StandingsProps {
   standings: ExtendedRoster[];
   getTeamName: (ownerId: string) => string;
@@ -35,6 +176,28 @@ interface StandingsProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   matchups?: Record<string, any[]>; // For league record calculations
   currentYear?: number; // Current year being viewed
+}
+
+interface TeamStandingData {
+  roster: ExtendedRoster;
+  rank: number;
+  teamName: string;
+  wins: number;
+  losses: number;
+  ties: number;
+  winPerc: number;
+  divisionRecord?: { wins: number; losses: number; ties: number };
+  pointsFor: number;
+  pointsAgainst: number;
+  avgPointsFor: number;
+  avgPointsAgainst: number;
+  sosRank?: number;
+  playoffHighlight?: string | null;
+  isChampion?: boolean;
+  isRunnerUp?: boolean;
+  isThirdPlace?: boolean;
+  isTopScorer?: boolean;
+  isBottomScorer?: boolean;
 }
 
 const Standings = ({
@@ -47,12 +210,7 @@ const Standings = ({
   currentYear,
 }: StandingsProps) => {
   const { number } = useFormatter();
-
-  // Simple sorting state
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: "asc" | "desc";
-  } | null>(null);
+  const columnHelper = createColumnHelper<TeamStandingData>();
 
   // Only show awards if season is complete
   const isSeasonComplete = league?.status === "complete";
@@ -105,20 +263,20 @@ const Standings = ({
   };
 
   // Calculate division record for a team
-  const getDivisionRecord = (
-    team: ExtendedRoster,
-    divisionTeams: ExtendedRoster[]
-  ) => {
-    if (!matchups) return { wins: 0, losses: 0, ties: 0 };
+  const getDivisionRecord = useCallback(
+    (team: ExtendedRoster, divisionTeams: ExtendedRoster[]) => {
+      if (!matchups) return { wins: 0, losses: 0, ties: 0 };
 
-    const playoffWeekStart = league?.settings?.playoff_week_start || 15;
-    return calculateDivisionRecord(
-      team,
-      divisionTeams,
-      matchups,
-      playoffWeekStart
-    );
-  };
+      const playoffWeekStart = league?.settings?.playoff_week_start || 15;
+      return calculateDivisionRecord(
+        team,
+        divisionTeams,
+        matchups,
+        playoffWeekStart
+      );
+    },
+    [matchups, league?.settings?.playoff_week_start]
+  );
 
   // Sort divisions and teams within each division
   const sortedDivisions = Object.entries(groupedStandings)
@@ -300,8 +458,8 @@ const Standings = ({
   const { playoffTeams, playoffTeamSeeds } = getPlayoffTeams();
 
   // Calculate strength of schedule remaining for current season only
-  const strengthOfScheduleRemaining =
-    currentYear && currentYear >= YEARS[YEARS.length - 1]
+  const strengthOfScheduleRemaining = useMemo(() => {
+    return currentYear && currentYear >= YEARS[YEARS.length - 1]
       ? calculateStrengthOfSchedule({
           matchups: matchups || {},
           rosters: standings,
@@ -312,96 +470,212 @@ const Standings = ({
           league: ExtendedLeague;
         })
       : {};
+  }, [currentYear, matchups, standings, league]);
 
-  // Simple sorting function
-  const handleSort = (key: string) => {
-    let direction: "asc" | "desc" = "asc";
-    if (
-      sortConfig &&
-      sortConfig.key === key &&
-      sortConfig.direction === "asc"
-    ) {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
-  };
+  // Create table columns
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("rank", {
+        header: () => "Rank",
+        cell: (info) => {
+          const row = info.row.original;
+          let rankText = info.getValue().toString();
+          if (row.isChampion) rankText += " 🥇";
+          if (row.isRunnerUp) rankText += " 🥈";
+          if (row.isThirdPlace) rankText += " 🥉";
+          if (row.isTopScorer) rankText += " 🎯";
+          if (row.isBottomScorer) rankText += " 💩";
+          return <span className="font-medium">{rankText}</span>;
+        },
+        enableSorting: false,
+      }),
+      columnHelper.accessor("teamName", {
+        header: () => "Team",
+        cell: (info) => {
+          const row = info.row.original;
+          const user = getUserByOwnerId(row.roster.owner_id, users);
+          const avatarUrl = getUserAvatarUrl(user);
+          const managerId = getManagerIdBySleeperOwnerId(row.roster.owner_id);
+          const teamName = info.getValue();
 
-  // Sort teams within each division
-  const sortedTeamsByDivision = sortedDivisions.map(({ division, teams }) => {
-    if (!sortConfig) return { division, teams };
+          return (
+            <div className="flex items-center space-x-3">
+              {avatarUrl ? (
+                <img
+                  src={avatarUrl}
+                  alt={`${teamName} avatar`}
+                  className="w-8 h-8 rounded-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-500">
+                  {teamName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              {managerId ? (
+                <Link
+                  to={`/managers/${managerId}`}
+                  className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+                >
+                  {teamName}
+                </Link>
+              ) : (
+                <span>{teamName}</span>
+              )}
+            </div>
+          );
+        },
+        enableSorting: false,
+      }),
+      columnHelper.accessor("wins", {
+        header: () => "W",
+        cell: (info) => <span className="text-center">{info.getValue()}</span>,
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      columnHelper.accessor("losses", {
+        header: () => "L",
+        cell: (info) => <span className="text-center">{info.getValue()}</span>,
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      columnHelper.accessor("ties", {
+        header: () => "T",
+        cell: (info) => <span className="text-center">{info.getValue()}</span>,
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      columnHelper.accessor("winPerc", {
+        header: () => "Win %",
+        cell: (info) => {
+          const formatted = number(info.getValue(), {
+            maximumFractionDigits: 3,
+            minimumFractionDigits: 3,
+          });
+          return (
+            <span className="text-center">
+              {formatted.startsWith("0.") ? formatted.substring(1) : formatted}
+            </span>
+          );
+        },
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      ...(hasDivisions
+        ? [
+            columnHelper.accessor("divisionRecord", {
+              header: () => "Div Record",
+              cell: (info) => {
+                const record = info.getValue();
+                if (!record)
+                  return <span className="text-center text-xs">-</span>;
+                return (
+                  <span className="text-center text-xs">
+                    {record.wins}-{record.losses}
+                    {record.ties > 0 && `-${record.ties}`}
+                  </span>
+                );
+              },
+              enableSorting: false,
+            }),
+          ]
+        : []),
+      columnHelper.accessor("pointsFor", {
+        header: () => "Points For",
+        cell: (info) => (
+          <span className="text-right">
+            {number(info.getValue(), { maximumFractionDigits: 2 })}
+          </span>
+        ),
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      columnHelper.accessor("avgPointsFor", {
+        header: () => "Avg For",
+        cell: (info) => (
+          <span className="text-right">
+            {number(info.getValue(), { maximumFractionDigits: 2 })}
+          </span>
+        ),
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      columnHelper.accessor("pointsAgainst", {
+        header: () => "Points Against",
+        cell: (info) => (
+          <span className="text-right">
+            {number(info.getValue(), { maximumFractionDigits: 2 })}
+          </span>
+        ),
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      columnHelper.accessor("avgPointsAgainst", {
+        header: () => "Avg Against",
+        cell: (info) => (
+          <span className="text-right">
+            {number(info.getValue(), { maximumFractionDigits: 2 })}
+          </span>
+        ),
+        sortingFn: "alphanumeric",
+        enableSorting: true,
+      }),
+      ...(currentYear && currentYear >= YEARS[YEARS.length - 1]
+        ? [
+            columnHelper.accessor("sosRank", {
+              header: () => "SOS",
+              cell: (info) => {
+                const sosRank = info.getValue();
+                if (!sosRank) return <span className="text-center">-</span>;
 
-    const sortedTeams = [...teams].sort((a, b) => {
-      let aValue: number;
-      let bValue: number;
+                const normalized = (sosRank - 1) / 11;
+                const red = Math.round(255 * (1 - normalized));
+                const green = Math.round(255 * normalized);
+                const blue = 0;
+                const color = `rgb(${red}, ${green}, ${blue})`;
 
-      switch (sortConfig.key) {
-        case "wins":
-          aValue = a.settings.wins;
-          bValue = b.settings.wins;
-          break;
-        case "losses":
-          aValue = a.settings.losses;
-          bValue = b.settings.losses;
-          break;
-        case "ties":
-          aValue = a.settings.ties;
-          bValue = b.settings.ties;
-          break;
-        case "winPerc":
-          aValue =
-            a.settings.wins /
-            (a.settings.wins + a.settings.losses + a.settings.ties);
-          bValue =
-            b.settings.wins /
-            (b.settings.wins + b.settings.losses + b.settings.ties);
-          break;
-        case "pointsFor":
-          aValue = a.settings.fpts + a.settings.fpts_decimal / 100;
-          bValue = b.settings.fpts + b.settings.fpts_decimal / 100;
-          break;
-        case "pointsAgainst":
-          aValue =
-            a.settings.fpts_against + a.settings.fpts_against_decimal / 100;
-          bValue =
-            b.settings.fpts_against + b.settings.fpts_against_decimal / 100;
-          break;
-        case "sosRank":
-          aValue = strengthOfScheduleRemaining[a.roster_id] || 0;
-          bValue = strengthOfScheduleRemaining[b.roster_id] || 0;
-          break;
-        default:
-          return 0;
-      }
-
-      if (sortConfig.direction === "asc") {
-        return aValue - bValue;
-      } else {
-        return bValue - aValue;
-      }
-    });
-
-    return { division, teams: sortedTeams };
-  });
+                return (
+                  <span
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-sm"
+                    style={{ backgroundColor: color }}
+                  >
+                    {sosRank}
+                  </span>
+                );
+              },
+              sortingFn: "alphanumeric",
+              enableSorting: true,
+            }),
+          ]
+        : []),
+    ],
+    [columnHelper, hasDivisions, currentYear, number, users]
+  );
 
   // Determine if a team gets a bye (top 2 seeds in 12-team leagues, or all playoff teams in 10-team leagues)
-  const getPlayoffHighlight = (rosterId: number) => {
-    if (!playoffTeams.has(rosterId)) return null;
+  const getPlayoffHighlight = useCallback(
+    (rosterId: number) => {
+      if (!playoffTeams.has(rosterId)) return null;
 
-    const seed = playoffTeamSeeds[rosterId];
-    const numTeams = league?.settings?.num_teams || 12;
+      const seed = playoffTeamSeeds[rosterId];
+      const numTeams = league?.settings?.num_teams || 12;
 
-    // In 10-team leagues, all playoff teams get green (no byes)
-    if (numTeams === 10) {
-      return "playoff";
-    }
+      // In 10-team leagues, all playoff teams get green (no byes)
+      if (numTeams === 10) {
+        return "playoff";
+      }
 
-    // In 12-team leagues, top 2 seeds get byes (green), others get yellow
-    if (seed <= 2) {
-      return "bye";
-    } else {
-      return "playoff";
-    }
-  };
+      // In 12-team leagues, top 2 seeds get byes (green), others get yellow
+      if (seed <= 2) {
+        return "bye";
+      } else {
+        return "playoff";
+      }
+    },
+    [playoffTeams, playoffTeamSeeds, league?.settings?.num_teams]
+  );
 
   // Get top scorer
   const topScorer = standings.reduce((max, r) => {
@@ -458,293 +732,107 @@ const Standings = ({
     return worst;
   });
 
+  // Create table data for each division
+  const createTableData = useCallback(
+    (teams: ExtendedRoster[]) => {
+      return teams.map((roster, index) => {
+        const winPerc =
+          roster.settings.wins /
+          (roster.settings.wins +
+            roster.settings.losses +
+            roster.settings.ties);
+        const pointsFor =
+          roster.settings.fpts + roster.settings.fpts_decimal / 100;
+        const pointsAgainst =
+          roster.settings.fpts_against +
+          roster.settings.fpts_against_decimal / 100;
+
+        // Calculate average points (total games played)
+        const totalGames =
+          roster.settings.wins + roster.settings.losses + roster.settings.ties;
+        const avgPointsFor = totalGames > 0 ? pointsFor / totalGames : 0;
+        const avgPointsAgainst =
+          totalGames > 0 ? pointsAgainst / totalGames : 0;
+
+        // Calculate division record if divisions exist
+        const divisionRecord = hasDivisions
+          ? getDivisionRecord(
+              roster,
+              standings.filter(
+                (t) =>
+                  (t.settings.division || 1) === (roster.settings.division || 1)
+              )
+            )
+          : undefined;
+
+        const playoffHighlight = getPlayoffHighlight(roster.roster_id);
+        const isChampion =
+          isSeasonComplete && firstPlace?.w === roster.roster_id;
+        const isRunnerUp =
+          isSeasonComplete && firstPlace?.l === roster.roster_id;
+        const isThirdPlace =
+          isSeasonComplete && thirdPlace?.w === roster.roster_id;
+        const isTopScorer =
+          isSeasonComplete && roster.roster_id === topScorer.roster_id;
+        const isBottomScorer =
+          isSeasonComplete && roster.roster_id === bottomScorer.roster_id;
+
+        return {
+          roster,
+          rank: index + 1,
+          teamName: getTeamName(roster.owner_id),
+          wins: roster.settings.wins,
+          losses: roster.settings.losses,
+          ties: roster.settings.ties,
+          winPerc,
+          divisionRecord,
+          pointsFor,
+          pointsAgainst,
+          avgPointsFor,
+          avgPointsAgainst,
+          sosRank: strengthOfScheduleRemaining[roster.roster_id],
+          playoffHighlight,
+          isChampion,
+          isRunnerUp,
+          isThirdPlace,
+          isTopScorer,
+          isBottomScorer,
+        };
+      });
+    },
+    [
+      hasDivisions,
+      standings,
+      getTeamName,
+      strengthOfScheduleRemaining,
+      isSeasonComplete,
+      firstPlace,
+      thirdPlace,
+      topScorer,
+      bottomScorer,
+      getPlayoffHighlight,
+      getDivisionRecord,
+    ]
+  );
+  const divisionTableData = useMemo(() => {
+    return sortedDivisions.map(({ division, teams }) => ({
+      division,
+      teams,
+      data: createTableData(teams),
+    }));
+  }, [sortedDivisions, createTableData]);
+
   return (
     <div className="overflow-x-auto container mx-auto">
-      {sortedTeamsByDivision.map(({ division, teams }) => (
-        <div key={division} className={hasDivisions ? "mb-8" : ""}>
-          {hasDivisions && (
-            <div className="mb-4">
-              <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-                {(() => {
-                  const divisionInfo = getDivisionInfo(division);
-                  return (
-                    <>
-                      {divisionInfo.avatar && (
-                        <img
-                          src={divisionInfo.avatar}
-                          alt={`${divisionInfo.name} avatar`}
-                          className="w-6 h-6 rounded-full object-cover"
-                        />
-                      )}
-                      {divisionInfo.name}
-                    </>
-                  );
-                })()}
-              </h2>
-              <div className="border-b-2 border-gray-300"></div>
-            </div>
-          )}
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderCell className="text-left pr-0">
-                  Rank
-                </TableHeaderCell>
-                <TableHeaderCell className="text-left">Team</TableHeaderCell>
-                <TableHeaderCell
-                  className="text-center cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("wins")}
-                  isSorted={sortConfig?.key === "wins"}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    W
-                    {sortConfig?.key === "wins" && (
-                      <SortIcon sortDirection={sortConfig.direction} />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-center cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("losses")}
-                  isSorted={sortConfig?.key === "losses"}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    L
-                    {sortConfig?.key === "losses" && (
-                      <SortIcon sortDirection={sortConfig.direction} />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-center cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("ties")}
-                  isSorted={sortConfig?.key === "ties"}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    T
-                    {sortConfig?.key === "ties" && (
-                      <SortIcon sortDirection={sortConfig.direction} />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-center cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("winPerc")}
-                  isSorted={sortConfig?.key === "winPerc"}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    Win %
-                    {sortConfig?.key === "winPerc" && (
-                      <SortIcon sortDirection={sortConfig.direction} />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                {hasDivisions && (
-                  <TableHeaderCell className="text-center">
-                    Div Record
-                  </TableHeaderCell>
-                )}
-                <TableHeaderCell
-                  className="text-right cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("pointsFor")}
-                  isSorted={sortConfig?.key === "pointsFor"}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    Points For
-                    {sortConfig?.key === "pointsFor" && (
-                      <SortIcon sortDirection={sortConfig.direction} />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-right cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("pointsAgainst")}
-                  isSorted={sortConfig?.key === "pointsAgainst"}
-                >
-                  <div className="inline-flex items-center gap-1">
-                    Points Against
-                    {sortConfig?.key === "pointsAgainst" && (
-                      <SortIcon sortDirection={sortConfig.direction} />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                {currentYear && currentYear >= YEARS[YEARS.length - 1] && (
-                  <TableHeaderCell
-                    className="text-center cursor-pointer hover:bg-gray-100"
-                    onClick={() => handleSort("sosRank")}
-                    isSorted={sortConfig?.key === "sosRank"}
-                  >
-                    <div className="inline-flex items-center gap-1">
-                      SOS
-                      {sortConfig?.key === "sosRank" && (
-                        <SortIcon sortDirection={sortConfig.direction} />
-                      )}
-                    </div>
-                  </TableHeaderCell>
-                )}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {teams.map((roster: ExtendedRoster, index: number) => {
-                const winPerc =
-                  roster.settings.wins /
-                  (roster.settings.wins +
-                    roster.settings.losses +
-                    roster.settings.ties);
-                const pointsFor =
-                  roster.settings.fpts + roster.settings.fpts_decimal / 100;
-                const pointsAgainst =
-                  roster.settings.fpts_against +
-                  roster.settings.fpts_against_decimal / 100;
-
-                // Calculate division record if divisions exist
-                const divisionRecord = hasDivisions
-                  ? getDivisionRecord(
-                      roster,
-                      standings.filter(
-                        (t) =>
-                          (t.settings.division || 1) ===
-                          (roster.settings.division || 1)
-                      )
-                    )
-                  : null;
-
-                const isChampion =
-                  isSeasonComplete && firstPlace?.w === roster.roster_id;
-                const isRunnerUp =
-                  isSeasonComplete && firstPlace?.l === roster.roster_id;
-                const isThirdPlace =
-                  isSeasonComplete && thirdPlace?.w === roster.roster_id;
-                const isTopScorer =
-                  isSeasonComplete && roster.roster_id === topScorer.roster_id;
-                const isBottomScorer =
-                  isSeasonComplete &&
-                  roster.roster_id === bottomScorer.roster_id;
-
-                const playoffHighlight = getPlayoffHighlight(roster.roster_id);
-                const rowClassName = `hover:bg-gray-50 ${
-                  playoffHighlight === "bye"
-                    ? "bg-green-50 border-l-4 border-green-500"
-                    : playoffHighlight === "playoff"
-                    ? "bg-yellow-50 border-l-4 border-yellow-500"
-                    : ""
-                }`;
-
-                return (
-                  <TableRow key={roster.roster_id} className={rowClassName}>
-                    <TableCell className="font-medium pr-0">
-                      {index + 1}
-                      {isChampion && " 🥇"}
-                      {isRunnerUp && " 🥈"}
-                      {isThirdPlace && " 🥉"}
-                      {isTopScorer && " 🎯"}
-                      {isBottomScorer && " 💩"}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-3">
-                        {(() => {
-                          const user = getUserByOwnerId(roster.owner_id, users);
-                          const avatarUrl = getUserAvatarUrl(user);
-                          const managerId = getManagerIdBySleeperOwnerId(
-                            roster.owner_id
-                          );
-                          const teamName = getTeamName(roster.owner_id);
-
-                          return (
-                            <>
-                              {avatarUrl ? (
-                                <img
-                                  src={avatarUrl}
-                                  alt={`${teamName} avatar`}
-                                  className="w-8 h-8 rounded-full object-cover"
-                                  onError={(e) => {
-                                    (
-                                      e.target as HTMLImageElement
-                                    ).style.display = "none";
-                                  }}
-                                />
-                              ) : (
-                                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-500">
-                                  {teamName.charAt(0).toUpperCase()}
-                                </div>
-                              )}
-                              {managerId ? (
-                                <Link
-                                  to={`/managers/${managerId}`}
-                                  className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
-                                >
-                                  {teamName}
-                                </Link>
-                              ) : (
-                                <span>{teamName}</span>
-                              )}
-                            </>
-                          );
-                        })()}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {roster.settings.wins}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {roster.settings.losses}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {roster.settings.ties}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {(() => {
-                        const formatted = number(winPerc, {
-                          maximumFractionDigits: 3,
-                          minimumFractionDigits: 3,
-                        });
-                        return formatted.startsWith("0.")
-                          ? formatted.substring(1)
-                          : formatted;
-                      })()}
-                    </TableCell>
-                    {hasDivisions && divisionRecord && (
-                      <TableCell className="text-center text-xs">
-                        {divisionRecord.wins}-{divisionRecord.losses}
-                        {divisionRecord.ties > 0 && `-${divisionRecord.ties}`}
-                      </TableCell>
-                    )}
-                    <TableCell className="text-right">
-                      {number(pointsFor, { maximumFractionDigits: 2 })}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {number(pointsAgainst, { maximumFractionDigits: 2 })}
-                    </TableCell>
-                    {currentYear && currentYear >= YEARS[YEARS.length - 1] && (
-                      <TableCell className="text-center">
-                        {(() => {
-                          const sosRank =
-                            strengthOfScheduleRemaining[roster.roster_id];
-                          if (!sosRank) return "-";
-
-                          const normalized = (sosRank - 1) / 11;
-                          const red = Math.round(255 * (1 - normalized));
-                          const green = Math.round(255 * normalized);
-                          const blue = 0;
-                          const color = `rgb(${red}, ${green}, ${blue})`;
-
-                          return (
-                            <span
-                              className="inline-flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-sm"
-                              style={{ backgroundColor: color }}
-                            >
-                              {sosRank}
-                            </span>
-                          );
-                        })()}
-                      </TableCell>
-                    )}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+      {divisionTableData.map(({ division, data }) => (
+        <DivisionTable
+          key={division}
+          division={division}
+          data={data}
+          columns={columns}
+          hasDivisions={hasDivisions}
+          getDivisionInfo={getDivisionInfo}
+        />
       ))}
 
       {/* Awards Grid */}
