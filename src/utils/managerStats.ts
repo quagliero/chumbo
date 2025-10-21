@@ -1,5 +1,5 @@
 import { seasons, getPlayer } from "@/data";
-import { YEARS } from "@/domain/constants";
+import { YEARS, CURRENT_YEAR } from "@/domain/constants";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
@@ -9,6 +9,7 @@ import {
   isRegularSeasonWeek,
   isMeaningfulPlayoffGame,
 } from "@/utils/playoffUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import managers from "@/data/managers.json";
 import { getManagerBySleeperOwnerId } from "@/utils/managerUtils";
 import {
@@ -386,9 +387,26 @@ export const getManagerStats = (
 
       // Filter weeks based on data mode (same logic as season stats)
       const playoffWeekStart = getPlayoffWeekStart(seasonData);
+      const isPlayoffWeekCheck = isPlayoffWeek(weekNum, playoffWeekStart);
 
-      if (dataMode === "regular" && isPlayoffWeek(weekNum, playoffWeekStart))
-        return; // Skip playoff weeks
+      // For regular season weeks, only process completed weeks
+      // For historical seasons (before current year), assume all weeks are completed
+      if (
+        !isPlayoffWeekCheck &&
+        year === CURRENT_YEAR &&
+        !isWeekCompleted(weekNum, seasonData.league)
+      ) {
+        return;
+      }
+
+      // For playoff weeks, include them if they're meaningful (matches player detail page logic)
+      // Skip playoff weeks only if dataMode is "regular" AND we're not including meaningful playoff games
+      if (dataMode === "regular" && isPlayoffWeekCheck) {
+        // For All-Star Lineup purposes, we want to include meaningful playoff games
+        // This matches the logic in usePlayerStats.ts
+        return;
+      }
+
       if (
         dataMode === "playoffs" &&
         isRegularSeasonWeek(weekNum, playoffWeekStart)
@@ -508,24 +526,24 @@ export const getManagerStats = (
           matchup_id: teamMatchup.matchup_id,
         });
       });
-    });
 
-    // Process draft data
-    if (seasonData.picks) {
-      seasonData.picks.forEach((pick) => {
-        if (pick.roster_id === roster.roster_id) {
-          const playerId = pick.player_id;
-          if (!draftHistory.has(playerId)) {
-            draftHistory.set(playerId, []);
+      // Process draft data
+      if (seasonData.picks) {
+        seasonData.picks.forEach((pick) => {
+          if (pick.roster_id === roster.roster_id) {
+            const playerId = pick.player_id;
+            if (!draftHistory.has(playerId)) {
+              draftHistory.set(playerId, []);
+            }
+            draftHistory.get(playerId)!.push({
+              year,
+              round: pick.round,
+              pick: pick.draft_slot,
+            });
           }
-          draftHistory.get(playerId)!.push({
-            year,
-            round: pick.round,
-            pick: pick.draft_slot,
-          });
-        }
-      });
-    }
+        });
+      }
+    });
   });
 
   // Create All-Star lineup
@@ -614,11 +632,13 @@ export const getManagerStats = (
           : best
       );
 
+      const yearsDrafted = [...new Set(picks.map((p) => p.year))].sort();
+
       return {
         playerId,
         playerName,
-        timesDrafted: picks.length,
-        years: [...new Set(picks.map((p) => p.year))].sort(),
+        timesDrafted: yearsDrafted.length,
+        years: yearsDrafted,
         bestPick,
       };
     })
@@ -745,6 +765,16 @@ const getSeasonStats = (
       isRegularSeasonWeek(weekNum, playoffWeekStart)
     )
       return; // Skip regular season weeks
+
+    // Only process completed weeks for regular season
+    // For historical seasons (before current year), assume all weeks are completed
+    if (
+      dataMode === "regular" &&
+      year === CURRENT_YEAR &&
+      !isWeekCompleted(weekNum, seasonData.league)
+    ) {
+      return;
+    }
 
     const weekMatchups = seasonData.matchups[weekKey];
     const teamMatchup = weekMatchups.find(

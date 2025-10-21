@@ -42,8 +42,10 @@ export const usePlayerStats = (playerId: string | undefined) => {
 
             // Only process completed weeks for regular season
             // For playoff weeks, we still process them as they're handled by isMeaningfulPlayoffGame
+            // For historical seasons (before current year), assume all weeks are completed
             if (
               !isPlayoffWeekCheck &&
+              year === CURRENT_YEAR &&
               !isWeekCompleted(week, seasonData.league)
             ) {
               return;
