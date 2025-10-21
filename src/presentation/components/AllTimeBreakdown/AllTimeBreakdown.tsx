@@ -19,6 +19,7 @@ import {
   calculateWeeklyLeagueRecord,
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
+import { CURRENT_YEAR } from "@/domain/constants";
 import {
   Table,
   TableHeader,
@@ -77,12 +78,15 @@ const AllTimeBreakdown = () => {
       const playoffWeekStart =
         seasonData.league?.settings?.playoff_week_start || 15;
 
-      // Get all regular season weeks (only completed ones)
+      // Get all regular season weeks (only completed ones for current year)
       const regularSeasonWeeks = Object.keys(matchups)
         .map(Number)
         .filter(
           (week) =>
-            week < playoffWeekStart && isWeekCompleted(week, seasonData.league)
+            week < playoffWeekStart &&
+            (year === CURRENT_YEAR
+              ? isWeekCompleted(week, seasonData.league)
+              : true)
         )
         .sort((a, b) => a - b);
 

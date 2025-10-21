@@ -8,6 +8,7 @@ import {
   determineMatchupResult,
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
+import { CURRENT_YEAR } from "@/domain/constants";
 import {
   Table,
   TableHeader,
@@ -22,6 +23,7 @@ interface BreakdownProps {
   matchups: Record<string, ExtendedMatchup[]> | undefined;
   league: ExtendedLeague | undefined;
   getTeamName: (ownerId: string) => string;
+  currentYear?: number;
 }
 
 const Breakdown = ({
@@ -29,6 +31,7 @@ const Breakdown = ({
   matchups,
   league,
   getTeamName,
+  currentYear,
 }: BreakdownProps) => {
   const { number } = useFormatter();
   const [showLuck, setShowLuck] = useState(false);
@@ -44,10 +47,14 @@ const Breakdown = ({
   // Get playoff week start to filter out playoff games
   const playoffWeekStart = league.settings?.playoff_week_start || 15;
 
-  // Get all regular season weeks (only completed ones)
+  // Get all regular season weeks (only completed ones for current year)
   const regularSeasonWeeks = Object.keys(matchups)
     .map(Number)
-    .filter((week) => week < playoffWeekStart && isWeekCompleted(week, league))
+    .filter(
+      (week) =>
+        week < playoffWeekStart &&
+        (currentYear === CURRENT_YEAR ? isWeekCompleted(week, league) : true)
+    )
     .sort((a, b) => a - b);
 
   // Calculate weekly record for a team
