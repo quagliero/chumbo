@@ -522,6 +522,7 @@ const History = () => {
             matchups={seasonData?.matchups}
             league={seasonData?.league}
             getTeamName={getTeamName}
+            currentYear={selectedYear}
           />
         )}
 
