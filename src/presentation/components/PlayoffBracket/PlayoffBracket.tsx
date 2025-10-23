@@ -205,7 +205,7 @@ const PlayoffBracket = ({
                         onClick={() => {
                           if (team1Matchup?.matchup_id) {
                             navigate(
-                              `/history/${year}/matchups/${weekNumber}/${team1Matchup.matchup_id}`
+                              `/seasons/${year}/matchups/${weekNumber}/${team1Matchup.matchup_id}`
                             );
                           }
                         }}
@@ -345,7 +345,7 @@ const PlayoffBracket = ({
                   onClick={() => {
                     if (team1Matchup?.matchup_id) {
                       navigate(
-                        `/history/${year}/matchups/${weekNumber}/${team1Matchup.matchup_id}`
+                        `/seasons/${year}/matchups/${weekNumber}/${team1Matchup.matchup_id}`
                       );
                     }
                   }}
@@ -495,7 +495,7 @@ const PlayoffBracket = ({
                   onClick={() => {
                     if (team1Matchup?.matchup_id) {
                       navigate(
-                        `/history/${year}/matchups/${weekNumber}/${team1Matchup.matchup_id}`
+                        `/seasons/${year}/matchups/${weekNumber}/${team1Matchup.matchup_id}`
                       );
                     }
                   }}

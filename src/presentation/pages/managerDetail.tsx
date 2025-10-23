@@ -266,7 +266,7 @@ const ManagerDetail = () => {
                     <TableRow
                       key={season.year}
                       onClick={() =>
-                        navigate(`/history/${season.year}/standings`)
+                        navigate(`/seasons/${season.year}/standings`)
                       }
                     >
                       <TableCell className="font-medium">

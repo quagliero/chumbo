@@ -16,7 +16,9 @@ import ScheduleComparison from "@/presentation/components/ScheduleComparison/Sch
 import Breakdown from "@/presentation/components/Breakdown/Breakdown";
 import Trades from "@/presentation/components/Trades";
 import TradeCard from "@/presentation/components/TradeCard";
+import PlayoffOdds from "@/presentation/components/PlayoffOdds/PlayoffOdds";
 import { getWeekTrades } from "@/utils/transactionUtils";
+import { CURRENT_YEAR } from "@/domain/constants";
 
 const History = () => {
   const { year, tab, week, matchupId } = useParams<{
@@ -38,7 +40,7 @@ const History = () => {
   // Redirect to default URL if no params provided
   useEffect(() => {
     if (!year || !tab) {
-      navigate(`/history/${selectedYear}/${activeTab}`, { replace: true });
+      navigate(`/seasons/${selectedYear}/${activeTab}`, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,6 +63,7 @@ const History = () => {
         "schedule-comparison",
         "breakdown",
         "trades",
+        "playoff-odds",
       ].includes(tab)
     ) {
       setActiveTab(tab as TabType);
@@ -73,13 +76,13 @@ const History = () => {
   // Handle year change with URL update
   const handleYearChange = (newYear: number) => {
     setSelectedYear(newYear);
-    navigate(`/history/${newYear}/${activeTab}`);
+    navigate(`/seasons/${newYear}/${activeTab}`);
   };
 
   // Handle tab change with URL update
   const handleTabChange = (newTab: TabType) => {
     setActiveTab(newTab);
-    navigate(`/history/${selectedYear}/${newTab}`);
+    navigate(`/seasons/${selectedYear}/${newTab}`);
   };
 
   // Get sorted standings
@@ -348,6 +351,7 @@ const History = () => {
               "schedule-comparison",
               "breakdown",
               "trades",
+              ...(selectedYear === CURRENT_YEAR ? ["playoff-odds"] : []),
             ].map((tab) => (
               <button
                 key={tab}
@@ -362,6 +366,8 @@ const History = () => {
                   ? "Schedule Comparison"
                   : tab === "breakdown"
                   ? "Breakdown"
+                  : tab === "playoff-odds"
+                  ? "Playoff Odds"
                   : tab}
               </button>
             ))}
@@ -536,6 +542,16 @@ const History = () => {
             users={seasonData?.users}
             slotToRosterId={seasonData?.draft?.slot_to_roster_id}
             draftStartTime={seasonData?.draft?.start_time}
+          />
+        )}
+
+        {/* Playoff Odds Tab */}
+        {activeTab === "playoff-odds" && (
+          <PlayoffOdds
+            rosters={seasonData?.rosters || []}
+            matchups={seasonData?.matchups}
+            league={seasonData?.league}
+            getTeamName={getTeamName}
           />
         )}
       </div>

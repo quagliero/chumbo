@@ -155,7 +155,7 @@ const Matchups = ({
                 return (
                   <Link
                     key={`playoff-${index}`}
-                    to={`/history/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
+                    to={`/seasons/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
                     className="border rounded-lg p-4 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow block border-purple-200 overflow-hidden"
                   >
                     <div className="space-y-2">
@@ -292,7 +292,7 @@ const Matchups = ({
                 return (
                   <Link
                     key={`consolation-${index}`}
-                    to={`/history/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
+                    to={`/seasons/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
                     className="border rounded-lg p-4 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow block border-gray-200 opacity-75 overflow-hidden"
                   >
                     <div className="space-y-2">
@@ -424,7 +424,7 @@ const Matchups = ({
               return (
                 <Link
                   key={index}
-                  to={`/history/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
+                  to={`/seasons/${year}/matchups/${selectedWeek}/${team1.matchup_id}`}
                   className="border rounded-lg p-4 bg-white shadow-sm cursor-pointer hover:shadow-md transition-shadow block overflow-hidden"
                 >
                   <div className="space-y-2">

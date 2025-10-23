@@ -98,7 +98,7 @@ const MatchupDetail = ({
     <div className="container mx-auto space-y-6">
       {/* Back button */}
       <button
-        onClick={() => navigate(`/history/${year}/matchups`)}
+        onClick={() => navigate(`/seasons/${year}/matchups`)}
         className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
       >
         ← Back to all matchups

@@ -53,10 +53,10 @@ function App() {
                   <Route path="rules" element={<Rules />} />
                   {/* Add more wiki sub-routes here */}
                 </Route>
-                <Route path="/history" element={<History />} />
-                <Route path="/history/:year/:tab" element={<History />} />
+                <Route path="/seasons" element={<History />} />
+                <Route path="/seasons/:year/:tab" element={<History />} />
                 <Route
-                  path="/history/:year/:tab/:week/:matchupId"
+                  path="/seasons/:year/:tab/:week/:matchupId"
                   element={<History />}
                 />
                 <Route path="/managers" element={<Managers />} />

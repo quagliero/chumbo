@@ -102,7 +102,7 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
   isSorted = false,
 }) => {
   const baseClasses =
-    "px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
+    "px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
   const sortedClasses = isSorted ? "bg-gray-100" : "";
 
   return (
@@ -124,7 +124,7 @@ export const TableCell: React.FC<TableCellProps> = ({
 }) => {
   return (
     <td
-      className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${className}`}
+      className={`px-3 py-4 whitespace-nowrap text-sm text-gray-900 ${className}`}
       colSpan={colSpan}
       style={style}
     >

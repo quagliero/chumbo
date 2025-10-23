@@ -31,7 +31,7 @@ const Header = () => {
           </li>
           <li>
             <NavLink
-              to="/history"
+              to="/seasons"
               className={({ isActive }) =>
                 `${
                   isActive
@@ -40,7 +40,7 @@ const Header = () => {
                 } font-medium`
               }
             >
-              History
+              Seasons
             </NavLink>
           </li>
           <li>

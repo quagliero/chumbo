@@ -394,7 +394,7 @@ const TopScores = () => {
   }, [scoreMode, sortOrder]);
 
   const getMatchupUrl = (score: TopScore | MatchTotal | PlayerScore) => {
-    return `/history/${score.year}/matchups/${score.week}/${score.matchup_id}`;
+    return `/seasons/${score.year}/matchups/${score.week}/${score.matchup_id}`;
   };
 
   const handleLoadMore = () => {

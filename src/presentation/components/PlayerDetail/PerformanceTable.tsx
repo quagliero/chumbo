@@ -134,7 +134,7 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
               } cursor-pointer`}
               onClick={() => {
                 navigate(
-                  `/history/${performance.year}/matchups/${performance.week}/${performance.matchupId}`
+                  `/seasons/${performance.year}/matchups/${performance.week}/${performance.matchupId}`
                 );
               }}
             >

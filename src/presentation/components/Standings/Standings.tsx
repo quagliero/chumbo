@@ -62,8 +62,8 @@ const DivisionTable = ({
   return (
     <div className={hasDivisions ? "mb-8" : ""}>
       {hasDivisions && (
-        <div className="mb-4">
-          <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center gap-2">
+        <div>
+          <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center">
             {(() => {
               const divisionInfo = getDivisionInfo(division);
               return (

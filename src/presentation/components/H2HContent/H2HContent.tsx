@@ -777,7 +777,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                   <TableCell>
                     {matchup.matchupId ? (
                       <Link
-                        to={`/history/${matchup.year}/matchups/${matchup.week}/${matchup.matchupId}`}
+                        to={`/seasons/${matchup.year}/matchups/${matchup.week}/${matchup.matchupId}`}
                         className="text-blue-600 hover:text-blue-800 hover:underline"
                       >
                         Week {matchup.week}
