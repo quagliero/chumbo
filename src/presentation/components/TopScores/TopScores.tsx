@@ -9,6 +9,7 @@ import { getUserByOwnerId, getUserAvatarUrl } from "@/utils/userAvatar";
 import { getPlayer } from "@/data";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 
 type ScoreMode = "team-score" | "match-total" | "player-score";
 type SortOrder = "high-to-low" | "low-to-high";
@@ -58,6 +59,7 @@ const TopScores = () => {
   const { subTab } = useParams<{ subTab: string }>();
   const [displayCount, setDisplayCount] = useState<number>(20);
   const [sortOrder, setSortOrder] = useState<SortOrder>("high-to-low");
+  const [selectedSeason, setSelectedSeason] = useState<string>("all-time");
 
   const scoreMode = (subTab as ScoreMode) || "team-score";
 
@@ -68,6 +70,12 @@ const TopScores = () => {
       // Process each year
       Object.entries(seasons).forEach(([yearStr, seasonData]) => {
         const year = parseInt(yearStr);
+
+        // Filter by selected season
+        if (selectedSeason !== "all-time" && yearStr !== selectedSeason) {
+          return;
+        }
+
         if (!seasonData?.rosters || !seasonData?.matchups || !seasonData?.users)
           return;
 
@@ -83,6 +91,11 @@ const TopScores = () => {
         // Process each week
         Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
           const week = parseInt(weekStr);
+
+          // Skip incomplete weeks
+          if (!isWeekCompleted(week, seasonData.league)) {
+            return;
+          }
 
           // Skip playoff weeks except for elimination/championship games
           if (week >= playoffWeekStart) {
@@ -167,6 +180,12 @@ const TopScores = () => {
       // Process each year
       Object.entries(seasons).forEach(([yearStr, seasonData]) => {
         const year = parseInt(yearStr);
+
+        // Filter by selected season
+        if (selectedSeason !== "all-time" && yearStr !== selectedSeason) {
+          return;
+        }
+
         if (!seasonData?.rosters || !seasonData?.matchups) return;
 
         const rosters = seasonData.rosters as ExtendedRoster[];
@@ -180,6 +199,11 @@ const TopScores = () => {
         // Process each week
         Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
           const week = parseInt(weekStr);
+
+          // Skip incomplete weeks
+          if (!isWeekCompleted(week, seasonData.league)) {
+            return;
+          }
 
           // Skip playoff weeks except for elimination/championship games
           if (week >= playoffWeekStart) {
@@ -284,6 +308,12 @@ const TopScores = () => {
       // Process each year
       Object.entries(seasons).forEach(([yearStr, seasonData]) => {
         const year = parseInt(yearStr);
+
+        // Filter by selected season
+        if (selectedSeason !== "all-time" && yearStr !== selectedSeason) {
+          return;
+        }
+
         if (!seasonData?.rosters || !seasonData?.matchups) return;
 
         const rosters = seasonData.rosters as ExtendedRoster[];
@@ -296,6 +326,11 @@ const TopScores = () => {
         // Process each week
         Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
           const week = parseInt(weekStr);
+
+          // Skip incomplete weeks
+          if (!isWeekCompleted(week, seasonData.league)) {
+            return;
+          }
 
           // Skip playoff weeks except for elimination/championship games
           if (isPlayoffWeek(week, playoffWeekStart)) {
@@ -391,7 +426,7 @@ const TopScores = () => {
     }
 
     return [];
-  }, [scoreMode, sortOrder]);
+  }, [scoreMode, sortOrder, selectedSeason]);
 
   const getMatchupUrl = (score: TopScore | MatchTotal | PlayerScore) => {
     return `/seasons/${score.year}/matchups/${score.week}/${score.matchup_id}`;
@@ -799,20 +834,42 @@ const TopScores = () => {
             </NavLink>
           </div>
 
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">
-              Sort by:
-            </label>
-            <select
-              value={sortOrder}
-              onChange={(e) =>
-                handleSortOrderChange(e.target.value as SortOrder)
-              }
-              className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="high-to-low">High to Low</option>
-              <option value="low-to-high">Low to High</option>
-            </select>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">
+                Season:
+              </label>
+              <select
+                value={selectedSeason}
+                onChange={(e) => setSelectedSeason(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="all-time">All-Time</option>
+                {Object.keys(seasons)
+                  .sort((a, b) => parseInt(b) - parseInt(a))
+                  .map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-gray-700">
+                Sort by:
+              </label>
+              <select
+                value={sortOrder}
+                onChange={(e) =>
+                  handleSortOrderChange(e.target.value as SortOrder)
+                }
+                className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="high-to-low">High to Low</option>
+                <option value="low-to-high">Low to High</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
