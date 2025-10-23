@@ -37,7 +37,15 @@ export const isWeekCompleted = (
   league: ExtendedLeague | undefined
 ): boolean => {
   const completedWeek = getCompletedWeek(league);
-  if (completedWeek === null) return false;
+
+  // If completedWeek is null, it means either:
+  // 1. No league data (return false)
+  // 2. Pre-2019 season without leg field (assume all weeks completed)
+  if (completedWeek === null) {
+    // If we have league data but no leg field, it's a historical season
+    // All weeks in historical seasons should be considered completed
+    return league !== undefined;
+  }
 
   return week <= completedWeek;
 };
