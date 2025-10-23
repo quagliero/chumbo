@@ -11,6 +11,7 @@ import {
   isPlayoffWeek,
   isRegularSeasonWeek,
 } from "@/utils/playoffUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import { getPlayerPositionComprehensive } from "@/utils/playerDataUtils";
 import {
   Table,
@@ -96,6 +97,11 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
         Object.entries(seasonData.matchups).forEach(
           ([weekStr, weekMatchups]) => {
             const week = parseInt(weekStr);
+
+            // Skip incomplete weeks
+            if (!isWeekCompleted(week, seasonData.league)) {
+              return;
+            }
 
             // Skip playoff weeks for regular season matchups
             if (isPlayoffWeek(week, playoffWeekStart)) return;
@@ -216,6 +222,11 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
         Object.entries(seasonData.matchups).forEach(
           ([weekStr, weekMatchups]) => {
             const week = parseInt(weekStr);
+
+            // Skip incomplete weeks
+            if (!isWeekCompleted(week, seasonData.league)) {
+              return;
+            }
 
             // Only include playoff weeks
             if (isRegularSeasonWeek(week, playoffWeekStart)) return;
