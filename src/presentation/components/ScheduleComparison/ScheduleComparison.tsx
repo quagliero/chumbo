@@ -1,6 +1,7 @@
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
-import { League } from "@/types/league";
+import { ExtendedLeague } from "@/types/league";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import {
   Table,
   TableHeader,
@@ -13,7 +14,7 @@ import {
 interface ScheduleComparisonProps {
   rosters: ExtendedRoster[];
   matchups: Record<string, ExtendedMatchup[]> | undefined;
-  league: League | undefined;
+  league: ExtendedLeague | undefined;
   getTeamName: (ownerId: string) => string;
 }
 
@@ -72,6 +73,12 @@ const ScheduleComparison = ({
     // Get the opponent's schedule (regular season only)
     Object.keys(matchups).forEach((weekKey) => {
       const weekNum = parseInt(weekKey);
+
+      // Skip incomplete weeks
+      if (!isWeekCompleted(weekNum, league)) {
+        return;
+      }
+
       if (weekNum >= playoffWeekStart) return; // Skip playoff weeks
 
       const weekMatchups = matchups[weekKey];
@@ -101,6 +108,9 @@ const ScheduleComparison = ({
         );
         if (!teamMatchup) return;
 
+        // Skip if both teams have 0 points (incomplete week)
+        if (teamMatchup.points === 0 && opponentMatchup.points === 0) return;
+
         totalPoints += teamMatchup.points;
 
         // Compare our team's score vs the opponent's score (direct H2H)
@@ -122,6 +132,9 @@ const ScheduleComparison = ({
         (m) => m.roster_id === teamRoster.roster_id
       );
       if (!teamMatchup) return;
+
+      // Skip if both teams have 0 points (incomplete week)
+      if (teamMatchup.points === 0 && opponentOpponent.points === 0) return;
 
       totalPoints += teamMatchup.points;
 

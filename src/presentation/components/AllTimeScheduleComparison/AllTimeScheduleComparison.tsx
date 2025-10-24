@@ -4,6 +4,7 @@ import { seasons } from "@/data";
 import { getTeamName } from "@/utils/teamName";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import { calculateWinPercentage } from "@/utils/recordUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import { ExtendedMatchup } from "@/types/matchup";
 import {
   Table,
@@ -150,6 +151,12 @@ const AllTimeScheduleComparison = () => {
           // Get the opponent's schedule (regular season only)
           Object.keys(seasonData.matchups || {}).forEach((weekKey) => {
             const weekNum = parseInt(weekKey);
+
+            // Skip incomplete weeks
+            if (!isWeekCompleted(weekNum, seasonData.league)) {
+              return;
+            }
+
             if (weekNum >= playoffWeekStart) return; // Skip playoff weeks
 
             const weekMatchups = (seasonData.matchups?.[
@@ -181,6 +188,10 @@ const AllTimeScheduleComparison = () => {
               );
               if (!teamMatchup) return;
 
+              // Skip if both teams have 0 points (incomplete week)
+              if (teamMatchup.points === 0 && opponentMatchup.points === 0)
+                return;
+
               // Compare our team's score vs the opponent's score (direct H2H)
               const teamScore = teamMatchup.points;
               const opponentScore = opponentMatchup.points;
@@ -200,6 +211,10 @@ const AllTimeScheduleComparison = () => {
               (m: ExtendedMatchup) => m.roster_id === ownerRoster.roster_id
             );
             if (!teamMatchup) return;
+
+            // Skip if both teams have 0 points (incomplete week)
+            if (teamMatchup.points === 0 && opponentOpponent.points === 0)
+              return;
 
             // Compare our team's score vs the opponent's opponent's score
             // This simulates: if Team A played Team B's schedule, how would Team A do against Team B's opponents?
