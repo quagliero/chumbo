@@ -556,7 +556,7 @@
       "1387",
       "2182",
       "2892",
-      "Robby Anderson",
+      "3423",
       "4227",
       "Washington Redskins",
       "MIN"
@@ -576,12 +576,12 @@
       "2182": 7.9,
       "2892": 0,
       "4227": 6,
-      "Robby Anderson": 0.7,
+      "3423": 0.7,
       "Washington Redskins": 5,
       "MIN": 3
     },
     "unmatched_players": {
-      "Robby Anderson": "WR",
+      "3423": "WR",
       "Washington Redskins": "DEF"
     }
   },
