@@ -85,6 +85,20 @@ const Header = () => {
               H2H
             </NavLink>
           </li>
+          {/* <li>
+            <NavLink
+              to="/hof"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-blue-600"
+                    : "text-gray-600 hover:text-gray-900"
+                } font-medium`
+              }
+            >
+              HOF
+            </NavLink>
+          </li> */}
           <li>
             <NavLink
               to="/wiki"
