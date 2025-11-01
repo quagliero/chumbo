@@ -4,6 +4,25 @@ import managers from "@/data/managers.json";
 import { getTeamName } from "@/utils/teamName";
 import type { DraftPick } from "@/presentation/components/PlayerDetail";
 
+/**
+ * Calculate the pick position within a round (sequential position 1-12, not slot number)
+ * @param pickNo Overall pick number (1-indexed)
+ * @param numTeams Number of teams in the draft
+ * @returns Pick position within the round (1-indexed: 1st pick in round = 1, 2nd = 2, etc.)
+ */
+const calculatePickInRound = (pickNo: number, numTeams: number): number => {
+  // Calculate which pick this is within the round (1-indexed)
+  // Round 1: picks 1-12 -> positions 1-12
+  // Round 2: picks 13-24 -> positions 1-12
+  // etc.
+
+  // Position within round (0-indexed)
+  const positionInRound = (pickNo - 1) % numTeams;
+
+  // Convert to 1-indexed (sequential position in round)
+  return positionInRound + 1;
+};
+
 export const useDraftPicks = (playerId: string | undefined) => {
   const draftPicks = useMemo(() => {
     if (!playerId) return [];
@@ -15,6 +34,8 @@ export const useDraftPicks = (playerId: string | undefined) => {
 
       // Check if this season has draft data
       if (seasonData.draft && seasonData.picks) {
+        const numTeams = seasonData.draft.settings?.teams || 12;
+
         // Find picks for this player
         const playerPicks = seasonData.picks.filter(
           (pick) => pick.player_id === playerId
@@ -32,11 +53,16 @@ export const useDraftPicks = (playerId: string | undefined) => {
             );
 
             if (manager) {
+              // Calculate the correct pick within round from pickNo
+              // This ensures accuracy even if the pick was traded
+              // Returns sequential position (1-12) within the round, not slot number
+              const pickInRound = calculatePickInRound(pick.pick_no, numTeams);
+
               picks.push({
                 year,
                 round: pick.round,
                 pickNo: pick.pick_no,
-                draftSlot: pick.draft_slot,
+                draftSlot: pickInRound, // Use calculated value instead of draft_slot
                 ownerId: roster.owner_id,
                 teamName: getTeamName(roster.owner_id, seasonData.users),
                 managerName: manager.name,

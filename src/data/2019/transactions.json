@@ -294,11 +294,8 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 2: Robby Anderson (WR) | Team 1: Rex Burkhead (RB)",
-      "nfl_trade_id": "959",
-      "unmatched_players": {
-        "Robby Anderson": "WR"
-      }
+      "notes": "Team 2: 3423 (WR) | Team 1: Rex Burkhead (RB)",
+      "nfl_trade_id": "959"
     },
     "created": 1570073520,
     "settings": {
@@ -310,12 +307,12 @@
     "transaction_id": "chumbo_2019_trade_959",
     "adds": {
       "1387": 3,
-      "Robby Anderson": 1
+      "3423": 1
     },
     "consenter_ids": ["428943291145265152", "77140390129844224"],
     "drops": {
       "1387": 1,
-      "Robby Anderson": 3
+      "3423": 3
     },
     "roster_ids": [3, 1],
     "status_updated": 1570073520,
@@ -714,11 +711,8 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 5: Kenny Stills (WR) | Team 1: Robby Anderson (WR)",
-      "nfl_trade_id": "1695",
-      "unmatched_players": {
-        "Robby Anderson": "WR"
-      }
+      "notes": "Team 5: Kenny Stills (WR) | Team 1: 3423 (WR)",
+      "nfl_trade_id": "1695"
     },
     "created": 1571919600,
     "settings": {
@@ -730,12 +724,12 @@
     "transaction_id": "chumbo_2019_trade_1695",
     "adds": {
       "1555": 1,
-      "Robby Anderson": 8
+      "3423": 8
     },
     "consenter_ids": ["337221174670938112", "77140390129844224"],
     "drops": {
       "1555": 8,
-      "Robby Anderson": 1
+      "3423": 1
     },
     "roster_ids": [8, 1],
     "status_updated": 1571919600,
@@ -865,11 +859,8 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 5: Robby Anderson (WR) | Team 1: Cleveland Browns (DEF)",
-      "nfl_trade_id": "1902",
-      "unmatched_players": {
-        "Robby Anderson": "WR"
-      }
+      "notes": "Team 5: 3423 (WR) | Team 1: Cleveland Browns (DEF)",
+      "nfl_trade_id": "1902"
     },
     "created": 1572414180,
     "settings": {
@@ -880,12 +871,12 @@
     "creator": "337221174670938112",
     "transaction_id": "chumbo_2019_trade_1902",
     "adds": {
-      "Robby Anderson": 1,
+      "3423": 1,
       "CLE": 8
     },
     "consenter_ids": ["337221174670938112", "77140390129844224"],
     "drops": {
-      "Robby Anderson": 8,
+      "3423": 8,
       "CLE": 1
     },
     "roster_ids": [8, 1],

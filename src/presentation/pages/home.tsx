@@ -5,12 +5,14 @@ import AllTimeTable from "@/presentation/components/AllTimeTable";
 import AllTimeBreakdown from "@/presentation/components/AllTimeBreakdown";
 import TopScores from "@/presentation/components/TopScores";
 import AllTimeScheduleComparison from "@/presentation/components/AllTimeScheduleComparison/AllTimeScheduleComparison";
+import AllTimeTrades from "@/presentation/components/AllTimeTrades";
 
 type HomeTabType =
   | "standings"
   | "breakdown"
   | "top-scores"
-  | "schedule-comparison";
+  | "schedule-comparison"
+  | "trades";
 
 const Home = () => {
   const { tab, view } = useParams<{ tab: string; view?: string }>();
@@ -40,6 +42,7 @@ const Home = () => {
               "breakdown",
               "top-scores",
               "schedule-comparison",
+              "trades",
             ].map((tabName) => (
               <NavLink
                 key={tabName}
@@ -79,6 +82,8 @@ const Home = () => {
                   ? "Scores"
                   : tabName === "schedule-comparison"
                   ? "Schedule Comparison"
+                  : tabName === "trades"
+                  ? "Trades"
                   : "Standings"}
               </NavLink>
             ))}
@@ -94,6 +99,7 @@ const Home = () => {
         {activeTab === "schedule-comparison" && (
           <AllTimeScheduleComparison key={view} />
         )}
+        {activeTab === "trades" && <AllTimeTrades />}
       </div>
     </div>
   );
