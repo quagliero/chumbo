@@ -4,6 +4,8 @@ import { YEARS } from "@/domain/constants";
 import { getPlayerPosition } from "@/utils/playerDataUtils";
 import { isRegularSeasonWeek, getPlayoffWeekStart } from "@/utils/playoffUtils";
 import { determineMatchupResult } from "@/utils/recordUtils";
+import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 
 export interface PositionalFilter {
   position:
@@ -16,8 +18,11 @@ export interface PositionalFilter {
     | "FLEX"
     | "RB_INDIVIDUAL"
     | "WR_INDIVIDUAL";
-  operator: ">=" | ">" | "<=" | "<" | "=";
+  operator: ">=" | ">" | "<=" | "<" | "=" | "between";
   points: number;
+  maxPoints?: number; // For "between" operator, the upper bound
+  minimumCount?: number; // For individual positions, minimum number of players that must meet criteria
+  managerId?: string; // Optional manager ID to filter by specific manager
 }
 
 export interface StatsResult {
@@ -38,6 +43,7 @@ export interface StatsResult {
     year: number;
     week: number;
     rosterId: number;
+    matchupId: number;
     points: number;
     result: "W" | "L" | "T";
     opponentPoints: number;
@@ -61,8 +67,8 @@ export interface MatchupPositionalData {
 const extractPositionalScores = (
   matchup: ExtendedMatchup,
   year: number
-): Record<string, number> => {
-  const positionalScores: Record<string, number> = {
+): Record<string, number | number[]> => {
+  const positionalScores: Record<string, number | number[]> = {
     QB: 0,
     RB: 0,
     WR: 0,
@@ -72,14 +78,18 @@ const extractPositionalScores = (
     FLEX: 0,
     RB_INDIVIDUAL: 0,
     WR_INDIVIDUAL: 0,
+    RB_INDIVIDUAL_ARRAY: [], // Array of all individual RB scores
+    WR_INDIVIDUAL_ARRAY: [], // Array of all individual WR scores
   };
 
   const starters = matchup.starters || [];
   const startersPoints = matchup.starters_points || [];
 
-  // Track individual RB and WR scores (highest single player)
+  // Track individual RB and WR scores (highest single player and all scores)
   let maxRBScore = 0;
   let maxWRScore = 0;
+  const allRBScores: number[] = [];
+  const allWRScores: number[] = [];
 
   // Map starter positions (typical lineup: QB, RB, RB, WR, WR, TE, FLEX, K, DEF)
   const positionMap = ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX", "K", "DEF"];
@@ -98,24 +108,30 @@ const extractPositionalScores = (
         actualPosition === "WR" ||
         actualPosition === "TE"
       ) {
-        positionalScores[actualPosition] += points;
+        positionalScores[actualPosition] =
+          (positionalScores[actualPosition] as number) + points;
 
         // Track individual performance
         if (actualPosition === "RB") {
           maxRBScore = Math.max(maxRBScore, points);
+          allRBScores.push(points);
         } else if (actualPosition === "WR") {
           maxWRScore = Math.max(maxWRScore, points);
+          allWRScores.push(points);
         }
       }
-      positionalScores.FLEX += points; // Also count towards FLEX total
+      positionalScores.FLEX = (positionalScores.FLEX as number) + points; // Also count towards FLEX total
     } else {
-      positionalScores[expectedPosition] += points;
+      positionalScores[expectedPosition] =
+        (positionalScores[expectedPosition] as number) + points;
 
       // Track individual performance
       if (expectedPosition === "RB") {
         maxRBScore = Math.max(maxRBScore, points);
+        allRBScores.push(points);
       } else if (expectedPosition === "WR") {
         maxWRScore = Math.max(maxWRScore, points);
+        allWRScores.push(points);
       }
     }
   });
@@ -123,31 +139,92 @@ const extractPositionalScores = (
   // Set individual performance scores
   positionalScores.RB_INDIVIDUAL = maxRBScore;
   positionalScores.WR_INDIVIDUAL = maxWRScore;
+  positionalScores.RB_INDIVIDUAL_ARRAY = allRBScores;
+  positionalScores.WR_INDIVIDUAL_ARRAY = allWRScores;
 
   return positionalScores;
+};
+
+/**
+ * Check if individual scores meet a filter criteria
+ */
+const checkIndividualFilter = (
+  individualScores: number[],
+  filter: PositionalFilter
+): boolean => {
+  const minimumCount = filter.minimumCount || 1;
+  let count = 0;
+
+  for (const individualScore of individualScores) {
+    switch (filter.operator) {
+      case ">=":
+        if (individualScore >= filter.points) count++;
+        break;
+      case ">":
+        if (individualScore > filter.points) count++;
+        break;
+      case "<=":
+        if (individualScore <= filter.points) count++;
+        break;
+      case "<":
+        if (individualScore < filter.points) count++;
+        break;
+      case "=":
+        if (individualScore === filter.points) count++;
+        break;
+      case "between": {
+        const min = filter.points;
+        const max = filter.maxPoints ?? filter.points;
+        if (individualScore >= min && individualScore <= max) count++;
+        break;
+      }
+    }
+  }
+  return count >= minimumCount;
 };
 
 /**
  * Check if a matchup meets all filter criteria
  */
 const matchesFilters = (
-  positionalScores: Record<string, number>,
+  positionalScores: Record<string, number | number[]>,
   filters: PositionalFilter[]
 ): boolean => {
   return filters.every((filter) => {
-    const score = positionalScores[filter.position] || 0;
+    // Handle individual position filters - always check against individual player arrays
+    // This allows multiple filters with different criteria (e.g., one RB >= 20 and one RB <= 5)
+    if (filter.position === "RB_INDIVIDUAL") {
+      const individualScores = (positionalScores.RB_INDIVIDUAL_ARRAY ||
+        []) as number[];
+      return checkIndividualFilter(individualScores, filter);
+    }
+
+    if (filter.position === "WR_INDIVIDUAL") {
+      const individualScores = (positionalScores.WR_INDIVIDUAL_ARRAY ||
+        []) as number[];
+      return checkIndividualFilter(individualScores, filter);
+    }
+
+    // Default handling for regular position filters (totals, not individual)
+    const score = positionalScores[filter.position];
+    const numericScore = (typeof score === "number" ? score : 0) as number;
 
     switch (filter.operator) {
       case ">=":
-        return score >= filter.points;
+        return numericScore >= filter.points;
       case ">":
-        return score > filter.points;
+        return numericScore > filter.points;
       case "<=":
-        return score <= filter.points;
+        return numericScore <= filter.points;
       case "<":
-        return score < filter.points;
+        return numericScore < filter.points;
       case "=":
-        return score === filter.points;
+        return numericScore === filter.points;
+      case "between": {
+        const min = filter.points;
+        const max = filter.maxPoints ?? filter.points;
+        return numericScore >= min && numericScore <= max;
+      }
       default:
         return false;
     }
@@ -160,7 +237,8 @@ const matchesFilters = (
 export const calculatePositionalStats = (
   filters: PositionalFilter[],
   selectedYears: number[] = YEARS,
-  includePlayoffs: boolean = false
+  includePlayoffs: boolean = false,
+  selectedManagerId?: string
 ): StatsResult => {
   let totalMatchups = 0;
   let wins = 0;
@@ -173,7 +251,7 @@ export const calculatePositionalStats = (
     string,
     { sum: number; count: number; min: number; max: number }
   > = {};
-  const sampleMatchups: StatsResult["sampleMatchups"] = [];
+  const allSampleMatchups: StatsResult["sampleMatchups"] = [];
 
   // Initialize positional totals
   [
@@ -206,8 +284,28 @@ export const calculatePositionalStats = (
         return;
       }
 
+      // Only process completed weeks
+      if (!isWeekCompleted(week, seasonData.league)) {
+        return;
+      }
+
       // Process each matchup
       weekMatchups.forEach((matchup) => {
+        // Filter by manager if specified
+        if (selectedManagerId) {
+          const roster = seasonData.rosters?.find(
+            (r) => r.roster_id === matchup.roster_id
+          );
+          if (roster) {
+            const matchupManagerId = getManagerIdBySleeperOwnerId(
+              roster.owner_id
+            );
+            if (matchupManagerId !== selectedManagerId) {
+              return; // Skip this matchup if it doesn't match the selected manager
+            }
+          }
+        }
+
         const positionalScores = extractPositionalScores(matchup, year);
 
         // Check if this matchup meets all filter criteria
@@ -233,23 +331,30 @@ export const calculatePositionalStats = (
             else if (result === "L") losses++;
             else ties++;
 
-            // Add to sample matchups (limit to 50 for performance)
-            if (sampleMatchups.length < 50) {
-              sampleMatchups.push({
-                year,
-                week,
-                rosterId: matchup.roster_id,
-                points: matchup.points,
-                result,
-                opponentPoints: opponentMatchup.points,
-                positionalScores: { ...positionalScores },
-              });
-            }
+            // Collect all sample matchups (we'll sort and limit later)
+            // Filter out array properties for display
+            const displayPositionalScores: Record<string, number> = {};
+            Object.entries(positionalScores).forEach(([key, value]) => {
+              if (typeof value === "number") {
+                displayPositionalScores[key] = value;
+              }
+            });
+
+            allSampleMatchups.push({
+              year,
+              week,
+              rosterId: matchup.roster_id,
+              matchupId: matchup.matchup_id,
+              points: matchup.points,
+              result,
+              opponentPoints: opponentMatchup.points,
+              positionalScores: displayPositionalScores,
+            });
           }
 
-          // Update positional totals
+          // Update positional totals (only for numeric scores, skip arrays)
           Object.entries(positionalScores).forEach(([position, score]) => {
-            if (positionalTotals[position]) {
+            if (positionalTotals[position] && typeof score === "number") {
               positionalTotals[position].sum += score;
               positionalTotals[position].count++;
               positionalTotals[position].min = Math.min(
@@ -279,6 +384,15 @@ export const calculatePositionalStats = (
       max: data.max === -Infinity ? 0 : data.max,
     };
   });
+
+  // Sort sample matchups by newest first (year descending, then week descending)
+  const sortedSampleMatchups = allSampleMatchups.sort((a, b) => {
+    if (a.year !== b.year) return b.year - a.year;
+    return b.week - a.week;
+  });
+
+  // Limit to 200 most recent for display (to prevent UI performance issues)
+  const sampleMatchups = sortedSampleMatchups.slice(0, 200);
 
   const winPercentage =
     totalMatchups > 0 ? (wins + ties * 0.5) / totalMatchups : 0;

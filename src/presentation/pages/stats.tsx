@@ -15,12 +15,20 @@ const Stats: React.FC = () => {
     getAvailableYears()
   );
   const [includePlayoffs, setIncludePlayoffs] = useState<boolean>(false);
+  const [selectedManagerId, setSelectedManagerId] = useState<
+    string | undefined
+  >(undefined);
 
   // Calculate stats whenever filters or options change
   const results = useMemo(() => {
     if (filters.length === 0) return null;
-    return calculatePositionalStats(filters, selectedYears, includePlayoffs);
-  }, [filters, selectedYears, includePlayoffs]);
+    return calculatePositionalStats(
+      filters,
+      selectedYears,
+      includePlayoffs,
+      selectedManagerId
+    );
+  }, [filters, selectedYears, includePlayoffs, selectedManagerId]);
 
   const handlePresetSelect = (
     _presetName: string,
@@ -118,6 +126,8 @@ const Stats: React.FC = () => {
         filters={filters}
         onFiltersChange={setFilters}
         onPresetSelect={handlePresetSelect}
+        selectedManagerId={selectedManagerId}
+        onManagerChange={setSelectedManagerId}
       />
 
       {/* Results */}
@@ -154,8 +164,10 @@ const Stats: React.FC = () => {
               (including FLEX)
             </li>
             <li>
-              <strong>RB_INDIVIDUAL/WR_INDIVIDUAL:</strong> Highest scoring
-              single RB/WR player (regardless of slot)
+              <strong>RB_INDIVIDUAL/WR_INDIVIDUAL:</strong> Checks individual
+              player scores. You can add multiple filters with different
+              criteria - each checks independently against all players at that
+              position.
             </li>
             <li>
               <strong>FLEX:</strong> Points from the FLEX slot only
@@ -170,12 +182,28 @@ const Stats: React.FC = () => {
               <strong>RB &gt;= 30:</strong> ✅ Matches (12+8+20 = 40 total)
             </li>
             <li>
-              <strong>RB_INDIVIDUAL &gt;= 15:</strong> ✅ Matches (highest
-              single RB scored 20)
+              <strong>RB_INDIVIDUAL &gt;= 15:</strong> ✅ Matches (at least one
+              RB scored 15+, e.g., the one with 20)
             </li>
             <li>
               <strong>RB_INDIVIDUAL &gt;= 25:</strong> ❌ No match (no single RB
               scored 25+)
+            </li>
+          </ul>
+          <p className="mt-2">
+            <strong>Multi-Faceted Individual Filters:</strong> You can add
+            multiple filters for the same individual position type with
+            different criteria. For example:
+          </p>
+          <ul className="list-disc list-inside ml-4 space-y-1">
+            <li>
+              <strong>RB_INDIVIDUAL &gt;= 20</strong> AND{" "}
+              <strong>RB_INDIVIDUAL &lt;= 5:</strong> Finds matchups where at
+              least one RB scored 20+ AND at least one RB scored 5 or less
+            </li>
+            <li>
+              <strong>RB_INDIVIDUAL &gt;= 20 with at least 2 players:</strong>{" "}
+              Finds matchups where at least 2 individual RBs scored 20+
             </li>
           </ul>
         </div>

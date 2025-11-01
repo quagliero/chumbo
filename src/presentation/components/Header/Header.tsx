@@ -101,6 +101,20 @@ const Header = () => {
           </li> */}
           <li>
             <NavLink
+              to="/explorer"
+              className={({ isActive }) =>
+                `${
+                  isActive
+                    ? "text-blue-600"
+                    : "text-gray-600 hover:text-gray-900"
+                } font-medium`
+              }
+            >
+              Explorer
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to="/wiki"
               className={({ isActive }) =>
                 `${

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { StatsResult } from "@/utils/statsExplorer";
 
 interface StatsResultsProps {
@@ -7,6 +8,25 @@ interface StatsResultsProps {
 }
 
 const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
+  const navigate = useNavigate();
+  const [showAllMatchups, setShowAllMatchups] = useState(false);
+
+  const displayedMatchups = useMemo(() => {
+    if (!results?.sampleMatchups) return [];
+    // Matchups are already sorted by newest first from the backend
+    // Show first 10 by default, or all when "show all" is clicked
+    return showAllMatchups
+      ? results.sampleMatchups
+      : results.sampleMatchups.slice(0, 10);
+  }, [results?.sampleMatchups, showAllMatchups]);
+
+  const handleMatchupClick = (
+    year: number,
+    week: number,
+    matchupId: number
+  ) => {
+    navigate(`/seasons/${year}/matchups/${week}/${matchupId}`);
+  };
   if (isLoading) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
@@ -131,10 +151,23 @@ const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
       {/* Sample Matchups */}
       {results.sampleMatchups.length > 0 && (
         <div className="bg-white rounded-lg shadow overflow-hidden pt-4">
-          <h3 className="text-lg font-bold text-gray-900 mb-4 px-6">
-            Sample Matchups ({results.sampleMatchups.length} of{" "}
-            {results.totalMatchups})
-          </h3>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 px-6 gap-3">
+            <h3 className="text-lg font-bold text-gray-900">
+              Sample Matchups ({displayedMatchups.length}
+              {!showAllMatchups && results.sampleMatchups.length > 10
+                ? ` of ${results.sampleMatchups.length}`
+                : ""}{" "}
+              of {results.totalMatchups})
+            </h3>
+            {results.sampleMatchups.length > 10 && (
+              <button
+                onClick={() => setShowAllMatchups(!showAllMatchups)}
+                className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+              >
+                {showAllMatchups ? "Show Less" : "Show All"}
+              </button>
+            )}
+          </div>
           <div className="overflow-x-auto border-t border-gray-200">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -160,8 +193,18 @@ const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {results.sampleMatchups.map((matchup, index) => (
-                  <tr key={index}>
+                {displayedMatchups.map((matchup) => (
+                  <tr
+                    key={`${matchup.year}-${matchup.week}-${matchup.matchupId}-${matchup.rosterId}`}
+                    className="cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() =>
+                      handleMatchupClick(
+                        matchup.year,
+                        matchup.week,
+                        matchup.matchupId
+                      )
+                    }
+                  >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {matchup.year}
                     </td>
