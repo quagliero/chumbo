@@ -1,0 +1,1383 @@
+[
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Alfred Blue (RB) | Team 8: Ryan Mathews (RB)",
+      "nfl_trade_id": "125"
+    },
+    "created": 1441605240,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 1,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_125",
+    "adds": {
+      "571": 2,
+      "1944": 8
+    },
+    "consenter_ids": ["428943291145265152", "77361676378587136"],
+    "drops": {
+      "571": 8,
+      "1944": 2
+    },
+    "roster_ids": [2, 8],
+    "status_updated": 1441605240,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Jeremy Maclin (WR), Rob Gronkowski (TE) | Team 1: Demaryius Thomas (WR), Jordan Cameron (TE), John Brown (WR) | Drops: Brandon McManus (K) from Team 6",
+      "nfl_trade_id": "157"
+    },
+    "created": 1441683720,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 1,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2015_trade_157",
+    "adds": {
+      "411": 1,
+      "515": 1,
+      "560": 6,
+      "833": 6,
+      "2238": 6
+    },
+    "consenter_ids": ["337297176361201664", "77140390129844224"],
+    "drops": {
+      "411": 6,
+      "515": 6,
+      "560": 1,
+      "833": 1,
+      "1433": 6,
+      "2238": 1
+    },
+    "roster_ids": [6, 1],
+    "status_updated": 1441683720,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Tevin Coleman (RB) | Team 11: Phillip Dorsett (WR)",
+      "nfl_trade_id": "182"
+    },
+    "created": 1441763460,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 1,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_182",
+    "adds": {
+      "2334": 5,
+      "2378": 11
+    },
+    "consenter_ids": ["337221174670938112", "411186928751230976"],
+    "drops": {
+      "2334": 11,
+      "2378": 5
+    },
+    "roster_ids": [5, 11],
+    "status_updated": 1441763460,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Philip Rivers (QB), Cameron Artis-Payne (RB) | Team 3: Carson Palmer (QB), Rueben Randle (WR)",
+      "nfl_trade_id": "202"
+    },
+    "created": 1441930680,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 1,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2015_trade_202",
+    "adds": {
+      "91": 6,
+      "331": 3,
+      "1164": 6,
+      "2477": 3
+    },
+    "consenter_ids": ["337297176361201664", "337210029620883456"],
+    "drops": {
+      "91": 3,
+      "331": 6,
+      "1164": 3,
+      "2477": 6
+    },
+    "roster_ids": [6, 3],
+    "status_updated": 1441930680,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Aaron Rodgers (QB), Donte Moncrief (WR), Phillip Dorsett (WR) | Team 11: Andrew Luck (QB), Tyler Lockett (WR), Tevin Coleman (RB)",
+      "nfl_trade_id": "212"
+    },
+    "created": 1442277240,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_212",
+    "adds": {
+      "96": 11,
+      "1111": 5,
+      "1971": 11,
+      "2334": 11,
+      "2374": 5,
+      "2378": 5
+    },
+    "consenter_ids": ["337221174670938112", "411186928751230976"],
+    "drops": {
+      "96": 5,
+      "1111": 11,
+      "1971": 5,
+      "2334": 5,
+      "2374": 11,
+      "2378": 11
+    },
+    "roster_ids": [5, 11],
+    "status_updated": 1442277240,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 10: Denard Robinson (RB), Nelson Agholor (WR) | Team 5: Tre Mason (RB), Tyler Lockett (WR)",
+      "nfl_trade_id": "222"
+    },
+    "created": 1442304120,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "337222928615612416",
+    "transaction_id": "chumbo_2015_trade_222",
+    "adds": {
+      "1449": 5,
+      "2231": 10,
+      "2325": 5,
+      "2374": 10
+    },
+    "consenter_ids": ["337222928615612416", "337221174670938112"],
+    "drops": {
+      "1449": 10,
+      "2231": 5,
+      "2325": 10,
+      "2374": 5
+    },
+    "roster_ids": [10, 5],
+    "status_updated": 1442304120,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Marcus Mariota (QB), Nelson Agholor (WR) | Team 1: Dion Lewis (RB), Allen Robinson (WR)",
+      "nfl_trade_id": "253"
+    },
+    "created": 1442363580,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_253",
+    "adds": {
+      "788": 5,
+      "1992": 5,
+      "2307": 1,
+      "2325": 1
+    },
+    "consenter_ids": ["337221174670938112", "77140390129844224"],
+    "drops": {
+      "788": 1,
+      "1992": 1,
+      "2307": 5,
+      "2325": 5
+    },
+    "roster_ids": [5, 1],
+    "status_updated": 1442363580,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Tom Brady (QB) | Team 6: Mike Wallace (WR), David Johnson (RB) | Drops: Eddie Royal (WR), James Jones (WR) from Team 11",
+      "nfl_trade_id": "265"
+    },
+    "created": 1442365860,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2015_trade_265",
+    "adds": {
+      "167": 6,
+      "365": 11,
+      "2391": 11
+    },
+    "consenter_ids": ["411186928751230976", "337297176361201664"],
+    "drops": {
+      "167": 11,
+      "253": 11,
+      "297": 11,
+      "365": 6,
+      "2391": 6
+    },
+    "roster_ids": [11, 6],
+    "status_updated": 1442365860,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Carolina Panthers (DEF) | Team 6: Carson Palmer (QB)",
+      "nfl_trade_id": "271"
+    },
+    "created": 1442367060,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_271",
+    "adds": {
+      "91": 1,
+      "CAR": 6
+    },
+    "consenter_ids": ["77140390129844224", "337297176361201664"],
+    "drops": {
+      "91": 6,
+      "CAR": 1
+    },
+    "roster_ids": [1, 6],
+    "status_updated": 1442367060,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Darren McFadden (RB), Dez Bryant (WR) | Team 5: Antonio Gates (TE), Tevin Coleman (RB)",
+      "nfl_trade_id": "277"
+    },
+    "created": 1442370180,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2015_trade_277",
+    "adds": {
+      "322": 11,
+      "326": 5,
+      "574": 5,
+      "2378": 11
+    },
+    "consenter_ids": ["411186928751230976", "337221174670938112"],
+    "drops": {
+      "322": 5,
+      "326": 11,
+      "574": 11,
+      "2378": 5
+    },
+    "roster_ids": [11, 5],
+    "status_updated": 1442370180,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Brandon Coleman (WR) | Team 11: Christine Michael (RB)",
+      "nfl_trade_id": "290"
+    },
+    "created": 1442391840,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_290",
+    "adds": {
+      "1596": 1,
+      "2196": 11
+    },
+    "consenter_ids": ["77140390129844224", "411186928751230976"],
+    "drops": {
+      "1596": 11,
+      "2196": 1
+    },
+    "roster_ids": [1, 11],
+    "status_updated": 1442391840,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: C.J. Anderson (RB), Duke Johnson (RB) | Team 2: Larry Fitzgerald (WR), Carlos Hyde (RB)",
+      "nfl_trade_id": "299"
+    },
+    "created": 1442403840,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_299",
+    "adds": {
+      "223": 1,
+      "1451": 2,
+      "2257": 1,
+      "2382": 2
+    },
+    "consenter_ids": ["77140390129844224", "428943291145265152"],
+    "drops": {
+      "223": 2,
+      "1451": 1,
+      "2257": 2,
+      "2382": 1
+    },
+    "roster_ids": [1, 2],
+    "status_updated": 1442403840,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Dez Bryant (WR), Fred Jackson (RB) | Team 9: Danny Woodhead (RB), Terrance Williams (WR)",
+      "nfl_trade_id": "312"
+    },
+    "created": 1442407740,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_312",
+    "adds": {
+      "228": 9,
+      "574": 9,
+      "735": 5,
+      "1490": 5
+    },
+    "consenter_ids": ["337221174670938112", "337226046606704640"],
+    "drops": {
+      "228": 5,
+      "574": 5,
+      "735": 9,
+      "1490": 9
+    },
+    "roster_ids": [5, 9],
+    "status_updated": 1442407740,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: C.J. Anderson (RB) | Team 1: Carlos Hyde (RB)",
+      "nfl_trade_id": "330"
+    },
+    "created": 1442497200,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_330",
+    "adds": {
+      "1451": 1,
+      "2257": 2
+    },
+    "consenter_ids": ["428943291145265152", "77140390129844224"],
+    "drops": {
+      "1451": 2,
+      "2257": 1
+    },
+    "roster_ids": [2, 1],
+    "status_updated": 1442497200,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Cam Newton (QB), Alshon Jeffery (WR) | Team 6: Carolina Panthers (DEF), Tom Brady (QB)",
+      "nfl_trade_id": "375"
+    },
+    "created": 1442905080,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2015_trade_375",
+    "adds": {
+      "167": 8,
+      "954": 6,
+      "1149": 6,
+      "CAR": 8
+    },
+    "consenter_ids": ["77361676378587136", "337297176361201664"],
+    "drops": {
+      "167": 6,
+      "954": 8,
+      "1149": 8,
+      "CAR": 6
+    },
+    "roster_ids": [8, 6],
+    "status_updated": 1442905080,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Karlos Williams (RB), Marcus Mariota (QB) | Team 4: Kendall Wright (WR), Knile Davis (RB)",
+      "nfl_trade_id": "421"
+    },
+    "created": 1442970840,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_421",
+    "adds": {
+      "1097": 1,
+      "1463": 1,
+      "2307": 4,
+      "2458": 4
+    },
+    "consenter_ids": ["77140390129844224", "438629899490553856"],
+    "drops": {
+      "1097": 4,
+      "1463": 4,
+      "2307": 1,
+      "2458": 1
+    },
+    "roster_ids": [1, 4],
+    "status_updated": 1442970840,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 10: Todd Gurley (RB) | Team 1: C.J. Anderson (RB)",
+      "nfl_trade_id": "513"
+    },
+    "created": 1443497220,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "337222928615612416",
+    "transaction_id": "chumbo_2015_trade_513",
+    "adds": {
+      "1451": 10,
+      "2315": 1
+    },
+    "consenter_ids": ["337222928615612416", "77140390129844224"],
+    "drops": {
+      "1451": 1,
+      "2315": 10
+    },
+    "roster_ids": [10, 1],
+    "status_updated": 1443497220,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Aaron Rodgers (QB), David Johnson (RB) | Team 7: Matt Ryan (QB), Marshawn Lynch (RB)",
+      "nfl_trade_id": "522"
+    },
+    "created": 1443512160,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2015_trade_522",
+    "adds": {
+      "24": 11,
+      "96": 7,
+      "745": 11,
+      "2391": 7
+    },
+    "consenter_ids": ["411186928751230976", "704708035829895168"],
+    "drops": {
+      "24": 7,
+      "96": 11,
+      "745": 7,
+      "2391": 11
+    },
+    "roster_ids": [11, 7],
+    "status_updated": 1443512160,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Calvin Johnson (WR), Brandin Cooks (WR) | Team 5: Andrew Luck (QB), Allen Robinson (WR)",
+      "nfl_trade_id": "528"
+    },
+    "created": 1443521460,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_528",
+    "adds": {
+      "240": 5,
+      "1111": 2,
+      "1992": 2,
+      "2197": 5
+    },
+    "consenter_ids": ["428943291145265152", "337221174670938112"],
+    "drops": {
+      "240": 2,
+      "1111": 5,
+      "1992": 5,
+      "2197": 2
+    },
+    "roster_ids": [2, 5],
+    "status_updated": 1443521460,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 12: Tyrod Taylor (QB) | Team 5: Sammy Watkins (WR)",
+      "nfl_trade_id": "542"
+    },
+    "created": 1443529740,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "chumbolegacy_sudio",
+    "transaction_id": "chumbo_2015_trade_542",
+    "adds": {
+      "827": 5,
+      "1817": 12
+    },
+    "consenter_ids": ["chumbolegacy_sudio", "337221174670938112"],
+    "drops": {
+      "827": 12,
+      "1817": 5
+    },
+    "roster_ids": [12, 5],
+    "status_updated": 1443529740,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Dion Lewis (RB), Calvin Johnson (WR) | Team 8: Emmanuel Sanders (WR), Mark Ingram (RB)",
+      "nfl_trade_id": "760"
+    },
+    "created": 1444198020,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_760",
+    "adds": {
+      "240": 8,
+      "538": 5,
+      "788": 8,
+      "956": 5
+    },
+    "consenter_ids": ["337221174670938112", "77361676378587136"],
+    "drops": {
+      "240": 5,
+      "538": 8,
+      "788": 5,
+      "956": 8
+    },
+    "roster_ids": [5, 8],
+    "status_updated": 1444198020,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 10: Mike Evans (WR) | Team 5: Danny Woodhead (RB)",
+      "nfl_trade_id": "763"
+    },
+    "created": 1444198140,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337222928615612416",
+    "transaction_id": "chumbo_2015_trade_763",
+    "adds": {
+      "735": 10,
+      "2216": 5
+    },
+    "consenter_ids": ["337222928615612416", "337221174670938112"],
+    "drops": {
+      "735": 5,
+      "2216": 10
+    },
+    "roster_ids": [10, 5],
+    "status_updated": 1444198140,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Alfred Morris (RB) | Team 5: Brandin Cooks (WR)",
+      "nfl_trade_id": "770"
+    },
+    "created": 1444200840,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2015_trade_770",
+    "adds": {
+      "1170": 5,
+      "2197": 3
+    },
+    "consenter_ids": ["337210029620883456", "337221174670938112"],
+    "drops": {
+      "1170": 3,
+      "2197": 5
+    },
+    "roster_ids": [3, 5],
+    "status_updated": 1444200840,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Devonta Freeman (RB) | Team 11: Justin Forsett (RB), Marshawn Lynch (RB) | Drops: Ryan Mathews (RB) from Team 2",
+      "nfl_trade_id": "1097"
+    },
+    "created": 1445518560,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_1097",
+    "adds": {
+      "458": 2,
+      "745": 2,
+      "2168": 11
+    },
+    "consenter_ids": ["428943291145265152", "411186928751230976"],
+    "drops": {
+      "458": 11,
+      "571": 2,
+      "745": 11,
+      "2168": 2
+    },
+    "roster_ids": [2, 11],
+    "status_updated": 1445518560,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Emmanuel Sanders (WR) | Team 2: Carlos Hyde (RB)",
+      "nfl_trade_id": "1105"
+    },
+    "created": 1445524920,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_1105",
+    "adds": {
+      "538": 2,
+      "2257": 5
+    },
+    "consenter_ids": ["337221174670938112", "428943291145265152"],
+    "drops": {
+      "538": 5,
+      "2257": 2
+    },
+    "roster_ids": [5, 2],
+    "status_updated": 1445524920,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Jimmy Graham (TE), Theo Riddick (RB) | Team 8: Dion Lewis (RB) | Drops: Richard Rodgers (TE) from Team 8",
+      "nfl_trade_id": "1106"
+    },
+    "created": 1445524980,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_1106",
+    "adds": {
+      "616": 8,
+      "788": 5,
+      "1517": 8
+    },
+    "consenter_ids": ["337221174670938112", "77361676378587136"],
+    "drops": {
+      "616": 5,
+      "788": 8,
+      "1517": 5,
+      "2146": 8
+    },
+    "roster_ids": [5, 8],
+    "status_updated": 1445524980,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Mark Ingram (RB), Charles Sims (RB) | Team 6: Demaryius Thomas (WR), T.J. Yeldon (RB)",
+      "nfl_trade_id": "1127"
+    },
+    "created": 1445661240,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_1127",
+    "adds": {
+      "560": 5,
+      "956": 6,
+      "2223": 6,
+      "2341": 5
+    },
+    "consenter_ids": ["337221174670938112", "337297176361201664"],
+    "drops": {
+      "560": 6,
+      "956": 5,
+      "2223": 5,
+      "2341": 6
+    },
+    "roster_ids": [5, 6],
+    "status_updated": 1445661240,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Antonio Gates (TE), Devonta Freeman (RB) | Team 5: Kyle Rudolph (TE), Khiry Robinson (RB), Odell Beckham (WR), T.J. Yeldon (RB) | Drops: Leonard Hankerson (WR), Jordan Cameron (TE) from Team 11",
+      "nfl_trade_id": "1165"
+    },
+    "created": 1445906340,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2015_trade_1165",
+    "adds": {
+      "322": 5,
+      "943": 11,
+      "1720": 11,
+      "2078": 11,
+      "2168": 5,
+      "2341": 11
+    },
+    "consenter_ids": ["411186928751230976", "337221174670938112"],
+    "drops": {
+      "322": 11,
+      "833": 11,
+      "914": 11,
+      "943": 5,
+      "1720": 5,
+      "2078": 5,
+      "2168": 11,
+      "2341": 5
+    },
+    "roster_ids": [11, 5],
+    "status_updated": 1445906340,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Dion Lewis (RB), Blake Bortles (QB) | Team 8: Tom Brady (QB), Steve Smith (WR), Tevin Coleman (RB)",
+      "nfl_trade_id": "1197"
+    },
+    "created": 1445916840,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2015_trade_1197",
+    "adds": {
+      "167": 5,
+      "169": 5,
+      "788": 8,
+      "1979": 8,
+      "2378": 5
+    },
+    "consenter_ids": ["337221174670938112", "77361676378587136"],
+    "drops": {
+      "167": 8,
+      "169": 8,
+      "788": 5,
+      "1979": 5,
+      "2378": 8
+    },
+    "roster_ids": [5, 8],
+    "status_updated": 1445916840,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Charles Sims (RB) | Team 5: Jordan Reed (TE)",
+      "nfl_trade_id": "1257"
+    },
+    "created": 1446000780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2015_trade_1257",
+    "adds": {
+      "1500": 6,
+      "2223": 5
+    },
+    "consenter_ids": ["337297176361201664", "337221174670938112"],
+    "drops": {
+      "1500": 5,
+      "2223": 6
+    },
+    "roster_ids": [6, 5],
+    "status_updated": 1446000780,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 9: Dez Bryant (WR) | Team 5: DeAngelo Williams (RB)",
+      "nfl_trade_id": "1387"
+    },
+    "created": 1446518880,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "337226046606704640",
+    "transaction_id": "chumbo_2015_trade_1387",
+    "adds": {
+      "306": 9,
+      "574": 5
+    },
+    "consenter_ids": ["337226046606704640", "337221174670938112"],
+    "drops": {
+      "306": 5,
+      "574": 9
+    },
+    "roster_ids": [9, 5],
+    "status_updated": 1446518880,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Arizona Cardinals (DEF) | Team 9: Denver Broncos (DEF), LeGarrette Blount (RB)",
+      "nfl_trade_id": "1406"
+    },
+    "created": 1446542160,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_1406",
+    "adds": {
+      "730": 2,
+      "ARI": 9,
+      "DEN": 2
+    },
+    "consenter_ids": ["428943291145265152", "337226046606704640"],
+    "drops": {
+      "730": 9,
+      "ARI": 2,
+      "DEN": 9
+    },
+    "roster_ids": [2, 9],
+    "status_updated": 1446542160,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Christine Michael (RB) | Team 5: David Cobb (RB)",
+      "nfl_trade_id": "1513"
+    },
+    "created": 1446643980,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_1513",
+    "adds": {
+      "1596": 5,
+      "2441": 1
+    },
+    "consenter_ids": ["77140390129844224", "337221174670938112"],
+    "drops": {
+      "1596": 1,
+      "2441": 5
+    },
+    "roster_ids": [1, 5],
+    "status_updated": 1446643980,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Justin Forsett (RB), LeGarrette Blount (RB) | Team 11: Seattle Seahawks (DEF), T.J. Yeldon (RB)",
+      "nfl_trade_id": "1519"
+    },
+    "created": 1446712140,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_1519",
+    "adds": {
+      "458": 11,
+      "730": 11,
+      "2341": 2,
+      "SEA": 2
+    },
+    "consenter_ids": ["428943291145265152", "chumbolegacy_phil"],
+    "drops": {
+      "458": 2,
+      "730": 2,
+      "2341": 11,
+      "SEA": 11
+    },
+    "roster_ids": [2, 11],
+    "status_updated": 1446712140,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: T.J. Yeldon (RB) | Team 1: Chris Ivory (RB)",
+      "nfl_trade_id": "1585"
+    },
+    "created": 1447114080,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_1585",
+    "adds": {
+      "717": 2,
+      "2341": 1
+    },
+    "consenter_ids": ["428943291145265152", "77140390129844224"],
+    "drops": {
+      "717": 1,
+      "2341": 2
+    },
+    "roster_ids": [2, 1],
+    "status_updated": 1447114080,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Robert Woods (WR) | Team 8: Davante Adams (WR)",
+      "nfl_trade_id": "1616"
+    },
+    "created": 1447118100,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "704708035829895168",
+    "transaction_id": "chumbo_2015_trade_1616",
+    "adds": {
+      "1352": 8,
+      "2133": 7
+    },
+    "consenter_ids": ["704708035829895168", "77361676378587136"],
+    "drops": {
+      "1352": 7,
+      "2133": 8
+    },
+    "roster_ids": [7, 8],
+    "status_updated": 1447118100,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Chris Ivory (RB), Allen Robinson (WR) | Team 9: DeAngelo Williams (RB), 1800 (WR)",
+      "nfl_trade_id": "1629"
+    },
+    "created": 1447131360,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_1629",
+    "adds": {
+      "306": 2,
+      "717": 9,
+      "1992": 9,
+      "1800": 2
+    },
+    "consenter_ids": ["428943291145265152", "337226046606704640"],
+    "drops": {
+      "306": 9,
+      "717": 2,
+      "1992": 2,
+      "1800": 9
+    },
+    "roster_ids": [2, 9],
+    "status_updated": 1447131360,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 9: Brandon Marshall (WR) | Team 4: Amari Cooper (WR)",
+      "nfl_trade_id": "1695"
+    },
+    "created": 1447336860,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "337226046606704640",
+    "transaction_id": "chumbo_2015_trade_1695",
+    "adds": {
+      "648": 4,
+      "2309": 9
+    },
+    "consenter_ids": ["337226046606704640", "438629899490553856"],
+    "drops": {
+      "648": 9,
+      "2309": 4
+    },
+    "roster_ids": [9, 4],
+    "status_updated": 1447336860,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Jeremy Maclin (WR), Ben Roethlisberger (QB) | Team 10: Chris Johnson (RB), Danny Woodhead (RB)",
+      "nfl_trade_id": "1714"
+    },
+    "created": 1447409820,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_1714",
+    "adds": {
+      "138": 10,
+      "272": 1,
+      "411": 10,
+      "735": 1
+    },
+    "consenter_ids": ["77140390129844224", "337222928615612416"],
+    "drops": {
+      "138": 1,
+      "272": 10,
+      "411": 1,
+      "735": 10
+    },
+    "roster_ids": [1, 10],
+    "status_updated": 1447409820,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 10: Pittsburgh Steelers (DEF) | Team 1: Chris Johnson (RB)",
+      "nfl_trade_id": "1763"
+    },
+    "created": 1447729320,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "337222928615612416",
+    "transaction_id": "chumbo_2015_trade_1763",
+    "adds": {
+      "272": 10,
+      "PIT": 1
+    },
+    "consenter_ids": ["337222928615612416", "77140390129844224"],
+    "drops": {
+      "272": 1,
+      "PIT": 10
+    },
+    "roster_ids": [10, 1],
+    "status_updated": 1447729320,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Matt Jones (RB) | Team 2: Danny Amendola (WR)",
+      "nfl_trade_id": "1793"
+    },
+    "created": 1447810560,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_1793",
+    "adds": {
+      "491": 1,
+      "2400": 2
+    },
+    "consenter_ids": ["77140390129844224", "428943291145265152"],
+    "drops": {
+      "491": 2,
+      "2400": 1
+    },
+    "roster_ids": [1, 2],
+    "status_updated": 1447810560,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: DeSean Jackson (WR), Danny Amendola (WR), Ronnie Hillman (RB) | Team 6: Pierre Garcon (WR), Alshon Jeffery (WR) | Drops: Dexter McCluster (RB) from Team 6",
+      "nfl_trade_id": "1859"
+    },
+    "created": 1447989720,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_1859",
+    "adds": {
+      "147": 6,
+      "269": 1,
+      "491": 6,
+      "1123": 6,
+      "1149": 1
+    },
+    "consenter_ids": ["77140390129844224", "337297176361201664"],
+    "drops": {
+      "147": 1,
+      "269": 6,
+      "491": 1,
+      "564": 6,
+      "1123": 1,
+      "1149": 6
+    },
+    "roster_ids": [1, 6],
+    "status_updated": 1447989720,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: DeSean Jackson (WR), Thomas Rawls (RB) | Team 11: Odell Beckham (WR) | Drops: Cole Beasley (WR) from Team 11",
+      "nfl_trade_id": "1944"
+    },
+    "created": 1448329740,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2015_trade_1944",
+    "adds": {
+      "147": 11,
+      "2078": 6,
+      "2585": 11
+    },
+    "consenter_ids": ["337297176361201664", "chumbolegacy_phil"],
+    "drops": {
+      "147": 6,
+      "1144": 11,
+      "2078": 11,
+      "2585": 6
+    },
+    "roster_ids": [6, 11],
+    "status_updated": 1448329740,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Denver Broncos (DEF), Tyrod Taylor (QB), DeAngelo Williams (RB) | Team 5: Tom Brady (QB), Eric Ebron (TE), Jeremy Hill (RB)",
+      "nfl_trade_id": "1980"
+    },
+    "created": 1448372460,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2015_trade_1980",
+    "adds": {
+      "167": 2,
+      "306": 5,
+      "827": 5,
+      "1892": 2,
+      "2118": 2,
+      "DEN": 5
+    },
+    "consenter_ids": ["428943291145265152", "337221174670938112"],
+    "drops": {
+      "167": 5,
+      "306": 2,
+      "827": 2,
+      "1892": 5,
+      "2118": 5,
+      "DEN": 2
+    },
+    "roster_ids": [2, 5],
+    "status_updated": 1448372460,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Todd Gurley (RB) | Team 11: Thomas Rawls (RB)",
+      "nfl_trade_id": "2033"
+    },
+    "created": 1448589780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2015_trade_2033",
+    "adds": {
+      "2315": 11,
+      "2585": 1
+    },
+    "consenter_ids": ["77140390129844224", "chumbolegacy_phil"],
+    "drops": {
+      "2315": 1,
+      "2585": 11
+    },
+    "roster_ids": [1, 11],
+    "status_updated": 1448589780,
+    "waiver_budget": []
+  }
+]

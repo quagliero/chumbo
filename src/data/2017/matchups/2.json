@@ -343,7 +343,7 @@
       "326",
       "818",
       "814",
-      "Jordan Matthews",
+      "1800",
       "1984",
       "4131",
       "1214",
@@ -365,10 +365,9 @@
       "3164": 2.2,
       "3177": 0.9,
       "4131": 0.8,
-      "Jordan Matthews": 3,
+      "1800": 3,
       "PIT": 8
-    },
-    "unmatched_players": { "Jordan Matthews": "WR" }
+    }
   },
   {
     "matchup_id": 1,

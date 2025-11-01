@@ -81,7 +81,9 @@ const PlayerDetail = () => {
                 {player.full_name || `${player.first_name} ${player.last_name}`}
               </h1>
               <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
-                <span className="font-medium">{player.position}</span>
+                <span className="font-medium">
+                  {player.fantasy_positions?.join(", ")}
+                </span>
                 {player.team && <span>{player.team}</span>}
                 {player.number != null && <span>#{player.number}</span>}
               </div>

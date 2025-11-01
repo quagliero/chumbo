@@ -19,6 +19,7 @@ const Trades = ({
   transactions,
   rosters,
   getTeamName,
+  year,
   users,
   slotToRosterId,
   draftStartTime,
@@ -37,7 +38,8 @@ const Trades = ({
         teamIds: selectedTeams.length > 0 ? selectedTeams : undefined,
       },
       slotToRosterId,
-      draftStartTime
+      draftStartTime,
+      year
     );
   }, [
     transactions,
@@ -45,6 +47,7 @@ const Trades = ({
     selectedTeams,
     slotToRosterId,
     draftStartTime,
+    year,
   ]);
 
   // Get unique team IDs for filter

@@ -1,6 +1,7 @@
 import { Transaction } from "@/types/transaction";
 import { Player } from "@/types/player";
 import { getPlayer } from "@/data";
+import { getPlayerPosition } from "@/utils/playerDataUtils";
 
 export interface TradeAssets {
   players: Array<{
@@ -180,10 +181,110 @@ export function groupTradeAssetsByTeam(
     } as TradeAssets,
   }));
 
+  // Helper to get player with fallback to unmatched_players
+  const getPlayerWithFallback = (playerId: string) => {
+    // Get unmatched_players (either at root or in metadata)
+    // Check metadata first (for 2012 data), then root level
+    const unmatchedPlayers =
+      transaction.metadata &&
+      typeof transaction.metadata === "object" &&
+      "unmatched_players" in transaction.metadata &&
+      transaction.metadata.unmatched_players
+        ? (transaction.metadata.unmatched_players as Record<string, string>)
+        : transaction.unmatched_players;
+
+    // Get player using standard lookup
+    let player = getPlayer(playerId, year);
+
+    // Get position using shared utility that handles unmatched_players
+    const position = getPlayerPosition(
+      playerId,
+      year,
+      undefined,
+      unmatchedPlayers
+    );
+
+    // If player not found but we have position from unmatched_players, create player object
+    if (!player && position && position !== "UNK") {
+      const nameParts = playerId.includes(" ")
+        ? playerId.split(" ")
+        : [playerId, ""];
+
+      player = {
+        player_id: playerId,
+        first_name: nameParts[0],
+        last_name: nameParts.slice(1).join(" ") || "",
+        full_name: playerId,
+        position: position,
+        team: null,
+        active: false,
+        sport: "nfl",
+        fantasy_positions: [position],
+        injury_status: null,
+        weight: undefined,
+        height: undefined,
+        age: undefined,
+        years_exp: undefined,
+        birth_date: undefined,
+        college: undefined,
+        hashtag: undefined,
+        depth_chart_order: null,
+        number: undefined,
+        search_full_name: playerId.toLowerCase(),
+        search_first_name: nameParts[0].toLowerCase(),
+        search_last_name: nameParts.slice(1).join(" ").toLowerCase(),
+        search_rank: undefined,
+        injury_notes: undefined,
+        practice_participation: undefined,
+        injury_body_part: undefined,
+        injury_start_date: undefined,
+        injury_notes_id: undefined,
+        practice_description: undefined,
+        news_updated: undefined,
+        stats_id: undefined,
+        swish_id: undefined,
+        gsis_id: undefined,
+        espn_id: undefined,
+        yahoo_id: undefined,
+        rotowire_id: undefined,
+        rotoworld_id: undefined,
+        fantasy_data_id: undefined,
+        sleeper_id: undefined,
+        pff_id: undefined,
+        pfr_id: undefined,
+        fantasypros_id: undefined,
+        team_abbr: null,
+        oddsjam_id: undefined,
+        sportradar_id: undefined,
+        high_school: undefined,
+        birth_city: undefined,
+        birth_state: undefined,
+        birth_country: undefined,
+        team_changed_at: undefined,
+        competitions: [],
+        metadata: null,
+      };
+    } else if (
+      player &&
+      position &&
+      position !== "UNK" &&
+      player.position === "UNK"
+    ) {
+      // Update existing player with position from unmatched_players
+      player = {
+        ...player,
+        position: position,
+        fantasy_positions: [position],
+      };
+    }
+
+    return player;
+  };
+
   // Process player trades (adds/drops)
   if (transaction.adds) {
     Object.entries(transaction.adds).forEach(([playerId, rosterId]) => {
-      const player = getPlayer(playerId, year);
+      const player = getPlayerWithFallback(playerId);
 
       if (transaction.drops && transaction.drops[playerId]) {
         const previousRosterId = transaction.drops[playerId];
@@ -208,7 +309,7 @@ export function groupTradeAssetsByTeam(
 
   if (transaction.drops) {
     Object.entries(transaction.drops).forEach(([playerId, rosterId]) => {
-      const player = getPlayer(playerId, year);
+      const player = getPlayerWithFallback(playerId);
 
       if (!transaction.adds || !transaction.adds[playerId]) {
         // Player was dropped but not picked up (shouldn't happen in trades)
@@ -296,7 +397,8 @@ export function getSeasonTrades(
     teamIds?: number[];
   },
   slotToRosterId?: Record<string, number>,
-  draftStartTime?: number
+  draftStartTime?: number,
+  year?: number
 ): TradeSummary[] {
   if (!transactions) return [];
 
@@ -309,7 +411,7 @@ export function getSeasonTrades(
     completedTrades.forEach((transaction) => {
       const tradeSummary = groupTradeAssetsByTeam(
         transaction,
-        0,
+        year || 0,
         slotToRosterId,
         draftStartTime
       );

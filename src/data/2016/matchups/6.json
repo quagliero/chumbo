@@ -239,7 +239,7 @@
       "2980",
       "3157",
       "3391",
-      "Cordarrelle Patterson",
+      "1535",
       "1264",
       "ARI"
     ],
@@ -259,10 +259,9 @@
       "2980": 3.5,
       "3157": 0,
       "3391": 0,
-      "Cordarrelle Patterson": 0,
+      "1535": 0,
       "ARI": 12
-    },
-    "unmatched_players": { "Cordarrelle Patterson": "WR" }
+    }
   },
   {
     "matchup_id": 1,
@@ -538,7 +537,7 @@
       "1386",
       "1901",
       "455",
-      "Jordan Matthews",
+      "1800",
       "58",
       "2168",
       "1358",
@@ -549,7 +548,7 @@
       "1386",
       "1901",
       "455",
-      "Jordan Matthews",
+      "1800",
       "58",
       "2168",
       "169",
@@ -577,10 +576,9 @@
       "2341": 2.6,
       "2583": 2.8,
       "3200": 2.5,
-      "Jordan Matthews": 7.5,
+      "1800": 7.5,
       "PHI": 14
-    },
-    "unmatched_players": { "Jordan Matthews": "WR" }
+    }
   },
   {
     "matchup_id": 2,

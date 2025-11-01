@@ -1,0 +1,928 @@
+[
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Marques Colston (WR), Carlos Hyde (RB) | Team 6: Kelvin Benjamin (WR) | Drops: Jordan Reed (TE) from Team 6",
+      "nfl_trade_id": "135"
+    },
+    "created": 1410676980,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 2,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2014_trade_135",
+    "adds": {
+      "201": 6,
+      "2182": 1,
+      "2257": 6
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337297176361201664"
+    ],
+    "drops": {
+      "201": 1,
+      "1500": 6,
+      "2182": 6,
+      "2257": 1
+    },
+    "roster_ids": [
+      1,
+      6
+    ],
+    "status_updated": 1410676980,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Darren McFadden (RB) | Team 2: T.Y. Hilton (WR)",
+      "nfl_trade_id": "204"
+    },
+    "created": 1410912840,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2014_trade_204",
+    "adds": {
+      "326": 2,
+      "1110": 5
+    },
+    "consenter_ids": [
+      "337221174670938112",
+      "428943291145265152"
+    ],
+    "drops": {
+      "326": 5,
+      "1110": 2
+    },
+    "roster_ids": [
+      5,
+      2
+    ],
+    "status_updated": 1410912840,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Stevan Ridley (RB), Reggie Wayne (WR), Khiry Robinson (RB) | Team 1: Matt Asiata (RB), Josh Gordon (WR), Kelvin Benjamin (WR)",
+      "nfl_trade_id": "225"
+    },
+    "created": 1410959820,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2014_trade_225",
+    "adds": {
+      "194": 1,
+      "811": 1,
+      "936": 3,
+      "1244": 3,
+      "1720": 1,
+      "2182": 3
+    },
+    "consenter_ids": [
+      "337210029620883456",
+      "77140390129844224"
+    ],
+    "drops": {
+      "194": 3,
+      "811": 3,
+      "936": 1,
+      "1244": 1,
+      "1720": 3,
+      "2182": 1
+    },
+    "roster_ids": [
+      3,
+      1
+    ],
+    "status_updated": 1410959820,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Greg Olsen (TE) | Team 1: Stevan Ridley (RB), Travis Kelce (TE) | Drops: Mohamed Sanu (WR) from Team 2",
+      "nfl_trade_id": "275"
+    },
+    "created": 1411284240,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2014_trade_275",
+    "adds": {
+      "58": 1,
+      "811": 2,
+      "1466": 2
+    },
+    "consenter_ids": [
+      "428943291145265152",
+      "77140390129844224"
+    ],
+    "drops": {
+      "58": 2,
+      "811": 1,
+      "1071": 2,
+      "1466": 1
+    },
+    "roster_ids": [
+      2,
+      1
+    ],
+    "status_updated": 1411284240,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Demaryius Thomas (WR), Montee Ball (RB) | Team 4: Calvin Johnson (WR) | Drops: Blair Walsh (K) from Team 4",
+      "nfl_trade_id": "401"
+    },
+    "created": 1411713960,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2014_trade_401",
+    "adds": {
+      "240": 11,
+      "560": 4,
+      "1454": 4
+    },
+    "consenter_ids": [
+      "411186928751230976",
+      "438629899490553856"
+    ],
+    "drops": {
+      "240": 4,
+      "560": 11,
+      "1214": 4,
+      "1454": 11
+    },
+    "roster_ids": [
+      11,
+      4
+    ],
+    "status_updated": 1411713960,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Mark Ingram (RB), Travis Kelce (TE) | Team 1: Greg Olsen (TE), Wes Welker (WR)",
+      "nfl_trade_id": "501"
+    },
+    "created": 1412136300,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2014_trade_501",
+    "adds": {
+      "58": 2,
+      "177": 2,
+      "956": 1,
+      "1466": 1
+    },
+    "consenter_ids": [
+      "428943291145265152",
+      "77140390129844224"
+    ],
+    "drops": {
+      "58": 1,
+      "177": 1,
+      "956": 2,
+      "1466": 2
+    },
+    "roster_ids": [
+      2,
+      1
+    ],
+    "status_updated": 1412136300,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Victor Cruz (WR) | Team 5: Reggie Bush (RB), Brian Quick (WR) | Drops: Torrey Smith (WR) from Team 2",
+      "nfl_trade_id": "515"
+    },
+    "created": 1412163000,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2014_trade_515",
+    "adds": {
+      "179": 2,
+      "719": 5,
+      "1208": 2
+    },
+    "consenter_ids": [
+      "428943291145265152",
+      "337221174670938112"
+    ],
+    "drops": {
+      "179": 5,
+      "719": 2,
+      "826": 2,
+      "1208": 5
+    },
+    "roster_ids": [
+      2,
+      5
+    ],
+    "status_updated": 1412163000,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Ben Tate (RB) | Team 11: Andre Johnson (WR)",
+      "nfl_trade_id": "533"
+    },
+    "created": 1412216640,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2014_trade_533",
+    "adds": {
+      "92": 6,
+      "1004": 11
+    },
+    "consenter_ids": [
+      "337297176361201664",
+      "411186928751230976"
+    ],
+    "drops": {
+      "92": 11,
+      "1004": 6
+    },
+    "roster_ids": [
+      6,
+      11
+    ],
+    "status_updated": 1412216640,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 9: LeSean McCoy (RB), Sammy Watkins (WR) | Team 1: Mark Ingram (RB), Reggie Wayne (WR), Alshon Jeffery (WR), Khiry Robinson (RB) | Drops: Shonn Greene (RB), Kyle Rudolph (TE) from Team 9",
+      "nfl_trade_id": "552"
+    },
+    "created": 1412301300,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337226046606704640",
+    "transaction_id": "chumbo_2014_trade_552",
+    "adds": {
+      "194": 9,
+      "676": 1,
+      "956": 9,
+      "1149": 9,
+      "1720": 9,
+      "1817": 1
+    },
+    "consenter_ids": [
+      "337226046606704640",
+      "77140390129844224"
+    ],
+    "drops": {
+      "194": 1,
+      "348": 9,
+      "676": 9,
+      "943": 9,
+      "956": 1,
+      "1149": 1,
+      "1720": 1,
+      "1817": 9
+    },
+    "roster_ids": [
+      9,
+      1
+    ],
+    "status_updated": 1412301300,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 10: Chris Ivory (RB) | Team 5: Matthew Stafford (QB)",
+      "nfl_trade_id": "611"
+    },
+    "created": 1412653800,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "337222928615612416",
+    "transaction_id": "chumbo_2014_trade_611",
+    "adds": {
+      "421": 10,
+      "717": 5
+    },
+    "consenter_ids": [
+      "337222928615612416",
+      "337221174670938112"
+    ],
+    "drops": {
+      "421": 5,
+      "717": 10
+    },
+    "roster_ids": [
+      10,
+      5
+    ],
+    "status_updated": 1412653800,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Antone Smith (RB) | Team 12: Colin Kaepernick (QB)",
+      "nfl_trade_id": "675"
+    },
+    "created": 1412922900,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2014_trade_675",
+    "adds": {
+      "609": 12,
+      "980": 11
+    },
+    "consenter_ids": [
+      "411186928751230976",
+      "chumbolegacy_sudio"
+    ],
+    "drops": {
+      "609": 11,
+      "980": 12
+    },
+    "roster_ids": [
+      11,
+      12
+    ],
+    "status_updated": 1412922900,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Andre Johnson (WR) | Team 11: Colin Kaepernick (QB)",
+      "nfl_trade_id": "676"
+    },
+    "created": 1412923020,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2014_trade_676",
+    "adds": {
+      "92": 11,
+      "980": 6
+    },
+    "consenter_ids": [
+      "337297176361201664",
+      "411186928751230976"
+    ],
+    "drops": {
+      "92": 6,
+      "980": 11
+    },
+    "roster_ids": [
+      6,
+      11
+    ],
+    "status_updated": 1412923020,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Odell Beckham (WR) | Team 8: Philip Rivers (QB)",
+      "nfl_trade_id": "868"
+    },
+    "created": 1413862020,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2014_trade_868",
+    "adds": {
+      "331": 1,
+      "2078": 8
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "77361676378587136"
+    ],
+    "drops": {
+      "331": 8,
+      "2078": 1
+    },
+    "roster_ids": [
+      1,
+      8
+    ],
+    "status_updated": 1413862020,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Lamar Miller (RB) | Team 7: Antonio Gates (TE)",
+      "nfl_trade_id": "1059"
+    },
+    "created": 1414641000,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2014_trade_1059",
+    "adds": {
+      "322": 11,
+      "1048": 7
+    },
+    "consenter_ids": [
+      "411186928751230976",
+      "704708035829895168"
+    ],
+    "drops": {
+      "322": 7,
+      "1048": 11
+    },
+    "roster_ids": [
+      11,
+      7
+    ],
+    "status_updated": 1414641000,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Sammy Watkins (WR), Jeremy Hill (RB) | Team 5: Mike Wallace (WR), Knile Davis (RB)",
+      "nfl_trade_id": "1062"
+    },
+    "created": 1414642860,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2014_trade_1062",
+    "adds": {
+      "365": 1,
+      "1463": 1,
+      "1817": 5,
+      "1892": 5
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337221174670938112"
+    ],
+    "drops": {
+      "365": 5,
+      "1463": 5,
+      "1817": 1,
+      "1892": 1
+    },
+    "roster_ids": [
+      1,
+      5
+    ],
+    "status_updated": 1414642860,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Josh Gordon (WR), Theo Riddick (RB) | Team 5: Ahmad Bradshaw (RB), Jeremy Hill (RB)",
+      "nfl_trade_id": "1085"
+    },
+    "created": 1414739580,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2014_trade_1085",
+    "adds": {
+      "78": 3,
+      "1244": 5,
+      "1517": 5,
+      "1892": 3
+    },
+    "consenter_ids": [
+      "337210029620883456",
+      "337221174670938112"
+    ],
+    "drops": {
+      "78": 5,
+      "1244": 3,
+      "1517": 3,
+      "1892": 5
+    },
+    "roster_ids": [
+      3,
+      5
+    ],
+    "status_updated": 1414739580,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 11: Calvin Johnson (WR), Antonio Gates (TE), Branden Oliver (RB) | Team 10: Dez Bryant (WR), Marshawn Lynch (RB) | Drops: Jordan Cameron (TE) from Team 10",
+      "nfl_trade_id": "1088"
+    },
+    "created": 1414766040,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2014_trade_1088",
+    "adds": {
+      "240": 10,
+      "322": 10,
+      "574": 11,
+      "745": 11,
+      "2050": 10
+    },
+    "consenter_ids": [
+      "411186928751230976",
+      "337222928615612416"
+    ],
+    "drops": {
+      "240": 11,
+      "322": 11,
+      "574": 10,
+      "745": 10,
+      "833": 10,
+      "2050": 11
+    },
+    "roster_ids": [
+      11,
+      10
+    ],
+    "status_updated": 1414766040,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Steve Smith (WR), Darren Sproles (RB) | Team 8: Randall Cobb (WR), Trent Richardson (RB)",
+      "nfl_trade_id": "1107"
+    },
+    "created": 1414894380,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2014_trade_1107",
+    "adds": {
+      "169": 8,
+      "246": 8,
+      "928": 4,
+      "1082": 4
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "77361676378587136"
+    ],
+    "drops": {
+      "169": 4,
+      "246": 4,
+      "928": 8,
+      "1082": 8
+    },
+    "roster_ids": [
+      4,
+      8
+    ],
+    "status_updated": 1414894380,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Ahmad Bradshaw (RB) | Team 5: Theo Riddick (RB), DeAndre Hopkins (WR) | Drops: Eli Manning (QB) from Team 3",
+      "nfl_trade_id": "1150"
+    },
+    "created": 1415071740,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2014_trade_1150",
+    "adds": {
+      "78": 5,
+      "1426": 3,
+      "1517": 3
+    },
+    "consenter_ids": [
+      "337210029620883456",
+      "337221174670938112"
+    ],
+    "drops": {
+      "78": 3,
+      "188": 3,
+      "1426": 5,
+      "1517": 5
+    },
+    "roster_ids": [
+      3,
+      5
+    ],
+    "status_updated": 1415071740,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Jeremy Maclin (WR), Mike Evans (WR) | Team 2: Arian Foster (RB) | Drops: DeAngelo Williams (RB) from Team 2",
+      "nfl_trade_id": "1247"
+    },
+    "created": 1415187360,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2014_trade_1247",
+    "adds": {
+      "411": 2,
+      "669": 8,
+      "2216": 2
+    },
+    "consenter_ids": [
+      "77361676378587136",
+      "428943291145265152"
+    ],
+    "drops": {
+      "306": 2,
+      "411": 8,
+      "669": 2,
+      "2216": 8
+    },
+    "roster_ids": [
+      8,
+      2
+    ],
+    "status_updated": 1415187360,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Martellus Bennett (TE) | Team 9: Reggie Wayne (WR), Isaiah Crowell (RB) | Drops: Lorenzo Taliaferro (RB) from Team 8",
+      "nfl_trade_id": "1352"
+    },
+    "created": 1415711820,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2014_trade_1352",
+    "adds": {
+      "40": 9,
+      "194": 8,
+      "1901": 8
+    },
+    "consenter_ids": [
+      "77361676378587136",
+      "337226046606704640"
+    ],
+    "drops": {
+      "40": 8,
+      "194": 9,
+      "1880": 8,
+      "1901": 9
+    },
+    "roster_ids": [
+      8,
+      9
+    ],
+    "status_updated": 1415711820,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 12: Aaron Rodgers (QB) | Team 9: Matt Ryan (QB), Martellus Bennett (TE), Percy Harvin (WR) | Drops: Antone Smith (RB), Vernon Davis (TE) from Team 12",
+      "nfl_trade_id": "1530"
+    },
+    "created": 1416315240,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "chumbolegacy_sudio",
+    "transaction_id": "chumbo_2014_trade_1530",
+    "adds": {
+      "24": 12,
+      "40": 12,
+      "96": 9,
+      "429": 12
+    },
+    "consenter_ids": [
+      "chumbolegacy_sudio",
+      "337226046606704640"
+    ],
+    "drops": {
+      "24": 9,
+      "40": 9,
+      "96": 12,
+      "200": 12,
+      "429": 9,
+      "609": 12
+    },
+    "roster_ids": [
+      12,
+      9
+    ],
+    "status_updated": 1416315240,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Tony Romo (QB) | Team 1: Philip Rivers (QB)",
+      "nfl_trade_id": "1596"
+    },
+    "created": 1416457380,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2014_trade_1596",
+    "adds": {
+      "142": 1,
+      "331": 4
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "77140390129844224"
+    ],
+    "drops": {
+      "142": 4,
+      "331": 1
+    },
+    "roster_ids": [
+      4,
+      1
+    ],
+    "status_updated": 1416457380,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Jerick McKinnon (RB) | Team 5: Sammy Watkins (WR)",
+      "nfl_trade_id": "1607"
+    },
+    "created": 1416491460,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2014_trade_1607",
+    "adds": {
+      "1817": 1,
+      "2161": 5
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337221174670938112"
+    ],
+    "drops": {
+      "1817": 5,
+      "2161": 1
+    },
+    "roster_ids": [
+      1,
+      5
+    ],
+    "status_updated": 1416491460,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Colin Kaepernick (QB), Eddie Lacy (RB), C.J. Anderson (RB) | Team 11: Marshawn Lynch (RB), Andre Johnson (WR), Russell Wilson (QB)",
+      "nfl_trade_id": "1627"
+    },
+    "created": 1416579060,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2014_trade_1627",
+    "adds": {
+      "92": 6,
+      "745": 6,
+      "980": 11,
+      "1234": 6,
+      "1451": 11,
+      "1527": 11
+    },
+    "consenter_ids": [
+      "337297176361201664",
+      "411186928751230976"
+    ],
+    "drops": {
+      "92": 11,
+      "745": 11,
+      "980": 6,
+      "1234": 11,
+      "1451": 6,
+      "1527": 6
+    },
+    "roster_ids": [
+      6,
+      11
+    ],
+    "status_updated": 1416579060,
+    "waiver_budget": []
+  }
+]

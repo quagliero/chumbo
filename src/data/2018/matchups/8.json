@@ -434,7 +434,7 @@
       "2118",
       "2391",
       "1266",
-      "Washington Redskins"
+      "WAS"
     ],
     "players": [
       "3976",
@@ -450,7 +450,7 @@
       "4263",
       "4040",
       "1266",
-      "Washington Redskins"
+      "WAS"
     ],
     "user_id": "411186928751230976",
     "starters_points": [21.9, 21.5, 11.1, 13.3, 18.4, 9.7, 10, 7, 15],
@@ -468,9 +468,8 @@
       "4263": 0,
       "4866": 11.1,
       "2346": 2.7,
-      "Washington Redskins": 15
-    },
-    "unmatched_players": { "2346": "WR", "Washington Redskins": "DEF" }
+      "WAS": 15
+    }
   },
   {
     "matchup_id": 6,

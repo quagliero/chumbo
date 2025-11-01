@@ -34,16 +34,50 @@ export const getPlayerName = (
 };
 
 /**
+ * Get position from unmatched_players record (shared utility)
+ * @param playerId - Player ID to look up
+ * @param player - Optional player object to try matching by name
+ * @param unmatchedPlayers - Record of unmatched players (player name -> position)
+ * @returns Position if found, undefined otherwise
+ */
+const getPositionFromUnmatchedPlayers = (
+  playerId: string,
+  player: ReturnType<typeof getPlayer> | undefined,
+  unmatchedPlayers: Record<string, string> | undefined
+): string | undefined => {
+  if (!unmatchedPlayers) return undefined;
+
+  // Try direct lookup by playerId (for cases where playerId is the name)
+  if (unmatchedPlayers[playerId]) {
+    return unmatchedPlayers[playerId];
+  }
+
+  // If we have a player object, try to match by player's full name
+  if (player) {
+    const fullName =
+      player.full_name ||
+      `${player.first_name || ""} ${player.last_name || ""}`.trim();
+    if (fullName && unmatchedPlayers[fullName]) {
+      return unmatchedPlayers[fullName];
+    }
+  }
+
+  return undefined;
+};
+
+/**
  * Get player position with fallbacks for string-named players
  * @param playerId - Player ID (can be string name)
  * @param year - Optional year for player data lookup
  * @param matchupData - Optional matchup data for unmatched_players lookup
+ * @param unmatchedPlayers - Optional unmatched_players record (for transactions)
  * @returns Player position or "UNK" as fallback
  */
 export const getPlayerPosition = (
   playerId: string | number,
   year?: number,
-  matchupData?: ExtendedMatchup
+  matchupData?: ExtendedMatchup,
+  unmatchedPlayers?: Record<string, string>
 ): string => {
   const playerIdStr = playerId.toString();
 
@@ -59,20 +93,43 @@ export const getPlayerPosition = (
     return player.position;
   }
 
-  // Check unmatched_players in provided matchup data first
-  if (matchupData?.unmatched_players?.[playerIdStr]) {
-    return matchupData.unmatched_players[playerIdStr];
+  // Check unmatched_players from transaction (if provided)
+  if (unmatchedPlayers) {
+    const position = getPositionFromUnmatchedPlayers(
+      playerIdStr,
+      player,
+      unmatchedPlayers
+    );
+    if (position) {
+      return position;
+    }
+  }
+
+  // Check unmatched_players in provided matchup data
+  if (matchupData?.unmatched_players) {
+    const position = getPositionFromUnmatchedPlayers(
+      playerIdStr,
+      player,
+      matchupData.unmatched_players
+    );
+    if (position) {
+      return position;
+    }
   }
 
   // Search through all seasons to find position information for this player
   for (const [, seasonData] of Object.entries(seasons)) {
     for (const [, weekMatchups] of Object.entries(seasonData.matchups || {})) {
       for (const matchup of weekMatchups) {
-        if (
-          matchup.unmatched_players &&
-          matchup.unmatched_players[playerIdStr]
-        ) {
-          return matchup.unmatched_players[playerIdStr];
+        if (matchup.unmatched_players) {
+          const position = getPositionFromUnmatchedPlayers(
+            playerIdStr,
+            player,
+            matchup.unmatched_players
+          );
+          if (position) {
+            return position;
+          }
         }
       }
     }
@@ -80,13 +137,13 @@ export const getPlayerPosition = (
 
   // Also try root players.json for string-named players
   if (players) {
-    const player = Object.values(players).find(
+    const foundPlayer = Object.values(players).find(
       (p) =>
         p.full_name === playerIdStr ||
         `${p.first_name} ${p.last_name}` === playerIdStr
     );
-    if (player?.position) {
-      return player.position;
+    if (foundPlayer?.position) {
+      return foundPlayer.position;
     }
   }
 
@@ -98,16 +155,18 @@ export const getPlayerPosition = (
  * @param playerId - Player ID (can be string name)
  * @param year - Optional year for player data lookup
  * @param matchupData - Optional matchup data for unmatched_players lookup
+ * @param unmatchedPlayers - Optional unmatched_players record (for transactions)
  * @returns Object with name and position
  */
 export const resolvePlayerData = (
   playerId: string | number,
   year?: number,
-  matchupData?: ExtendedMatchup
+  matchupData?: ExtendedMatchup,
+  unmatchedPlayers?: Record<string, string>
 ): { name: string; position: string } => {
   return {
     name: getPlayerName(playerId, year),
-    position: getPlayerPosition(playerId, year, matchupData),
+    position: getPlayerPosition(playerId, year, matchupData, unmatchedPlayers),
   };
 };
 

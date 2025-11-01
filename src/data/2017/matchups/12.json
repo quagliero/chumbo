@@ -489,7 +489,7 @@
       "284",
       "1067",
       "503",
-      "Washington Redskins"
+      "WAS"
     ],
     "players": [
       "24",
@@ -506,7 +506,7 @@
       "2222",
       "4152",
       "503",
-      "Washington Redskins"
+      "WAS"
     ],
     "user_id": "chumbolegacy_sudio",
     "starters_points": [16.78, 4.3, 13, 12.5, 5.2, 12.3, 22.9, 8, 13],
@@ -525,9 +525,8 @@
       "3199": 5.2,
       "4147": 13,
       "4152": 3.1,
-      "Washington Redskins": 13
-    },
-    "unmatched_players": { "Washington Redskins": "DEF" }
+      "WAS": 13
+    }
   },
   {
     "matchup_id": 1,

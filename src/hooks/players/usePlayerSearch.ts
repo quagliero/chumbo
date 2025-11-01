@@ -50,6 +50,7 @@ export const usePlayerSearch = (searchTerm: string) => {
           position: player.position || "UNK",
           team: player.team,
           number: player.number,
+          fantasy_positions: player.fantasy_positions || [],
         });
       }
     });
@@ -99,6 +100,7 @@ export const usePlayerSearch = (searchTerm: string) => {
           position: position,
           team: null,
           number: undefined,
+          fantasy_positions: [position],
         });
       }
     });

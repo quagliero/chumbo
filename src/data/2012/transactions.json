@@ -1,0 +1,368 @@
+[
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Arian Foster (RB) | Team 6: Eli Manning (QB), Reggie Bush (RB) | Drops: Donnie Avery (WR) from Team 4",
+      "nfl_trade_id": "556"
+    },
+    "created": 1350690300,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2012_trade_556",
+    "adds": {
+      "179": 4,
+      "188": 4,
+      "669": 6
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "337297176361201664"
+    ],
+    "drops": {
+      "104": 4,
+      "179": 6,
+      "188": 6,
+      "669": 4
+    },
+    "roster_ids": [
+      4,
+      6
+    ],
+    "status_updated": 1350690300,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Stevan Ridley (RB) | Team 5: Peyton Manning (QB)",
+      "nfl_trade_id": "681"
+    },
+    "created": 1351122780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2012_trade_681",
+    "adds": {
+      "294": 1,
+      "811": 5
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337221174670938112"
+    ],
+    "drops": {
+      "294": 5,
+      "811": 1
+    },
+    "roster_ids": [
+      1,
+      5
+    ],
+    "status_updated": 1351122780,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Lance Moore (WR) | Team 1: Andrew Luck (QB)",
+      "nfl_trade_id": "682"
+    },
+    "created": 1351122780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2012_trade_682",
+    "adds": {
+      "270": 1,
+      "1111": 6
+    },
+    "consenter_ids": [
+      "337297176361201664",
+      "77140390129844224"
+    ],
+    "drops": {
+      "270": 6,
+      "1111": 1
+    },
+    "roster_ids": [
+      6,
+      1
+    ],
+    "status_updated": 1351122780,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Eric Decker (WR) | Team 2: Shonn Greene (RB), Andre Roberts (WR) | Drops: Rian Lindell (K) from Team 7",
+      "nfl_trade_id": "714"
+    },
+    "created": 1351383120,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "chumbolegacy_jimmie",
+    "transaction_id": "chumbo_2012_trade_714",
+    "adds": {
+      "348": 7,
+      "558": 2,
+      "627": 7
+    },
+    "consenter_ids": [
+      "chumbolegacy_jimmie",
+      "428943291145265152"
+    ],
+    "drops": {
+      "256": 7,
+      "348": 2,
+      "558": 7,
+      "627": 2
+    },
+    "roster_ids": [
+      7,
+      2
+    ],
+    "status_updated": 1351383120,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Danny Amendola (WR), Hakeem Nicks (WR) | Team 1: Torrey Smith (WR), Steven Jackson (RB)",
+      "nfl_trade_id": "944"
+    },
+    "created": 1352333760,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2012_trade_944",
+    "adds": {
+      "57": 6,
+      "474": 1,
+      "491": 1,
+      "826": 6
+    },
+    "consenter_ids": [
+      "337297176361201664",
+      "77140390129844224"
+    ],
+    "drops": {
+      "57": 1,
+      "474": 6,
+      "491": 6,
+      "826": 1
+    },
+    "roster_ids": [
+      6,
+      1
+    ],
+    "status_updated": 1352333760,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Roddy White (WR) | Team 5: DeSean Jackson (WR), DeMarco Murray (RB) | Drops: Todd Heap (TE) from Team 4",
+      "nfl_trade_id": "989",
+      "unmatched_players": {
+        "Todd Heap": "TE"
+      }
+    },
+    "created": 1352509920,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2012_trade_989",
+    "adds": {
+      "4": 5,
+      "147": 4,
+      "904": 4
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "337221174670938112"
+    ],
+    "drops": {
+      "4": 4,
+      "147": 5,
+      "904": 5,
+      "Todd Heap": 4
+    },
+    "roster_ids": [
+      4,
+      5
+    ],
+    "status_updated": 1352509920,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Robert Meachem (WR), Willis McGahee (RB) | Team 8: Aaron Hernandez (TE), Larry Fitzgerald (WR)",
+      "nfl_trade_id": "990"
+    },
+    "created": 1352509920,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2012_trade_990",
+    "adds": {
+      "223": 3,
+      "230": 8,
+      "300": 8,
+      "516": 3
+    },
+    "consenter_ids": [
+      "337210029620883456",
+      "77361676378587136"
+    ],
+    "drops": {
+      "223": 8,
+      "230": 3,
+      "300": 3,
+      "516": 8
+    },
+    "roster_ids": [
+      3,
+      8
+    ],
+    "status_updated": 1352509920,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Trent Richardson (RB) | Team 6: Randall Cobb (WR), Steven Jackson (RB) | Drops: Kendall Wright (WR) from Team 4",
+      "nfl_trade_id": "1035"
+    },
+    "created": 1352766780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2012_trade_1035",
+    "adds": {
+      "57": 4,
+      "928": 4,
+      "1082": 6
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "337297176361201664"
+    ],
+    "drops": {
+      "57": 6,
+      "928": 6,
+      "1082": 4,
+      "1097": 4
+    },
+    "roster_ids": [
+      4,
+      6
+    ],
+    "status_updated": 1352766780,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Rashard Mendenhall (RB), Willis McGahee (RB) | Team 2: Eric Decker (WR) | Drops: Martellus Bennett (TE) from Team 2",
+      "nfl_trade_id": "1092"
+    },
+    "created": 1353026220,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2012_trade_1092",
+    "adds": {
+      "145": 2,
+      "300": 2,
+      "558": 8
+    },
+    "consenter_ids": [
+      "77361676378587136",
+      "428943291145265152"
+    ],
+    "drops": {
+      "40": 2,
+      "145": 8,
+      "300": 8,
+      "558": 2
+    },
+    "roster_ids": [
+      8,
+      2
+    ],
+    "status_updated": 1353026220,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Darren Sproles (RB) | Team 10: Denarius Moore (WR)",
+      "nfl_trade_id": "1213"
+    },
+    "created": 1353457920,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2012_trade_1213",
+    "adds": {
+      "246": 10,
+      "887": 6
+    },
+    "consenter_ids": [
+      "337297176361201664",
+      "337222928615612416"
+    ],
+    "drops": {
+      "246": 6,
+      "887": 10
+    },
+    "roster_ids": [
+      6,
+      10
+    ],
+    "status_updated": 1353457920,
+    "waiver_budget": []
+  }
+]

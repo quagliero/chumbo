@@ -476,7 +476,7 @@
       "176",
       "1892",
       "40",
-      "Jordan Matthews",
+      "1800",
       "1971",
       "2382",
       "2400",
@@ -500,10 +500,9 @@
       "2400": 5.4,
       "2430": 23,
       "2449": 1.6,
-      "Jordan Matthews": 9.6,
+      "1800": 9.6,
       "CIN": 14
-    },
-    "unmatched_players": { "Jordan Matthews": "WR" }
+    }
   },
   {
     "matchup_id": 6,
@@ -569,7 +568,7 @@
       "768",
       "223",
       "503",
-      "Washington Redskins"
+      "WAS"
     ],
     "players": [
       "91",
@@ -585,8 +584,8 @@
       "1449",
       "2346",
       "503",
-      "Washington Redskins",
-      "St. Louis Rams"
+      "WAS",
+      "LAR"
     ],
     "user_id": "77140390129844224",
     "starters_points": [22.24, 19.6, 16.3, 9.3, 8.5, 12.1, 5.5, 5, 8],
@@ -604,13 +603,8 @@
       "2341": 19.6,
       "2585": 16.3,
       "2346": 7.3,
-      "Washington Redskins": 8,
-      "St. Louis Rams": 2
-    },
-    "unmatched_players": {
-      "2346": "WR",
-      "Washington Redskins": "DEF",
-      "St. Louis Rams": "DEF"
+      "WAS": 8,
+      "LAR": 2
     }
   }
 ]

@@ -542,7 +542,7 @@
       "1466",
       "1854",
       "4227",
-      "Washington Redskins"
+      "WAS"
     ],
     "players": [
       "96",
@@ -558,7 +558,7 @@
       "2892",
       "3423",
       "4227",
-      "Washington Redskins",
+      "WAS",
       "MIN"
     ],
     "user_id": "337226046606704640",
@@ -577,12 +577,8 @@
       "2892": 0,
       "4227": 6,
       "3423": 0.7,
-      "Washington Redskins": 5,
+      "WAS": 5,
       "MIN": 3
-    },
-    "unmatched_players": {
-      "3423": "WR",
-      "Washington Redskins": "DEF"
     }
   },
   {

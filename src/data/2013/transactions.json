@@ -1,0 +1,353 @@
+[
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Danny Amendola (WR), Julian Edelman (WR) | Team 6: David Wilson (RB), Kenbrell Thompkins (WR)",
+      "nfl_trade_id": "135",
+      "unmatched_players": {
+        "David Wilson": "RB"
+      }
+    },
+    "created": 1379459820,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2013_trade_135",
+    "adds": {
+      "344": 6,
+      "491": 6,
+      "1655": 1,
+      "David Wilson": 1
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337297176361201664"
+    ],
+    "drops": {
+      "344": 1,
+      "491": 1,
+      "1655": 6,
+      "David Wilson": 6
+    },
+    "roster_ids": [
+      1,
+      6
+    ],
+    "status_updated": 1379459820,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Brandon Marshall (WR) | Team 6: Hakeem Nicks (WR), Lamar Miller (RB), Tavon Austin (WR) | Drops: Alex Smith (QB), Brandon Jacobs (RB) from Team 7",
+      "nfl_trade_id": "167"
+    },
+    "created": 1379718960,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "704708035829895168",
+    "transaction_id": "chumbo_2013_trade_167",
+    "adds": {
+      "474": 7,
+      "648": 6,
+      "1048": 7,
+      "1567": 7
+    },
+    "consenter_ids": [
+      "704708035829895168",
+      "337297176361201664"
+    ],
+    "drops": {
+      "82": 7,
+      "268": 7,
+      "474": 6,
+      "648": 7,
+      "1048": 6,
+      "1567": 6
+    },
+    "roster_ids": [
+      7,
+      6
+    ],
+    "status_updated": 1379718960,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Knowshon Moreno (RB), Tony Romo (QB) | Team 5: Cam Newton (QB) | Drops: Matt Schaub (QB) from Team 5",
+      "nfl_trade_id": "236"
+    },
+    "created": 1380151020,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2013_trade_236",
+    "adds": {
+      "142": 5,
+      "387": 5,
+      "954": 1
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337221174670938112"
+    ],
+    "drops": {
+      "142": 1,
+      "178": 5,
+      "387": 1,
+      "954": 5
+    },
+    "roster_ids": [
+      1,
+      5
+    ],
+    "status_updated": 1380151020,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Arian Foster (RB) | Team 1: Stevan Ridley (RB), Josh Gordon (WR), Keenan Allen (WR), Zac Stacy (RB) | Drops: Brian Hartline (WR), Nate Washington (WR), Robert Woods (WR) from Team 2",
+      "nfl_trade_id": "556"
+    },
+    "created": 1381971540,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2013_trade_556",
+    "adds": {
+      "669": 1,
+      "811": 2,
+      "1244": 2,
+      "1479": 2,
+      "1573": 2
+    },
+    "consenter_ids": [
+      "428943291145265152",
+      "77140390129844224"
+    ],
+    "drops": {
+      "339": 2,
+      "370": 2,
+      "669": 2,
+      "811": 1,
+      "1244": 1,
+      "1352": 2,
+      "1479": 1,
+      "1573": 1
+    },
+    "roster_ids": [
+      2,
+      1
+    ],
+    "status_updated": 1381971540,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Jermichael Finley (TE) | Team 6: Danny Amendola (WR)",
+      "nfl_trade_id": "557",
+      "unmatched_players": {
+        "Jermichael Finley": "TE"
+      }
+    },
+    "created": 1381971540,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2013_trade_557",
+    "adds": {
+      "491": 4,
+      "Jermichael Finley": 6
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "337297176361201664"
+    ],
+    "drops": {
+      "491": 6,
+      "Jermichael Finley": 4
+    },
+    "roster_ids": [
+      4,
+      6
+    ],
+    "status_updated": 1381971540,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Roddy White (WR) | Team 9: Antonio Gates (TE)",
+      "nfl_trade_id": "588"
+    },
+    "created": 1382176680,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2013_trade_588",
+    "adds": {
+      "4": 9,
+      "322": 8
+    },
+    "consenter_ids": [
+      "77361676378587136",
+      "337226046606704640"
+    ],
+    "drops": {
+      "4": 8,
+      "322": 9
+    },
+    "roster_ids": [
+      8,
+      9
+    ],
+    "status_updated": 1382176680,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Pierre Garcon (WR), DeMarco Murray (RB), Shane Vereen (RB), Jarrett Boykin (WR), Jordan Reed (TE), Joseph Randle (RB) | Team 3: Ben Tate (RB), Andre Johnson (WR), Alfred Morris (RB) | Drops: LeGarrette Blount (RB), Greg Olsen (TE), Joseph Fauria (TE) from Team 3",
+      "nfl_trade_id": "766"
+    },
+    "created": 1383064380,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2013_trade_766",
+    "adds": {
+      "92": 1,
+      "269": 3,
+      "814": 3,
+      "904": 3,
+      "1004": 1,
+      "1170": 1,
+      "1173": 3,
+      "1487": 3,
+      "1500": 3
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337210029620883456"
+    ],
+    "drops": {
+      "58": 3,
+      "92": 3,
+      "269": 1,
+      "730": 3,
+      "814": 1,
+      "904": 1,
+      "1004": 3,
+      "1170": 3,
+      "1173": 1,
+      "1487": 1,
+      "1500": 1,
+      "1628": 3
+    },
+    "roster_ids": [
+      1,
+      3
+    ],
+    "status_updated": 1383064380,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Torrey Smith (WR) | Team 6: Philip Rivers (QB)",
+      "nfl_trade_id": "967"
+    },
+    "created": 1383903120,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2013_trade_967",
+    "adds": {
+      "331": 4,
+      "826": 6
+    },
+    "consenter_ids": [
+      "438629899490553856",
+      "337297176361201664"
+    ],
+    "drops": {
+      "331": 6,
+      "826": 4
+    },
+    "roster_ids": [
+      4,
+      6
+    ],
+    "status_updated": 1383903120,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Arizona Cardinals (DEF) | Team 6: Harry Douglas (WR)",
+      "nfl_trade_id": "1000"
+    },
+    "created": 1384222740,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2013_trade_1000",
+    "adds": {
+      "247": 1,
+      "ARI": 6
+    },
+    "consenter_ids": [
+      "77140390129844224",
+      "337297176361201664"
+    ],
+    "drops": {
+      "247": 6,
+      "ARI": 1
+    },
+    "roster_ids": [
+      1,
+      6
+    ],
+    "status_updated": 1384222740,
+    "waiver_budget": []
+  }
+]

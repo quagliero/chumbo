@@ -130,7 +130,27 @@ const allData = (() => {
           }
         } else {
           const key = path.split("/").pop()?.replace(".json", "");
-          if (key && validKeys.includes(key as keyof SeasonData)) {
+          // Handle legacy transactions.json file (2012-2019 format)
+          if (key === "transactions" && Array.isArray(data)) {
+            // Group transactions by week (leg field)
+            const transactionsByWeek: Record<string, Transaction[]> = {};
+            data.forEach((transaction: Transaction) => {
+              const week = transaction.leg?.toString();
+              if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
+                if (!transactionsByWeek[week]) {
+                  transactionsByWeek[week] = [];
+                }
+                transactionsByWeek[week].push(transaction);
+              }
+            });
+            // Assign to transactions object
+            Object.entries(transactionsByWeek).forEach(
+              ([week, weekTransactions]) => {
+                seasons[year]!.transactions![week as WeekKeys] =
+                  weekTransactions;
+              }
+            );
+          } else if (key && validKeys.includes(key as keyof SeasonData)) {
             seasons[year]![key as keyof SeasonData] = data;
           }
         }

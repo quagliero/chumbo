@@ -16,7 +16,10 @@ export interface WaiverBudgetTransaction {
 export interface Transaction {
   status: "complete" | "failed" | string;
   type: "trade" | "waiver" | "free_agent" | string;
-  metadata: { notes?: string } | null;
+  metadata: {
+    notes?: string;
+    unmatched_players?: Record<string, string>;
+  } | null;
   created: number; // timestamp
   settings: { expires_at?: number; seq?: number; waiver_bid?: number } | null;
   leg: number; // week number
@@ -29,4 +32,5 @@ export interface Transaction {
   roster_ids: number[];
   status_updated: number; // timestamp
   waiver_budget: WaiverBudgetTransaction[];
+  unmatched_players?: Record<string, string>; // player_name -> position
 }

@@ -135,7 +135,7 @@
       "1166",
       "49",
       "LAR",
-      "Washington Redskins"
+      "WAS"
     ],
     "user_id": "77140390129844224",
     "starters_points": [15.6, 21.3, 13, 2.3, 9.5, 1.5, 0, 7, 4],
@@ -154,9 +154,8 @@
       "2410": 10.7,
       "3969": 13,
       "LAR": 4,
-      "Washington Redskins": 14
-    },
-    "unmatched_players": { "Washington Redskins": "DEF" }
+      "WAS": 14
+    }
   },
   {
     "matchup_id": 2,

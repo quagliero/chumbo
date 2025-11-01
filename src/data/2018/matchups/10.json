@@ -277,7 +277,7 @@
       "1706",
       "3242",
       "1266",
-      "Washington Redskins"
+      "WAS"
     ],
     "players": [
       "331",
@@ -294,7 +294,7 @@
       "3209",
       "4038",
       "1266",
-      "Washington Redskins"
+      "WAS"
     ],
     "user_id": "411186928751230976",
     "starters_points": [15.02, 30.3, 10, 17.7, 16.3, 3.6, 3.8, 12, 17],
@@ -313,10 +313,7 @@
       "4040": 16.3,
       "4866": 10,
       "2346": 3.2,
-      "Washington Redskins": 17
-    },
-    "unmatched_players": {
-      "Washington Redskins": "DEF"
+      "WAS": 17
     }
   },
   {

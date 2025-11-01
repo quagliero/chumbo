@@ -5,6 +5,7 @@ export interface PlayerSearchResult {
   player_id: string;
   full_name: string;
   position: string;
+  fantasy_positions: string[];
   team: string | null | undefined;
   number: number | undefined;
 }
@@ -49,7 +50,7 @@ const PlayerResults = ({ searchResults, searchTerm }: PlayerResultsProps) => {
                 {player.full_name}
               </div>
               <div className="text-sm text-gray-600">
-                {player.position}
+                {player.fantasy_positions?.join(", ")}
                 {player.team && (
                   <span className="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">
                     {player.team}

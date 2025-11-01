@@ -1,0 +1,1274 @@
+[
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Aaron Rodgers (QB) | Team 3: Alshon Jeffery (WR)",
+      "nfl_trade_id": "598"
+    },
+    "created": 1569277440,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 3,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2019_trade_598",
+    "adds": {
+      "96": 2,
+      "1149": 12
+    },
+    "consenter_ids": ["438629899490553856", "337210029620883456"],
+    "drops": {
+      "96": 12,
+      "1149": 2
+    },
+    "roster_ids": [12, 2],
+    "status_updated": 1569277440,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Cooper Kupp (WR) | Team 1: Sony Michel (RB)",
+      "nfl_trade_id": "599"
+    },
+    "created": 1569279660,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_599",
+    "adds": {
+      "4039": 1,
+      "4962": 3
+    },
+    "consenter_ids": ["428943291145265152", "77140390129844224"],
+    "drops": {
+      "4039": 3,
+      "4962": 1
+    },
+    "roster_ids": [3, 1],
+    "status_updated": 1569279660,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Golden Tate (WR), Zach Ertz (TE) | Team 11: Robbie Gould (K), Tyler Lockett (WR)",
+      "nfl_trade_id": "616"
+    },
+    "created": 1569283320,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_616",
+    "adds": {
+      "49": 3,
+      "642": 10,
+      "1339": 10,
+      "2374": 3
+    },
+    "consenter_ids": ["428943291145265152", "429243125446230016"],
+    "drops": {
+      "49": 10,
+      "642": 3,
+      "1339": 3,
+      "2374": 10
+    },
+    "roster_ids": [3, 10],
+    "status_updated": 1569283320,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 12: Stefon Diggs (WR) | Team 2: Carlos Hyde (RB)",
+      "nfl_trade_id": "644"
+    },
+    "created": 1569326400,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "359110473351696384",
+    "transaction_id": "chumbo_2019_trade_644",
+    "adds": {
+      "2257": 5,
+      "2449": 3
+    },
+    "consenter_ids": ["359110473351696384", "428943291145265152"],
+    "drops": {
+      "2257": 3,
+      "2449": 5
+    },
+    "roster_ids": [5, 3],
+    "status_updated": 1569326400,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Daniel Jones (QB) | Team 12: Adrian Peterson (RB)",
+      "nfl_trade_id": "727"
+    },
+    "created": 1569400560,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_727",
+    "adds": {
+      "184": 3,
+      "5870": 5
+    },
+    "consenter_ids": ["428943291145265152", "359110473351696384"],
+    "drops": {
+      "184": 5,
+      "5870": 3
+    },
+    "roster_ids": [3, 5],
+    "status_updated": 1569400560,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Leonard Fournette (RB) | Team 5: Melvin Gordon (RB)",
+      "nfl_trade_id": "750"
+    },
+    "created": 1569488580,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 4,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2019_trade_750",
+    "adds": {
+      "2320": 1,
+      "3969": 8
+    },
+    "consenter_ids": ["77140390129844224", "337221174670938112"],
+    "drops": {
+      "2320": 8,
+      "3969": 1
+    },
+    "roster_ids": [1, 8],
+    "status_updated": 1569488580,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Ronald Jones (RB) | Team 1: Sammy Watkins (WR)",
+      "nfl_trade_id": "831"
+    },
+    "created": 1569884520,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2019_trade_831",
+    "adds": {
+      "1817": 8,
+      "5052": 1
+    },
+    "consenter_ids": ["337221174670938112", "77140390129844224"],
+    "drops": {
+      "1817": 1,
+      "5052": 8
+    },
+    "roster_ids": [8, 1],
+    "status_updated": 1569884520,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Alvin Kamara (RB), Mecole Hardman (WR) | Team 6: Devonta Freeman (RB), Michael Thomas (WR), Royce Freeman (RB) | Drops: Jay Ajayi (RB) from Team 7",
+      "nfl_trade_id": "870"
+    },
+    "created": 1569930420,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2019_trade_870",
+    "adds": {
+      "2168": 6,
+      "3199": 6,
+      "4035": 7,
+      "5046": 6,
+      "5917": 7
+    },
+    "consenter_ids": ["411186928751230976", "337297176361201664"],
+    "drops": {
+      "2168": 7,
+      "2452": 6,
+      "3199": 7,
+      "4035": 6,
+      "5046": 7,
+      "5917": 6
+    },
+    "roster_ids": [6, 7],
+    "status_updated": 1569930420,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 10: Devin Singletary (RB) | Team 9: Emmanuel Sanders (WR)",
+      "nfl_trade_id": "880"
+    },
+    "created": 1569930960,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337222928615612416",
+    "transaction_id": "chumbo_2019_trade_880",
+    "adds": {
+      "538": 11,
+      "6130": 4
+    },
+    "consenter_ids": ["337222928615612416", "337226046606704640"],
+    "drops": {
+      "538": 4,
+      "6130": 11
+    },
+    "roster_ids": [11, 4],
+    "status_updated": 1569930960,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Jared Goff (QB) | Team 6: Cam Newton (QB)",
+      "nfl_trade_id": "926"
+    },
+    "created": 1569976260,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2019_trade_926",
+    "adds": {
+      "954": 9,
+      "3163": 7
+    },
+    "consenter_ids": ["77361676378587136", "337297176361201664"],
+    "drops": {
+      "954": 7,
+      "3163": 9
+    },
+    "roster_ids": [9, 7],
+    "status_updated": 1569976260,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Robby Anderson (WR) | Team 1: Rex Burkhead (RB)",
+      "nfl_trade_id": "959",
+      "unmatched_players": {
+        "Robby Anderson": "WR"
+      }
+    },
+    "created": 1570073520,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_959",
+    "adds": {
+      "1387": 3,
+      "Robby Anderson": 1
+    },
+    "consenter_ids": ["428943291145265152", "77140390129844224"],
+    "drops": {
+      "1387": 1,
+      "Robby Anderson": 3
+    },
+    "roster_ids": [3, 1],
+    "status_updated": 1570073520,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 9: Nyheim Hines (RB) | Team 2: Hunter Henry (TE)",
+      "nfl_trade_id": "990"
+    },
+    "created": 1570106160,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "337226046606704640",
+    "transaction_id": "chumbo_2019_trade_990",
+    "adds": {
+      "3214": 4,
+      "5347": 3
+    },
+    "consenter_ids": ["337226046606704640", "428943291145265152"],
+    "drops": {
+      "3214": 3,
+      "5347": 4
+    },
+    "roster_ids": [4, 3],
+    "status_updated": 1570106160,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Antonio Brown (WR) | Team 1: Terry McLaurin (WR)",
+      "nfl_trade_id": "1047"
+    },
+    "created": 1570448640,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 5,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2019_trade_1047",
+    "adds": {
+      "536": 1,
+      "5927": 6
+    },
+    "consenter_ids": ["411186928751230976", "77140390129844224"],
+    "drops": {
+      "536": 6,
+      "5927": 1
+    },
+    "roster_ids": [6, 1],
+    "status_updated": 1570448640,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 9: Curtis Samuel (WR) | Team 2: Carolina Panthers (DEF)",
+      "nfl_trade_id": "1083"
+    },
+    "created": 1570503480,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "337226046606704640",
+    "transaction_id": "chumbo_2019_trade_1083",
+    "adds": {
+      "4082": 3,
+      "CAR": 4
+    },
+    "consenter_ids": ["337226046606704640", "428943291145265152"],
+    "drops": {
+      "4082": 4,
+      "CAR": 3
+    },
+    "roster_ids": [4, 3],
+    "status_updated": 1570503480,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Los Angeles Rams (DEF) | Team 8: Pittsburgh Steelers (DEF)",
+      "nfl_trade_id": "1105"
+    },
+    "created": 1570507320,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2019_trade_1105",
+    "adds": {
+      "LAR": 9,
+      "PIT": 6
+    },
+    "consenter_ids": ["411186928751230976", "77361676378587136"],
+    "drops": {
+      "LAR": 6,
+      "PIT": 9
+    },
+    "roster_ids": [6, 9],
+    "status_updated": 1570507320,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Pittsburgh Steelers (DEF) | Team 1: Wayne Gallman (RB)",
+      "nfl_trade_id": "1106"
+    },
+    "created": 1570507440,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2019_trade_1106",
+    "adds": {
+      "4150": 6,
+      "PIT": 1
+    },
+    "consenter_ids": ["411186928751230976", "77140390129844224"],
+    "drops": {
+      "4150": 1,
+      "PIT": 6
+    },
+    "roster_ids": [6, 1],
+    "status_updated": 1570507440,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Delanie Walker (TE), Alshon Jeffery (WR) | Team 8: Jarvis Landry (WR), D.K. Metcalf (WR)",
+      "nfl_trade_id": "1124",
+      "unmatched_players": {
+        "D.K. Metcalf": "WR"
+      }
+    },
+    "created": 1570530600,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 6,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2019_trade_1124",
+    "adds": {
+      "284": 9,
+      "1149": 9,
+      "1825": 12,
+      "D.K. Metcalf": 12
+    },
+    "consenter_ids": ["438629899490553856", "77361676378587136"],
+    "drops": {
+      "284": 12,
+      "1149": 12,
+      "1825": 9,
+      "D.K. Metcalf": 9
+    },
+    "roster_ids": [12, 9],
+    "status_updated": 1570530600,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 12: T.Y. Hilton (WR) | Team 7: John Brown (WR), Alexander Mattison (RB) | Drops: WAS (DEF) from Team 12",
+      "nfl_trade_id": "1373"
+    },
+    "created": 1571122800,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "359110473351696384",
+    "transaction_id": "chumbo_2019_trade_1373",
+    "adds": {
+      "1110": 6,
+      "2238": 5,
+      "5987": 5
+    },
+    "consenter_ids": ["359110473351696384", "411186928751230976"],
+    "drops": {
+      "1110": 5,
+      "2238": 6,
+      "5987": 6,
+      "WAS": 5
+    },
+    "roster_ids": [5, 6],
+    "status_updated": 1571122800,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Seattle Seahawks (DEF) | Team 5: Jared Cook (TE)",
+      "nfl_trade_id": "1408"
+    },
+    "created": 1571182440,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2019_trade_1408",
+    "adds": {
+      "367": 2,
+      "SEA": 8
+    },
+    "consenter_ids": ["337210029620883456", "337221174670938112"],
+    "drops": {
+      "367": 8,
+      "SEA": 2
+    },
+    "roster_ids": [2, 8],
+    "status_updated": 1571182440,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Odell Beckham (WR), Ito Smith (RB) | Team 5: Derrick Henry (RB), Christian Kirk (WR)",
+      "nfl_trade_id": "1439"
+    },
+    "created": 1571204940,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2019_trade_1439",
+    "adds": {
+      "2078": 8,
+      "3198": 7,
+      "4950": 7,
+      "5004": 8
+    },
+    "consenter_ids": ["337297176361201664", "337221174670938112"],
+    "drops": {
+      "2078": 7,
+      "3198": 8,
+      "4950": 8,
+      "5004": 7
+    },
+    "roster_ids": [7, 8],
+    "status_updated": 1571204940,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Curtis Samuel (WR) | Team 12: Phillip Dorsett (WR)",
+      "nfl_trade_id": "1545"
+    },
+    "created": 1571661000,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 7,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2019_trade_1545",
+    "adds": {
+      "2334": 1,
+      "4082": 5
+    },
+    "consenter_ids": ["77140390129844224", "359110473351696384"],
+    "drops": {
+      "2334": 5,
+      "4082": 1
+    },
+    "roster_ids": [1, 5],
+    "status_updated": 1571661000,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 9: Greg Olsen (TE), Davante Adams (WR) | Team 2: Stefon Diggs (WR) | Drops: Damien Harris (RB) from Team 2",
+      "nfl_trade_id": "1601"
+    },
+    "created": 1571753160,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "337226046606704640",
+    "transaction_id": "chumbo_2019_trade_1601",
+    "adds": {
+      "58": 3,
+      "2133": 3,
+      "2449": 4
+    },
+    "consenter_ids": ["337226046606704640", "428943291145265152"],
+    "drops": {
+      "58": 4,
+      "2133": 4,
+      "2449": 3,
+      "5890": 3
+    },
+    "roster_ids": [4, 3],
+    "status_updated": 1571753160,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Joe Mixon (RB), Kyler Murray (QB) | Team 2: Carson Wentz (QB), Sony Michel (RB)",
+      "nfl_trade_id": "1644"
+    },
+    "created": 1571799540,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2019_trade_1644",
+    "adds": {
+      "3161": 9,
+      "4018": 3,
+      "4962": 9,
+      "5849": 3
+    },
+    "consenter_ids": ["77361676378587136", "428943291145265152"],
+    "drops": {
+      "3161": 3,
+      "4018": 9,
+      "4962": 3,
+      "5849": 9
+    },
+    "roster_ids": [9, 3],
+    "status_updated": 1571799540,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 8: Alshon Jeffery (WR), Carson Wentz (QB) | Team 12: Tyler Boyd (WR), Benny Snell (RB)",
+      "nfl_trade_id": "1688"
+    },
+    "created": 1571883360,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "77361676378587136",
+    "transaction_id": "chumbo_2019_trade_1688",
+    "adds": {
+      "1149": 5,
+      "3161": 5,
+      "3225": 9,
+      "6156": 9
+    },
+    "consenter_ids": ["77361676378587136", "359110473351696384"],
+    "drops": {
+      "1149": 9,
+      "3161": 9,
+      "3225": 5,
+      "6156": 5
+    },
+    "roster_ids": [9, 5],
+    "status_updated": 1571883360,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Kenny Stills (WR) | Team 1: Robby Anderson (WR)",
+      "nfl_trade_id": "1695",
+      "unmatched_players": {
+        "Robby Anderson": "WR"
+      }
+    },
+    "created": 1571919600,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2019_trade_1695",
+    "adds": {
+      "1555": 1,
+      "Robby Anderson": 8
+    },
+    "consenter_ids": ["337221174670938112", "77140390129844224"],
+    "drops": {
+      "1555": 8,
+      "Robby Anderson": 1
+    },
+    "roster_ids": [8, 1],
+    "status_updated": 1571919600,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Ezekiel Elliott (RB), Tarik Cohen (RB), A.J. Brown (WR) | Team 11: Allen Robinson (WR), Aaron Jones (RB), Matt Breida (RB)",
+      "nfl_trade_id": "1714"
+    },
+    "created": 1572062100,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2019_trade_1714",
+    "adds": {
+      "1992": 12,
+      "3164": 10,
+      "4157": 10,
+      "4199": 12,
+      "4455": 12,
+      "5859": 10
+    },
+    "consenter_ids": ["438629899490553856", "429243125446230016"],
+    "drops": {
+      "1992": 10,
+      "3164": 12,
+      "4157": 12,
+      "4199": 10,
+      "4455": 10,
+      "5859": 12
+    },
+    "roster_ids": [12, 10],
+    "status_updated": 1572062100,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Cooper Kupp (WR) | Team 2: Davante Adams (WR)",
+      "nfl_trade_id": "1744"
+    },
+    "created": 1572146220,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 8,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2019_trade_1744",
+    "adds": {
+      "2133": 1,
+      "4039": 3
+    },
+    "consenter_ids": ["77140390129844224", "428943291145265152"],
+    "drops": {
+      "2133": 3,
+      "4039": 1
+    },
+    "roster_ids": [1, 3],
+    "status_updated": 1572146220,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Greg Olsen (TE) | Team 1: Irv Smith (TE)",
+      "nfl_trade_id": "1811"
+    },
+    "created": 1572313980,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_1811",
+    "adds": {
+      "58": 1,
+      "6126": 3
+    },
+    "consenter_ids": ["428943291145265152", "77140390129844224"],
+    "drops": {
+      "58": 3,
+      "6126": 1
+    },
+    "roster_ids": [3, 1],
+    "status_updated": 1572313980,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Ka'imi Fairbairn (K) | Team 2: Mike Nugent (K)",
+      "nfl_trade_id": "1853"
+    },
+    "created": 1572360540,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2019_trade_1853",
+    "adds": {
+      "658": 6,
+      "3451": 3
+    },
+    "consenter_ids": ["411186928751230976", "428943291145265152"],
+    "drops": {
+      "658": 3,
+      "3451": 6
+    },
+    "roster_ids": [6, 3],
+    "status_updated": 1572360540,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Robby Anderson (WR) | Team 1: Cleveland Browns (DEF)",
+      "nfl_trade_id": "1902",
+      "unmatched_players": {
+        "Robby Anderson": "WR"
+      }
+    },
+    "created": 1572414180,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 9,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2019_trade_1902",
+    "adds": {
+      "Robby Anderson": 1,
+      "CLE": 8
+    },
+    "consenter_ids": ["337221174670938112", "77140390129844224"],
+    "drops": {
+      "Robby Anderson": 8,
+      "CLE": 1
+    },
+    "roster_ids": [8, 1],
+    "status_updated": 1572414180,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Cleveland Browns (DEF) | Team 1: Duke Johnson (RB)",
+      "nfl_trade_id": "2158"
+    },
+    "created": 1573005780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2019_trade_2158",
+    "adds": {
+      "2382": 8,
+      "CLE": 1
+    },
+    "consenter_ids": ["337221174670938112", "77140390129844224"],
+    "drops": {
+      "2382": 1,
+      "CLE": 8
+    },
+    "roster_ids": [8, 1],
+    "status_updated": 1573005780,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Calvin Ridley (WR), Jaylen Samuels (RB) | Team 9: James White (RB) | Drops: Bilal Powell (RB) from Team 9",
+      "nfl_trade_id": "2175"
+    },
+    "created": 1573050600,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 10,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_2175",
+    "adds": {
+      "1848": 3,
+      "4981": 4,
+      "5107": 4
+    },
+    "consenter_ids": ["428943291145265152", "337226046606704640"],
+    "drops": {
+      "818": 4,
+      "1848": 4,
+      "4981": 3,
+      "5107": 3
+    },
+    "roster_ids": [3, 4],
+    "status_updated": 1573050600,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Brian Hill (RB) | Team 1: David Johnson (RB)",
+      "nfl_trade_id": "2340"
+    },
+    "created": 1573564200,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_2340",
+    "adds": {
+      "2391": 3,
+      "4187": 1
+    },
+    "consenter_ids": ["428943291145265152", "77140390129844224"],
+    "drops": {
+      "2391": 1,
+      "4187": 3
+    },
+    "roster_ids": [3, 1],
+    "status_updated": 1573564200,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 5: Duke Johnson (RB) | Team 7: T.Y. Hilton (WR)",
+      "nfl_trade_id": "2360"
+    },
+    "created": 1573603200,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "337221174670938112",
+    "transaction_id": "chumbo_2019_trade_2360",
+    "adds": {
+      "1110": 8,
+      "2382": 6
+    },
+    "consenter_ids": ["337221174670938112", "411186928751230976"],
+    "drops": {
+      "1110": 6,
+      "2382": 8
+    },
+    "roster_ids": [8, 6],
+    "status_updated": 1573603200,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 4: Jarvis Landry (WR) | Team 1: Raheem Mostert (RB)",
+      "nfl_trade_id": "2411"
+    },
+    "created": 1573647000,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "438629899490553856",
+    "transaction_id": "chumbo_2019_trade_2411",
+    "adds": {
+      "1825": 1,
+      "2749": 12
+    },
+    "consenter_ids": ["438629899490553856", "77140390129844224"],
+    "drops": {
+      "1825": 12,
+      "2749": 1
+    },
+    "roster_ids": [12, 1],
+    "status_updated": 1573647000,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: A.J. Green (WR) | Team 12: Dede Westbrook (WR)",
+      "nfl_trade_id": "2471"
+    },
+    "created": 1573917660,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2019_trade_2471",
+    "adds": {
+      "830": 5,
+      "4146": 1
+    },
+    "consenter_ids": ["77140390129844224", "359110473351696384"],
+    "drops": {
+      "830": 1,
+      "4146": 5
+    },
+    "roster_ids": [1, 5],
+    "status_updated": 1573917660,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 3: Kenyan Drake (RB) | Team 1: Brian Hill (RB)",
+      "nfl_trade_id": "2485"
+    },
+    "created": 1573982940,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 11,
+    "draft_picks": [],
+    "creator": "337210029620883456",
+    "transaction_id": "chumbo_2019_trade_2485",
+    "adds": {
+      "3242": 1,
+      "4187": 2
+    },
+    "consenter_ids": ["337210029620883456", "77140390129844224"],
+    "drops": {
+      "3242": 2,
+      "4187": 1
+    },
+    "roster_ids": [2, 1],
+    "status_updated": 1573982940,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: James White (RB) | Team 5: Marlon Mack (RB)",
+      "nfl_trade_id": "2599"
+    },
+    "created": 1574163180,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_2599",
+    "adds": {
+      "1848": 8,
+      "4152": 3
+    },
+    "consenter_ids": ["428943291145265152", "337221174670938112"],
+    "drops": {
+      "1848": 3,
+      "4152": 8
+    },
+    "roster_ids": [3, 8],
+    "status_updated": 1574163180,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 6: Latavius Murray (RB), Christian Kirk (WR) | Team 1: Ryan Griffin (TE), Jarvis Landry (WR)",
+      "nfl_trade_id": "2662"
+    },
+    "created": 1574216520,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "337297176361201664",
+    "transaction_id": "chumbo_2019_trade_2662",
+    "adds": {
+      "1425": 7,
+      "1476": 1,
+      "1825": 7,
+      "4950": 1
+    },
+    "consenter_ids": ["337297176361201664", "77140390129844224"],
+    "drops": {
+      "1425": 1,
+      "1476": 7,
+      "1825": 1,
+      "4950": 7
+    },
+    "roster_ids": [7, 1],
+    "status_updated": 1574216520,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 2: Cooper Kupp (WR), Nick Chubb (RB) | Team 12: Dalvin Cook (RB), Alexander Mattison (RB)",
+      "nfl_trade_id": "2667"
+    },
+    "created": 1574232780,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "428943291145265152",
+    "transaction_id": "chumbo_2019_trade_2667",
+    "adds": {
+      "4029": 3,
+      "4039": 5,
+      "4988": 5,
+      "5987": 3
+    },
+    "consenter_ids": ["428943291145265152", "359110473351696384"],
+    "drops": {
+      "4029": 5,
+      "4039": 3,
+      "4988": 3,
+      "5987": 5
+    },
+    "roster_ids": [3, 5],
+    "status_updated": 1574232780,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 7: Seattle Seahawks (DEF), DeVante Parker (WR) | Team 2: Cleveland Browns (DEF), Adrian Peterson (RB)",
+      "nfl_trade_id": "2678"
+    },
+    "created": 1574248080,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "411186928751230976",
+    "transaction_id": "chumbo_2019_trade_2678",
+    "adds": {
+      "184": 6,
+      "2319": 3,
+      "SEA": 3,
+      "CLE": 6
+    },
+    "consenter_ids": ["411186928751230976", "428943291145265152"],
+    "drops": {
+      "184": 3,
+      "2319": 6,
+      "SEA": 6,
+      "CLE": 3
+    },
+    "roster_ids": [6, 3],
+    "status_updated": 1574248080,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 12: Jamison Crowder (WR) | Team 1: Bo Scarbrough (RB)",
+      "nfl_trade_id": "2713"
+    },
+    "created": 1574303160,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "359110473351696384",
+    "transaction_id": "chumbo_2019_trade_2713",
+    "adds": {
+      "2410": 1,
+      "5112": 5
+    },
+    "consenter_ids": ["359110473351696384", "77140390129844224"],
+    "drops": {
+      "2410": 5,
+      "5112": 1
+    },
+    "roster_ids": [5, 1],
+    "status_updated": 1574303160,
+    "waiver_budget": []
+  },
+  {
+    "status": "complete",
+    "type": "trade",
+    "metadata": {
+      "notes": "Team 1: Deebo Samuel (WR) | Team 11: Ryquell Armstead (RB)",
+      "nfl_trade_id": "2770"
+    },
+    "created": 1574560500,
+    "settings": {
+      "seq": 1
+    },
+    "leg": 12,
+    "draft_picks": [],
+    "creator": "77140390129844224",
+    "transaction_id": "chumbo_2019_trade_2770",
+    "adds": {
+      "5872": 10,
+      "6007": 1
+    },
+    "consenter_ids": ["77140390129844224", "429243125446230016"],
+    "drops": {
+      "5872": 1,
+      "6007": 10
+    },
+    "roster_ids": [1, 10],
+    "status_updated": 1574560500,
+    "waiver_budget": []
+  }
+]

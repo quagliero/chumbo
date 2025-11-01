@@ -59,7 +59,9 @@ const TradeCard = ({ trade, rosters, users, getTeamName }: TradeCardProps) => {
                           (e.target as HTMLImageElement).style.display = "none";
                         }}
                       />
-                      <span className="font-medium">{player.full_name}</span>
+                      <span className="font-medium">
+                        {player.full_name || player.first_name}
+                      </span>
                       <span className="text-gray-500 text-xs">
                         {player.position}
                       </span>
