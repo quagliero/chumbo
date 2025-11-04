@@ -17,7 +17,8 @@ export interface PositionalFilter {
     | "DEF"
     | "FLEX"
     | "RB_INDIVIDUAL"
-    | "WR_INDIVIDUAL";
+    | "WR_INDIVIDUAL"
+    | "TEAM";
   operator: ">=" | ">" | "<=" | "<" | "=" | "between";
   points: number;
   maxPoints?: number; // For "between" operator, the upper bound
@@ -78,6 +79,7 @@ const extractPositionalScores = (
     FLEX: 0,
     RB_INDIVIDUAL: 0,
     WR_INDIVIDUAL: 0,
+    TEAM: matchup.points, // Total team points
     RB_INDIVIDUAL_ARRAY: [], // Array of all individual RB scores
     WR_INDIVIDUAL_ARRAY: [], // Array of all individual WR scores
   };
@@ -264,6 +266,7 @@ export const calculatePositionalStats = (
     "FLEX",
     "RB_INDIVIDUAL",
     "WR_INDIVIDUAL",
+    "TEAM",
   ].forEach((pos) => {
     positionalTotals[pos] = { sum: 0, count: 0, min: Infinity, max: -Infinity };
   });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { PositionalFilter } from "@/utils/statsExplorer";
 import managers from "@/data/managers.json";
 
@@ -20,6 +20,7 @@ const POSITIONS: PositionalFilter["position"][] = [
   "K",
   "DEF",
   "FLEX",
+  "TEAM",
 ];
 const OPERATORS: PositionalFilter["operator"][] = [
   ">=",
@@ -58,6 +59,52 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
   selectedManagerId,
   onManagerChange,
 }) => {
+  // Track input display values separately to allow clearing
+  const [inputValues, setInputValues] = useState<Record<string, string>>({});
+  const [maxInputValues, setMaxInputValues] = useState<Record<string, string>>(
+    {}
+  );
+  const [minCountValues, setMinCountValues] = useState<Record<string, string>>(
+    {}
+  );
+
+  // Sync input values when filters change externally (e.g., from presets)
+  useEffect(() => {
+    setInputValues((prev) => {
+      const updated: Record<string, string> = { ...prev };
+      filters.forEach((filter, index) => {
+        const key = index.toString();
+        // Only initialize if not already set (preserves user's cleared input while typing)
+        if (!(key in updated)) {
+          updated[key] = filter.points.toString();
+        }
+      });
+      return updated;
+    });
+
+    setMaxInputValues((prev) => {
+      const updated: Record<string, string> = { ...prev };
+      filters.forEach((filter, index) => {
+        const key = index.toString();
+        if (filter.maxPoints !== undefined && !(key in updated)) {
+          updated[key] = filter.maxPoints.toString();
+        }
+      });
+      return updated;
+    });
+
+    setMinCountValues((prev) => {
+      const updated: Record<string, string> = { ...prev };
+      filters.forEach((filter, index) => {
+        const key = index.toString();
+        if (filter.minimumCount !== undefined && !(key in updated)) {
+          updated[key] = filter.minimumCount.toString();
+        }
+      });
+      return updated;
+    });
+  }, [filters]);
+
   const addFilter = () => {
     const newFilter: PositionalFilter = {
       position: "QB",
@@ -65,6 +112,9 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
       points: 0,
     };
     onFiltersChange([...filters, newFilter]);
+    // Initialize input value
+    const newIndex = filters.length;
+    setInputValues((prev) => ({ ...prev, [newIndex]: "0" }));
   };
 
   const updateFilter = (
@@ -80,10 +130,52 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
   const removeFilter = (index: number) => {
     const updatedFilters = filters.filter((_, i) => i !== index);
     onFiltersChange(updatedFilters);
+    // Clean up input values for removed filter
+    const newInputValues = { ...inputValues };
+    const newMaxInputValues = { ...maxInputValues };
+    const newMinCountValues = { ...minCountValues };
+    delete newInputValues[index];
+    delete newMaxInputValues[index];
+    delete newMinCountValues[index];
+    // Reindex remaining values
+    const reindexedInputValues: Record<string, string> = {};
+    const reindexedMaxInputValues: Record<string, string> = {};
+    const reindexedMinCountValues: Record<string, string> = {};
+    Object.entries(newInputValues).forEach(([key, value]) => {
+      const oldIndex = parseInt(key);
+      if (oldIndex > index) {
+        reindexedInputValues[(oldIndex - 1).toString()] = value;
+      } else if (oldIndex < index) {
+        reindexedInputValues[key] = value;
+      }
+    });
+    Object.entries(newMaxInputValues).forEach(([key, value]) => {
+      const oldIndex = parseInt(key);
+      if (oldIndex > index) {
+        reindexedMaxInputValues[(oldIndex - 1).toString()] = value;
+      } else if (oldIndex < index) {
+        reindexedMaxInputValues[key] = value;
+      }
+    });
+    Object.entries(newMinCountValues).forEach(([key, value]) => {
+      const oldIndex = parseInt(key);
+      if (oldIndex > index) {
+        reindexedMinCountValues[(oldIndex - 1).toString()] = value;
+      } else if (oldIndex < index) {
+        reindexedMinCountValues[key] = value;
+      }
+    });
+    setInputValues(reindexedInputValues);
+    setMaxInputValues(reindexedMaxInputValues);
+    setMinCountValues(reindexedMinCountValues);
   };
 
   const clearAllFilters = () => {
     onFiltersChange([]);
+    // Clear all input values
+    setInputValues({});
+    setMaxInputValues({});
+    setMinCountValues({});
   };
 
   return (
@@ -115,9 +207,7 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
         </label>
         <select
           value={selectedManagerId || ""}
-          onChange={(e) =>
-            onManagerChange(e.target.value || undefined)
-          }
+          onChange={(e) => onManagerChange(e.target.value || undefined)}
           className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded text-sm"
         >
           <option value="">All Managers</option>
@@ -181,6 +271,8 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                         ? "RB Total"
                         : pos === "WR"
                         ? "WR Total"
+                        : pos === "TEAM"
+                        ? "Team Points"
                         : pos}
                     </option>
                   ))}
@@ -189,10 +281,14 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                 <select
                   value={filter.operator}
                   onChange={(e) => {
-                    const newOperator = e.target.value as PositionalFilter["operator"];
+                    const newOperator = e.target
+                      .value as PositionalFilter["operator"];
                     updateFilter(index, "operator", newOperator);
                     // Clear maxPoints if switching away from "between"
-                    if (newOperator !== "between" && filter.maxPoints !== undefined) {
+                    if (
+                      newOperator !== "between" &&
+                      filter.maxPoints !== undefined
+                    ) {
                       const updatedFilters = [...filters];
                       const updatedFilter = { ...updatedFilters[index] };
                       delete updatedFilter.maxPoints;
@@ -213,14 +309,32 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                   <>
                     <input
                       type="number"
-                      value={filter.points}
-                      onChange={(e) =>
-                        updateFilter(
-                          index,
-                          "points",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
+                      value={inputValues[index] ?? filter.points.toString()}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const key = index.toString();
+                        // Update local display value immediately
+                        setInputValues((prev) => ({ ...prev, [key]: value }));
+                        // Update filter if it's a valid number
+                        const numValue = parseFloat(value);
+                        if (value !== "" && value !== "-" && !isNaN(numValue)) {
+                          updateFilter(index, "points", numValue);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const key = index.toString();
+                        // If field is empty on blur, set to 0
+                        if (e.target.value === "" || e.target.value === "-") {
+                          updateFilter(index, "points", 0);
+                          setInputValues((prev) => ({ ...prev, [key]: "0" }));
+                        } else {
+                          // Sync display value with filter value
+                          setInputValues((prev) => ({
+                            ...prev,
+                            [key]: filter.points.toString(),
+                          }));
+                        }
+                      }}
                       className="px-2 py-1 border border-gray-300 rounded text-sm w-20"
                       min="0"
                       step="0.1"
@@ -229,14 +343,43 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                     <span className="text-sm text-gray-600">and</span>
                     <input
                       type="number"
-                      value={filter.maxPoints ?? filter.points}
-                      onChange={(e) =>
-                        updateFilter(
-                          index,
-                          "maxPoints",
-                          parseFloat(e.target.value) || filter.points
-                        )
+                      value={
+                        maxInputValues[index] ??
+                        (filter.maxPoints ?? filter.points).toString()
                       }
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const key = index.toString();
+                        // Update local display value immediately
+                        setMaxInputValues((prev) => ({
+                          ...prev,
+                          [key]: value,
+                        }));
+                        // Update filter if it's a valid number
+                        const numValue = parseFloat(value);
+                        if (value !== "" && value !== "-" && !isNaN(numValue)) {
+                          updateFilter(index, "maxPoints", numValue);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const key = index.toString();
+                        // If field is empty on blur, set to filter.points
+                        if (e.target.value === "" || e.target.value === "-") {
+                          updateFilter(index, "maxPoints", filter.points);
+                          setMaxInputValues((prev) => ({
+                            ...prev,
+                            [key]: filter.points.toString(),
+                          }));
+                        } else {
+                          // Sync display value with filter value
+                          setMaxInputValues((prev) => ({
+                            ...prev,
+                            [key]: (
+                              filter.maxPoints ?? filter.points
+                            ).toString(),
+                          }));
+                        }
+                      }}
                       className="px-2 py-1 border border-gray-300 rounded text-sm w-20"
                       min={filter.points}
                       step="0.1"
@@ -248,14 +391,32 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                   <>
                     <input
                       type="number"
-                      value={filter.points}
-                      onChange={(e) =>
-                        updateFilter(
-                          index,
-                          "points",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
+                      value={inputValues[index] ?? filter.points.toString()}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        const key = index.toString();
+                        // Update local display value immediately
+                        setInputValues((prev) => ({ ...prev, [key]: value }));
+                        // Update filter if it's a valid number
+                        const numValue = parseFloat(value);
+                        if (value !== "" && value !== "-" && !isNaN(numValue)) {
+                          updateFilter(index, "points", numValue);
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const key = index.toString();
+                        // If field is empty on blur, set to 0
+                        if (e.target.value === "" || e.target.value === "-") {
+                          updateFilter(index, "points", 0);
+                          setInputValues((prev) => ({ ...prev, [key]: "0" }));
+                        } else {
+                          // Sync display value with filter value
+                          setInputValues((prev) => ({
+                            ...prev,
+                            [key]: filter.points.toString(),
+                          }));
+                        }
+                      }}
                       className="px-2 py-1 border border-gray-300 rounded text-sm w-20"
                       min="0"
                       step="0.1"
@@ -269,14 +430,44 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                     <span className="text-sm text-gray-600">with at least</span>
                     <input
                       type="number"
-                      value={filter.minimumCount || 1}
+                      value={
+                        minCountValues[index] ??
+                        (filter.minimumCount || 1).toString()
+                      }
                       onChange={(e) => {
-                        const count = parseInt(e.target.value) || 1;
-                        updateFilter(
-                          index,
-                          "minimumCount",
-                          Math.max(1, count)
-                        );
+                        const value = e.target.value;
+                        const key = index.toString();
+                        // Update local display value immediately
+                        setMinCountValues((prev) => ({
+                          ...prev,
+                          [key]: value,
+                        }));
+                        // Update filter if it's a valid number
+                        const count = parseInt(value);
+                        if (value !== "" && value !== "-" && !isNaN(count)) {
+                          updateFilter(
+                            index,
+                            "minimumCount",
+                            Math.max(1, count)
+                          );
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const key = index.toString();
+                        // If field is empty on blur, set to 1
+                        if (e.target.value === "" || e.target.value === "-") {
+                          updateFilter(index, "minimumCount", 1);
+                          setMinCountValues((prev) => ({
+                            ...prev,
+                            [key]: "1",
+                          }));
+                        } else {
+                          // Sync display value with filter value
+                          setMinCountValues((prev) => ({
+                            ...prev,
+                            [key]: (filter.minimumCount || 1).toString(),
+                          }));
+                        }
                       }}
                       className="px-2 py-1 border border-gray-300 rounded text-sm w-16"
                       min="1"
@@ -322,6 +513,8 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                           ? "RB Total"
                           : f.position === "WR"
                           ? "WR Total"
+                          : f.position === "TEAM"
+                          ? "Team Points"
                           : f.position;
                       const countText =
                         f.minimumCount && f.minimumCount > 1
@@ -329,7 +522,9 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
                           : "";
                       const rangeText =
                         f.operator === "between"
-                          ? ` between ${f.points} and ${f.maxPoints ?? f.points}`
+                          ? ` between ${f.points} and ${
+                              f.maxPoints ?? f.points
+                            }`
                           : ` ${f.operator} ${f.points}`;
                       return `${displayName}${rangeText}${countText}`;
                     })

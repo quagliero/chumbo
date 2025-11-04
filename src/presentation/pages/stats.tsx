@@ -172,6 +172,10 @@ const Stats: React.FC = () => {
             <li>
               <strong>FLEX:</strong> Points from the FLEX slot only
             </li>
+            <li>
+              <strong>TEAM:</strong> Total team points scored (all positions
+              combined)
+            </li>
           </ul>
           <p className="mt-2">
             <strong>Example:</strong> If you have RBs scoring 12, 8, and 20
