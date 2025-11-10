@@ -42,6 +42,7 @@ interface MatchTotal {
 interface PlayerScore {
   player_id: string;
   player_name: string;
+  position: string;
   year: number;
   week: number;
   score: number;
@@ -60,6 +61,10 @@ const TopScores = () => {
   const [displayCount, setDisplayCount] = useState<number>(20);
   const [sortOrder, setSortOrder] = useState<SortOrder>("high-to-low");
   const [selectedSeason, setSelectedSeason] = useState<string>("all-time");
+  const [selectedPosition, setSelectedPosition] = useState<string>("all");
+  const [filterStartedOnly, setFilterStartedOnly] = useState<boolean | null>(
+    null
+  );
 
   const scoreMode = (subTab as ScoreMode) || "team-score";
 
@@ -373,7 +378,7 @@ const TopScores = () => {
             // Process each player in the matchup
             Object.entries(matchup.players_points || {}).forEach(
               ([playerId, points]) => {
-                if (typeof points !== "number" || points <= 0) return;
+                if (typeof points !== "number" || isNaN(points)) return;
 
                 const player = getPlayer(playerId, year);
                 if (!player) return;
@@ -403,6 +408,7 @@ const TopScores = () => {
                   player_id: playerId,
                   player_name:
                     player.full_name || player.last_name || "Unknown Player",
+                  position: player.position || "UNK",
                   year,
                   week,
                   score: points,
@@ -420,13 +426,30 @@ const TopScores = () => {
         });
       });
 
-      return allPlayerScores.sort((a, b) =>
+      // Apply filters for player-score mode
+      let filteredScores = allPlayerScores;
+
+      // Filter by position
+      if (selectedPosition !== "all") {
+        filteredScores = filteredScores.filter(
+          (score) => score.position === selectedPosition
+        );
+      }
+
+      // Filter by started status
+      if (filterStartedOnly !== null) {
+        filteredScores = filteredScores.filter(
+          (score) => score.was_started === filterStartedOnly
+        );
+      }
+
+      return filteredScores.sort((a, b) =>
         sortOrder === "high-to-low" ? b.score - a.score : a.score - b.score
       );
     }
 
     return [];
-  }, [scoreMode, sortOrder, selectedSeason]);
+  }, [scoreMode, sortOrder, selectedSeason, selectedPosition, filterStartedOnly]);
 
   const getMatchupUrl = (score: TopScore | MatchTotal | PlayerScore) => {
     return `/seasons/${score.year}/matchups/${score.week}/${score.matchup_id}`;
@@ -444,6 +467,14 @@ const TopScores = () => {
   // Reset display count when mode changes
   useEffect(() => {
     setDisplayCount(20);
+  }, [scoreMode]);
+
+  // Reset filters when switching away from player-score mode
+  useEffect(() => {
+    if (scoreMode !== "player-score") {
+      setSelectedPosition("all");
+      setFilterStartedOnly(null);
+    }
   }, [scoreMode]);
 
   const renderTeamScoreCard = (score: TopScore, index: number) => {
@@ -835,6 +866,49 @@ const TopScores = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {scoreMode === "player-score" && (
+              <>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Position:
+                  </label>
+                  <select
+                    value={selectedPosition}
+                    onChange={(e) => {
+                      setSelectedPosition(e.target.value);
+                      setDisplayCount(20);
+                    }}
+                    className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="all">All Positions</option>
+                    <option value="QB">QB</option>
+                    <option value="RB">RB</option>
+                    <option value="WR">WR</option>
+                    <option value="TE">TE</option>
+                    <option value="K">K</option>
+                    <option value="DEF">DEF</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={filterStartedOnly === true}
+                      onChange={(e) => {
+                        setFilterStartedOnly(e.target.checked ? true : null);
+                        setDisplayCount(20);
+                      }}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <span className="text-sm font-medium text-gray-700">
+                      Started Only
+                    </span>
+                  </label>
+                </div>
+              </>
+            )}
+
             <div className="flex items-center gap-2">
               <label className="text-sm font-medium text-gray-700">
                 Season:
