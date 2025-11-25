@@ -32,7 +32,7 @@ interface PlayoffOddsProps {
   getTeamName: (ownerId: string) => string;
 }
 
-type SortField = "team" | "playoffs" | number; // number represents position 1-12
+type SortField = "team" | "record" | "playoffs" | number; // number represents position 1-12
 type SortDirection = "asc" | "desc";
 
 const PlayoffOdds = ({
@@ -60,6 +60,49 @@ const PlayoffOdds = ({
     return calculatePlayoffOdds(seasonData, userScenario);
   }, [matchups, league, rosters, userScenario]);
 
+  const compareRecords = (
+    teamA: { wins: number; losses: number; ties: number },
+    teamB: { wins: number; losses: number; ties: number }
+  ) => {
+    if (teamA.wins !== teamB.wins) {
+      return teamA.wins - teamB.wins;
+    }
+    if (teamA.losses !== teamB.losses) {
+      return teamB.losses - teamA.losses;
+    }
+    if (teamA.ties !== teamB.ties) {
+      return teamA.ties - teamB.ties;
+    }
+    return 0;
+  };
+
+  const recordOverrides = useMemo(() => {
+    const map = new Map<
+      number,
+      { wins: number; losses: number; ties: number }
+    >();
+
+    playoffOddsData.forEach((team) => {
+      map.set(team.rosterId, {
+        wins: team.wins,
+        losses: team.losses,
+        ties: team.ties,
+      });
+    });
+
+    return map;
+  }, [playoffOddsData]);
+
+  const getRecordForTeam = (team: (typeof playoffOddsData)[number]) => {
+    return (
+      recordOverrides.get(team.rosterId) || {
+        wins: team.wins,
+        losses: team.losses,
+        ties: team.ties,
+      }
+    );
+  };
+
   // Handle sorting
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -83,16 +126,19 @@ const PlayoffOdds = ({
             getTeamName(teamB.owner_id)
           );
         }
+      } else if (sortField === "record") {
+        const recordA = getRecordForTeam(a);
+        const recordB = getRecordForTeam(b);
+        comparison = compareRecords(recordA, recordB);
       } else if (sortField === "playoffs") {
         // Primary sort by playoff odds
         comparison = a.playoffOdds - b.playoffOdds;
 
         // Secondary sort by record if playoff odds are equal
         if (comparison === 0) {
-          // Calculate win percentage for tiebreaker
-          const aWinPct = a.wins / (a.wins + a.losses + a.ties);
-          const bWinPct = b.wins / (b.wins + b.losses + b.ties);
-          comparison = aWinPct - bWinPct;
+          const recordA = getRecordForTeam(a);
+          const recordB = getRecordForTeam(b);
+          comparison = compareRecords(recordA, recordB);
 
           // If still tied, use total points
           if (comparison === 0) {
@@ -201,8 +247,11 @@ const PlayoffOdds = ({
               >
                 Team {getSortIcon("team")}
               </TableHeaderCell>
-              <TableHeaderCell className="text-center bg-gray-100 min-w-20 cursor-pointer hover:bg-gray-200 border-r border-gray-200">
-                Record
+              <TableHeaderCell
+                className="text-center bg-gray-100 min-w-20 cursor-pointer hover:bg-gray-200 border-r border-gray-200"
+                onClick={() => handleSort("record")}
+              >
+                Record {getSortIcon("record")}
               </TableHeaderCell>
               {Array.from({ length: 12 }, (_, i) => i + 1).map((position) => (
                 <TableHeaderCell
@@ -229,6 +278,7 @@ const PlayoffOdds = ({
                 (r) => r.roster_id === teamData.rosterId
               );
               if (!team) return null;
+              const record = getRecordForTeam(teamData);
 
               return (
                 <TableRow
@@ -241,8 +291,8 @@ const PlayoffOdds = ({
                     {getTeamName(team.owner_id)}
                   </TableCell>
                   <TableCell className="text-center text-sm border-r border-gray-200">
-                    {teamData.wins}-{teamData.losses}
-                    {teamData.ties > 0 && `-${teamData.ties}`}
+                    {record.wins}-{record.losses}
+                    {record.ties > 0 && `-${record.ties}`}
                   </TableCell>
                   {Array.from({ length: 12 }, (_, i) => i + 1).map(
                     (position) => (
