@@ -76,33 +76,6 @@ const PlayoffOdds = ({
     return 0;
   };
 
-  const recordOverrides = useMemo(() => {
-    const map = new Map<
-      number,
-      { wins: number; losses: number; ties: number }
-    >();
-
-    playoffOddsData.forEach((team) => {
-      map.set(team.rosterId, {
-        wins: team.wins,
-        losses: team.losses,
-        ties: team.ties,
-      });
-    });
-
-    return map;
-  }, [playoffOddsData]);
-
-  const getRecordForTeam = (team: (typeof playoffOddsData)[number]) => {
-    return (
-      recordOverrides.get(team.rosterId) || {
-        wins: team.wins,
-        losses: team.losses,
-        ties: team.ties,
-      }
-    );
-  };
-
   // Handle sorting
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -127,29 +100,38 @@ const PlayoffOdds = ({
           );
         }
       } else if (sortField === "record") {
-        const recordA = getRecordForTeam(a);
-        const recordB = getRecordForTeam(b);
-        comparison = compareRecords(recordA, recordB);
-      } else if (sortField === "playoffs") {
-        // Primary sort by playoff odds
-        comparison = a.playoffOdds - b.playoffOdds;
+        comparison = compareRecords(a, b);
 
-        // Secondary sort by record if playoff odds are equal
         if (comparison === 0) {
-          const recordA = getRecordForTeam(a);
-          const recordB = getRecordForTeam(b);
-          comparison = compareRecords(recordA, recordB);
+          comparison = a.pointsFor - b.pointsFor;
+        }
+      } else if (sortField === "playoffs") {
+        // Primary sort: Playoff odds (descending - higher is better)
+        // Using ascending comparison, will be negated for descending order
+        // Use small epsilon to handle floating point precision issues
+        const playoffOddsDiff = a.playoffOdds - b.playoffOdds;
+        const epsilon = 0.0001; // Consider values within 0.0001% as equal
+        comparison = Math.abs(playoffOddsDiff) < epsilon ? 0 : playoffOddsDiff;
 
-          // If still tied, use total points
+        // Secondary sort: Wins (descending - more wins is better)
+        // Only applies when playoff odds are effectively equal
+        if (comparison === 0) {
+          comparison = a.wins - b.wins;
+
+          // Tertiary sort: Points for (descending - more points is better)
+          // Only applies when playoff odds AND wins are exactly equal
           if (comparison === 0) {
-            const teamA = rosters.find((r) => r.roster_id === a.rosterId);
-            const teamB = rosters.find((r) => r.roster_id === b.rosterId);
-            if (teamA && teamB) {
-              const aTotalPoints =
-                teamA.settings.fpts + teamA.settings.fpts_decimal / 100;
-              const bTotalPoints =
-                teamB.settings.fpts + teamB.settings.fpts_decimal / 100;
-              comparison = aTotalPoints - bTotalPoints;
+            comparison = a.pointsFor - b.pointsFor;
+
+            // Final fallback: alphabetical team name (for complete determinism)
+            if (comparison === 0) {
+              const teamA = rosters.find((r) => r.roster_id === a.rosterId);
+              const teamB = rosters.find((r) => r.roster_id === b.rosterId);
+              if (teamA && teamB) {
+                comparison = getTeamName(teamA.owner_id).localeCompare(
+                  getTeamName(teamB.owner_id)
+                );
+              }
             }
           }
         }
@@ -278,7 +260,6 @@ const PlayoffOdds = ({
                 (r) => r.roster_id === teamData.rosterId
               );
               if (!team) return null;
-              const record = getRecordForTeam(teamData);
 
               return (
                 <TableRow
@@ -288,11 +269,17 @@ const PlayoffOdds = ({
                   )} ${getRowBorder(index)}`}
                 >
                   <TableCell className="text-left sticky left-0 z-10 font-medium transition-colors border-r border-gray-200">
-                    {getTeamName(team.owner_id)}
+                    <div className="font-medium text-gray-900">
+                      {getTeamName(team.owner_id)}
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      PF: {teamData.pointsFor.toFixed(1)} | PA:{" "}
+                      {teamData.pointsAgainst.toFixed(1)}
+                    </div>
                   </TableCell>
                   <TableCell className="text-center text-sm border-r border-gray-200">
-                    {record.wins}-{record.losses}
-                    {record.ties > 0 && `-${record.ties}`}
+                    {teamData.wins}-{teamData.losses}
+                    {teamData.ties > 0 && `-${teamData.ties}`}
                   </TableCell>
                   {Array.from({ length: 12 }, (_, i) => i + 1).map(
                     (position) => (

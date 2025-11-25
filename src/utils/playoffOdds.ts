@@ -22,7 +22,8 @@ interface SimulationResult {
   wins: number;
   losses: number;
   ties: number;
-  totalPoints: number;
+  pointsFor: number;
+  pointsAgainst: number;
 }
 
 interface PlayoffOddsResult {
@@ -32,6 +33,8 @@ interface PlayoffOddsResult {
   wins: number;
   losses: number;
   ties: number;
+  pointsFor: number;
+  pointsAgainst: number;
 }
 
 interface UserPick {
@@ -124,7 +127,10 @@ function applyUserScenario(
       wins: roster.settings.wins,
       losses: roster.settings.losses,
       ties: roster.settings.ties,
-      totalPoints: roster.settings.fpts + roster.settings.fpts_decimal / 100,
+      pointsFor: roster.settings.fpts + roster.settings.fpts_decimal / 100,
+      pointsAgainst:
+        roster.settings.fpts_against +
+        roster.settings.fpts_against_decimal / 100,
     });
   });
 
@@ -151,9 +157,14 @@ function applyUserScenario(
 
       if (!team1Result || !team2Result) return;
 
+      const team1Score = pick.team1Score || 0;
+      const team2Score = pick.team2Score || 0;
+
       // Add points from user picks
-      team1Result.totalPoints += pick.team1Score || 0;
-      team2Result.totalPoints += pick.team2Score || 0;
+      team1Result.pointsFor += team1Score;
+      team1Result.pointsAgainst += team2Score;
+      team2Result.pointsFor += team2Score;
+      team2Result.pointsAgainst += team1Score;
 
       // Update wins/losses based on winner
       if (pick.winner === team1RosterId) {
@@ -188,7 +199,10 @@ function simulateSeason(
       wins: roster.settings.wins,
       losses: roster.settings.losses,
       ties: roster.settings.ties,
-      totalPoints: roster.settings.fpts + roster.settings.fpts_decimal / 100,
+      pointsFor: roster.settings.fpts + roster.settings.fpts_decimal / 100,
+      pointsAgainst:
+        roster.settings.fpts_against +
+        roster.settings.fpts_against_decimal / 100,
     });
   });
 
@@ -247,8 +261,10 @@ function simulateSeason(
       const team1Result = results.find((r) => r.rosterId === team1.roster_id)!;
       const team2Result = results.find((r) => r.rosterId === team2.roster_id)!;
 
-      team1Result.totalPoints += team1Score;
-      team2Result.totalPoints += team2Score;
+      team1Result.pointsFor += team1Score;
+      team1Result.pointsAgainst += team2Score;
+      team2Result.pointsFor += team2Score;
+      team2Result.pointsAgainst += team1Score;
 
       if (team1Score > team2Score) {
         team1Result.wins++;
@@ -276,7 +292,7 @@ function rankTeamsByRecord(results: SimulationResult[]): number[] {
       const bWinPct = b.wins / (b.wins + b.losses + b.ties);
 
       if (aWinPct !== bWinPct) return bWinPct - aWinPct;
-      return b.totalPoints - a.totalPoints;
+      return b.pointsFor - a.pointsFor;
     })
     .map((r) => r.rosterId);
 }
@@ -369,9 +385,16 @@ export function calculatePlayoffOdds(
       rosterId: roster.roster_id,
       positionOdds,
       playoffOdds,
-      wins: updatedRecord?.wins || roster.settings.wins,
-      losses: updatedRecord?.losses || roster.settings.losses,
-      ties: updatedRecord?.ties || roster.settings.ties,
+      wins: updatedRecord?.wins ?? roster.settings.wins,
+      losses: updatedRecord?.losses ?? roster.settings.losses,
+      ties: updatedRecord?.ties ?? roster.settings.ties,
+      pointsFor:
+        updatedRecord?.pointsFor ??
+        roster.settings.fpts + roster.settings.fpts_decimal / 100,
+      pointsAgainst:
+        updatedRecord?.pointsAgainst ??
+        roster.settings.fpts_against +
+          roster.settings.fpts_against_decimal / 100,
     });
   });
 
