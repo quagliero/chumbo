@@ -121,13 +121,14 @@ const AllTimeTable = () => {
         // Remove leading zero if present (e.g., "0.500" -> ".500")
         return formatted.startsWith("0.") ? formatted.substring(1) : formatted;
       },
-      sortingFn: "alphanumeric",
+      sortingFn: (rowA, rowB) => rowA.original.winPerc - rowB.original.winPerc,
       enableSorting: true,
     }),
     columnHelper.accessor("points_for", {
       header: () => "For",
       cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
+      sortingFn: (rowA, rowB) =>
+        rowA.original.points_for - rowB.original.points_for,
       enableSorting: true,
     }),
     columnHelper.accessor("points_for_avg", {
@@ -137,13 +138,15 @@ const AllTimeTable = () => {
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
         }),
-      sortingFn: "alphanumeric",
+      sortingFn: (rowA, rowB) =>
+        rowA.original.points_for_avg - rowB.original.points_for_avg,
       enableSorting: true,
     }),
     columnHelper.accessor("points_against", {
       header: () => "Against",
       cell: (info) => number(info.getValue()),
-      sortingFn: "alphanumeric",
+      sortingFn: (rowA, rowB) =>
+        rowA.original.points_against - rowB.original.points_against,
       enableSorting: true,
     }),
     columnHelper.accessor("points_against_avg", {
@@ -153,7 +156,8 @@ const AllTimeTable = () => {
           maximumFractionDigits: 2,
           minimumFractionDigits: 2,
         }),
-      sortingFn: "alphanumeric",
+      sortingFn: (rowA, rowB) =>
+        rowA.original.points_against_avg - rowB.original.points_against_avg,
       enableSorting: true,
     }),
     columnHelper.accessor("champion", {
