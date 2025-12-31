@@ -351,7 +351,10 @@ const History = () => {
               "schedule-comparison",
               "breakdown",
               "trades",
-              ...(selectedYear === CURRENT_YEAR ? ["playoff-odds"] : []),
+              ...(selectedYear === CURRENT_YEAR &&
+              seasonData.league.status !== "complete"
+                ? ["playoff-odds"]
+                : []),
             ].map((tab) => (
               <button
                 key={tab}

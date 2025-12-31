@@ -622,7 +622,9 @@ const Standings = ({
         sortingFn: "alphanumeric",
         enableSorting: true,
       }),
-      ...(currentYear && currentYear >= YEARS[YEARS.length - 1]
+      ...(currentYear &&
+      currentYear >= YEARS[YEARS.length - 1] &&
+      !isSeasonComplete
         ? [
             columnHelper.accessor("sosRank", {
               header: () => "SOS",
@@ -766,6 +768,7 @@ const Standings = ({
           : undefined;
 
         const playoffHighlight = getPlayoffHighlight(roster.roster_id);
+        console.log(firstPlace, thirdPlace, topScorer, bottomScorer);
         const isChampion =
           isSeasonComplete && firstPlace?.w === roster.roster_id;
         const isRunnerUp =
@@ -962,11 +965,14 @@ const Standings = ({
               })()}
               <div className="text-sm text-purple-600 mt-1">
                 {number(
-                  topScorer.settings.fpts +
-                    topScorer.settings.fpts_decimal / 100,
+                  (topScorer.settings.fpts +
+                    topScorer.settings.fpts_decimal / 100) /
+                    (topScorer.settings.wins +
+                      topScorer.settings.losses +
+                      topScorer.settings.ties),
                   { maximumFractionDigits: 2 }
                 )}{" "}
-                points
+                points per game
               </div>
             </div>
           </div>

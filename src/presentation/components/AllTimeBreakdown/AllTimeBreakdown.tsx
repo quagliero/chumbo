@@ -196,6 +196,7 @@ const AllTimeBreakdown = () => {
         const value = info.getValue();
         const formatted = number(value, {
           maximumFractionDigits: 3,
+          minimumFractionDigits: 3,
         });
         // Remove leading zero if present (e.g., "0.500" -> ".500")
         return formatted.startsWith("0.") ? formatted.substring(1) : formatted;
