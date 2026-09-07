@@ -12,7 +12,7 @@ const projectRoot = path.join(__dirname, '..');
 const VALID_POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 
 // Years to process
-const YEARS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const YEARS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
 console.log('🏈 Starting players.json optimization...');
 
