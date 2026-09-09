@@ -2,16 +2,14 @@ import { YEARS } from "@/domain/constants";
 import { seasons } from "@/data";
 import managers from "@/data/managers.json";
 import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "@/utils/playoffUtils";
 import { determineMatchupResult } from "@/utils/recordUtils";
+import { isWeekCompleted } from "@/utils/weekUtils";
 
 interface SeasonData {
   matchups?: Record<string, ExtendedMatchup[]>;
-  league?: {
-    settings?: {
-      playoff_week_start?: number;
-    };
-  };
+  league?: ExtendedLeague;
   year?: number;
 }
 
@@ -88,6 +86,9 @@ export const getAllTimeH2HRecord = (
     // Loop through all matchup weeks (regular season only)
     Object.keys(seasonData.matchups).forEach((weekKey) => {
       const weekNum = parseInt(weekKey);
+
+      // Skip incomplete weeks (not yet played)
+      if (!isWeekCompleted(weekNum, seasonData.league)) return;
 
       // Skip playoff weeks
       if (weekNum >= playoffWeekStart) return;
@@ -167,6 +168,9 @@ export const getH2HRecordForSeason = (
   Object.keys(seasonData.matchups).forEach((weekKey) => {
     const weekNum = parseInt(weekKey);
 
+    // Skip incomplete weeks (not yet played)
+    if (!isWeekCompleted(weekNum, seasonData.league)) return;
+
     // Skip playoff weeks
     if (weekNum >= playoffWeekStart) return;
 
@@ -244,6 +248,9 @@ export const getH2HRecordWithGames = (
 
   Object.keys(seasonData.matchups).forEach((weekKey) => {
     const weekNum = parseInt(weekKey);
+
+    // Skip incomplete weeks (not yet played)
+    if (!isWeekCompleted(weekNum, seasonData.league)) return;
 
     // Skip playoff weeks
     if (weekNum >= playoffWeekStart) return;

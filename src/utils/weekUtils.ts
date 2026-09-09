@@ -3,7 +3,9 @@ import { ExtendedLeague } from "@/types/league";
 /**
  * Get the most recent completed week for a league
  * @param league - The league data
- * @returns The most recent completed week number, or null if season is finished
+ * @returns The most recent completed week number (0 if the season has
+ * started but no week has finished yet), or null if there is no league data
+ * or the league has no `leg` field (a historical, fully-completed season)
  */
 export const getCompletedWeek = (
   league: ExtendedLeague | undefined
@@ -22,8 +24,11 @@ export const getCompletedWeek = (
     return lastScoredLeg;
   }
 
-  // If no last_scored_leg, assume current week - 1 is completed
-  return currentLeg > 1 ? currentLeg - 1 : null;
+  // If no last_scored_leg, assume weeks before the current leg are completed.
+  // currentLeg is guaranteed >= 1 here, so this is 0 (nothing completed yet)
+  // during week 1 of a season, rather than null (which would be mistaken for
+  // "historical season, treat everything as completed").
+  return currentLeg - 1;
 };
 
 /**
