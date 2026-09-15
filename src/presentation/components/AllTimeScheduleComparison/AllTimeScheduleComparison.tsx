@@ -3,7 +3,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { seasons } from "@/data";
 import { getTeamName } from "@/utils/teamName";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
-import { calculateWinPercentage } from "@/utils/recordUtils";
+import {
+  calculateWinPercentage,
+  roundToTwoDecimals,
+} from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { ExtendedMatchup } from "@/types/matchup";
 import {
@@ -193,8 +196,8 @@ const AllTimeScheduleComparison = () => {
                 return;
 
               // Compare our team's score vs the opponent's score (direct H2H)
-              const teamScore = teamMatchup.points;
-              const opponentScore = opponentMatchup.points;
+              const teamScore = roundToTwoDecimals(teamMatchup.points);
+              const opponentScore = roundToTwoDecimals(opponentMatchup.points);
 
               if (teamScore > opponentScore) {
                 wins++;
@@ -218,8 +221,10 @@ const AllTimeScheduleComparison = () => {
 
             // Compare our team's score vs the opponent's opponent's score
             // This simulates: if Team A played Team B's schedule, how would Team A do against Team B's opponents?
-            const teamScore = teamMatchup.points;
-            const opponentOpponentScore = opponentOpponent.points;
+            const teamScore = roundToTwoDecimals(teamMatchup.points);
+            const opponentOpponentScore = roundToTwoDecimals(
+              opponentOpponent.points
+            );
 
             if (teamScore > opponentOpponentScore) {
               wins++;
@@ -522,11 +527,14 @@ const AllTimeScheduleComparison = () => {
 
                 if (!record) return null;
 
-                const recordDifference =
-                  record.winPercentage -
-                  selectedTeamStats.actualRecord.winPercentage;
-                const isBetter = recordDifference > 0.001;
-                const isWorse = recordDifference < -0.001;
+                // Win percentage difference in percentage points, to 2 decimal places
+                const recordDifference = roundToTwoDecimals(
+                  (record.winPercentage -
+                    selectedTeamStats.actualRecord.winPercentage) *
+                    100
+                );
+                const isBetter = recordDifference > 0;
+                const isWorse = recordDifference < 0;
 
                 return (
                   <TableRow
@@ -593,7 +601,7 @@ const AllTimeScheduleComparison = () => {
                           }`}
                         >
                           {isBetter && "+"}
-                          {(recordDifference * 100).toFixed(1)}%
+                          {recordDifference.toFixed(2)}%
                         </span>
                       )}
                     </TableCell>
@@ -664,12 +672,16 @@ const AllTimeScheduleComparison = () => {
 
                     if (!record) return null;
 
+                    // Win percentage difference in percentage points, to 2 decimal places
                     const recordDifference = isSameTeam
                       ? 0
-                      : record.winPercentage -
-                        rowTeam.actualRecord.winPercentage;
-                    const isBetter = recordDifference > 0.001;
-                    const isWorse = recordDifference < -0.001;
+                      : roundToTwoDecimals(
+                          (record.winPercentage -
+                            rowTeam.actualRecord.winPercentage) *
+                            100
+                        );
+                    const isBetter = recordDifference > 0;
+                    const isWorse = recordDifference < 0;
 
                     return (
                       <TableCell
@@ -708,7 +720,7 @@ const AllTimeScheduleComparison = () => {
                                 }`}
                               >
                                 {isBetter && "+"}
-                                {(recordDifference * 100).toFixed(1)}%
+                                {recordDifference.toFixed(2)}%
                               </div>
                             )
                           )}

@@ -6,6 +6,7 @@ import { ExtendedLeague } from "@/types/league";
 import {
   calculateWeeklyLeagueRecord,
   determineMatchupResult,
+  roundToTwoDecimals,
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
@@ -74,7 +75,7 @@ const Breakdown = ({
       totalWins += weekRecord.wins;
       totalLosses += weekRecord.losses;
       totalTies += weekRecord.ties;
-      totalPoints += weekRecord.points;
+      totalPoints = roundToTwoDecimals(totalPoints + weekRecord.points);
     });
 
     return { totalWins, totalLosses, totalTies, totalPoints };
@@ -98,7 +99,10 @@ const Breakdown = ({
     );
     if (!opponent) return null;
 
-    return determineMatchupResult(teamMatchup.points, opponent.points);
+    return determineMatchupResult(
+      roundToTwoDecimals(teamMatchup.points),
+      roundToTwoDecimals(opponent.points)
+    );
   };
 
   // Calculate luck for a week (positive = lucky, negative = unlucky)
@@ -252,7 +256,8 @@ const Breakdown = ({
                           </div>
                           <div className="text-gray-500">
                             {number(weekRecord.points, {
-                              maximumFractionDigits: 1,
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
                             })}
                           </div>
                         </div>
@@ -268,7 +273,8 @@ const Breakdown = ({
                       </div>
                       <div className="text-gray-600">
                         {number(seasonTotals.totalPoints, {
-                          maximumFractionDigits: 1,
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
                         })}
                       </div>
                     </div>

@@ -2,6 +2,15 @@ import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
 
 /**
+ * Round a value to 2 decimal places (Sleeper's scoring precision)
+ * @param value - Raw value, e.g. points or a percentage
+ * @returns Value rounded to 2 decimal places
+ */
+export const roundToTwoDecimals = (value: number): number => {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+};
+
+/**
  * Calculate win percentage from wins, losses, and ties
  * @param wins - Number of wins
  * @param losses - Number of losses
@@ -224,7 +233,7 @@ export const calculateWeeklyLeagueRecord = (
   );
   if (!rosterMatchup) return { wins: 0, losses: 0, ties: 0, points: 0 };
 
-  const teamPoints = rosterMatchup.points;
+  const teamPoints = roundToTwoDecimals(rosterMatchup.points);
   let weeklyWins = 0;
   let weeklyLosses = 0;
   let weeklyTies = 0;
@@ -233,7 +242,10 @@ export const calculateWeeklyLeagueRecord = (
   weekMatchups.forEach((otherMatchup) => {
     if (otherMatchup.roster_id === roster.roster_id) return;
 
-    const result = determineMatchupResult(teamPoints, otherMatchup.points);
+    const result = determineMatchupResult(
+      teamPoints,
+      roundToTwoDecimals(otherMatchup.points)
+    );
     if (result === "W") weeklyWins++;
     else if (result === "L") weeklyLosses++;
     else weeklyTies++;

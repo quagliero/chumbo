@@ -2,6 +2,7 @@ import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedLeague } from "@/types/league";
 import { isWeekCompleted } from "@/utils/weekUtils";
+import { getRosterPointsFor, roundToTwoDecimals } from "@/utils/recordUtils";
 import {
   Table,
   TableHeader,
@@ -44,8 +45,8 @@ const ScheduleComparison = ({
 
     if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
-    const aPoints = a.settings.fpts + a.settings.fpts_decimal / 100;
-    const bPoints = b.settings.fpts + b.settings.fpts_decimal / 100;
+    const aPoints = roundToTwoDecimals(getRosterPointsFor(a));
+    const bPoints = roundToTwoDecimals(getRosterPointsFor(b));
     return bPoints - aPoints;
   });
 
@@ -60,8 +61,7 @@ const ScheduleComparison = ({
         wins: teamRoster.settings.wins,
         losses: teamRoster.settings.losses,
         ties: teamRoster.settings.ties,
-        points:
-          teamRoster.settings.fpts + teamRoster.settings.fpts_decimal / 100,
+        points: roundToTwoDecimals(getRosterPointsFor(teamRoster)),
       };
     }
 
@@ -111,11 +111,11 @@ const ScheduleComparison = ({
         // Skip if both teams have 0 points (incomplete week)
         if (teamMatchup.points === 0 && opponentMatchup.points === 0) return;
 
-        totalPoints += teamMatchup.points;
+        totalPoints = roundToTwoDecimals(totalPoints + teamMatchup.points);
 
         // Compare our team's score vs the opponent's score (direct H2H)
-        const teamScore = teamMatchup.points;
-        const opponentScore = opponentMatchup.points;
+        const teamScore = roundToTwoDecimals(teamMatchup.points);
+        const opponentScore = roundToTwoDecimals(opponentMatchup.points);
 
         if (teamScore > opponentScore) {
           wins++;
@@ -136,12 +136,12 @@ const ScheduleComparison = ({
       // Skip if both teams have 0 points (incomplete week)
       if (teamMatchup.points === 0 && opponentOpponent.points === 0) return;
 
-      totalPoints += teamMatchup.points;
+      totalPoints = roundToTwoDecimals(totalPoints + teamMatchup.points);
 
       // Compare our team's score vs the opponent's opponent's score
       // This simulates: if Team A played Team B's schedule, how would Team A do against Team B's opponents?
-      const teamScore = teamMatchup.points;
-      const opponentOpponentScore = opponentOpponent.points;
+      const teamScore = roundToTwoDecimals(teamMatchup.points);
+      const opponentOpponentScore = roundToTwoDecimals(opponentOpponent.points);
 
       if (teamScore > opponentOpponentScore) {
         wins++;

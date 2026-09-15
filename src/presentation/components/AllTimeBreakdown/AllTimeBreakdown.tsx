@@ -17,6 +17,7 @@ import {
   calculateWinPercentage,
   getRosterPointsFor,
   calculateWeeklyLeagueRecord,
+  roundToTwoDecimals,
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
@@ -121,7 +122,9 @@ const AllTimeBreakdown = () => {
         });
 
         // Add total points
-        teamStat.totalPoints += getRosterPointsFor(roster);
+        teamStat.totalPoints = roundToTwoDecimals(
+          teamStat.totalPoints + getRosterPointsFor(roster)
+        );
       });
     });
 
@@ -206,7 +209,11 @@ const AllTimeBreakdown = () => {
     }),
     columnHelper.accessor("totalPoints", {
       header: () => "Total Points",
-      cell: (info) => number(info.getValue()),
+      cell: (info) =>
+        number(info.getValue(), {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
       sortingFn: "basic",
       enableSorting: true,
     }),
