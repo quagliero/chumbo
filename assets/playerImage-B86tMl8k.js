@@ -1,0 +1,1 @@
+const n=(t,r)=>{const e=t.toString();if(r==="DEF"||isNaN(Number(e))&&e.length<=3&&e===e.toUpperCase())return`https://sleepercdn.com/images/team_logos/nfl/${e.toLowerCase()}.png`;if(!(r!=="DEF"&&isNaN(Number(e))))return`https://sleepercdn.com/content/nfl/players/${e}.jpg`};export{n as g};
