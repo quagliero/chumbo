@@ -2,8 +2,9 @@
 
 Fantasy football almanac for a long-running Sleeper home league ("The Chumbo").
 A static React site that reads committed JSON season data and renders history,
-standings, matchups, drafts, players, managers, H2H, records, etc. Deployed to
-GitHub Pages (`https://quagliero.github.io/chumbo/`).
+standings, matchups, drafts, players, managers, H2H, records, etc. Hosted
+externally (no longer GitHub Pages) — pushing to `main` is enough; there is no
+deploy step.
 
 > The root `README.md` is the stock Vite template and is not useful. This file is
 > the real orientation doc.
@@ -20,7 +21,6 @@ GitHub Pages (`https://quagliero.github.io/chumbo/`).
 yarn dev            # local dev server
 yarn build          # tsc -b && vite build
 yarn lint           # eslint
-yarn deploy         # predeploy builds, then gh-pages -d dist
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -117,7 +117,7 @@ The fetch script reads `league_id` and `draft_id` from an existing
    to trim — note: add 2026 to the `YEARS` array inside that script too).
 6. **Optional annotations.** If the 2026 draft order/rules changed notably, add a
    `2026` entry to `getManualChanges()` in `src/utils/leagueRules.ts`.
-7. `yarn build` / `yarn lint` to verify, then `yarn deploy`.
+7. `yarn build` / `yarn lint` to verify, then commit and push to `main`.
 
 ## Behaviour with an in-progress season (relevant right now)
 
