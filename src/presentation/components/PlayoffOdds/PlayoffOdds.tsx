@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { ExtendedRoster } from "@/types/roster";
-import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { ExtendedLeague } from "@/types/league";
 import { calculatePlayoffOdds } from "@/utils/playoffOdds";
 import ScenarioPlanner from "./ScenarioPlanner";
@@ -28,6 +28,7 @@ interface UserScenario {
 interface PlayoffOddsProps {
   rosters: ExtendedRoster[];
   matchups: Record<string, ExtendedMatchup[]> | undefined;
+  schedule: Record<string, ScheduledMatchup[]> | undefined;
   league: ExtendedLeague | undefined;
   getTeamName: (ownerId: string) => string;
 }
@@ -38,6 +39,7 @@ type SortDirection = "asc" | "desc";
 const PlayoffOdds = ({
   rosters,
   matchups,
+  schedule,
   league,
   getTeamName,
 }: PlayoffOddsProps) => {
@@ -47,18 +49,44 @@ const PlayoffOdds = ({
     undefined
   );
 
+  // Fill in unplayed weeks from the schedule. Matchup files only exist for
+  // weeks that have been played, but the simulation needs the games to come.
+  const matchupsWithSchedule = useMemo(() => {
+    if (!matchups || !schedule) return matchups;
+
+    const merged = { ...matchups };
+    Object.entries(schedule).forEach(([week, scheduledMatchups]) => {
+      if (merged[week]) return;
+
+      merged[week] = scheduledMatchups.map(
+        (scheduled): ExtendedMatchup => ({
+          ...scheduled,
+          points: 0,
+          starters: [],
+          players: [],
+          user_id: "",
+          custom_points: null,
+          starters_points: [],
+          players_points: {},
+        })
+      );
+    });
+
+    return merged;
+  }, [matchups, schedule]);
+
   // Calculate playoff odds
   const playoffOddsData = useMemo(() => {
-    if (!matchups || !league) return [];
+    if (!matchupsWithSchedule || !league) return [];
 
     const seasonData = {
-      matchups,
+      matchups: matchupsWithSchedule,
       rosters,
       league,
     };
 
     return calculatePlayoffOdds(seasonData, userScenario);
-  }, [matchups, league, rosters, userScenario]);
+  }, [matchupsWithSchedule, league, rosters, userScenario]);
 
   const compareRecords = (
     teamA: { wins: number; losses: number; ties: number },
@@ -173,16 +201,14 @@ const PlayoffOdds = ({
     return "text-red-500";
   };
 
-  // Removed position-based column coloring to avoid confusion with row coloring
-
   const getRowColor = (playoffOdds: number) => {
-    // Solid colors based on playoff odds
+    // Solid colors based on playoff odds, white for everyone else
     if (playoffOdds >= 50) {
       return "bg-green-100";
     } else if (playoffOdds >= 20) {
       return "bg-yellow-100";
     } else {
-      return "bg-gray-100";
+      return "bg-white";
     }
   };
 
@@ -213,7 +239,7 @@ const PlayoffOdds = ({
             <span className="text-gray-700">Medium Playoff Odds (20-49%)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-gray-100 border border-gray-300 rounded"></div>
+            <div className="w-4 h-4 bg-white border border-gray-300 rounded"></div>
             <span className="text-gray-700">Low Playoff Odds (&lt;20%)</span>
           </div>
         </div>
@@ -224,13 +250,13 @@ const PlayoffOdds = ({
           <TableHeader>
             <TableRow>
               <TableHeaderCell
-                className="text-left sticky left-0 z-10 bg-gray-100 cursor-pointer hover:bg-gray-200 border-r border-gray-200"
+                className="text-left sticky left-0 z-10 bg-gray-50 cursor-pointer hover:bg-gray-100 border-r border-gray-200"
                 onClick={() => handleSort("team")}
               >
                 Team {getSortIcon("team")}
               </TableHeaderCell>
               <TableHeaderCell
-                className="text-center bg-gray-100 min-w-20 cursor-pointer hover:bg-gray-200 border-r border-gray-200"
+                className="text-center bg-gray-50 min-w-20 cursor-pointer hover:bg-gray-100 border-r border-gray-200"
                 onClick={() => handleSort("record")}
               >
                 Record {getSortIcon("record")}
@@ -238,7 +264,7 @@ const PlayoffOdds = ({
               {Array.from({ length: 12 }, (_, i) => i + 1).map((position) => (
                 <TableHeaderCell
                   key={position}
-                  className={`text-center min-w-16 cursor-pointer hover:bg-gray-200 ${
+                  className={`text-center min-w-16 cursor-pointer hover:bg-gray-100 ${
                     position <= 6 ? "bg-blue-50 font-semibold" : "bg-gray-50"
                   }`}
                   onClick={() => handleSort(position)}
@@ -305,7 +331,7 @@ const PlayoffOdds = ({
       {/* Interactive Scenario Planner */}
       <ScenarioPlanner
         rosters={rosters}
-        matchups={matchups}
+        matchups={matchupsWithSchedule}
         league={league}
         getTeamName={getTeamName}
         onScenarioChange={setUserScenario}

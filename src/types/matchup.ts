@@ -7,6 +7,9 @@ export interface Matchup {
   user_id: string;
 }
 
+// A regular season pairing from schedule.json (who plays whom, before scores exist)
+export type ScheduledMatchup = Pick<Matchup, "matchup_id" | "roster_id">;
+
 export interface ExtendedMatchup extends Matchup {
   custom_points: number | null;
   starters_points: number[];

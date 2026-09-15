@@ -3,7 +3,7 @@ import { LosersBracket, WinnersBracket } from "@/types/bracket";
 import { ExtendedDraft } from "@/types/draft";
 import { ExtendedLeague } from "@/types/league";
 import { Manager } from "@/types/manager";
-import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { ExtendedPick } from "@/types/pick";
 import { Player } from "@/types/player";
 import { ExtendedRoster } from "@/types/roster";
@@ -49,6 +49,7 @@ type SeasonData = {
   matchups: Matchups;
   transactions?: Transactions;
   players?: Record<string, Player>; // Year-specific players
+  schedule?: Record<string, ScheduledMatchup[]>; // In-progress seasons only
 };
 
 const validKeys: (keyof SeasonData)[] = [
@@ -59,6 +60,7 @@ const validKeys: (keyof SeasonData)[] = [
   "users",
   "winners_bracket",
   "losers_bracket",
+  "schedule",
 ];
 
 const allData = (() => {

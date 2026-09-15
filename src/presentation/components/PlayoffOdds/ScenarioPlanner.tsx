@@ -4,6 +4,7 @@ import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "@/utils/playoffUtils";
 import { getCompletedWeek } from "@/utils/weekUtils";
+import { calculateTeamStats } from "@/utils/playoffOdds";
 
 interface ScenarioPlannerProps {
   rosters: ExtendedRoster[];
@@ -23,12 +24,6 @@ interface UserPick {
 
 interface UserScenario {
   picks: UserPick[];
-}
-
-interface TeamStats {
-  rosterId: number;
-  mean: number;
-  stdDev: number;
 }
 
 const ScenarioPlanner = ({
@@ -91,50 +86,9 @@ const ScenarioPlanner = ({
     if (!matchups || !league) return [];
 
     const completedWeek = getCompletedWeek(league);
-    const playoffWeekStart = getPlayoffWeekStart({ league });
-
     if (completedWeek === null) return [];
 
-    const stats: TeamStats[] = [];
-
-    rosters.forEach((roster) => {
-      const scores: number[] = [];
-
-      // Collect scores from completed regular season games
-      Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
-        const week = parseInt(weekStr);
-
-        if (week > completedWeek || week >= playoffWeekStart) return;
-
-        const matchup = weekMatchups.find(
-          (m) => m.roster_id === roster.roster_id
-        );
-        if (matchup) {
-          scores.push(matchup.points);
-        }
-      });
-
-      const mean =
-        scores.length > 0
-          ? scores.reduce((sum, score) => sum + score, 0) / scores.length
-          : 0;
-
-      const variance =
-        scores.length > 1
-          ? scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) /
-            (scores.length - 1)
-          : 0;
-
-      const stdDev = Math.sqrt(variance);
-
-      stats.push({
-        rosterId: roster.roster_id,
-        mean,
-        stdDev,
-      });
-    });
-
-    return stats;
+    return calculateTeamStats({ matchups, rosters, league }, completedWeek);
   }, [matchups, league, rosters]);
 
   // Generate random score based on team stats

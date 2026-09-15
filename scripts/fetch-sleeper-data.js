@@ -110,6 +110,26 @@ async function fetchMatchupData(leagueId, year, week) {
   return matchupData;
 }
 
+// Fetch the regular season schedule (who plays whom each week). Matchup files
+// are only committed once a week is played, so this gives the playoff odds
+// simulation the future games it needs.
+async function fetchScheduleData(leagueId, year, playoffWeekStart) {
+  const weeks = Array.from({ length: playoffWeekStart - 1 }, (_, i) => i + 1);
+  const weekMatchups = await Promise.all(
+    weeks.map(week => fetchFromAPI(`${SLEEPER_BASE_URL}/league/${leagueId}/matchups/${week}`))
+  );
+
+  const schedule = {};
+  weeks.forEach((week, i) => {
+    schedule[week] = weekMatchups[i].map(({ matchup_id, roster_id }) => ({ matchup_id, roster_id }));
+  });
+
+  const yearDir = path.join(__dirname, '..', 'src', 'data', year.toString());
+  writeJsonFile(path.join(yearDir, 'schedule.json'), schedule);
+
+  return schedule;
+}
+
 // Fetch transaction data for a specific week
 async function fetchTransactionData(leagueId, year, week) {
   const transactionUrl = `${SLEEPER_BASE_URL}/league/${leagueId}/transactions/${week}`;
@@ -251,10 +271,16 @@ async function fetchYearData(year, options = {}) {
     }
     
     // Fetch draft and roster data (these are year-specific)
-    await Promise.all([
+    const [, { league }] = await Promise.all([
       fetchDraftData(draft_id, year),
       fetchRosterData(league_id, year)
     ]);
+
+    // Fetch the regular season schedule while the season is in progress
+    if (league.status !== 'complete') {
+      console.log('Fetching regular season schedule...');
+      await fetchScheduleData(league_id, year, league.settings?.playoff_week_start || 15);
+    }
     
     // Handle matchup data
     if (options.weeks && options.weeks.length > 0) {

@@ -553,6 +553,7 @@ const History = () => {
           <PlayoffOdds
             rosters={seasonData?.rosters || []}
             matchups={seasonData?.matchups}
+            schedule={seasonData?.schedule}
             league={seasonData?.league}
             getTeamName={getTeamName}
           />

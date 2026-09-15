@@ -58,57 +58,64 @@ function randomNormal(): number {
   return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 }
 
+const getMean = (scores: number[]): number =>
+  scores.length > 0
+    ? scores.reduce((sum, score) => sum + score, 0) / scores.length
+    : 0;
+
+const getStdDev = (scores: number[], mean: number): number =>
+  scores.length > 1
+    ? Math.sqrt(
+        scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) /
+          (scores.length - 1)
+      )
+    : 0;
+
 /**
- * Calculate team statistics from completed regular season games
+ * Calculate team statistics from completed regular season games.
+ * There is no minimum number of games: a team without enough games to have
+ * its own spread (fewer than 2) uses the league-wide spread of scores, and a
+ * team with no games uses the league-wide mean, so early-season simulations
+ * still produce varied outcomes.
  */
-function calculateTeamStats(
+export function calculateTeamStats(
   seasonData: SeasonData,
   completedWeek: number
 ): TeamStats[] {
   const playoffWeekStart = getPlayoffWeekStart(seasonData);
-  const teamStats: TeamStats[] = [];
 
-  seasonData.rosters.forEach((roster) => {
-    const scores: number[] = [];
+  const scoresByRoster = new Map<number, number[]>(
+    seasonData.rosters.map((roster) => [roster.roster_id, []])
+  );
 
-    // Collect scores from completed regular season games
-    Object.entries(seasonData.matchups).forEach(([weekStr, weekMatchups]) => {
-      const week = parseInt(weekStr);
+  // Collect scores from completed regular season games
+  Object.entries(seasonData.matchups).forEach(([weekStr, weekMatchups]) => {
+    const week = parseInt(weekStr);
 
-      // Only count completed regular season weeks
-      if (week > completedWeek || week >= playoffWeekStart) return;
+    // Only count completed regular season weeks
+    if (week > completedWeek || week >= playoffWeekStart) return;
 
-      const matchup = weekMatchups.find(
-        (m) => m.roster_id === roster.roster_id
-      );
-      if (matchup) {
-        scores.push(matchup.points);
-      }
+    weekMatchups.forEach((matchup) => {
+      scoresByRoster.get(matchup.roster_id)?.push(matchup.points);
     });
+  });
 
-    // Calculate mean and standard deviation
-    const mean =
-      scores.length > 0
-        ? scores.reduce((sum, score) => sum + score, 0) / scores.length
-        : 0;
+  const leagueScores = [...scoresByRoster.values()].flat();
+  const leagueMean = getMean(leagueScores);
+  const leagueStdDev = getStdDev(leagueScores, leagueMean);
 
-    const variance =
-      scores.length > 1
-        ? scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) /
-          (scores.length - 1)
-        : 0;
+  return seasonData.rosters.map((roster) => {
+    const scores = scoresByRoster.get(roster.roster_id) ?? [];
+    const mean = scores.length > 0 ? getMean(scores) : leagueMean;
+    const stdDev = scores.length > 1 ? getStdDev(scores, mean) : leagueStdDev;
 
-    const stdDev = Math.sqrt(variance);
-
-    teamStats.push({
+    return {
       rosterId: roster.roster_id,
       mean,
       stdDev,
       gamesPlayed: scores.length,
-    });
+    };
   });
-
-  return teamStats;
 }
 
 /**
