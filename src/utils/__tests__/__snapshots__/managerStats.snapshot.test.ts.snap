@@ -449,7 +449,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 299,
-    "digest": "791f-1ca96f17b254bb-140998afc802a0",
+    "digest": "791f-9729bfce984f3-4ed5e40a50eba",
     "head": [
       {
         "averageScore": 10.981578947368419,
@@ -972,7 +972,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1817,
-    "digest": "3fd7b-e2aaed1441d46-9f65faad5eb6d",
+    "digest": "3fd7f-1ab5a446395e0f-b8851226bd152",
     "head": [
       {
         "matchup_id": 6,
@@ -3230,7 +3230,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 325,
-    "digest": "82eb-13b8d119edf887-c9218a2d2e31f",
+    "digest": "82ec-8726ddc1ac6bb-128cb0958eafc",
     "head": [
       {
         "averageScore": 12.211111111111112,
@@ -3745,7 +3745,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1845,
-    "digest": "41863-75a7f5a1e6e73-1a12980a735afc",
+    "digest": "41866-ffb8c75a85edb-9e3254ed76626",
     "head": [
       {
         "matchup_id": 5,
@@ -3829,6 +3829,16 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       },
       {
         "matchup_id": 6,
+        "opponentName": "21st & Hine",
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "points": 38,
+        "result": "W",
+        "week": 5,
+        "year": 2019,
+      },
+      {
+        "matchup_id": 6,
         "opponentName": "Tha Dollar",
         "playerId": "2216",
         "playerName": "Mike Evans",
@@ -3836,16 +3846,6 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
         "result": "W",
         "week": 3,
         "year": 2019,
-      },
-      {
-        "matchup_id": 3,
-        "opponentName": "The Unicorn",
-        "playerId": "4046",
-        "playerName": "Patrick Mahomes",
-        "points": 36.64,
-        "result": "W",
-        "week": 8,
-        "year": 2020,
       },
     ],
   },
@@ -3942,11 +3942,11 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     },
     {
       "player": {
-        "averagePoints": 5.892857142857143,
+        "averagePoints": 5.845238095238096,
         "games": 42,
         "playerId": "TEN",
         "playerName": "Tennessee Titans",
-        "totalPoints": 247.50000000000003,
+        "totalPoints": 245.50000000000003,
       },
       "position": "DEF",
     },
@@ -4306,7 +4306,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 256,
-    "digest": "66e7-41b3f03808e47-4424f47efd461",
+    "digest": "66e9-7694c5c44610-1e7d3e1e532af",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -4321,7 +4321,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
         ],
       },
       {
-        "averageScore": 5.892857142857143,
+        "averageScore": 5.845238095238096,
         "playerId": "TEN",
         "playerName": "Tennessee Titans",
         "starts": 42,
@@ -4830,7 +4830,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1745,
-    "digest": "3dce1-195f428eb751c-f409956b717e4",
+    "digest": "3dce9-498e104ed36f6-306560dce4d47",
     "head": [
       {
         "matchup_id": 6,
@@ -5391,7 +5391,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 252,
-    "digest": "6579-183e324c514edc-170619a21a566",
+    "digest": "6577-73bfb115f8e6d-54a29f0da62ef",
     "head": [
       {
         "averageScore": 6.704878048780487,
@@ -5452,7 +5452,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
         ],
       },
       {
-        "averageScore": 8.518518518518519,
+        "averageScore": 8.814814814814815,
         "playerId": "SEA",
         "playerName": "Seattle Seahawks",
         "starts": 27,
@@ -5909,7 +5909,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1809,
-    "digest": "3fed3-1e0a29802c4a5a-14291677f3930f",
+    "digest": "3fed5-11f3406b26b136-16af9db15fc62a",
     "head": [
       {
         "matchup_id": 3,
@@ -6428,7 +6428,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 295,
-    "digest": "7548-1e7de283e5a87f-224e80489b54a",
+    "digest": "7557-1d2e13f9e127da-830578bb56b58",
     "head": [
       {
         "averageScore": 23.150958904109594,
@@ -6927,7 +6927,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1746,
-    "digest": "3de10-12d04ad8ced4e9-181a49651c950e",
+    "digest": "3de11-117021c6a78aec-8a7edcc2bc853",
     "head": [
       {
         "matchup_id": 1,
@@ -7488,7 +7488,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "managerName": "jay",
   "mostCappedPlayers": {
     "count": 348,
-    "digest": "8ca1-4eacabcc1a3c9-11f35359ef284d",
+    "digest": "8ca1-5b83590de1d54-354fa1800cf03",
     "head": [
       {
         "averageScore": 10.804255319148934,
@@ -8016,7 +8016,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1836,
-    "digest": "40b2d-796a04912ee5f-1aaad69ecbd82",
+    "digest": "40b2d-670b0efa99c6-19836c36341d73",
     "head": [
       {
         "matchup_id": 3,
@@ -9915,7 +9915,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 341,
-    "digest": "8892-129d5095c7a131-cc27626af2915",
+    "digest": "8897-1cdd723fbc8027-4102d8c24f30",
     "head": [
       {
         "averageScore": 21.71352941176471,
@@ -10434,7 +10434,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1754,
-    "digest": "3e044-d5bd9c2976408-13025827aa8e39",
+    "digest": "3e049-4033178486ee7-15dfd2d973d43f",
     "head": [
       {
         "matchup_id": 4,
@@ -10911,7 +10911,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   "managerName": "nick",
   "mostCappedPlayers": {
     "count": 130,
-    "digest": "3336-a9242e00dffd2-5be96c5cb2c46",
+    "digest": "3335-1f51a87777f945-1823458051aeeb",
     "head": [
       {
         "averageScore": 9.678571428571429,
@@ -11244,7 +11244,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 675,
-    "digest": "17dff-19a26ebc370f24-16b53e8cbd1fb5",
+    "digest": "17e01-b77c6b47220b9-1d660e40ac3391",
     "head": [
       {
         "matchup_id": 2,
@@ -12516,7 +12516,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "managerName": "rich",
   "mostCappedPlayers": {
     "count": 285,
-    "digest": "7274-10889f4dcc59e-1b1b47796129c3",
+    "digest": "7274-be0c8117229a3-3997b24a478de",
     "head": [
       {
         "averageScore": 14.609230769230768,
@@ -13031,7 +13031,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1809,
-    "digest": "3f7af-1fa4306587e8c7-5f60dee313f94",
+    "digest": "3f7ae-1894784b54458d-1f706cafc80561",
     "head": [
       {
         "matchup_id": 6,
@@ -13228,11 +13228,11 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
     },
     {
       "player": {
-        "averagePoints": 10.6,
+        "averagePoints": 10.2,
         "games": 10,
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
-        "totalPoints": 106,
+        "totalPoints": 102,
       },
       "position": "DEF",
     },
@@ -13508,7 +13508,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 164,
-    "digest": "4201-eca1a79d94f95-10a2d76246677f",
+    "digest": "4202-1d60c885f8f460-a99360bc225f9",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -13903,7 +13903,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 900,
-    "digest": "2005e-1fc39e572e9546-1b458dd63d10db",
+    "digest": "2005e-166bcc90264985-7a058c37188fa",
     "head": [
       {
         "matchup_id": 5,
@@ -14422,7 +14422,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   "managerName": "sol",
   "mostCappedPlayers": {
     "count": 322,
-    "digest": "8094-456a39c41d1be-11b8eabf5e23d9",
+    "digest": "80a6-10228eae50441e-163c318800e2e9",
     "head": [
       {
         "averageScore": 13.286111111111111,
@@ -14911,7 +14911,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1548,
-    "digest": "36e6b-1f70d59138460a-46c29133c1e28",
+    "digest": "36e6d-1bbb5fcc943f2a-b7f87a838ff71",
     "head": [
       {
         "matchup_id": 2,
@@ -15108,11 +15108,11 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     },
     {
       "player": {
-        "averagePoints": 13.616666666666667,
+        "averagePoints": 13.741666666666667,
         "games": 24,
         "playerId": "NE",
         "playerName": "New England Patriots",
-        "totalPoints": 326.8,
+        "totalPoints": 329.8,
       },
       "position": "DEF",
     },
@@ -15472,7 +15472,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "managerName": "thd",
   "mostCappedPlayers": {
     "count": 365,
-    "digest": "9283-e5bb50e3d2ae0-334e19361c901",
+    "digest": "9283-d56f03cd6085a-10e302198b8ed9",
     "head": [
       {
         "averageScore": 21.451162790697673,
@@ -15555,7 +15555,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
         ],
       },
       {
-        "averageScore": 13.616666666666667,
+        "averageScore": 13.741666666666667,
         "playerId": "NE",
         "playerName": "New England Patriots",
         "starts": 24,
@@ -15996,7 +15996,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1862,
-    "digest": "415e5-1089f8cc0ee782-1aa06daf54603e",
+    "digest": "415e5-317b500e5a76b-6d3579ac0b233",
     "head": [
       {
         "matchup_id": 6,
@@ -18438,7 +18438,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 86,
-    "digest": "2065-cadd23ee7245b-138157ea46faac",
+    "digest": "2065-165fe90d2f73ea-1368afe59b0059",
     "head": [
       {
         "averageScore": 7.7250000000000005,
@@ -18941,7 +18941,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 135,
-    "digest": "4c31-93085aa90ff9b-2080c96b0c2b5",
+    "digest": "4c31-a6779bb23f586-39c93562d0c13",
     "head": [
       {
         "matchup_id": 4,
@@ -26857,7 +26857,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
   "managerName": "thd",
   "mostCappedPlayers": {
     "count": 91,
-    "digest": "2271-18f299fbe23ae9-a0721bc205f3d",
+    "digest": "2271-162a83fbc04544-11642ceba36768",
     "head": [
       {
         "averageScore": 13.833333333333334,
@@ -27357,7 +27357,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 153,
-    "digest": "56a4-18c6dadfb59c3d-19334659095e8b",
+    "digest": "56a4-c53f8190eb30f-102bd2225fb413",
     "head": [
       {
         "matchup_id": 3,
@@ -27451,13 +27451,13 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
       },
       {
         "matchup_id": 3,
-        "opponentName": "Catch-22",
-        "playerId": "NE",
-        "playerName": "New England Patriots",
-        "points": 24,
+        "opponentName": "SIIIBON",
+        "playerId": "294",
+        "playerName": "Peyton Manning",
+        "points": 23.56,
         "result": "L",
-        "week": 15,
-        "year": 2019,
+        "week": 16,
+        "year": 2012,
       },
     ],
   },
@@ -27918,7 +27918,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 290,
-    "digest": "750e-149d4c853b0768-28a2be22f0333",
+    "digest": "7510-1d73ca7e42aa43-db88657d93dfb",
     "head": [
       {
         "averageScore": 20.70470588235294,
@@ -28441,7 +28441,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c063-101197e60b08a2-53e7acc83618b",
+    "digest": "3c067-786d0dc35234d-15dab76e5b4914",
     "head": [
       {
         "matchup_id": 6,
@@ -30701,7 +30701,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 317,
-    "digest": "7f5f-10e0870b04f6e0-13dd77d3b64f64",
+    "digest": "7f5f-e527f6380ca2e-a7ce529f7306c",
     "head": [
       {
         "averageScore": 11.93939393939394,
@@ -31216,7 +31216,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3cc33-1adc46d3f8868a-1dfbc5d54a99c9",
+    "digest": "3cc36-7faa02eab5710-12d0d87cb5094c",
     "head": [
       {
         "matchup_id": 5,
@@ -31280,6 +31280,16 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
       },
       {
         "matchup_id": 6,
+        "opponentName": "21st & Hine",
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "points": 38,
+        "result": "W",
+        "week": 5,
+        "year": 2019,
+      },
+      {
+        "matchup_id": 6,
         "opponentName": "Tha Dollar",
         "playerId": "2216",
         "playerName": "Mike Evans",
@@ -31307,16 +31317,6 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
         "result": "W",
         "week": 4,
         "year": 2016,
-      },
-      {
-        "matchup_id": 3,
-        "opponentName": "Pimpin Ain't Leesy",
-        "playerId": "2378",
-        "playerName": "Tevin Coleman",
-        "points": 35.8,
-        "result": "W",
-        "week": 8,
-        "year": 2019,
       },
     ],
   },
@@ -31413,11 +31413,11 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     },
     {
       "player": {
-        "averagePoints": 5.892857142857143,
+        "averagePoints": 5.845238095238096,
         "games": 42,
         "playerId": "TEN",
         "playerName": "Tennessee Titans",
-        "totalPoints": 247.50000000000003,
+        "totalPoints": 245.50000000000003,
       },
       "position": "DEF",
     },
@@ -31777,7 +31777,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 254,
-    "digest": "65ff-2f6ce662bf3e4-17761d8220c9ce",
+    "digest": "6601-17a2b944ab70c0-1bd1fb900a49f3",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -31792,7 +31792,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
         ],
       },
       {
-        "averageScore": 5.892857142857143,
+        "averageScore": 5.845238095238096,
         "playerId": "TEN",
         "playerName": "Tennessee Titans",
         "starts": 42,
@@ -32301,7 +32301,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c7f1-afc4caa384a46-12cc0c265f6bb5",
+    "digest": "3c7f9-84aba48dd75a5-414683ab3ad0d",
     "head": [
       {
         "matchup_id": 6,
@@ -32862,7 +32862,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 249,
-    "digest": "6444-192dae6add6401-1225d152a5661e",
+    "digest": "6435-1d5ddd89d1a33f-1c531261aac39d",
     "head": [
       {
         "averageScore": 6.653846153846154,
@@ -32923,7 +32923,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
         ],
       },
       {
-        "averageScore": 8.68,
+        "averageScore": 9,
         "playerId": "SEA",
         "playerName": "Seattle Seahawks",
         "starts": 25,
@@ -33380,7 +33380,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c78d-18acd7f98518a3-788d4f279483a",
+    "digest": "3c78f-1a71cdbd0e90cc-5c05dd0012ac7",
     "head": [
       {
         "matchup_id": 5,
@@ -33899,7 +33899,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 283,
-    "digest": "70a2-14aafb65f69f45-1114bb4936f9de",
+    "digest": "70a4-2fa674b781e15-8f017880497dd",
     "head": [
       {
         "averageScore": 23.72153846153845,
@@ -34397,7 +34397,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1584,
-    "digest": "381eb-280f14b488a83-11e909af6fb9e1",
+    "digest": "381ec-1a32904aa1d8a2-17c736e86b07ae",
     "head": [
       {
         "matchup_id": 1,
@@ -34958,7 +34958,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "managerName": "jay",
   "mostCappedPlayers": {
     "count": 340,
-    "digest": "88de-1d40c7ce4f79a6-18e2f5c5db0a3a",
+    "digest": "88de-1b40e2456536e3-1866d5ba46f8f9",
     "head": [
       {
         "averageScore": 22.006,
@@ -35484,7 +35484,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c489-291ebbedb996b-13ae1e7f1f70e9",
+    "digest": "3c489-4f6724b6ee13c-1850cabe98ffe6",
     "head": [
       {
         "matchup_id": 3,
@@ -37383,7 +37383,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 337,
-    "digest": "8699-cc8f6d7b319fb-157d03392c4859",
+    "digest": "869e-cdd359288a667-13e790fc1b5ebc",
     "head": [
       {
         "averageScore": 21.866875,
@@ -37902,7 +37902,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c6f8-2b585222bb9b2-d5f457a58390",
+    "digest": "3c6fd-109d4a64916f90-1bee98fed48845",
     "head": [
       {
         "matchup_id": 4,
@@ -38379,7 +38379,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   "managerName": "nick",
   "mostCappedPlayers": {
     "count": 122,
-    "digest": "3037-60c19aae2517e-1e545bc770d963",
+    "digest": "3038-1c0f0d660a59c3-36815e20e7b10",
     "head": [
       {
         "averageScore": 15.016666666666664,
@@ -38713,7 +38713,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 594,
-    "digest": "14fc1-3855d5f30595e-151eb0daf07067",
+    "digest": "14fc3-70538685c2133-1d6cca223e9d5c",
     "head": [
       {
         "matchup_id": 2,
@@ -39985,7 +39985,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "managerName": "rich",
   "mostCappedPlayers": {
     "count": 277,
-    "digest": "6f6e-1543bc30b435d0-1afd6196f4bbce",
+    "digest": "6f5e-281274ec54424-161c1a59324da3",
     "head": [
       {
         "averageScore": 14.315135135135135,
@@ -40497,7 +40497,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3bf12-149de47dbf192-743417fb50fcc",
+    "digest": "3bf11-82ea94c6ecf36-612010e1afce0",
     "head": [
       {
         "matchup_id": 6,
@@ -40694,11 +40694,11 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     },
     {
       "player": {
-        "averagePoints": 10.6,
+        "averagePoints": 10.2,
         "games": 10,
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
-        "totalPoints": 106,
+        "totalPoints": 102,
       },
       "position": "DEF",
     },
@@ -40974,7 +40974,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 162,
-    "digest": "4105-1348fa6c48afac-16d2778253a0c5",
+    "digest": "4105-1617dec367096c-1d2fba6732024",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -41369,7 +41369,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 873,
-    "digest": "1f0ad-13b90ad4718510-12da56cfeaf8a2",
+    "digest": "1f0ad-6291dffd83e96-16a884e9b3e5c4",
     "head": [
       {
         "matchup_id": 5,
@@ -41888,7 +41888,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   "managerName": "sol",
   "mostCappedPlayers": {
     "count": 314,
-    "digest": "7ced-d3130c8e53f10-10540863c3f15f",
+    "digest": "7cfb-1501661fb2ebf4-1191831a4ded25",
     "head": [
       {
         "averageScore": 13.286111111111111,
@@ -42377,7 +42377,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1458,
-    "digest": "33b3d-1e8f726802ac5b-177d7a0d3fdaa2",
+    "digest": "33b3f-e0ed3e97dd78e-5eb638b6b8503",
     "head": [
       {
         "matchup_id": 2,
@@ -42574,11 +42574,11 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
     },
     {
       "player": {
-        "averagePoints": 13.165217391304349,
+        "averagePoints": 13.382608695652175,
         "games": 23,
         "playerId": "NE",
         "playerName": "New England Patriots",
-        "totalPoints": 302.8,
+        "totalPoints": 307.8,
       },
       "position": "DEF",
     },
@@ -42938,7 +42938,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "managerName": "thd",
   "mostCappedPlayers": {
     "count": 353,
-    "digest": "8d7f-41cdf49c48e93-d14617983eb76",
+    "digest": "8d7f-f52134cef05c0-10828635bbff85",
     "head": [
       {
         "averageScore": 21.503783783783778,
@@ -43009,7 +43009,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
         ],
       },
       {
-        "averageScore": 13.165217391304349,
+        "averageScore": 13.382608695652175,
         "playerId": "NE",
         "playerName": "New England Patriots",
         "starts": 23,
@@ -43460,7 +43460,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3bf42-93516076820e2-258c82d8ed1e",
+    "digest": "3bf42-1a80609594f8f-11ded6a493f907",
     "head": [
       {
         "matchup_id": 6,

@@ -128,6 +128,21 @@ for (const w of fs
 
 const resolve = (id, pp) => (pp[id] !== undefined ? id : alias[id] ?? id);
 
+/**
+ * Deltas we deliberately do NOT attribute, despite fitting the shape.
+ *
+ * jay, week 7: the NFL.com lineup lists KC as his starting defence, and the gap
+ * is 27.00. Denver beat Kansas City 30-6 that Thursday, which puts that defence
+ * in the pts_allow_28_34 tier at -1 - it cannot have scored 27. Either the
+ * scrape mislabelled the defence or the lineup is wrong; either way, writing 27
+ * next to the Chiefs would be inventing a record-book entry.
+ */
+const EXCEPTIONS = [{ week: 7, roster_id: 2, player: "KC" }];
+const isException = (week, roster_id, player) =>
+  EXCEPTIONS.some(
+    (e) => e.week === week && e.roster_id === roster_id && e.player === player
+  );
+
 const report = {
   weeks: 0,
   teamWeeks: 0,
@@ -136,6 +151,9 @@ const report = {
   totalAdjustment: 0,
   unscoredStarters: [],
   lineupDiffs: 0,
+  attributedMissing: 0,
+  attributedDefense: 0,
+  residuals: [],
 };
 
 // ---------------------------------------------------------------- matchups
@@ -195,6 +213,38 @@ for (const w of weeks) {
       });
     }
 
+    // ---- attribute the shortfall where the evidence supports it ----------
+    // Three shapes, only one of which is genuinely unattributable:
+    //
+    //  a) Exactly one starter has no score. The gap is that player's missing
+    //     score - they were a waiver pickup, and the Sleeper rosters were
+    //     rebuilt from draft + trades only, so they never made it across.
+    //     Cross-validated where the player is rostered elsewhere the same week
+    //     (LAC in week 5 scored exactly the 15 the gap needed).
+    //  b) Every starter is scored, so the gap is pure scoring-rule drift. All
+    //     of it is defensive: st_fum_rec 2 -> 0, def_kr_td / def_pr_td 6 -> 0,
+    //     while def_st_fum_rec stayed at 2. Every one of these team-weeks
+    //     started a defence, and every delta is a small integer consistent with
+    //     a return touchdown or a special-teams fumble recovery.
+    //  c) More than one starter unscored - the gap cannot be split. Left as a
+    //     residual.
+    let residual = adjustment;
+    if (residual !== 0) {
+      if (unscored.length === 1 && !isException(w, om.roster_id, unscored[0])) {
+        players_points[unscored[0]] = residual;
+        residual = 0;
+        report.attributedMissing++;
+      } else if (unscored.length === 0) {
+        const def = (om.starters || []).find(isTeamAbbr);
+        if (def !== undefined && players_points[def] !== undefined) {
+          players_points[def] = round2(players_points[def] + residual);
+          residual = 0;
+          report.attributedDefense++;
+        }
+      }
+    }
+    if (residual !== 0) report.residuals.push({ week: w, roster_id: om.roster_id, residual, unscored });
+
     // starters_points is a parallel array to starters; managerStats.ts indexes
     // into it directly, so it has to exist and line up.
     const starters_points = (om.starters || []).map(
@@ -211,8 +261,8 @@ for (const w of weeks) {
       starters_points,
       players_points,
     };
-    // Only present when the lineup cannot fully account for the recorded score.
-    if (adjustment !== 0) out.points_adjustment = adjustment;
+    // Only present when the lineup still cannot account for the recorded score.
+    if (residual !== 0) out.points_adjustment = residual;
     return out;
   });
 }
@@ -309,7 +359,9 @@ console.log(DRY ? "DRY RUN - nothing written\n" : "2019 rebuilt\n");
 console.log(`  weeks                      ${report.weeks}`);
 console.log(`  team-weeks                 ${report.teamWeeks}`);
 console.log(`  reconciled exactly         ${report.exact}`);
-console.log(`  needed a points_adjustment ${report.adjusted}`);
+console.log(`  attributed to a missing starter ${report.attributedMissing}`);
+console.log(`  attributed to the defence       ${report.attributedDefense}`);
+console.log(`  left as an unattributed residual ${report.residuals.length}`);
 console.log(`  total |adjustment|         ${report.totalAdjustment}`);
 console.log(`  lineups differing from Sleeper ${report.lineupDiffs}`);
 console.log(`  divisions grafted          ${report.divisionsGrafted}`);
@@ -320,9 +372,9 @@ if (outTransactions) {
     `  transactions remapped      ${outTransactions.length} (${txAgree}/${txChecked} verified against their NFL.com notes)`
   );
 }
-console.log("\n  adjustments by week:");
-for (const r of report.unscoredStarters) {
+console.log("\n  unattributed residuals:");
+for (const r of report.residuals) {
   console.log(
-    `    wk${String(r.week).padStart(2)} roster ${String(r.roster_id).padStart(2)}  ${String(r.adjustment).padStart(8)}  unscored starters: ${r.unscored.join(", ") || "none"}`
+    `    wk${String(r.week).padStart(2)} roster ${String(r.roster_id).padStart(2)}  ${String(r.residual).padStart(8)}  unscored: ${r.unscored.join(", ") || "none"}`
   );
 }
