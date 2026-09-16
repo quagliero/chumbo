@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { YEARS } from "@/domain/constants";
+import { YEARS, YEAR_NUMBERS } from "@/domain/constants";
 import { TabType } from "@/constants/fantasy";
 import { useSeasonData } from "@/hooks/useSeasonData";
 import { useTeamName } from "@/hooks/useTeamName";
@@ -50,7 +50,7 @@ const History = () => {
   useEffect(() => {
     if (year) {
       const parsedYear = parseInt(year);
-      if (YEARS.includes(parsedYear)) {
+      if (YEAR_NUMBERS.includes(parsedYear)) {
         setSelectedYear(parsedYear);
       }
     }

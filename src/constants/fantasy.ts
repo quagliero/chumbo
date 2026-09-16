@@ -36,21 +36,7 @@ export type TabType =
   | "playoff-odds";
 
 /**
- * Valid years for the application
+ * Valid years for the application.
+ * Re-exported from the single source of truth in @/domain/constants.
  */
-export type ValidYear =
-  | 2012
-  | 2013
-  | 2014
-  | 2015
-  | 2016
-  | 2017
-  | 2018
-  | 2019
-  | 2020
-  | 2021
-  | 2022
-  | 2023
-  | 2024
-  | 2025
-  | 2026;
+export type { ValidYear } from "@/domain/constants";

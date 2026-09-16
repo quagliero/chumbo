@@ -238,7 +238,7 @@ const matchesFilters = (
  */
 export const calculatePositionalStats = (
   filters: PositionalFilter[],
-  selectedYears: number[] = YEARS,
+  selectedYears: readonly number[] = YEARS,
   includePlayoffs: boolean = false,
   selectedManagerId?: string
 ): StatsResult => {
@@ -418,7 +418,7 @@ export const calculatePositionalStats = (
  * Get all available years for filtering
  */
 export const getAvailableYears = (): number[] => {
-  return YEARS;
+  return [...YEARS];
 };
 
 /**

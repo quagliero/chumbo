@@ -11,8 +11,14 @@ const projectRoot = path.join(__dirname, '..');
 // Valid fantasy football positions
 const VALID_POSITIONS = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'];
 
-// Years to process
-const YEARS = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
+// Season folders are discovered from disk rather than hardcoded, so this
+// script can never drift out of sync with YEARS in src/domain/constants.ts.
+// (A1 replaces this script wholesale with scripts/build-players.js.)
+const YEARS = fs
+  .readdirSync(path.join(projectRoot, 'src/data'), { withFileTypes: true })
+  .filter((e) => e.isDirectory() && /^\d{4}$/.test(e.name))
+  .map((e) => Number(e.name))
+  .sort((a, b) => a - b);
 
 console.log('🏈 Starting players.json optimization...');
 
