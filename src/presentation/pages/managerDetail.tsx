@@ -26,6 +26,7 @@ import {
   TopPerformances,
 } from "@/presentation/components/ManagerDetail";
 import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDetail";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 
 const ManagerDetail = () => {
   const { managerId, tab, section } = useParams<{
@@ -141,7 +142,7 @@ const ManagerDetail = () => {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+        <ScrollableTabs className="-mb-px space-x-8">
           <Link
             to={`/managers/${managerId}/summary`}
             className={`py-2 px-1 border-b-2 font-medium text-sm ${
@@ -182,7 +183,7 @@ const ManagerDetail = () => {
           >
             Players
           </Link>
-        </nav>
+        </ScrollableTabs>
       </div>
 
       {/* Player Section Filter Buttons */}

@@ -1,0 +1,10 @@
+/* Horizontal tab/control strips scroll within themselves (see ScrollableTabs).
+   Hide the scrollbar so the strip still reads as a row of tabs. */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

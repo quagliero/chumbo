@@ -17,6 +17,7 @@ import Breakdown from "@/presentation/components/Breakdown/Breakdown";
 import Trades from "@/presentation/components/Trades";
 import TradeCard from "@/presentation/components/TradeCard";
 import PlayoffOdds from "@/presentation/components/PlayoffOdds/PlayoffOdds";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { getWeekTrades } from "@/utils/transactionUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
 
@@ -342,7 +343,7 @@ const History = () => {
       {/* Tab Navigation */}
       <div className="border-b border-gray-200">
         <div className="container mx-auto">
-          <nav className="flex gap-8">
+          <ScrollableTabs className="gap-8">
             {[
               "standings",
               "matchups",
@@ -374,7 +375,7 @@ const History = () => {
                   : tab}
               </button>
             ))}
-          </nav>
+          </ScrollableTabs>
         </div>
       </div>
 

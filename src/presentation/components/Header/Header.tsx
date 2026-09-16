@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 
 const Header = () => {
   const location = useLocation();
@@ -8,7 +9,7 @@ const Header = () => {
         <NavLink to="/" className="flex-none mr-2">
           <img src="/images/logo.png" alt="The Chumbo" className="h-10" />
         </NavLink>
-        <menu className="flex gap-4 text-sm overflow-x-auto">
+        <ScrollableTabs as="menu" className="gap-4 text-sm">
           <li>
             <NavLink
               to="/"
@@ -127,7 +128,7 @@ const Header = () => {
               Wiki
             </NavLink>
           </li>
-        </menu>
+        </ScrollableTabs>
       </div>
     </header>
   );

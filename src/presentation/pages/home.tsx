@@ -6,6 +6,7 @@ import AllTimeBreakdown from "@/presentation/components/AllTimeBreakdown";
 import TopScores from "@/presentation/components/TopScores";
 import AllTimeScheduleComparison from "@/presentation/components/AllTimeScheduleComparison/AllTimeScheduleComparison";
 import AllTimeTrades from "@/presentation/components/AllTimeTrades";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 
 type HomeTabType =
   | "standings"
@@ -36,7 +37,7 @@ const Home = () => {
       {/* Tab Navigation */}
       <div className="border-b border-gray-200">
         <div className="container mx-auto">
-          <nav className="flex gap-8">
+          <ScrollableTabs className="gap-8">
             {[
               "standings",
               "breakdown",
@@ -87,7 +88,7 @@ const Home = () => {
                   : "Standings"}
               </NavLink>
             ))}
-          </nav>
+          </ScrollableTabs>
         </div>
       </div>
 
