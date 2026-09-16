@@ -699,7 +699,7 @@ to `it` in the same commit.
 
 **Acceptance:** `purity.test.ts` passes as a normal test.
 
-- [ ] H6
+- [x] H6
 
 ### H7 · `calculateStrengthOfSchedule` never reads the schedule `M`
 **Blocked by:** H1 · **Found by:** `H1` invariant test
@@ -723,7 +723,7 @@ defensible but should be explicit rather than incidental.
 different ranks · the snapshot for 2026 changes from `1,2,3…` to something
 justified by the fixtures · the `it.fails` marker is removed.
 
-- [ ] H7
+- [x] H7
 
 ### H8 · Reconcile the 2019 season data `M`
 **Blocked by:** H1 · **Found by:** `H1` invariant tests · **Needs owner input**
@@ -793,7 +793,26 @@ neighbours. Also check 2012/2013, where the detection was ambiguous.
 **Acceptance:** for every season, `roster_positions[i]` agrees with the position
 actually played at `starters[i]` across the whole season.
 
-- [ ] H9
+- [x] H9
+
+### H10 · Share the merged-fixture helper `S`
+**Found by:** `H7`
+
+`H7` added a `fixturesByWeek()` in `src/utils/strengthOfSchedule.ts` that merges
+played weeks from `matchups` with unplayed weeks from `schedule.json`.
+`PlayoffOdds.tsx` already builds the same thing in its `matchupsWithSchedule`
+memo. They differ only in shape: PlayoffOdds needs full `ExtendedMatchup` shells
+with zeroed points for its simulation, SOS needs only the pairings.
+
+Extract `mergeScheduledFixtures(matchups, schedule)` into a new
+`src/utils/scheduleUtils.ts` returning pairings, and have PlayoffOdds map the
+result into its shells. Two call sites is the right moment — a third would mean
+three different merge precedences to keep in sync.
+
+**Acceptance:** one implementation of the merge; both call sites use it; the
+playoff-odds output is unchanged.
+
+- [ ] H10
 
 ### H4 · Bundle budget in CI `S`
 
@@ -831,10 +850,11 @@ Ship before anything else. Independent, tiny, immediately felt.
 | ☐ | `A1a` Rebuild dictionary as base + overlays | L |
 | ☐ | `A1b` Thread year through to render sites | M |
 | ☐ | `A1c` Prefer matchup slots for position | S |
-| ☐ | `H6` Stop standings mutating shared data | XS |
-| ☐ | `H7` Fix strength of schedule | M |
+| ☑ | `H6` Stop standings mutating shared data | XS |
+| ☑ | `H7` Fix strength of schedule | M |
 | ☑ | `H8` Rebuild 2019 from the NFL.com record | M |
-| ☐ | `H9` Fix declared lineup slot order, 2016-2019 | S |
+| ☑ | `H9` Fix declared lineup slot order, 2016-2019 | S |
+| ☐ | `H10` Share the merged-fixture helper | S |
 | ☐ | `H4` Bundle budget in CI | S |
 | ☐ | `A5` Fix usePlayerSearch | S |
 
