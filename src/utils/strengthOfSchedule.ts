@@ -3,6 +3,7 @@ import { ExtendedRoster } from "@/types/roster";
 import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "./playoffUtils";
 import { getCompletedWeek } from "./weekUtils";
+import { mergeScheduledFixtures } from "@/utils/scheduleUtils";
 
 interface SeasonData {
   matchups: Record<string, ExtendedMatchup[]>;
@@ -16,34 +17,6 @@ interface SeasonData {
    */
   schedule?: Record<string, ScheduledMatchup[]>;
 }
-
-/**
- * Every regular season pairing we know about, week by week, whether or not it
- * has been played.
- *
- * `matchups/<week>.json` only exists once a week has been played, so future
- * fixtures are only ever found in `schedule.json`. Where both exist the played
- * matchup wins, exactly as `PlayoffOdds` merges the two.
- */
-const fixturesByWeek = (
-  seasonData: SeasonData
-): Record<string, ScheduledMatchup[]> => {
-  const fixtures: Record<string, ScheduledMatchup[]> = {};
-
-  Object.entries(seasonData.matchups ?? {}).forEach(([week, weekMatchups]) => {
-    fixtures[week] = weekMatchups.map(({ matchup_id, roster_id }) => ({
-      matchup_id,
-      roster_id,
-    }));
-  });
-
-  Object.entries(seasonData.schedule ?? {}).forEach(([week, weekFixtures]) => {
-    if (fixtures[week]) return;
-    fixtures[week] = weekFixtures;
-  });
-
-  return fixtures;
-};
 
 /**
  * Calculate strength of schedule *remaining* for all teams.
@@ -86,7 +59,10 @@ export const calculateStrengthOfSchedule = (
     return {};
   }
 
-  const fixtures = fixturesByWeek(seasonData);
+  const fixtures = mergeScheduledFixtures(
+    seasonData.matchups,
+    seasonData.schedule
+  );
 
   const remainingWeeks = Object.keys(fixtures)
     .map((week) => parseInt(week))
