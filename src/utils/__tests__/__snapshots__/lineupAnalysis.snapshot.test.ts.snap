@@ -5574,8 +5574,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 0,
   },
   "w7 r2": {
-    "optimalTotal": 89.28,
-    "pointsLeftOnBench": -27,
+    "optimalTotal": 116.28,
+    "pointsLeftOnBench": 0,
   },
   "w7 r3": {
     "optimalTotal": 111.46,

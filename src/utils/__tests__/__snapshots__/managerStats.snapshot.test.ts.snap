@@ -7124,11 +7124,11 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     },
     {
       "player": {
-        "averagePoints": 11.592,
+        "averagePoints": 12.672,
         "games": 25,
         "playerId": "KC",
         "playerName": "Kansas City Chiefs",
-        "totalPoints": 289.8,
+        "totalPoints": 316.8,
       },
       "position": "DEF",
     },
@@ -7488,7 +7488,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "managerName": "jay",
   "mostCappedPlayers": {
     "count": 348,
-    "digest": "8ca1-5b83590de1d54-354fa1800cf03",
+    "digest": "8ca1-1cbc58750bb89a-12b03fc296638",
     "head": [
       {
         "averageScore": 10.804255319148934,
@@ -7531,7 +7531,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
         ],
       },
       {
-        "averageScore": 11.592,
+        "averageScore": 12.672,
         "playerId": "KC",
         "playerName": "Kansas City Chiefs",
         "starts": 25,
@@ -8016,7 +8016,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1836,
-    "digest": "40b2d-670b0efa99c6-19836c36341d73",
+    "digest": "40b2e-12bef5cf31900d-1de0bbb649f14",
     "head": [
       {
         "matchup_id": 3,
@@ -34594,11 +34594,11 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     },
     {
       "player": {
-        "averagePoints": 12.085714285714285,
+        "averagePoints": 13.371428571428572,
         "games": 21,
         "playerId": "KC",
         "playerName": "Kansas City Chiefs",
-        "totalPoints": 253.8,
+        "totalPoints": 280.8,
       },
       "position": "DEF",
     },
@@ -34958,7 +34958,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "managerName": "jay",
   "mostCappedPlayers": {
     "count": 340,
-    "digest": "88de-1b40e2456536e3-1866d5ba46f8f9",
+    "digest": "88de-686c3ad6ad4e5-c11d0bade23a2",
     "head": [
       {
         "averageScore": 22.006,
@@ -35012,7 +35012,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
         ],
       },
       {
-        "averageScore": 12.085714285714285,
+        "averageScore": 13.371428571428572,
         "playerId": "KC",
         "playerName": "Kansas City Chiefs",
         "starts": 21,
@@ -35484,7 +35484,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c489-4f6724b6ee13c-1850cabe98ffe6",
+    "digest": "3c48a-12c28b07fc6670-bb11c00a4f9fa",
     "head": [
       {
         "matchup_id": 3,

@@ -129,15 +129,16 @@ for (const w of fs
 const resolve = (id, pp) => (pp[id] !== undefined ? id : alias[id] ?? id);
 
 /**
- * Deltas we deliberately do NOT attribute, despite fitting the shape.
+ * Deltas we deliberately do NOT attribute, despite fitting the shape. Add an
+ * entry here when the arithmetic produces a score the season cannot support.
  *
- * jay, week 7: the NFL.com lineup lists KC as his starting defence, and the gap
- * is 27.00. Denver beat Kansas City 30-6 that Thursday, which puts that defence
- * in the pts_allow_28_34 tier at -1 - it cannot have scored 27. Either the
- * scrape mislabelled the defence or the lineup is wrong; either way, writing 27
- * next to the Chiefs would be inventing a record-book entry.
+ * Currently empty. jay's week 7 KC defence (+27.00) sat here until the game was
+ * checked properly: Kansas City WON that Thursday nighter 30-6, holding Denver
+ * to six, which is the pts_allow_1_6 tier at 10 points before a single sack or
+ * turnover. 27 is an ordinary line for that performance, and both sources agree
+ * he started KC, so it is attributed like the rest.
  */
-const EXCEPTIONS = [{ week: 7, roster_id: 2, player: "KC" }];
+const EXCEPTIONS = [];
 const isException = (week, roster_id, player) =>
   EXCEPTIONS.some(
     (e) => e.week === week && e.roster_id === roster_id && e.player === player

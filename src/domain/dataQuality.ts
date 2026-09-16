@@ -5,7 +5,7 @@
  * specifically, the original scrape was later replaced with data re-entered by
  * hand into Sleeper, and the per-player scores did not survive intact:
  *
- *   - 28 starters had no score at all: waiver pickups that never reached the
+ *   - 29 starters had no score at all: waiver pickups that never reached the
  *     Sleeper rosters, which were rebuilt from draft and trades only. Their
  *     score has been restored from the gap between the lineup and the recorded
  *     team total, but it is inferred, not recorded.
@@ -13,7 +13,8 @@
  *     (`st_fum_rec` 2 -> 0, `def_kr_td` / `def_pr_td` 6 -> 0, while
  *     `def_st_fum_rec` stayed at 2). All of it is defensive, so the difference
  *     was folded back into the starting defence's score.
- *   - 4 team-weeks remain unattributed and still carry a `points_adjustment`.
+ *   - 3 team-weeks remain unattributed and still carry a `points_adjustment`:
+ *     each has two or more unscored starters, so the gap cannot be split.
  *
  * Team scores, records, standings and head-to-head are CORRECT for 2019 - they
  * come from the NFL.com record and reconcile exactly. It is only the per-player
