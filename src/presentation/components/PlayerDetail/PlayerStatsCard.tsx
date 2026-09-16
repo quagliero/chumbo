@@ -1,4 +1,6 @@
 import { useFormatter } from "use-intl";
+import type { OwnerStats } from "./OwnershipTable";
+import type { PlayerPerformance } from "./PerformanceTable";
 
 export interface PlayerStats {
   seasonsPlayed: number;
@@ -8,37 +10,11 @@ export interface PlayerStats {
   totalPoints: number;
   averagePoints: number;
   highestScore: number;
-  highestScoreGame: {
-    year: number;
-    week: number;
-    opponent: string;
-    points: number;
-    wasStarted: boolean;
-    matchupId: number;
-    ownerId: string;
-    teamName: string;
-    isByeWeek?: boolean;
-  } | null;
-  ownerStats: Array<{
-    ownerId: string;
-    teamName: string;
-    gamesPlayed: number;
-    totalPoints: number;
-    averagePoints: number;
-    starts: number;
-    bench: number;
-  }>;
-  performances: Array<{
-    year: number;
-    week: number;
-    opponent: string;
-    points: number;
-    wasStarted: boolean;
-    matchupId: number;
-    ownerId: string;
-    teamName: string;
-    isByeWeek?: boolean;
-  }>;
+  // These three shapes used to be restated inline here, which is how the tables
+  // and this card drifted apart. Reference the owning components' types instead.
+  highestScoreGame: PlayerPerformance | null;
+  ownerStats: OwnerStats[];
+  performances: PlayerPerformance[];
   achievements: {
     playoffGames: number;
     finalsAppearances: number;

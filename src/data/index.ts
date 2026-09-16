@@ -5,7 +5,7 @@ import { ExtendedLeague } from "@/types/league";
 import { Manager } from "@/types/manager";
 import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { ExtendedPick } from "@/types/pick";
-import { Player } from "@/types/player";
+import { Player, PlayerOverlay } from "@/types/player";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedUser } from "@/types/user";
 import { Transaction } from "@/types/transaction";
@@ -47,7 +47,12 @@ type SeasonData = {
   losers_bracket: LosersBracket;
   matchups: Matchups;
   transactions?: Transactions;
-  players?: Record<string, Player>; // Year-specific players
+  /**
+   * This season's corrections to the base player dictionary — team and position
+   * as at this season, for the few hundred players they differed for. Absent for
+   * seasons with no recorded differences, which then resolve straight to base.
+   */
+  playerOverlay?: PlayerOverlay;
   schedule?: Record<string, ScheduledMatchup[]>; // In-progress seasons only
 };
 
@@ -69,7 +74,7 @@ const allData = (() => {
     jsonFiles["./managers.json"] as { default: Manager[] }
   ).default;
 
-  // Load players data
+  // The base dictionary: every player we have ever seen, newest attributes.
   const players: Record<string, Player> = (
     jsonFiles["./players.json"] as { default: Record<string, Player> }
   ).default;
@@ -86,7 +91,7 @@ const allData = (() => {
     const matchYear = path.match(/\/(\d{4})\//);
     const matchWeek = path.match(/\/matchups\/(\d+)\.json$/);
     const matchTransaction = path.match(/\/transactions\/(\d+)\.json$/);
-    const isYearPlayers = path.match(/\/(\d{4})\/players\.json$/);
+    const isPlayerOverlay = path.match(/\/(\d{4})\/players\.delta\.json$/);
 
     if (matchYear) {
       const year = parseInt(matchYear[1], 10) as ValidYear;
@@ -116,9 +121,9 @@ const allData = (() => {
           seasons[year]!.transactions = {};
         }
 
-        // Check if this is a year-specific players.json
-        if (isYearPlayers) {
-          seasons[year]!.players = data as Record<string, Player>;
+        // Check if this is a year-specific player overlay
+        if (isPlayerOverlay) {
+          seasons[year]!.playerOverlay = data as PlayerOverlay;
         } else if (matchWeek) {
           const week = matchWeek[1];
           if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
@@ -173,95 +178,49 @@ const allData = (() => {
 // Export the structured data
 export const { managers, seasons, players } = allData;
 
-// Helper function to get player info by ID
-// First checks year-specific players.json, then falls back to root players.json
+/**
+ * Look a player up in the base dictionary, then apply that season's overlay.
+ *
+ * Without `year` you get the player's most recent team and position, which is the
+ * right answer where there is no season context (player search) and the wrong one
+ * everywhere else — pass the year whenever you have it.
+ */
 export const getPlayer = (
   playerId: string | number,
   year?: number
 ): Player | undefined => {
   const playerIdStr = playerId.toString();
-
-  // If a year is provided, try to get the player from that year's data first
-  if (year && seasons[year as ValidYear]?.players) {
-    const yearPlayer = seasons[year as ValidYear].players![playerIdStr];
-    if (yearPlayer) {
-      return yearPlayer;
-    }
-  }
-
-  // Search through all year-specific players.json files
-  for (const [, seasonData] of Object.entries(seasons)) {
-    if (seasonData.players && seasonData.players[playerIdStr]) {
-      return seasonData.players[playerIdStr];
-    }
-  }
-
-  // Fall back to root players.json
   const player = players[playerIdStr];
+
   if (player) {
-    return player;
+    const overlay = year
+      ? seasons[year as ValidYear]?.playerOverlay?.[playerIdStr]
+      : undefined;
+
+    if (!overlay) return player;
+
+    // Spread rather than mutate: `players` is a shared module-level object.
+    return {
+      ...player,
+      ...("t" in overlay ? { team: overlay.t } : {}),
+      ...("p" in overlay ? { position: overlay.p } : {}),
+    };
   }
 
-  // If player not found in players.json, create a fallback player object for string names
-  // This handles cases like "Danario Alexander", "Mikel Leshoure", etc. from older data
+  // Older seasons store some players as a bare name string ("Danario Alexander",
+  // "Mikel Leshoure") rather than a Sleeper id. Synthesise a record so callers get
+  // a name; position has to come from context (see getPlayerPosition).
   if (typeof playerId === "string" && playerId.includes(" ")) {
-    const nameParts = playerId.split(" ");
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(" ");
+    const [firstName, ...rest] = playerId.split(" ");
 
     return {
       player_id: playerId,
       first_name: firstName,
-      last_name: lastName,
+      last_name: rest.join(" "),
       full_name: playerId,
-      position: "UNK", // Unknown position - will need to be determined from context
+      position: "UNK",
       team: null,
-      active: false,
-      sport: "nfl",
       fantasy_positions: ["UNK"],
-      injury_status: null,
-      weight: undefined,
-      height: undefined,
-      age: undefined,
-      years_exp: undefined,
-      birth_date: undefined,
-      college: undefined,
-      hashtag: undefined,
-      depth_chart_order: null,
-      number: undefined,
-      search_full_name: playerId.toLowerCase(),
-      search_first_name: firstName.toLowerCase(),
-      search_last_name: lastName.toLowerCase(),
-      search_rank: undefined,
-      injury_notes: undefined,
-      practice_participation: undefined,
-      injury_body_part: undefined,
-      injury_start_date: undefined,
-      injury_notes_id: undefined,
-      practice_description: undefined,
-      news_updated: undefined,
-      stats_id: undefined,
-      swish_id: undefined,
-      gsis_id: undefined,
-      espn_id: undefined,
-      yahoo_id: undefined,
-      rotowire_id: undefined,
-      rotoworld_id: undefined,
-      fantasy_data_id: undefined,
-      sleeper_id: undefined,
-      pff_id: undefined,
-      pfr_id: undefined,
-      fantasypros_id: undefined,
-      team_abbr: null,
-      oddsjam_id: undefined,
-      sportradar_id: undefined,
-      high_school: undefined,
-      birth_city: undefined,
-      birth_state: undefined,
-      birth_country: undefined,
-      team_changed_at: undefined,
-      competitions: [],
-      metadata: null,
     };
   }
 

@@ -25,6 +25,8 @@ export interface OwnerStats {
   averagePoints: number;
   starts: number;
   bench: number;
+  /** NFL teams the player was on across the seasons this manager rostered him. */
+  nflTeams: string[];
 }
 
 interface OwnershipTableProps {
@@ -40,6 +42,13 @@ const OwnershipTable = ({ data }: OwnershipTableProps) => {
       columnHelper.accessor("teamName", {
         header: "Team",
         cell: (info) => info.getValue(),
+      }),
+      columnHelper.accessor("nflTeams", {
+        header: "NFL",
+        // Resolved per season, so a player traded mid-tenure shows both teams
+        // rather than only the one he plays for today (A1b).
+        cell: (info) => info.getValue().join(", ") || "—",
+        enableSorting: false,
       }),
       columnHelper.accessor("gamesPlayed", {
         header: "Games",
@@ -90,7 +99,11 @@ const OwnershipTable = ({ data }: OwnershipTableProps) => {
                 key={header.id}
                 className={`${
                   header.column.getCanSort() ? "cursor-pointer select-none" : ""
-                } ${header.id === "teamName" ? "text-left" : "text-right"}`}
+                } ${
+                  header.id === "teamName" || header.id === "nflTeams"
+                    ? "text-left"
+                    : "text-right"
+                }`}
                 onClick={header.column.getToggleSortingHandler()}
                 isSorted={!!header.column.getIsSorted()}
               >
@@ -125,6 +138,8 @@ const OwnershipTable = ({ data }: OwnershipTableProps) => {
                 className={`${
                   cell.column.id === "teamName"
                     ? "text-left font-medium"
+                    : cell.column.id === "nflTeams"
+                    ? "text-left text-gray-500"
                     : "text-right"
                 }`}
               >

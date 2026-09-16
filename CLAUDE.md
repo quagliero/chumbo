@@ -24,6 +24,7 @@ yarn build          # tsc -b && vite build
 yarn lint           # eslint
 yarn test           # vitest (watch)
 yarn test:run       # vitest (single run)
+yarn build-players  # rebuild players.json + per-season overlays
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -45,7 +46,7 @@ See `PATH_ALIASES.md`.
 src/
   data/                  # ALL league data lives here as committed JSON
     managers.json        # canonical manager identities (see below)
-    players.json         # root NFL player dictionary (~5.5MB) — fallback lookup
+    players.json         # base NFL player dictionary (~670KB, 8 fields, minified)
     index.ts             # aggregates every season via import.meta.glob (KEY FILE)
     2012/ ... 2025/      # one folder per season
   domain/constants.ts    # YEARS[] and CURRENT_YEAR  <-- edit to add a season
@@ -72,7 +73,7 @@ scripts/
 | `transactions/<week>.json` | `/league/{id}/transactions/{week}` | **2020+ only.** 2012–2019 used a single legacy `transactions.json` (grouped by `leg`). |
 | `winners_bracket.json` / `losers_bracket.json` | `/league/{id}/winners_bracket` etc. | End of season. |
 | `schedule.json` | `/league/{id}/matchups/{week}` for every regular season week | `{week: [{matchup_id, roster_id}]}`. Written by any fetch while the season is in progress. Only Playoff Odds reads it, to simulate unplayed weeks (so other pages never see 0-point future games). |
-| `players.json` (optional) | Sleeper `/players/nfl` dump | Year-specific snapshot; **only 2025 has one** currently. Falls back to root `players.json` when absent. |
+| `players.delta.json` (optional) | derived by `yarn build-players` | Per-season overlay: `{playerId: {t: team, p: position}}` for players whose team or position that year differed from the base dictionary. ~8KB. A season without one resolves entirely to the base. |
 
 ### How data is loaded
 
@@ -113,11 +114,11 @@ The fetch script reads `league_id` and `draft_id` from an existing
    `fetch-latest` / `fetch-week`, and `fetch-season` at the end for brackets.
 4. **Register the year** in `src/domain/constants.ts` → add `2026` to `YEARS`.
    Everything else (`ValidYear`, the fetch scripts) derives from it.
-5. **Players dictionary.** 2026 rookies won't be in the current root
-   `players.json` (last refreshed for 2025). Either refresh the root
-   `players.json` from Sleeper's `/players/nfl` dump, or drop a
-   `src/data/2026/players.json` snapshot (then `node scripts/filter-players.js`
-   to trim — note: add 2026 to the `YEARS` array inside that script too).
+5. **Players dictionary.** Drop a fresh Sleeper `/players/nfl` dump at
+   `src/data/2026/players.json`, then run `yarn build-players`. It merges the
+   dump into the base `src/data/players.json`, writes a `players.delta.json`
+   overlay for any season whose teams/positions differ, and deletes the raw
+   dump. Never commit a raw dump — they are ~6MB each.
 6. **Optional annotations.** If the 2026 draft order/rules changed notably, add a
    `2026` entry to `getManualChanges()` in `src/utils/leagueRules.ts`.
 7. `yarn build` / `yarn lint` to verify, then commit and push to `main`.
@@ -144,6 +145,10 @@ The fetch script reads `league_id` and `draft_id` from an existing
   fetch script pulls up to 18.
 - Transactions before 2020 are a single `transactions.json` grouped by `leg`;
   2020+ are per-week files under `transactions/`.
-- `players.json` files are **not** fetched by the scripts — they come from
-  Sleeper's `/players/nfl` dump and are only trimmed by `filter-players.js`.
+- The player dictionary is **base + overlays**: one `src/data/players.json` with
+  8 fields per player, plus a small `players.delta.json` per season recording
+  only the teams/positions that differed that year. Built by `yarn build-players`
+  from a raw Sleeper dump. It was 17.3MB across three files before A1.
+- `scripts/data/player-id-map.json` keeps the external ids (gsis, espn, pfr…)
+  that the slim dictionary drops — needed by A1d to join historical roster data.
 - `dist/` and `node_modules/` are gitignored.

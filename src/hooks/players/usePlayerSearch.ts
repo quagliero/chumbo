@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { players, seasons } from "@/data";
-import { Player } from "@/types/player";
 import { PlayerSearchResult } from "@/presentation/components/Players";
 
 export const usePlayerSearch = (searchTerm: string) => {
@@ -10,28 +9,10 @@ export const usePlayerSearch = (searchTerm: string) => {
     const searchLower = searchTerm.toLowerCase();
     const results: PlayerSearchResult[] = [];
 
-    // Search through regular players from all players.json files (root + year-specific)
-    const allPlayers = new Map<string, Player>();
-
-    // Add root players.json
+    // The base dictionary is the union of every snapshot we have ever held, so it
+    // is already the full search corpus. Search has no season context, so results
+    // carry each player's most recent team.
     Object.entries(players).forEach(([playerId, player]) => {
-      allPlayers.set(playerId, player);
-    });
-
-    // Add year-specific players.json files
-    Object.entries(seasons).forEach(([, seasonData]) => {
-      if (seasonData.players) {
-        Object.entries(seasonData.players).forEach(([playerId, player]) => {
-          // Only add if not already present (year-specific takes precedence)
-          if (!allPlayers.has(playerId)) {
-            allPlayers.set(playerId, player);
-          }
-        });
-      }
-    });
-
-    // Search through all collected players
-    allPlayers.forEach((player, playerId) => {
       const fullName =
         player.full_name ||
         `${player.first_name || ""} ${player.last_name || ""}`.trim();

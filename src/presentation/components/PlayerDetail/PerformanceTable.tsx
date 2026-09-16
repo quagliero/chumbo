@@ -22,6 +22,8 @@ export interface PlayerPerformance {
   isByeWeek?: boolean;
   isPlayoffGame?: boolean;
   isChampionshipGame?: boolean;
+  /** The player's NFL team as at this row's season, not his current one. */
+  nflTeam?: string | null;
 }
 
 interface PerformanceTableProps {
@@ -115,6 +117,7 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
           <TableRow>
             <TableHeaderCell className="text-left">Year</TableHeaderCell>
             <TableHeaderCell className="text-left">Week</TableHeaderCell>
+            <TableHeaderCell className="text-left">NFL</TableHeaderCell>
             <TableHeaderCell className="text-left">Team</TableHeaderCell>
             <TableHeaderCell className="text-left">Opponent</TableHeaderCell>
             <TableHeaderCell className="text-right">Points</TableHeaderCell>
@@ -140,6 +143,9 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
             >
               <TableCell>{performance.year}</TableCell>
               <TableCell>{performance.week}</TableCell>
+              <TableCell className="text-gray-500">
+                {performance.nflTeam ?? "—"}
+              </TableCell>
               <TableCell className="font-medium">
                 {performance.teamName}
               </TableCell>
