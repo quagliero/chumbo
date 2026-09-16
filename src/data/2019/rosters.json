@@ -11,7 +11,8 @@
       "fpts_decimal": 78,
       "fpts_against": 1238,
       "fpts_against_decimal": 96,
-      "total_moves": 109
+      "total_moves": 109,
+      "division": 4
     },
     "players": [
       "4881",
@@ -57,7 +58,8 @@
       "fpts_decimal": 30,
       "fpts_against": 1234,
       "fpts_against_decimal": null,
-      "total_moves": 101
+      "total_moves": 101,
+      "division": 1
     },
     "players": [
       "5849",
@@ -103,7 +105,8 @@
       "fpts_decimal": 10,
       "fpts_against": 1230,
       "fpts_against_decimal": 94,
-      "total_moves": 27
+      "total_moves": 27,
+      "division": 3
     },
     "players": [
       "96",
@@ -148,7 +151,8 @@
       "fpts_decimal": 24,
       "fpts_against": 1337,
       "fpts_against_decimal": 22,
-      "total_moves": 27
+      "total_moves": 27,
+      "division": 4
     },
     "players": [
       "3294",
@@ -194,7 +198,8 @@
       "fpts_decimal": 10,
       "fpts_against": 1259,
       "fpts_against_decimal": 94,
-      "total_moves": 56
+      "total_moves": 56,
+      "division": 4
     },
     "players": [
       "4046",
@@ -240,7 +245,8 @@
       "fpts_decimal": 14,
       "fpts_against": 1249,
       "fpts_against_decimal": 6,
-      "total_moves": 34
+      "total_moves": 34,
+      "division": 2
     },
     "players": [
       "1049",
@@ -287,7 +293,8 @@
       "fpts_decimal": 36,
       "fpts_against": 1160,
       "fpts_against_decimal": 12,
-      "total_moves": 43
+      "total_moves": 43,
+      "division": 1
     },
     "players": [
       "5854",
@@ -333,7 +340,8 @@
       "fpts_decimal": 68,
       "fpts_against": 1257,
       "fpts_against_decimal": 0,
-      "total_moves": 78
+      "total_moves": 78,
+      "division": 2
     },
     "players": [
       "3161",
@@ -379,7 +387,8 @@
       "fpts_decimal": 36,
       "fpts_against": 1224,
       "fpts_against_decimal": 66,
-      "total_moves": 32
+      "total_moves": 32,
+      "division": 3
     },
     "players": [
       "24",
@@ -425,7 +434,8 @@
       "fpts_decimal": 84,
       "fpts_against": 1126,
       "fpts_against_decimal": 96,
-      "total_moves": 11
+      "total_moves": 11,
+      "division": 3
     },
     "players": [
       "4017",
@@ -471,7 +481,8 @@
       "fpts_decimal": 58,
       "fpts_against": 1177,
       "fpts_against_decimal": 68,
-      "total_moves": 58
+      "total_moves": 58,
+      "division": 2
     },
     "players": [
       "2306",
@@ -517,7 +528,8 @@
       "fpts_decimal": 16,
       "fpts_against": 1304,
       "fpts_against_decimal": 72,
-      "total_moves": 56
+      "total_moves": 56,
+      "division": 1
     },
     "players": [
       "289",

@@ -354,8 +354,11 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 2: 3423 (WR) | Team 1: Rex Burkhead (RB)",
-      "nfl_trade_id": "959"
+      "notes": "Team 2: Robby Anderson (WR) | Team 1: Rex Burkhead (RB)",
+      "nfl_trade_id": "959",
+      "unmatched_players": {
+        "Robby Anderson": "WR"
+      }
     },
     "created": 1570073520,
     "settings": {
@@ -367,7 +370,7 @@
     "transaction_id": "chumbo_2019_trade_959",
     "adds": {
       "1387": 2,
-      "3423": 1
+      "Robby Anderson": 1
     },
     "consenter_ids": [
       "428943291145265152",
@@ -375,7 +378,7 @@
     ],
     "drops": {
       "1387": 1,
-      "3423": 2
+      "Robby Anderson": 2
     },
     "roster_ids": [
       2,
@@ -599,8 +602,11 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 12: T.Y. Hilton (WR) | Team 7: John Brown (WR), Alexander Mattison (RB) | Drops: WAS (DEF) from Team 12",
-      "nfl_trade_id": "1373"
+      "notes": "Team 12: T.Y. Hilton (WR) | Team 7: John Brown (WR), Alexander Mattison (RB) | Drops: Washington Redskins (DEF) from Team 12",
+      "nfl_trade_id": "1373",
+      "unmatched_players": {
+        "Washington Redskins": "DEF"
+      }
     },
     "created": 1571122800,
     "settings": {
@@ -623,7 +629,7 @@
       "1110": 12,
       "2238": 7,
       "5987": 7,
-      "WAS": 12
+      "Washington Redskins": 12
     },
     "roster_ids": [
       12,
@@ -855,8 +861,11 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 5: Kenny Stills (WR) | Team 1: 3423 (WR)",
-      "nfl_trade_id": "1695"
+      "notes": "Team 5: Kenny Stills (WR) | Team 1: Robby Anderson (WR)",
+      "nfl_trade_id": "1695",
+      "unmatched_players": {
+        "Robby Anderson": "WR"
+      }
     },
     "created": 1571919600,
     "settings": {
@@ -868,7 +877,7 @@
     "transaction_id": "chumbo_2019_trade_1695",
     "adds": {
       "1555": 1,
-      "3423": 5
+      "Robby Anderson": 5
     },
     "consenter_ids": [
       "337221174670938112",
@@ -876,7 +885,7 @@
     ],
     "drops": {
       "1555": 5,
-      "3423": 1
+      "Robby Anderson": 1
     },
     "roster_ids": [
       5,
@@ -1033,8 +1042,11 @@
     "status": "complete",
     "type": "trade",
     "metadata": {
-      "notes": "Team 5: 3423 (WR) | Team 1: Cleveland Browns (DEF)",
-      "nfl_trade_id": "1902"
+      "notes": "Team 5: Robby Anderson (WR) | Team 1: Cleveland Browns (DEF)",
+      "nfl_trade_id": "1902",
+      "unmatched_players": {
+        "Robby Anderson": "WR"
+      }
     },
     "created": 1572414180,
     "settings": {
@@ -1045,7 +1057,7 @@
     "creator": "337221174670938112",
     "transaction_id": "chumbo_2019_trade_1902",
     "adds": {
-      "3423": 1,
+      "Robby Anderson": 1,
       "CLE": 5
     },
     "consenter_ids": [
@@ -1053,7 +1065,7 @@
       "77140390129844224"
     ],
     "drops": {
-      "3423": 5,
+      "Robby Anderson": 5,
       "CLE": 1
     },
     "roster_ids": [

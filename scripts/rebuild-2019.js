@@ -43,31 +43,43 @@ const root = path.join(__dirname, "..");
 
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
-const srcArg = args.indexOf("--source");
-const OLD_DIR = path.resolve(
-  root,
-  srcArg !== -1 ? args[srcArg + 1] : "../chumbo-api/data/2019-old"
-);
-const CUR_DIR = path.join(root, "src/data/2019");
+const argVal = (flag, fallback) => {
+  const i = args.indexOf(flag);
+  return path.resolve(root, i !== -1 ? args[i + 1] : fallback);
+};
+
+// Both inputs live outside this repo, in the sibling chumbo-api checkout.
+// OLD_DIR  - the NFL.com scrape: authoritative scores, lineups and roster ids.
+// SLEEPER_DIR - the hand-entered Sleeper season: the only source of per-player
+//               points, plus avatars, transactions and division assignments.
+// OUT_DIR is written to and never read, so this script is idempotent.
+const OLD_DIR = argVal("--source", "../chumbo-api/data/2019-old");
+const SLEEPER_DIR = argVal("--sleeper", "../chumbo-api/data/2019");
+const OUT_DIR = path.join(root, "src/data/2019");
 
 const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
 const exists = (p) => fs.existsSync(p);
 const round2 = (n) => Math.round(n * 100) / 100;
 
-if (!exists(OLD_DIR)) {
-  console.error(`Source not found: ${OLD_DIR}`);
-  console.error("Pass --source <path to a 2019-old folder>.");
-  process.exit(1);
+for (const [label, dir, flag] of [
+  ["NFL.com source", OLD_DIR, "--source"],
+  ["Sleeper source", SLEEPER_DIR, "--sleeper"],
+]) {
+  if (!exists(dir)) {
+    console.error(`${label} not found: ${dir}`);
+    console.error(`Pass ${flag} <path>.`);
+    process.exit(1);
+  }
 }
 
 const oldRosters = read(path.join(OLD_DIR, "rosters.json"));
-const curRosters = read(path.join(CUR_DIR, "rosters.json"));
+const sleeperRosters = read(path.join(SLEEPER_DIR, "rosters.json"));
 
 // Sleeper roster_id -> NFL.com roster_id, joined on owner_id.
 const n2o = {};
 for (const o of oldRosters) {
-  const c = curRosters.find((r) => r.owner_id === o.owner_id);
-  if (!c) throw new Error(`No current roster for owner ${o.owner_id}`);
+  const c = sleeperRosters.find((r) => r.owner_id === o.owner_id);
+  if (!c) throw new Error(`No Sleeper roster for owner ${o.owner_id}`);
   n2o[c.roster_id] = o.roster_id;
 }
 
@@ -92,7 +104,7 @@ for (const w of fs
   .filter((f) => f.endsWith(".json"))
   .map((f) => parseInt(f, 10))) {
   const oldWeek = read(path.join(OLD_DIR, `matchups/${w}.json`));
-  const curPath = path.join(CUR_DIR, `matchups/${w}.json`);
+  const curPath = path.join(SLEEPER_DIR, `matchups/${w}.json`);
   if (!exists(curPath)) continue;
   const curWeek = read(curPath);
   for (const om of oldWeek) {
@@ -137,7 +149,7 @@ const outMatchups = {};
 
 for (const w of weeks) {
   const oldWeek = read(path.join(OLD_DIR, `matchups/${w}.json`));
-  const curPath = path.join(CUR_DIR, `matchups/${w}.json`);
+  const curPath = path.join(SLEEPER_DIR, `matchups/${w}.json`);
   const curWeek = exists(curPath) ? read(curPath) : [];
   report.weeks++;
 
@@ -206,19 +218,30 @@ for (const w of weeks) {
 }
 
 // ---------------------------------------------------------------- rosters
-// OLD settings reconcile with OLD matchups exactly; keep them verbatim.
-const outRosters = oldRosters.map((o) => ({ ...o }));
+// OLD settings reconcile with OLD matchups exactly, so keep them verbatim - but
+// the NFL.com scrape has no division field, and 2019 had four divisions (their
+// names are still in league.metadata). Graft the assignment across by owner.
+const outRosters = oldRosters.map((o) => {
+  const sleeper = sleeperRosters.find((r) => r.owner_id === o.owner_id);
+  const division = sleeper && sleeper.settings && sleeper.settings.division;
+  return division === undefined
+    ? { ...o }
+    : { ...o, settings: { ...o.settings, division } };
+});
+report.divisionsGrafted = outRosters.filter(
+  (r) => r.settings.division !== undefined
+).length;
 
 // ---------------------------------------------------------------- users
 // Keep the current users: same user_ids, but they carry Sleeper avatars that the
 // NFL.com scrape never had, and nothing here is keyed by roster_id.
-const outUsers = read(path.join(CUR_DIR, "users.json"));
+const outUsers = read(path.join(SLEEPER_DIR, "users.json"));
 
 // ---------------------------------------------------------------- transactions
 // Present only in the current data; its roster_ids are in Sleeper space and must
 // be inverted. Each trade carries an NFL.com "Team N" note we verify against.
 let outTransactions = null;
-const txPath = path.join(CUR_DIR, "transactions.json");
+const txPath = path.join(SLEEPER_DIR, "transactions.json");
 let txChecked = 0;
 let txAgree = 0;
 if (exists(txPath)) {
@@ -252,7 +275,7 @@ if (exists(txPath)) {
 // Keep the real Sleeper league_id/draft_id the rest of the app expects, but take
 // the scoring rules and roster slots the season was actually played under.
 const oldLeague = read(path.join(OLD_DIR, "league.json"));
-const curLeague = read(path.join(CUR_DIR, "league.json"));
+const curLeague = read(path.join(SLEEPER_DIR, "league.json"));
 const outLeague = {
   ...curLeague,
   scoring_settings: oldLeague.scoring_settings,
@@ -268,7 +291,7 @@ for (const f of ["draft.json", "picks.json", "winners_bracket.json", "losers_bra
 
 // ---------------------------------------------------------------- write
 const write = (rel, data) => {
-  const p = path.join(CUR_DIR, rel);
+  const p = path.join(OUT_DIR, rel);
   if (DRY) return;
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.writeFileSync(p, JSON.stringify(data, null, 2) + "\n");
@@ -289,6 +312,7 @@ console.log(`  reconciled exactly         ${report.exact}`);
 console.log(`  needed a points_adjustment ${report.adjusted}`);
 console.log(`  total |adjustment|         ${report.totalAdjustment}`);
 console.log(`  lineups differing from Sleeper ${report.lineupDiffs}`);
+console.log(`  divisions grafted          ${report.divisionsGrafted}`);
 console.log(`  player id aliases resolved ${Object.keys(alias).length}`);
 for (const e of aliasEvidence) console.log(`    ${e}`);
 if (outTransactions) {
