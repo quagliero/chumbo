@@ -1,12 +1,17 @@
 import { useMemo } from "react";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { players, seasons } from "@/data";
 import { PlayerSearchResult } from "@/presentation/components/Players";
 
 export const usePlayerSearch = (searchTerm: string) => {
-  const searchResults = useMemo(() => {
-    if (!searchTerm.trim()) return [];
+  // Filtering the dictionary is cheap; re-rendering the result list for a
+  // broad prefix like "a" is not. Debounce so a fast typist pays once.
+  const debouncedTerm = useDebouncedValue(searchTerm);
 
-    const searchLower = searchTerm.toLowerCase();
+  const searchResults = useMemo(() => {
+    if (!debouncedTerm.trim()) return [];
+
+    const searchLower = debouncedTerm.toLowerCase();
     const results: PlayerSearchResult[] = [];
 
     // The base dictionary is the union of every snapshot we have ever held, so it
@@ -22,7 +27,7 @@ export const usePlayerSearch = (searchTerm: string) => {
         .toLowerCase()
         .includes(searchLower);
       const teamMatch = player.team?.toLowerCase().includes(searchLower);
-      const numberMatch = player.number?.toString().includes(searchTerm);
+      const numberMatch = player.number?.toString().includes(debouncedTerm);
 
       if (nameMatch || positionMatch || teamMatch || numberMatch) {
         results.push({
@@ -90,7 +95,7 @@ export const usePlayerSearch = (searchTerm: string) => {
     return results
       .sort((a, b) => a.full_name.localeCompare(b.full_name))
       .slice(0, 100);
-  }, [searchTerm]);
+  }, [debouncedTerm]);
 
   return searchResults;
 };
