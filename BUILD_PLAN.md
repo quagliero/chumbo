@@ -148,12 +148,16 @@ player page still resolves a name and position · `yarn build` clean.
 > same commit — step 5 currently tells you to drop in a year-specific
 > `players.json`, which this task replaces with the overlay format.
 
-- [ ] A1a
-- [ ] A1b
-- [ ] A1c
+- [x] A1a
+- [x] A1b
+- [x] A1c
 
 ### A1d · Backfill historical teams from nflverse `M`
-**Upgraded from optional by `H1`:** this is now a correctness bug, not cosmetic.
+**Downgraded again after `A1`.** `H1` promoted this to a correctness bug because
+`getOptimalLineup` returned impossible results in 57 matchups. Rebuilding the
+dictionary fixed 51 of them — positions now resolve instead of coming back
+`UNK`. **6 remain** (2012:1, 2015:1, 2019:4), so this is worth doing for
+historical team accuracy and the last few lineups, but it no longer blocks `C2`.
 
 **There are currently no player dictionaries for 2012–2024** — only 2025 and 2026
 exist, so thirteen of the fifteen seasons already resolve against a modern
@@ -254,6 +258,12 @@ client-side aggregation · the file regenerates on `yarn fetch-latest`.
 scratch **on every keystroke**, because its `useMemo` is keyed on `searchTerm`.
 Build the index once at module level, filter it per query, and add a ~150 ms
 debounce.
+
+**Largely landed with `A1`:** the 12,266-entry Map is gone — the base dictionary
+is now the whole search corpus, so the hook filters it directly instead of
+rebuilding a Map per keystroke. What remains is the debounce and, if it ever
+matters, a prebuilt lowercase index. Filtering 4,389 entries per keystroke is
+sub-millisecond, so this is now a polish item rather than a fix.
 
 **Acceptance:** typing a 10-character query builds the index once, not ten times.
 
@@ -847,9 +857,9 @@ Ship before anything else. Independent, tiny, immediately felt.
 | | Task | Size |
 |---|---|---|
 | ☑ | `H1` Test harness + snapshots | L |
-| ☐ | `A1a` Rebuild dictionary as base + overlays | L |
-| ☐ | `A1b` Thread year through to render sites | M |
-| ☐ | `A1c` Prefer matchup slots for position | S |
+| ☑ | `A1a` Rebuild dictionary as base + overlays | L |
+| ☑ | `A1b` Thread year through to render sites | M |
+| ☑ | `A1c` Prefer matchup slots for position | S |
 | ☑ | `H6` Stop standings mutating shared data | XS |
 | ☑ | `H7` Fix strength of schedule | M |
 | ☑ | `H8` Rebuild 2019 from the NFL.com record | M |
