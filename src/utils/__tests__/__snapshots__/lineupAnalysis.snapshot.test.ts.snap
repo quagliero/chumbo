@@ -4966,772 +4966,740 @@ exports[`getOptimalLineup > 2018 — every matchup 1`] = `
 exports[`getOptimalLineup > 2019 — every matchup 1`] = `
 {
   "w1 r1": {
-    "optimalTotal": 134.36,
-    "pointsLeftOnBench": 44.70000000000002,
+    "optimalTotal": 134.46,
+    "pointsLeftOnBench": 44.80000000000001,
   },
   "w1 r10": {
-    "optimalTotal": 95.7,
-    "pointsLeftOnBench": -2.3999999999999915,
+    "optimalTotal": 150.82,
+    "pointsLeftOnBench": 32.19999999999999,
   },
   "w1 r11": {
-    "optimalTotal": 150.82,
-    "pointsLeftOnBench": 30.19999999999999,
+    "optimalTotal": 99.7,
+    "pointsLeftOnBench": -10.399999999999991,
   },
   "w1 r12": {
-    "optimalTotal": 117.18,
-    "pointsLeftOnBench": 17.900000000000006,
-  },
-  "w1 r2": {
-    "optimalTotal": 93.56,
-    "pointsLeftOnBench": 9.600000000000009,
-  },
-  "w1 r3": {
-    "optimalTotal": 94.52,
-    "pointsLeftOnBench": 17.799999999999997,
-  },
-  "w1 r4": {
-    "optimalTotal": 120.22,
-    "pointsLeftOnBench": 28.659999999999997,
-  },
-  "w1 r5": {
     "optimalTotal": 108.3,
     "pointsLeftOnBench": 4,
   },
-  "w1 r6": {
-    "optimalTotal": 149.5,
-    "pointsLeftOnBench": 34.7,
+  "w1 r2": {
+    "optimalTotal": 94.52,
+    "pointsLeftOnBench": 17.799999999999997,
   },
-  "w1 r7": {
-    "optimalTotal": 101.75999999999999,
-    "pointsLeftOnBench": 22.69999999999999,
+  "w1 r3": {
+    "optimalTotal": 93.56,
+    "pointsLeftOnBench": 6.6000000000000085,
   },
-  "w1 r8": {
+  "w1 r4": {
+    "optimalTotal": 117.18,
+    "pointsLeftOnBench": 17.900000000000006,
+  },
+  "w1 r5": {
     "optimalTotal": 142.92000000000002,
     "pointsLeftOnBench": 5.500000000000028,
   },
-  "w1 r9": {
+  "w1 r6": {
+    "optimalTotal": 101.75999999999999,
+    "pointsLeftOnBench": 22.69999999999999,
+  },
+  "w1 r7": {
+    "optimalTotal": 149.5,
+    "pointsLeftOnBench": 32,
+  },
+  "w1 r8": {
     "optimalTotal": 103.03999999999999,
     "pointsLeftOnBench": 10.299999999999997,
   },
+  "w1 r9": {
+    "optimalTotal": 120.22,
+    "pointsLeftOnBench": 30.659999999999997,
+  },
   "w10 r1": {
-    "optimalTotal": 110.32,
-    "pointsLeftOnBench": 20.69999999999999,
+    "optimalTotal": 109.42,
+    "pointsLeftOnBench": 21.799999999999997,
   },
   "w10 r10": {
-    "optimalTotal": 110.12,
-    "pointsLeftOnBench": 13.200000000000003,
-  },
-  "w10 r11": {
     "optimalTotal": 87.42,
     "pointsLeftOnBench": 4.700000000000003,
   },
+  "w10 r11": {
+    "optimalTotal": 110.12,
+    "pointsLeftOnBench": 13.200000000000003,
+  },
   "w10 r12": {
-    "optimalTotal": 115.77999999999999,
-    "pointsLeftOnBench": 8.199999999999989,
-  },
-  "w10 r2": {
-    "optimalTotal": 86.72,
-    "pointsLeftOnBench": 0,
-  },
-  "w10 r3": {
-    "optimalTotal": 110.46000000000001,
-    "pointsLeftOnBench": 13.100000000000009,
-  },
-  "w10 r4": {
-    "optimalTotal": 56.68,
-    "pointsLeftOnBench": 4,
-  },
-  "w10 r5": {
     "optimalTotal": 96.78000000000002,
     "pointsLeftOnBench": 1.4210854715202004e-14,
   },
-  "w10 r6": {
-    "optimalTotal": 77.28,
+  "w10 r2": {
+    "optimalTotal": 104.46000000000001,
+    "pointsLeftOnBench": 7.1000000000000085,
+  },
+  "w10 r3": {
+    "optimalTotal": 86.72,
     "pointsLeftOnBench": 0,
   },
-  "w10 r7": {
-    "optimalTotal": 148.88,
-    "pointsLeftOnBench": 4.900000000000006,
+  "w10 r4": {
+    "optimalTotal": 115.77999999999999,
+    "pointsLeftOnBench": 8.199999999999989,
   },
-  "w10 r8": {
+  "w10 r5": {
     "optimalTotal": 117.64,
     "pointsLeftOnBench": 4,
   },
+  "w10 r6": {
+    "optimalTotal": 148.88,
+    "pointsLeftOnBench": 4.900000000000006,
+  },
+  "w10 r7": {
+    "optimalTotal": 77.28,
+    "pointsLeftOnBench": 0,
+  },
+  "w10 r8": {
+    "optimalTotal": 86.9,
+    "pointsLeftOnBench": -6.159999999999997,
+  },
   "w10 r9": {
-    "optimalTotal": 105.84,
-    "pointsLeftOnBench": 18.939999999999998,
+    "optimalTotal": 56.68,
+    "pointsLeftOnBench": 4,
   },
   "w11 r1": {
-    "optimalTotal": 102.88,
-    "pointsLeftOnBench": 9.399999999999991,
+    "optimalTotal": 97.88,
+    "pointsLeftOnBench": 4.3999999999999915,
   },
   "w11 r10": {
-    "optimalTotal": 97.42000000000002,
-    "pointsLeftOnBench": 1.4210854715202004e-14,
-  },
-  "w11 r11": {
     "optimalTotal": 130.16,
     "pointsLeftOnBench": 33.5,
   },
+  "w11 r11": {
+    "optimalTotal": 97.42000000000002,
+    "pointsLeftOnBench": 1.4210854715202004e-14,
+  },
   "w11 r12": {
-    "optimalTotal": 89.56,
-    "pointsLeftOnBench": 11.900000000000006,
-  },
-  "w11 r2": {
-    "optimalTotal": 57.99999999999999,
-    "pointsLeftOnBench": 7.8999999999999915,
-  },
-  "w11 r3": {
-    "optimalTotal": 95.94,
-    "pointsLeftOnBench": -15,
-  },
-  "w11 r4": {
-    "optimalTotal": 104.34000000000002,
-    "pointsLeftOnBench": 3.200000000000017,
-  },
-  "w11 r5": {
     "optimalTotal": 137.72,
     "pointsLeftOnBench": 16.599999999999994,
   },
-  "w11 r6": {
-    "optimalTotal": 96.18,
-    "pointsLeftOnBench": 11.200000000000003,
+  "w11 r2": {
+    "optimalTotal": 95.94,
+    "pointsLeftOnBench": -15,
   },
-  "w11 r7": {
-    "optimalTotal": 74.52000000000001,
-    "pointsLeftOnBench": 11.800000000000011,
+  "w11 r3": {
+    "optimalTotal": 48.99999999999999,
+    "pointsLeftOnBench": -1.1000000000000085,
   },
-  "w11 r8": {
+  "w11 r4": {
+    "optimalTotal": 89.56,
+    "pointsLeftOnBench": 11.900000000000006,
+  },
+  "w11 r5": {
     "optimalTotal": 89.78,
     "pointsLeftOnBench": 25.9,
   },
-  "w11 r9": {
+  "w11 r6": {
+    "optimalTotal": 74.52000000000001,
+    "pointsLeftOnBench": 11.800000000000011,
+  },
+  "w11 r7": {
+    "optimalTotal": 96.18,
+    "pointsLeftOnBench": 15.200000000000003,
+  },
+  "w11 r8": {
     "optimalTotal": 106.75999999999999,
     "pointsLeftOnBench": 20.799999999999997,
+  },
+  "w11 r9": {
+    "optimalTotal": 104.34000000000002,
+    "pointsLeftOnBench": 4.200000000000017,
   },
   "w12 r1": {
     "optimalTotal": 123.76,
     "pointsLeftOnBench": 20.5,
   },
   "w12 r10": {
+    "optimalTotal": 92.02,
+    "pointsLeftOnBench": 15.799999999999997,
+  },
+  "w12 r11": {
     "optimalTotal": 134.02,
     "pointsLeftOnBench": 6.200000000000017,
   },
-  "w12 r11": {
-    "optimalTotal": 92.02,
-    "pointsLeftOnBench": 13.799999999999997,
-  },
   "w12 r12": {
-    "optimalTotal": 91.48,
-    "pointsLeftOnBench": 1.9000000000000057,
+    "optimalTotal": 118.04,
+    "pointsLeftOnBench": 9.300000000000011,
   },
   "w12 r2": {
-    "optimalTotal": 52.36000000000001,
-    "pointsLeftOnBench": 15.500000000000007,
-  },
-  "w12 r3": {
     "optimalTotal": 85.3,
     "pointsLeftOnBench": 0,
   },
+  "w12 r3": {
+    "optimalTotal": 52.36000000000001,
+    "pointsLeftOnBench": 15.500000000000007,
+  },
   "w12 r4": {
-    "optimalTotal": 89.24,
-    "pointsLeftOnBench": 0.09999999999999432,
+    "optimalTotal": 91.48,
+    "pointsLeftOnBench": 3.9000000000000057,
   },
   "w12 r5": {
-    "optimalTotal": 118.04,
-    "pointsLeftOnBench": 7.300000000000011,
-  },
-  "w12 r6": {
-    "optimalTotal": 78.3,
-    "pointsLeftOnBench": 8,
-  },
-  "w12 r7": {
-    "optimalTotal": 113.87999999999998,
-    "pointsLeftOnBench": -1.4210854715202004e-14,
-  },
-  "w12 r8": {
     "optimalTotal": 119.38,
     "pointsLeftOnBench": 2,
   },
-  "w12 r9": {
+  "w12 r6": {
+    "optimalTotal": 113.87999999999998,
+    "pointsLeftOnBench": -1.4210854715202004e-14,
+  },
+  "w12 r7": {
+    "optimalTotal": 78.3,
+    "pointsLeftOnBench": 7,
+  },
+  "w12 r8": {
     "optimalTotal": 79.1,
     "pointsLeftOnBench": 12.299999999999997,
+  },
+  "w12 r9": {
+    "optimalTotal": 89.24,
+    "pointsLeftOnBench": 4.099999999999994,
   },
   "w13 r1": {
     "optimalTotal": 112.8,
     "pointsLeftOnBench": 38.599999999999994,
   },
   "w13 r10": {
-    "optimalTotal": 98.62,
-    "pointsLeftOnBench": 24.30000000000001,
-  },
-  "w13 r11": {
     "optimalTotal": 134.96,
     "pointsLeftOnBench": 17.900000000000006,
   },
+  "w13 r11": {
+    "optimalTotal": 98.62,
+    "pointsLeftOnBench": 24.30000000000001,
+  },
   "w13 r12": {
-    "optimalTotal": 120.19999999999999,
-    "pointsLeftOnBench": 30.499999999999986,
-  },
-  "w13 r2": {
-    "optimalTotal": 113.62,
-    "pointsLeftOnBench": 3.700000000000003,
-  },
-  "w13 r3": {
-    "optimalTotal": 120.75999999999999,
-    "pointsLeftOnBench": 24.939999999999998,
-  },
-  "w13 r4": {
-    "optimalTotal": 78.22000000000001,
-    "pointsLeftOnBench": 0.4000000000000199,
-  },
-  "w13 r5": {
     "optimalTotal": 106.26,
     "pointsLeftOnBench": 16.58,
   },
-  "w13 r6": {
-    "optimalTotal": 81.89999999999999,
-    "pointsLeftOnBench": 24.39999999999999,
+  "w13 r2": {
+    "optimalTotal": 112.75999999999999,
+    "pointsLeftOnBench": 16.939999999999998,
   },
-  "w13 r7": {
-    "optimalTotal": 116.44,
-    "pointsLeftOnBench": 12,
+  "w13 r3": {
+    "optimalTotal": 113.62,
+    "pointsLeftOnBench": 3.700000000000003,
   },
-  "w13 r8": {
+  "w13 r4": {
+    "optimalTotal": 120.19999999999999,
+    "pointsLeftOnBench": 30.499999999999986,
+  },
+  "w13 r5": {
     "optimalTotal": 113,
     "pointsLeftOnBench": 20,
   },
-  "w13 r9": {
+  "w13 r6": {
+    "optimalTotal": 116.44,
+    "pointsLeftOnBench": 14,
+  },
+  "w13 r7": {
+    "optimalTotal": 81.89999999999999,
+    "pointsLeftOnBench": 23.39999999999999,
+  },
+  "w13 r8": {
     "optimalTotal": 125.1,
     "pointsLeftOnBench": 24.89999999999999,
+  },
+  "w13 r9": {
+    "optimalTotal": 78.22000000000001,
+    "pointsLeftOnBench": 0.4000000000000199,
   },
   "w14 r1": {
     "optimalTotal": 99.5,
     "pointsLeftOnBench": 12.599999999999994,
   },
   "w14 r10": {
-    "optimalTotal": 136.44,
-    "pointsLeftOnBench": 0,
-  },
-  "w14 r11": {
     "optimalTotal": 99.58,
     "pointsLeftOnBench": 25,
   },
-  "w14 r12": {
+  "w14 r2": {
+    "optimalTotal": 107.67999999999999,
+    "pointsLeftOnBench": 14.899999999999991,
+  },
+  "w14 r3": {
+    "optimalTotal": 89.89999999999999,
+    "pointsLeftOnBench": 18.69999999999999,
+  },
+  "w14 r4": {
     "optimalTotal": 115.55999999999999,
     "pointsLeftOnBench": 2.6999999999999886,
   },
-  "w14 r2": {
-    "optimalTotal": 90.6,
-    "pointsLeftOnBench": 17.39999999999999,
-  },
-  "w14 r3": {
-    "optimalTotal": 116.38,
-    "pointsLeftOnBench": 23.599999999999994,
-  },
-  "w14 r4": {
-    "optimalTotal": 105.52000000000001,
-    "pointsLeftOnBench": 6.000000000000014,
-  },
-  "w14 r5": {
-    "optimalTotal": 136.96,
-    "pointsLeftOnBench": 2.4000000000000057,
-  },
   "w14 r6": {
-    "optimalTotal": 101.10000000000001,
-    "pointsLeftOnBench": 30.400000000000006,
-  },
-  "w14 r7": {
     "optimalTotal": 113.03999999999999,
     "pointsLeftOnBench": 23.559999999999988,
   },
   "w14 r8": {
-    "optimalTotal": 101.61999999999999,
-    "pointsLeftOnBench": 26.799999999999997,
-  },
-  "w14 r9": {
     "optimalTotal": 81.89999999999999,
     "pointsLeftOnBench": 4.799999999999997,
   },
-  "w15 r1": {
-    "optimalTotal": 146.78,
-    "pointsLeftOnBench": 40.7,
+  "w14 r9": {
+    "optimalTotal": 105.52000000000001,
+    "pointsLeftOnBench": 6.000000000000014,
   },
-  "w15 r10": {
+  "w15 r1": {
+    "optimalTotal": 144.28,
+    "pointsLeftOnBench": 40.2,
+  },
+  "w15 r11": {
     "optimalTotal": 159.92,
     "pointsLeftOnBench": 41.51999999999998,
   },
-  "w15 r11": {
-    "optimalTotal": 115.82,
-    "pointsLeftOnBench": 22.099999999999994,
-  },
   "w15 r12": {
-    "optimalTotal": 103.68,
-    "pointsLeftOnBench": 13.5,
+    "optimalTotal": 149.18,
+    "pointsLeftOnBench": 1.5,
   },
   "w15 r2": {
-    "optimalTotal": 78.22,
-    "pointsLeftOnBench": 4.400000000000006,
-  },
-  "w15 r3": {
     "optimalTotal": 128.28,
     "pointsLeftOnBench": 18.799999999999997,
   },
   "w15 r4": {
-    "optimalTotal": 76,
-    "pointsLeftOnBench": 3.5,
+    "optimalTotal": 99.78000000000002,
+    "pointsLeftOnBench": 9.600000000000009,
   },
   "w15 r5": {
-    "optimalTotal": 149.18,
-    "pointsLeftOnBench": 1.5,
+    "optimalTotal": 84.4,
+    "pointsLeftOnBench": 7,
   },
-  "w15 r6": {
+  "w15 r7": {
     "optimalTotal": 117.04,
     "pointsLeftOnBench": 39.02000000000001,
   },
-  "w15 r7": {
-    "optimalTotal": 89.86,
-    "pointsLeftOnBench": 25.480000000000004,
-  },
   "w15 r8": {
-    "optimalTotal": 84.4,
-    "pointsLeftOnBench": 10,
-  },
-  "w15 r9": {
-    "optimalTotal": 118.74,
-    "pointsLeftOnBench": 4,
+    "optimalTotal": 116.74,
+    "pointsLeftOnBench": 2,
   },
   "w16 r1": {
     "optimalTotal": 127.91999999999999,
-    "pointsLeftOnBench": 17.999999999999986,
+    "pointsLeftOnBench": 14.799999999999983,
   },
   "w16 r10": {
-    "optimalTotal": 98.6,
-    "pointsLeftOnBench": 21.39999999999999,
+    "optimalTotal": 126.06,
+    "pointsLeftOnBench": 32.5,
   },
   "w16 r11": {
-    "optimalTotal": 126.06,
-    "pointsLeftOnBench": 30.5,
+    "optimalTotal": 86.6,
+    "pointsLeftOnBench": 9.399999999999991,
   },
   "w16 r12": {
-    "optimalTotal": 80.6,
-    "pointsLeftOnBench": 10.599999999999994,
-  },
-  "w16 r2": {
-    "optimalTotal": 50.32,
-    "pointsLeftOnBench": 7.880000000000003,
-  },
-  "w16 r3": {
-    "optimalTotal": 146.52000000000004,
-    "pointsLeftOnBench": 22.400000000000034,
-  },
-  "w16 r4": {
-    "optimalTotal": 88.06,
-    "pointsLeftOnBench": 19,
-  },
-  "w16 r5": {
     "optimalTotal": 117.66,
     "pointsLeftOnBench": 19.5,
   },
-  "w16 r6": {
-    "optimalTotal": 137.38,
-    "pointsLeftOnBench": 15,
+  "w16 r2": {
+    "optimalTotal": 146.52000000000004,
+    "pointsLeftOnBench": 22.400000000000034,
   },
-  "w16 r7": {
+  "w16 r3": {
+    "optimalTotal": 50.32,
+    "pointsLeftOnBench": 7.880000000000003,
+  },
+  "w16 r4": {
+    "optimalTotal": 80.6,
+    "pointsLeftOnBench": 10.599999999999994,
+  },
+  "w16 r5": {
+    "optimalTotal": 101.74,
+    "pointsLeftOnBench": 19.599999999999994,
+  },
+  "w16 r6": {
     "optimalTotal": 92.27999999999999,
     "pointsLeftOnBench": 11.09999999999998,
   },
+  "w16 r7": {
+    "optimalTotal": 137.38,
+    "pointsLeftOnBench": 15,
+  },
   "w16 r8": {
-    "optimalTotal": 101.74,
-    "pointsLeftOnBench": 24.599999999999994,
+    "optimalTotal": 117.82,
+    "pointsLeftOnBench": 35.25999999999999,
   },
   "w16 r9": {
-    "optimalTotal": 117.82,
-    "pointsLeftOnBench": 28.25999999999999,
+    "optimalTotal": 88.06,
+    "pointsLeftOnBench": 19,
   },
   "w2 r1": {
     "optimalTotal": 143.18,
     "pointsLeftOnBench": 8.200000000000017,
   },
   "w2 r10": {
-    "optimalTotal": 118.10000000000001,
-    "pointsLeftOnBench": 14.600000000000009,
-  },
-  "w2 r11": {
     "optimalTotal": 95.56,
     "pointsLeftOnBench": 10.799999999999997,
   },
+  "w2 r11": {
+    "optimalTotal": 118.10000000000001,
+    "pointsLeftOnBench": 14.600000000000009,
+  },
   "w2 r12": {
-    "optimalTotal": 96.86000000000001,
-    "pointsLeftOnBench": 0.10000000000000853,
-  },
-  "w2 r2": {
-    "optimalTotal": 69.82000000000001,
-    "pointsLeftOnBench": 10.800000000000004,
-  },
-  "w2 r3": {
-    "optimalTotal": 121.84,
-    "pointsLeftOnBench": 10.5,
-  },
-  "w2 r4": {
-    "optimalTotal": 121.8,
-    "pointsLeftOnBench": 24.799999999999997,
-  },
-  "w2 r5": {
     "optimalTotal": 84.52,
     "pointsLeftOnBench": 2.0999999999999943,
   },
+  "w2 r2": {
+    "optimalTotal": 121.84,
+    "pointsLeftOnBench": 10.5,
+  },
+  "w2 r3": {
+    "optimalTotal": 69.82000000000001,
+    "pointsLeftOnBench": 11.900000000000006,
+  },
+  "w2 r4": {
+    "optimalTotal": 96.86000000000001,
+    "pointsLeftOnBench": 0.10000000000000853,
+  },
+  "w2 r5": {
+    "optimalTotal": 89.02,
+    "pointsLeftOnBench": 10.5,
+  },
   "w2 r6": {
-    "optimalTotal": 102.9,
-    "pointsLeftOnBench": 14.100000000000009,
+    "optimalTotal": 93.02000000000001,
+    "pointsLeftOnBench": -3.1999999999999886,
   },
   "w2 r7": {
-    "optimalTotal": 93.02000000000001,
-    "pointsLeftOnBench": 3.8000000000000114,
+    "optimalTotal": 102.9,
+    "pointsLeftOnBench": 16.10000000000001,
   },
   "w2 r8": {
-    "optimalTotal": 89.02,
-    "pointsLeftOnBench": 11.399999999999991,
+    "optimalTotal": 114.96,
+    "pointsLeftOnBench": 18.39999999999999,
   },
   "w2 r9": {
-    "optimalTotal": 121.46,
-    "pointsLeftOnBench": 24.89999999999999,
+    "optimalTotal": 110.8,
+    "pointsLeftOnBench": 10.5,
   },
   "w3 r1": {
-    "optimalTotal": 103.28,
-    "pointsLeftOnBench": 13.700000000000003,
+    "optimalTotal": 109.38,
+    "pointsLeftOnBench": 19.799999999999997,
   },
   "w3 r10": {
-    "optimalTotal": 126.72,
-    "pointsLeftOnBench": 10,
-  },
-  "w3 r11": {
     "optimalTotal": 109.23999999999998,
     "pointsLeftOnBench": 48.29999999999998,
   },
+  "w3 r11": {
+    "optimalTotal": 126.72,
+    "pointsLeftOnBench": 10,
+  },
   "w3 r12": {
-    "optimalTotal": 121.14000000000001,
-    "pointsLeftOnBench": 15.300000000000011,
+    "optimalTotal": 55.300000000000004,
+    "pointsLeftOnBench": -3.5799999999999983,
   },
   "w3 r2": {
-    "optimalTotal": 135.8,
-    "pointsLeftOnBench": 17.000000000000014,
-  },
-  "w3 r3": {
     "optimalTotal": 118.96000000000001,
     "pointsLeftOnBench": 21.30000000000001,
   },
+  "w3 r3": {
+    "optimalTotal": 135.8,
+    "pointsLeftOnBench": 14.000000000000014,
+  },
   "w3 r4": {
-    "optimalTotal": 134.36,
-    "pointsLeftOnBench": 9.800000000000011,
+    "optimalTotal": 121.14000000000001,
+    "pointsLeftOnBench": 15.300000000000011,
   },
   "w3 r5": {
-    "optimalTotal": 71.4,
-    "pointsLeftOnBench": 7.800000000000004,
+    "optimalTotal": 156.75999999999996,
+    "pointsLeftOnBench": 6.19999999999996,
   },
   "w3 r6": {
-    "optimalTotal": 144.64,
-    "pointsLeftOnBench": 9.099999999999994,
+    "optimalTotal": 75.52,
+    "pointsLeftOnBench": 3.700000000000003,
   },
   "w3 r7": {
-    "optimalTotal": 75.52,
-    "pointsLeftOnBench": 7.099999999999994,
+    "optimalTotal": 144.64,
+    "pointsLeftOnBench": 11.099999999999994,
   },
   "w3 r8": {
-    "optimalTotal": 162.25999999999996,
-    "pointsLeftOnBench": 11.69999999999996,
+    "optimalTotal": 90.34,
+    "pointsLeftOnBench": -15.099999999999994,
   },
   "w3 r9": {
-    "optimalTotal": 99.14,
-    "pointsLeftOnBench": 8.700000000000003,
+    "optimalTotal": 134.36,
+    "pointsLeftOnBench": 11.800000000000011,
   },
   "w4 r1": {
     "optimalTotal": 135.08,
-    "pointsLeftOnBench": 5.5,
+    "pointsLeftOnBench": 2.5,
   },
   "w4 r10": {
-    "optimalTotal": 151.24,
-    "pointsLeftOnBench": 27.000000000000014,
-  },
-  "w4 r11": {
     "optimalTotal": 86.5,
     "pointsLeftOnBench": 13,
   },
+  "w4 r11": {
+    "optimalTotal": 151.24,
+    "pointsLeftOnBench": 27.000000000000014,
+  },
   "w4 r12": {
-    "optimalTotal": 88.86000000000001,
-    "pointsLeftOnBench": 22.840000000000018,
+    "optimalTotal": 87.4,
+    "pointsLeftOnBench": 2,
   },
   "w4 r2": {
-    "optimalTotal": 111.3,
-    "pointsLeftOnBench": 14.11999999999999,
-  },
-  "w4 r3": {
     "optimalTotal": 108.39999999999999,
     "pointsLeftOnBench": 21.89999999999999,
   },
+  "w4 r3": {
+    "optimalTotal": 111.3,
+    "pointsLeftOnBench": 14.11999999999999,
+  },
   "w4 r4": {
-    "optimalTotal": 81.53999999999999,
-    "pointsLeftOnBench": 11.659999999999997,
+    "optimalTotal": 88.86000000000001,
+    "pointsLeftOnBench": 22.840000000000018,
   },
   "w4 r5": {
-    "optimalTotal": 87.4,
-    "pointsLeftOnBench": 0,
-  },
-  "w4 r6": {
-    "optimalTotal": 56.60000000000001,
-    "pointsLeftOnBench": 1.1000000000000085,
-  },
-  "w4 r7": {
-    "optimalTotal": 109.79999999999998,
-    "pointsLeftOnBench": 7.09999999999998,
-  },
-  "w4 r8": {
     "optimalTotal": 115.10000000000001,
     "pointsLeftOnBench": 13.100000000000009,
   },
-  "w4 r9": {
+  "w4 r6": {
+    "optimalTotal": 109.79999999999998,
+    "pointsLeftOnBench": 7.09999999999998,
+  },
+  "w4 r7": {
+    "optimalTotal": 56.60000000000001,
+    "pointsLeftOnBench": 1.1000000000000085,
+  },
+  "w4 r8": {
     "optimalTotal": 103.08,
     "pointsLeftOnBench": 16.099999999999994,
   },
+  "w4 r9": {
+    "optimalTotal": 81.53999999999999,
+    "pointsLeftOnBench": 11.659999999999997,
+  },
   "w5 r1": {
-    "optimalTotal": 134.14000000000001,
-    "pointsLeftOnBench": 16.10000000000001,
+    "optimalTotal": 138.34,
+    "pointsLeftOnBench": 20.299999999999997,
   },
   "w5 r10": {
-    "optimalTotal": 187.7,
-    "pointsLeftOnBench": 28.69999999999999,
+    "optimalTotal": 143.14000000000001,
+    "pointsLeftOnBench": 42.30000000000001,
   },
   "w5 r11": {
-    "optimalTotal": 143.14000000000001,
-    "pointsLeftOnBench": 40.30000000000001,
+    "optimalTotal": 180.7,
+    "pointsLeftOnBench": 6.699999999999989,
   },
   "w5 r12": {
-    "optimalTotal": 109.32000000000001,
-    "pointsLeftOnBench": 12.740000000000009,
-  },
-  "w5 r2": {
-    "optimalTotal": 114.66000000000001,
-    "pointsLeftOnBench": 16.140000000000015,
-  },
-  "w5 r3": {
-    "optimalTotal": 103.46,
-    "pointsLeftOnBench": 4.699999999999989,
-  },
-  "w5 r4": {
-    "optimalTotal": 95.6,
-    "pointsLeftOnBench": 0.5999999999999943,
-  },
-  "w5 r5": {
     "optimalTotal": 103.53999999999999,
     "pointsLeftOnBench": -1.4210854715202004e-14,
   },
+  "w5 r2": {
+    "optimalTotal": 103.46,
+    "pointsLeftOnBench": 4.699999999999989,
+  },
+  "w5 r3": {
+    "optimalTotal": 114.66000000000001,
+    "pointsLeftOnBench": 16.140000000000015,
+  },
+  "w5 r4": {
+    "optimalTotal": 109.32000000000001,
+    "pointsLeftOnBench": 14.740000000000009,
+  },
+  "w5 r5": {
+    "optimalTotal": 92.94,
+    "pointsLeftOnBench": -35.099999999999994,
+  },
   "w5 r6": {
+    "optimalTotal": 82.72,
+    "pointsLeftOnBench": 13.560000000000002,
+  },
+  "w5 r7": {
     "optimalTotal": 123.12,
     "pointsLeftOnBench": 16.80000000000001,
   },
-  "w5 r7": {
-    "optimalTotal": 82.72,
-    "pointsLeftOnBench": 20.159999999999997,
-  },
   "w5 r8": {
-    "optimalTotal": 106.94,
-    "pointsLeftOnBench": 16.89999999999999,
+    "optimalTotal": 105.52000000000001,
+    "pointsLeftOnBench": 24.500000000000014,
   },
   "w5 r9": {
-    "optimalTotal": 108.42000000000002,
-    "pointsLeftOnBench": 27.40000000000002,
+    "optimalTotal": 95.6,
+    "pointsLeftOnBench": 0.5999999999999943,
   },
   "w6 r1": {
-    "optimalTotal": 142.54,
-    "pointsLeftOnBench": 31.69999999999999,
+    "optimalTotal": 145.24,
+    "pointsLeftOnBench": 28.400000000000006,
   },
   "w6 r10": {
-    "optimalTotal": 107.22,
-    "pointsLeftOnBench": 36.400000000000006,
-  },
-  "w6 r11": {
     "optimalTotal": 124.30000000000001,
     "pointsLeftOnBench": 10.900000000000006,
   },
+  "w6 r11": {
+    "optimalTotal": 107.22,
+    "pointsLeftOnBench": 36.400000000000006,
+  },
   "w6 r12": {
-    "optimalTotal": 90.81999999999998,
-    "pointsLeftOnBench": 3.999999999999986,
+    "optimalTotal": 54.7,
+    "pointsLeftOnBench": -10.700000000000003,
   },
   "w6 r2": {
-    "optimalTotal": 81.02000000000001,
-    "pointsLeftOnBench": 15.800000000000011,
+    "optimalTotal": 144.22,
+    "pointsLeftOnBench": 7,
   },
   "w6 r3": {
-    "optimalTotal": 144.22,
-    "pointsLeftOnBench": 3,
+    "optimalTotal": 81.02000000000001,
+    "pointsLeftOnBench": 7.800000000000011,
   },
   "w6 r4": {
-    "optimalTotal": 128.44,
-    "pointsLeftOnBench": 17.5,
+    "optimalTotal": 86.82,
+    "pointsLeftOnBench": 0,
   },
   "w6 r5": {
-    "optimalTotal": 66.10000000000001,
-    "pointsLeftOnBench": 3.8000000000000114,
-  },
-  "w6 r6": {
-    "optimalTotal": 137.20000000000005,
-    "pointsLeftOnBench": 4.30000000000004,
-  },
-  "w6 r7": {
-    "optimalTotal": 95.3,
-    "pointsLeftOnBench": 6.299999999999997,
-  },
-  "w6 r8": {
     "optimalTotal": 78.02,
     "pointsLeftOnBench": 0,
   },
-  "w6 r9": {
+  "w6 r6": {
+    "optimalTotal": 95.3,
+    "pointsLeftOnBench": 6.299999999999997,
+  },
+  "w6 r7": {
+    "optimalTotal": 137.20000000000005,
+    "pointsLeftOnBench": -4.499999999999943,
+  },
+  "w6 r8": {
     "optimalTotal": 92.6,
-    "pointsLeftOnBench": 12.5,
+    "pointsLeftOnBench": 16.5,
+  },
+  "w6 r9": {
+    "optimalTotal": 128.44,
+    "pointsLeftOnBench": 19.5,
   },
   "w7 r1": {
-    "optimalTotal": 131.42,
-    "pointsLeftOnBench": 37.79999999999998,
+    "optimalTotal": 131.62,
+    "pointsLeftOnBench": 40,
   },
   "w7 r10": {
-    "optimalTotal": 87.49999999999999,
-    "pointsLeftOnBench": 11.399999999999991,
+    "optimalTotal": 77.02,
+    "pointsLeftOnBench": 6.799999999999997,
   },
   "w7 r11": {
-    "optimalTotal": 77.02,
-    "pointsLeftOnBench": 4.799999999999997,
+    "optimalTotal": 87.49999999999999,
+    "pointsLeftOnBench": 9.399999999999991,
   },
   "w7 r12": {
-    "optimalTotal": 88.65999999999998,
-    "pointsLeftOnBench": 10.699999999999989,
-  },
-  "w7 r2": {
-    "optimalTotal": 111.46,
-    "pointsLeftOnBench": 1.8999999999999915,
-  },
-  "w7 r3": {
-    "optimalTotal": 101.58,
-    "pointsLeftOnBench": 12.299999999999997,
-  },
-  "w7 r4": {
-    "optimalTotal": 76.46,
-    "pointsLeftOnBench": 3.5999999999999943,
-  },
-  "w7 r5": {
     "optimalTotal": 103.52,
     "pointsLeftOnBench": 0,
   },
-  "w7 r6": {
-    "optimalTotal": 107.63999999999999,
-    "pointsLeftOnBench": 20.59999999999998,
+  "w7 r2": {
+    "optimalTotal": 89.28,
+    "pointsLeftOnBench": -27,
   },
-  "w7 r7": {
+  "w7 r3": {
+    "optimalTotal": 111.46,
+    "pointsLeftOnBench": 1.8999999999999915,
+  },
+  "w7 r4": {
+    "optimalTotal": 77.56,
+    "pointsLeftOnBench": -0.3999999999999915,
+  },
+  "w7 r5": {
+    "optimalTotal": 53.24000000000001,
+    "pointsLeftOnBench": 7.105427357601002e-15,
+  },
+  "w7 r6": {
     "optimalTotal": 145.82,
     "pointsLeftOnBench": 2.299999999999983,
   },
+  "w7 r7": {
+    "optimalTotal": 107.63999999999999,
+    "pointsLeftOnBench": 20.59999999999998,
+  },
   "w7 r8": {
-    "optimalTotal": 67.24000000000001,
-    "pointsLeftOnBench": 14.000000000000007,
+    "optimalTotal": 135.85999999999999,
+    "pointsLeftOnBench": 55.89999999999999,
   },
   "w7 r9": {
-    "optimalTotal": 137.85999999999999,
-    "pointsLeftOnBench": 57.89999999999999,
+    "optimalTotal": 76.46,
+    "pointsLeftOnBench": 3.5999999999999943,
   },
   "w8 r1": {
     "optimalTotal": 69.8,
     "pointsLeftOnBench": 12.899999999999999,
   },
   "w8 r10": {
-    "optimalTotal": 125.96,
-    "pointsLeftOnBench": 9.299999999999997,
-  },
-  "w8 r11": {
     "optimalTotal": 132.56000000000003,
     "pointsLeftOnBench": 35.900000000000034,
   },
+  "w8 r11": {
+    "optimalTotal": 125.96,
+    "pointsLeftOnBench": 9.299999999999997,
+  },
   "w8 r12": {
-    "optimalTotal": 128.88,
-    "pointsLeftOnBench": 0.29999999999998295,
+    "optimalTotal": 93.62,
+    "pointsLeftOnBench": 2.1000000000000085,
   },
   "w8 r2": {
-    "optimalTotal": 74.2,
-    "pointsLeftOnBench": 3.4000000000000057,
-  },
-  "w8 r3": {
     "optimalTotal": 119.36,
     "pointsLeftOnBench": 8.459999999999994,
   },
+  "w8 r3": {
+    "optimalTotal": 74.2,
+    "pointsLeftOnBench": -0.7999999999999972,
+  },
   "w8 r4": {
-    "optimalTotal": 100.28000000000002,
-    "pointsLeftOnBench": 22.500000000000014,
+    "optimalTotal": 121.78,
+    "pointsLeftOnBench": -6.800000000000011,
   },
   "w8 r5": {
-    "optimalTotal": 93.62,
-    "pointsLeftOnBench": 0.10000000000000853,
-  },
-  "w8 r6": {
-    "optimalTotal": 112.38000000000001,
-    "pointsLeftOnBench": 7.1000000000000085,
-  },
-  "w8 r7": {
-    "optimalTotal": 119.77999999999999,
-    "pointsLeftOnBench": 15.499999999999986,
-  },
-  "w8 r8": {
     "optimalTotal": 158.54,
     "pointsLeftOnBench": 0,
   },
-  "w8 r9": {
+  "w8 r6": {
+    "optimalTotal": 119.77999999999999,
+    "pointsLeftOnBench": 15.499999999999986,
+  },
+  "w8 r7": {
+    "optimalTotal": 112.38000000000001,
+    "pointsLeftOnBench": 7.1000000000000085,
+  },
+  "w8 r8": {
     "optimalTotal": 97.16,
     "pointsLeftOnBench": 10.200000000000003,
   },
+  "w8 r9": {
+    "optimalTotal": 100.28000000000002,
+    "pointsLeftOnBench": 26.500000000000014,
+  },
   "w9 r1": {
-    "optimalTotal": 109.91999999999999,
-    "pointsLeftOnBench": 14.899999999999991,
+    "optimalTotal": 106.21999999999998,
+    "pointsLeftOnBench": 13.199999999999989,
   },
   "w9 r10": {
+    "optimalTotal": 113.83999999999999,
+    "pointsLeftOnBench": 2.5999999999999943,
+  },
+  "w9 r11": {
     "optimalTotal": 131.4,
     "pointsLeftOnBench": 12.440000000000012,
   },
-  "w9 r11": {
-    "optimalTotal": 113.83999999999999,
-    "pointsLeftOnBench": 0.5999999999999943,
-  },
   "w9 r12": {
-    "optimalTotal": 101.04,
-    "pointsLeftOnBench": 37.160000000000004,
-  },
-  "w9 r2": {
-    "optimalTotal": 90.14,
-    "pointsLeftOnBench": 24.799999999999997,
-  },
-  "w9 r3": {
-    "optimalTotal": 113.94,
-    "pointsLeftOnBench": 13.439999999999998,
-  },
-  "w9 r4": {
-    "optimalTotal": 113.50000000000001,
-    "pointsLeftOnBench": 12.800000000000011,
-  },
-  "w9 r5": {
     "optimalTotal": 97.66000000000001,
     "pointsLeftOnBench": 11.800000000000011,
   },
-  "w9 r6": {
-    "optimalTotal": 112.82,
-    "pointsLeftOnBench": 10.199999999999989,
+  "w9 r2": {
+    "optimalTotal": 113.94,
+    "pointsLeftOnBench": 13.439999999999998,
   },
-  "w9 r7": {
-    "optimalTotal": 74.65999999999998,
-    "pointsLeftOnBench": 3.299999999999983,
+  "w9 r3": {
+    "optimalTotal": 90.14,
+    "pointsLeftOnBench": 24.799999999999997,
   },
-  "w9 r8": {
+  "w9 r4": {
+    "optimalTotal": 84.04,
+    "pointsLeftOnBench": 20.160000000000004,
+  },
+  "w9 r5": {
     "optimalTotal": 115.16,
     "pointsLeftOnBench": 24.299999999999997,
   },
-  "w9 r9": {
+  "w9 r6": {
+    "optimalTotal": 74.65999999999998,
+    "pointsLeftOnBench": 3.299999999999983,
+  },
+  "w9 r7": {
+    "optimalTotal": 112.82,
+    "pointsLeftOnBench": 14.199999999999989,
+  },
+  "w9 r8": {
     "optimalTotal": 112.7,
     "pointsLeftOnBench": 15.799999999999997,
+  },
+  "w9 r9": {
+    "optimalTotal": 113.50000000000001,
+    "pointsLeftOnBench": 12.800000000000011,
   },
 }
 `;

@@ -106,8 +106,8 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "firstPlaceStandings": 1,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 91.40476190476187,
-      "avgPointsFor": 92.05809523809523,
+      "avgPointsAgainst": 94.25299999999999,
+      "avgPointsFor": 92.60199999999999,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -124,7 +124,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       },
       "teamName": "Bush Johnson",
       "ties": 0,
-      "wins": 9,
+      "wins": 8,
     },
     "337221174670938112": {
       "avgPointsAgainst": 99.63684210526316,
@@ -148,8 +148,8 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "wins": 8,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 86.24699999999999,
-      "avgPointsFor": 100.83800000000004,
+      "avgPointsAgainst": 86.23899999999999,
+      "avgPointsFor": 101.67800000000003,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -191,7 +191,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 90.494,
-      "avgPointsFor": 100.54,
+      "avgPointsFor": 101.2,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -211,8 +211,8 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "wins": 8,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 90.23619047619047,
-      "avgPointsFor": 88.55142857142857,
+      "avgPointsAgainst": 90.14095238095238,
+      "avgPointsFor": 88.8847619047619,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -232,7 +232,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "wins": 9,
     },
     "428943291145265152": {
-      "avgPointsAgainst": 96.68083333333333,
+      "avgPointsAgainst": 97.80583333333333,
       "avgPointsFor": 99.63916666666665,
       "currentStreak": {
         "count": 1,
@@ -253,7 +253,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "wins": 12,
     },
     "429243125446230016": {
-      "avgPointsAgainst": 102.97,
+      "avgPointsAgainst": 104.47,
       "avgPointsFor": 79.6825,
       "currentStreak": {
         "count": 1,
@@ -337,8 +337,8 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "wins": 13,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 95.79368421052631,
-      "avgPointsFor": 95.72526315789473,
+      "avgPointsAgainst": 96.58315789473684,
+      "avgPointsFor": 95.79894736842105,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -442,14 +442,14 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "wins": 5,
     },
   },
-  "leagueLosses": 1135,
+  "leagueLosses": 1123,
   "leagueTies": 1,
-  "leagueWins": 1261,
+  "leagueWins": 1258,
   "managerId": "ant",
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 299,
-    "digest": "7938-129afa0e30007a-ee6b4caa308c0",
+    "digest": "791f-1ca96f17b254bb-140998afc802a0",
     "head": [
       {
         "averageScore": 10.981578947368419,
@@ -566,7 +566,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5755-88e1624e57c5c-177dd5ccd32d98",
+    "digest": "5766-c517e59e2f7a1-31445582cd15",
     "head": [
       {
         "bestPick": {
@@ -583,6 +583,22 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
           2020,
           2021,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 11,
+          "year": 2018,
+        },
+        "playerId": "LAR",
+        "playerName": "Los Angeles Rams",
+        "timesDrafted": 4,
+        "years": [
+          2016,
+          2018,
+          2019,
+          2026,
         ],
       },
       {
@@ -619,16 +635,16 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 3,
-          "round": 11,
-          "year": 2018,
+          "pick": 2,
+          "round": 1,
+          "year": 2019,
         },
-        "playerId": "LAR",
-        "playerName": "Los Angeles Rams",
+        "playerId": "4035",
+        "playerName": "Alvin Kamara",
         "timesDrafted": 3,
         "years": [
-          2016,
-          2018,
+          2019,
+          2021,
           2026,
         ],
       },
@@ -679,35 +695,6 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 9,
-          "round": 2,
-          "year": 2018,
-        },
-        "playerId": "2168",
-        "playerName": "Devonta Freeman",
-        "timesDrafted": 3,
-        "years": [
-          2016,
-          2018,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 1,
-          "year": 2021,
-        },
-        "playerId": "4035",
-        "playerName": "Alvin Kamara",
-        "timesDrafted": 2,
-        "years": [
-          2021,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 5,
           "round": 13,
           "year": 2026,
@@ -718,6 +705,20 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
         "years": [
           2025,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 10,
+          "round": 14,
+          "year": 2025,
+        },
+        "playerId": "MIN",
+        "playerName": "Minnesota Vikings",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2025,
         ],
       },
     ],
@@ -841,17 +842,17 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 6,
-      "leagueLosses": 93,
+      "leagueLosses": 81,
       "leagueTies": 0,
-      "leagueWins": 83,
+      "leagueWins": 80,
       "losses": 8,
       "madePlayoffs": true,
-      "pointsAgainst": 1418.0000000000002,
-      "pointsFor": 1470.18,
+      "pointsAgainst": 1435.4,
+      "pointsFor": 1420.8,
       "pointsStanding": 5,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 8,
+      "wins": 7,
       "year": 2019,
     },
     {
@@ -971,7 +972,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1817,
-    "digest": "3fd7c-78e6c4cabccac-1650c0c116b7bb",
+    "digest": "3fd7b-e2aaed1441d46-9f65faad5eb6d",
     "head": [
       {
         "matchup_id": 6,
@@ -1076,8 +1077,8 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
     ],
   },
   "totalLosses": 95,
-  "totalPointsAgainst": 18928.279999999995,
-  "totalPointsFor": 19421.659999999996,
+  "totalPointsAgainst": 18988.279999999995,
+  "totalPointsFor": 19436.659999999996,
   "totalTies": 0,
   "totalWins": 107,
 }
@@ -2908,7 +2909,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
     },
     "337222928615612416": {
       "avgPointsAgainst": 89.90250000000002,
-      "avgPointsFor": 101.735,
+      "avgPointsFor": 101.77249999999998,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -2929,12 +2930,12 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
     },
     "337226046606704640": {
       "avgPointsAgainst": 97.27263157894737,
-      "avgPointsFor": 105.55684210526317,
+      "avgPointsFor": 107.55684210526317,
       "currentStreak": {
         "count": 5,
         "type": "L",
       },
-      "losses": 9,
+      "losses": 8,
       "managerId": "337226046606704640",
       "managerName": "htc",
       "mostRecent": {
@@ -2946,7 +2947,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       },
       "teamName": "21st & Hine",
       "ties": 0,
-      "wins": 10,
+      "wins": 11,
     },
     "337297176361201664": {
       "avgPointsAgainst": 98.31789473684212,
@@ -2970,13 +2971,13 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       "wins": 11,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 96.33636363636361,
-      "avgPointsFor": 112.93272727272728,
+      "avgPointsAgainst": 92.314,
+      "avgPointsFor": 116.744,
       "currentStreak": {
         "count": 1,
         "type": "W",
       },
-      "losses": 4,
+      "losses": 3,
       "managerId": "359110473351696384",
       "managerName": "ryan",
       "mostRecent": {
@@ -3012,8 +3013,8 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       "wins": 14,
     },
     "428943291145265152": {
-      "avgPointsAgainst": 105.14363636363638,
-      "avgPointsFor": 97.7772727272727,
+      "avgPointsAgainst": 104.9618181818182,
+      "avgPointsFor": 97.91363636363634,
       "currentStreak": {
         "count": 5,
         "type": "L",
@@ -3096,8 +3097,8 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       "wins": 6,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 102.48239999999998,
-      "avgPointsFor": 100.91200000000002,
+      "avgPointsAgainst": 102.61039999999998,
+      "avgPointsFor": 101.11200000000002,
       "currentStreak": {
         "count": 6,
         "type": "L",
@@ -3222,9 +3223,9 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       "wins": 6,
     },
   },
-  "leagueLosses": 999,
+  "leagueLosses": 979,
   "leagueTies": 2,
-  "leagueWins": 1389,
+  "leagueWins": 1394,
   "managerId": "dix",
   "managerName": "dix",
   "mostCappedPlayers": {
@@ -3346,8 +3347,8 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 186,
-    "digest": "5bf9-1e9f222f18de4f-1fff703ed9e70a",
+    "count": 183,
+    "digest": "5a80-1b8c0f6ee0742b-1ed6149f49e331",
     "head": [
       {
         "bestPick": {
@@ -3363,36 +3364,6 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
           2022,
           2024,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 2,
-          "year": 2020,
-        },
-        "playerId": "4046",
-        "playerName": "Patrick Mahomes",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 8,
-          "year": 2020,
-        },
-        "playerId": "4227",
-        "playerName": "Harrison Butker",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2023,
         ],
       },
       {
@@ -3423,6 +3394,20 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
           2013,
           2014,
           2018,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 2,
+          "year": 2020,
+        },
+        "playerId": "4046",
+        "playerName": "Patrick Mahomes",
+        "timesDrafted": 2,
+        "years": [
+          2020,
+          2026,
         ],
       },
       {
@@ -3465,6 +3450,20 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
         "years": [
           2023,
           2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 8,
+          "round": 8,
+          "year": 2024,
+        },
+        "playerId": "5248",
+        "playerName": "Gus Edwards",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2024,
         ],
       },
       {
@@ -3616,17 +3615,17 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 2,
-      "leagueLosses": 88,
+      "leagueLosses": 68,
       "leagueTies": 0,
-      "leagueWins": 88,
-      "losses": 9,
+      "leagueWins": 93,
+      "losses": 7,
       "madePlayoffs": true,
-      "pointsAgainst": 1619.8999999999999,
-      "pointsFor": 1552.5600000000004,
+      "pointsAgainst": 1482.54,
+      "pointsFor": 1524.64,
       "pointsStanding": 2,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 7,
+      "wins": 8,
       "year": 2019,
     },
     {
@@ -3746,7 +3745,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1845,
-    "digest": "41863-e4c0f1c914fcb-10887c9aa9b38a",
+    "digest": "41863-75a7f5a1e6e73-1a12980a735afc",
     "head": [
       {
         "matchup_id": 5,
@@ -3829,7 +3828,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
         "year": 2017,
       },
       {
-        "matchup_id": 5,
+        "matchup_id": 6,
         "opponentName": "Tha Dollar",
         "playerId": "2216",
         "playerName": "Mike Evans",
@@ -3850,11 +3849,11 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
       },
     ],
   },
-  "totalLosses": 85,
-  "totalPointsAgainst": 19195.399999999998,
-  "totalPointsFor": 20606.580000000005,
+  "totalLosses": 84,
+  "totalPointsAgainst": 19189.399999999998,
+  "totalPointsFor": 20648.480000000003,
   "totalTies": 0,
-  "totalWins": 120,
+  "totalWins": 121,
 }
 `;
 
@@ -3965,7 +3964,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "h2hRecords": {
     "337210029620883456": {
       "avgPointsAgainst": 92.07363636363638,
-      "avgPointsFor": 88.4518181818182,
+      "avgPointsFor": 88.3609090909091,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -4006,7 +4005,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       "wins": 6,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 93.41333333333336,
+      "avgPointsAgainst": 93.30222222222224,
       "avgPointsFor": 83.99111111111112,
       "currentStreak": {
         "count": 5,
@@ -4027,7 +4026,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       "wins": 6,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 88.10470588235295,
+      "avgPointsAgainst": 87.98705882352941,
       "avgPointsFor": 88.78470588235294,
       "currentStreak": {
         "count": 1,
@@ -4069,8 +4068,8 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       "wins": 6,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 97.808,
-      "avgPointsFor": 78.538,
+      "avgPointsAgainst": 93.166,
+      "avgPointsFor": 76.52000000000001,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -4090,13 +4089,13 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       "wins": 3,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 94.50761904761904,
-      "avgPointsFor": 81.42,
+      "avgPointsAgainst": 92.20476190476191,
+      "avgPointsFor": 82.38095238095237,
       "currentStreak": {
         "count": 2,
         "type": "L",
       },
-      "losses": 16,
+      "losses": 15,
       "managerId": "411186928751230976",
       "managerName": "sol",
       "mostRecent": {
@@ -4108,7 +4107,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       },
       "teamName": "The Unicorn",
       "ties": 0,
-      "wins": 5,
+      "wins": 6,
     },
     "428943291145265152": {
       "avgPointsAgainst": 97.256,
@@ -4175,7 +4174,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     },
     "77140390129844224": {
       "avgPointsAgainst": 93.98434782608699,
-      "avgPointsFor": 83.77304347826087,
+      "avgPointsFor": 83.68608695652173,
       "currentStreak": {
         "count": 4,
         "type": "L",
@@ -4300,14 +4299,14 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       "wins": 6,
     },
   },
-  "leagueLosses": 1426,
+  "leagueLosses": 1427,
   "leagueTies": 0,
-  "leagueWins": 950,
+  "leagueWins": 941,
   "managerId": "fin",
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 256,
-    "digest": "66df-15f232c1c0166a-6c2baa7a6be7c",
+    "digest": "66e7-41b3f03808e47-4424f47efd461",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -4425,8 +4424,8 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 176,
-    "digest": "572b-d4b3136f04d94-51022f3083338",
+    "count": 175,
+    "digest": "56be-5e16041f083fe-4b3a18c10b6d2",
     "head": [
       {
         "bestPick": {
@@ -4436,9 +4435,8 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
         },
         "playerId": "5967",
         "playerName": "Tony Pollard",
-        "timesDrafted": 5,
+        "timesDrafted": 4,
         "years": [
-          2019,
           2022,
           2023,
           2024,
@@ -4508,6 +4506,21 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       },
       {
         "bestPick": {
+          "pick": 10,
+          "round": 1,
+          "year": 2021,
+        },
+        "playerId": "2133",
+        "playerName": "Davante Adams",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2019,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 7,
           "round": 2,
           "year": 2017,
@@ -4564,21 +4577,6 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
           2015,
           2016,
           2017,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 5,
-          "year": 2012,
-        },
-        "playerId": "142",
-        "playerName": "Tony Romo",
-        "timesDrafted": 3,
-        "years": [
-          2012,
-          2014,
-          2015,
         ],
       },
     ],
@@ -4702,17 +4700,17 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 10,
-      "leagueLosses": 93,
+      "leagueLosses": 94,
       "leagueTies": 0,
-      "leagueWins": 83,
-      "losses": 11,
+      "leagueWins": 74,
+      "losses": 10,
       "madePlayoffs": false,
-      "pointsAgainst": 1711.6999999999998,
-      "pointsFor": 1459.28,
+      "pointsAgainst": 1612.92,
+      "pointsFor": 1455.28,
       "pointsStanding": 9,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 5,
+      "wins": 6,
       "year": 2019,
     },
     {
@@ -4832,7 +4830,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1745,
-    "digest": "3dcc2-3768b3601605c-128d227d52f52",
+    "digest": "3dce1-195f428eb751c-f409956b717e4",
     "head": [
       {
         "matchup_id": 6,
@@ -4937,8 +4935,8 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     ],
   },
   "totalLosses": 113,
-  "totalPointsAgainst": 18087.3,
-  "totalPointsFor": 17010.760000000002,
+  "totalPointsAgainst": 18082.399999999998,
+  "totalPointsFor": 17006.760000000002,
   "totalTies": 0,
   "totalWins": 81,
 }
@@ -5071,8 +5069,8 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       "wins": 9,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 92.26777777777778,
-      "avgPointsFor": 91.52333333333331,
+      "avgPointsAgainst": 92.15666666666667,
+      "avgPointsFor": 91.68999999999998,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -5092,8 +5090,8 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       "wins": 8,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 93.56800000000001,
-      "avgPointsFor": 86.912,
+      "avgPointsAgainst": 94.41666666666667,
+      "avgPointsFor": 87.41166666666665,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -5110,11 +5108,11 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       },
       "teamName": "21st & Hine",
       "ties": 0,
-      "wins": 11,
+      "wins": 10,
     },
     "337297176361201664": {
       "avgPointsAgainst": 91.75473684210526,
-      "avgPointsFor": 96.21789473684208,
+      "avgPointsFor": 96.63894736842103,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -5156,7 +5154,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
     },
     "411186928751230976": {
       "avgPointsAgainst": 88.28100000000002,
-      "avgPointsFor": 97.01299999999999,
+      "avgPointsFor": 97.223,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -5218,7 +5216,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       "wins": 2,
     },
     "438629899490553856": {
-      "avgPointsAgainst": 88.4518181818182,
+      "avgPointsAgainst": 88.3609090909091,
       "avgPointsFor": 92.07363636363638,
       "currentStreak": {
         "count": 3,
@@ -5261,7 +5259,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
     },
     "77140390129844224": {
       "avgPointsAgainst": 99.016,
-      "avgPointsFor": 98.63500000000002,
+      "avgPointsFor": 98.78500000000001,
       "currentStreak": {
         "count": 3,
         "type": "W",
@@ -5282,7 +5280,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
     },
     "77361676378587136": {
       "avgPointsAgainst": 84.17523809523809,
-      "avgPointsFor": 98.52952380952381,
+      "avgPointsFor": 98.4342857142857,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -5386,14 +5384,14 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       "wins": 4,
     },
   },
-  "leagueLosses": 1162,
+  "leagueLosses": 1150,
   "leagueTies": 2,
-  "leagueWins": 1219,
+  "leagueWins": 1216,
   "managerId": "hadkiss",
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 252,
-    "digest": "6584-df3e2e87ec65-15f496a2a283cf",
+    "digest": "6579-183e324c514edc-170619a21a566",
     "head": [
       {
         "averageScore": 6.704878048780487,
@@ -5510,7 +5508,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "58f9-17d046fff74e30-2879dbb12823b",
+    "digest": "5903-11eab34b3e610d-1288d4d117ed77",
     "head": [
       {
         "bestPick": {
@@ -5561,32 +5559,17 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       },
       {
         "bestPick": {
-          "pick": 11,
-          "round": 3,
-          "year": 2020,
-        },
-        "playerId": "1689",
-        "playerName": "Adam Thielen",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2019,
-          2020,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 6,
           "round": 1,
-          "year": 2012,
+          "year": 2019,
         },
-        "playerId": "676",
-        "playerName": "LeSean McCoy",
+        "playerId": "4988",
+        "playerName": "Nick Chubb",
         "timesDrafted": 3,
         "years": [
-          2012,
-          2016,
           2019,
+          2021,
+          2025,
         ],
       },
       {
@@ -5659,6 +5642,20 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
         "years": [
           2024,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "4037",
+        "playerName": "Chris Godwin",
+        "timesDrafted": 2,
+        "years": [
+          2018,
+          2025,
         ],
       },
     ],
@@ -5782,17 +5779,17 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 9,
-      "leagueLosses": 125,
+      "leagueLosses": 113,
       "leagueTies": 0,
-      "leagueWins": 51,
+      "leagueWins": 48,
       "losses": 10,
       "madePlayoffs": false,
-      "pointsAgainst": 1454.3,
-      "pointsFor": 1241.46,
+      "pointsAgainst": 1377.1,
+      "pointsFor": 1182.7400000000002,
       "pointsStanding": 12,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 6,
+      "wins": 5,
       "year": 2019,
     },
     {
@@ -5911,8 +5908,8 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "teamName": "Bush Johnson",
   "thirdPlace": 0,
   "topPerformances": {
-    "count": 1808,
-    "digest": "3fe3f-1daaa8edd5deaa-a0261799362c4",
+    "count": 1809,
+    "digest": "3fed3-1e0a29802c4a5a-14291677f3930f",
     "head": [
       {
         "matchup_id": 3,
@@ -6017,8 +6014,8 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
     ],
   },
   "totalLosses": 90,
-  "totalPointsAgainst": 18518.94,
-  "totalPointsFor": 19039.02,
+  "totalPointsAgainst": 18514.239999999998,
+  "totalPointsFor": 19056.12,
   "totalTies": 1,
   "totalWins": 110,
 }
@@ -6130,13 +6127,13 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "firstPlaceStandings": 0,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 86.912,
-      "avgPointsFor": 93.56800000000001,
+      "avgPointsAgainst": 87.41166666666665,
+      "avgPointsFor": 94.41666666666667,
       "currentStreak": {
         "count": 1,
         "type": "W",
       },
-      "losses": 11,
+      "losses": 10,
       "managerId": "337210029620883456",
       "managerName": "hadkiss",
       "mostRecent": {
@@ -6151,13 +6148,13 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       "wins": 14,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 105.55684210526317,
+      "avgPointsAgainst": 107.55684210526317,
       "avgPointsFor": 97.27263157894737,
       "currentStreak": {
         "count": 5,
         "type": "W",
       },
-      "losses": 10,
+      "losses": 11,
       "managerId": "337221174670938112",
       "managerName": "dix",
       "mostRecent": {
@@ -6169,11 +6166,11 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       },
       "teamName": "SIIIBON",
       "ties": 0,
-      "wins": 9,
+      "wins": 8,
     },
     "337222928615612416": {
       "avgPointsAgainst": 86.30600000000001,
-      "avgPointsFor": 93.80300000000003,
+      "avgPointsFor": 93.70300000000002,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -6215,7 +6212,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 93.80499999999999,
-      "avgPointsFor": 101.035,
+      "avgPointsFor": 100.91,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -6257,7 +6254,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 101.29894736842105,
-      "avgPointsFor": 91.01789473684211,
+      "avgPointsFor": 90.80736842105264,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -6299,7 +6296,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
     },
     "438629899490553856": {
       "avgPointsAgainst": 88.78470588235294,
-      "avgPointsFor": 88.10470588235295,
+      "avgPointsFor": 87.98705882352941,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -6340,13 +6337,13 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       "wins": 5,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 104.04434782608693,
-      "avgPointsFor": 98.71304347826086,
+      "avgPointsAgainst": 104.30521739130432,
+      "avgPointsFor": 98.62608695652172,
       "currentStreak": {
         "count": 1,
         "type": "W",
       },
-      "losses": 12,
+      "losses": 13,
       "managerId": "77140390129844224",
       "managerName": "thd",
       "mostRecent": {
@@ -6358,10 +6355,10 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       },
       "teamName": "King of Wishful Tinkering",
       "ties": 0,
-      "wins": 11,
+      "wins": 10,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 80.66272727272727,
+      "avgPointsAgainst": 80.94272727272727,
       "avgPointsFor": 96.58818181818184,
       "currentStreak": {
         "count": 1,
@@ -6424,9 +6421,9 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       "wins": 3,
     },
   },
-  "leagueLosses": 1147,
+  "leagueLosses": 1138,
   "leagueTies": 0,
-  "leagueWins": 1124,
+  "leagueWins": 1118,
   "managerId": "htc",
   "managerName": "htc",
   "mostCappedPlayers": {
@@ -6547,7 +6544,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 177,
-    "digest": "5777-d91c532e7434a-b0e8c9cd66529",
+    "digest": "5792-5334a3f7560e7-18d9e424d4169f",
     "head": [
       {
         "bestPick": {
@@ -6579,21 +6576,6 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
           2020,
           2023,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 11,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "1426",
-        "playerName": "DeAndre Hopkins",
-        "timesDrafted": 3,
-        "years": [
-          2018,
-          2019,
-          2022,
         ],
       },
       {
@@ -6690,6 +6672,20 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
         },
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2022,
+        },
+        "playerId": "6083",
+        "playerName": "Matt Gay",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -6801,17 +6797,17 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 11,
-      "leagueLosses": 103,
+      "leagueLosses": 94,
       "leagueTies": 0,
-      "leagueWins": 73,
-      "losses": 9,
+      "leagueWins": 67,
+      "losses": 10,
       "madePlayoffs": false,
-      "pointsAgainst": 1404.7199999999998,
-      "pointsFor": 1402.1399999999999,
+      "pointsAgainst": 1379.9599999999996,
+      "pointsFor": 1317.9399999999998,
       "pointsStanding": 10,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 7,
+      "wins": 5,
       "year": 2019,
     },
     {
@@ -6931,7 +6927,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1746,
-    "digest": "3de10-c296d4a3eb365-67f3c39504480",
+    "digest": "3de10-12d04ad8ced4e9-181a49651c950e",
     "head": [
       {
         "matchup_id": 1,
@@ -7035,11 +7031,11 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       },
     ],
   },
-  "totalLosses": 94,
-  "totalPointsAgainst": 18070.1,
-  "totalPointsFor": 18484.36,
+  "totalLosses": 96,
+  "totalPointsAgainst": 18119.16,
+  "totalPointsFor": 18472.66,
   "totalTies": 0,
-  "totalWins": 100,
+  "totalWins": 98,
 }
 `;
 
@@ -7170,8 +7166,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "wins": 9,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 98.01142857142854,
-      "avgPointsFor": 105.60857142857144,
+      "avgPointsAgainst": 98.15428571428568,
+      "avgPointsFor": 105.41809523809525,
       "currentStreak": {
         "count": 4,
         "type": "W",
@@ -7212,7 +7208,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "wins": 14,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 91.01789473684211,
+      "avgPointsAgainst": 90.80736842105264,
       "avgPointsFor": 101.29894736842105,
       "currentStreak": {
         "count": 1,
@@ -7234,7 +7230,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     },
     "337297176361201664": {
       "avgPointsAgainst": 99.63916666666665,
-      "avgPointsFor": 96.68083333333333,
+      "avgPointsFor": 97.80583333333333,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -7254,7 +7250,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "wins": 12,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 89.59249999999999,
+      "avgPointsAgainst": 89.46749999999999,
       "avgPointsFor": 99.87750000000001,
       "currentStreak": {
         "count": 3,
@@ -7275,7 +7271,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "wins": 9,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 93.55058823529413,
+      "avgPointsAgainst": 93.47411764705885,
       "avgPointsFor": 105.88,
       "currentStreak": {
         "count": 1,
@@ -7359,7 +7355,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "wins": 3,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 99.19368421052631,
+      "avgPointsAgainst": 99.08842105263159,
       "avgPointsFor": 92.48000000000002,
       "currentStreak": {
         "count": 2,
@@ -7485,14 +7481,14 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "wins": 5,
     },
   },
-  "leagueLosses": 1007,
+  "leagueLosses": 1002,
   "leagueTies": 3,
-  "leagueWins": 1373,
+  "leagueWins": 1370,
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
-    "count": 347,
-    "digest": "8c5f-1ecf1d9e5c4c22-19f7139549dccf",
+    "count": 348,
+    "digest": "8ca1-4eacabcc1a3c9-11f35359ef284d",
     "head": [
       {
         "averageScore": 10.804255319148934,
@@ -7618,8 +7614,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 181,
-    "digest": "59bf-45c10352180b9-ac3515473426f",
+    "count": 183,
+    "digest": "5aa8-32c61561a5ca9-1a515ad9fde770",
     "head": [
       {
         "bestPick": {
@@ -7678,21 +7674,6 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
         "timesDrafted": 3,
         "years": [
           2018,
-          2020,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 6,
-          "round": 2,
-          "year": 2019,
-        },
-        "playerId": "1466",
-        "playerName": "Travis Kelce",
-        "timesDrafted": 3,
-        "years": [
-          2019,
           2020,
           2021,
         ],
@@ -7767,6 +7748,20 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
         "timesDrafted": 2,
         "years": [
           2022,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2026,
+        },
+        "playerId": "8138",
+        "playerName": "James Cook",
+        "timesDrafted": 2,
+        "years": [
+          2023,
           2026,
         ],
       },
@@ -7891,13 +7886,13 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     {
       "championshipResult": "champion",
       "finalStanding": 3,
-      "leagueLosses": 63,
+      "leagueLosses": 58,
       "leagueTies": 0,
-      "leagueWins": 113,
+      "leagueWins": 110,
       "losses": 5,
       "madePlayoffs": true,
-      "pointsAgainst": 1484.7600000000002,
-      "pointsFor": 1628.6799999999998,
+      "pointsAgainst": 1478.46,
+      "pointsFor": 1651.6799999999998,
       "pointsStanding": 3,
       "scoringCrown": false,
       "ties": 0,
@@ -8020,8 +8015,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "teamName": "Kansas City Chumps",
   "thirdPlace": 0,
   "topPerformances": {
-    "count": 1835,
-    "digest": "40a9f-cd4e65b335510-ab3aebec5b4c4",
+    "count": 1836,
+    "digest": "40b2d-796a04912ee5f-1aaad69ecbd82",
     "head": [
       {
         "matchup_id": 3,
@@ -8126,8 +8121,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     ],
   },
   "totalLosses": 90,
-  "totalPointsAgainst": 19400.360000000004,
-  "totalPointsFor": 20363.100000000002,
+  "totalPointsAgainst": 19394.06,
+  "totalPointsFor": 20386.100000000002,
   "totalTies": 1,
   "totalWins": 113,
 }
@@ -9577,7 +9572,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "firstPlaceStandings": 0,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 99.4090909090909,
+      "avgPointsAgainst": 99.31818181818181,
       "avgPointsFor": 84.84090909090908,
       "currentStreak": {
         "count": 1,
@@ -9641,7 +9636,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
     },
     "337226046606704640": {
       "avgPointsAgainst": 96.58818181818184,
-      "avgPointsFor": 80.66272727272727,
+      "avgPointsFor": 80.94272727272727,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -9661,8 +9656,8 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
       "wins": 7,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 95.72526315789473,
-      "avgPointsFor": 95.79368421052631,
+      "avgPointsAgainst": 95.79894736842105,
+      "avgPointsFor": 96.58315789473684,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -9682,8 +9677,8 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
       "wins": 8,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 91.64888888888889,
-      "avgPointsFor": 95.98222222222222,
+      "avgPointsAgainst": 97.15111111111112,
+      "avgPointsFor": 98.78000000000002,
       "currentStreak": {
         "count": 3,
         "type": "W",
@@ -9703,13 +9698,13 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
       "wins": 5,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 84.82500000000002,
-      "avgPointsFor": 93.08399999999999,
+      "avgPointsAgainst": 87.483,
+      "avgPointsFor": 91.275,
       "currentStreak": {
         "count": 1,
         "type": "W",
       },
-      "losses": 7,
+      "losses": 8,
       "managerId": "411186928751230976",
       "managerName": "sol",
       "mostRecent": {
@@ -9721,7 +9716,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
       },
       "teamName": "The Unicorn",
       "ties": 0,
-      "wins": 13,
+      "wins": 12,
     },
     "428943291145265152": {
       "avgPointsAgainst": 98.126,
@@ -9808,7 +9803,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
       "wins": 8,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 90.68900000000001,
+      "avgPointsAgainst": 90.58900000000001,
       "avgPointsFor": 82.85300000000001,
       "currentStreak": {
         "count": 2,
@@ -9913,14 +9908,14 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
       "wins": 6,
     },
   },
-  "leagueLosses": 1295,
+  "leagueLosses": 1291,
   "leagueTies": 1,
-  "leagueWins": 1087,
+  "leagueWins": 1083,
   "managerId": "kitch",
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 341,
-    "digest": "8877-303bc20221b2d-dc41d109f13fd",
+    "digest": "8892-129d5095c7a131-cc27626af2915",
     "head": [
       {
         "averageScore": 21.71352941176471,
@@ -10038,8 +10033,8 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 191,
-    "digest": "5e44-f9ee5b7183e9-1280a01a428732",
+    "count": 194,
+    "digest": "5f99-16628ce8ecaf7c-164bb780ffc836",
     "head": [
       {
         "bestPick": {
@@ -10085,6 +10080,21 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
           2020,
           2022,
           2023,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 5,
+          "round": 4,
+          "year": 2019,
+        },
+        "playerId": "2320",
+        "playerName": "Melvin Gordon",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2021,
         ],
       },
       {
@@ -10171,20 +10181,6 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
         "years": [
           2020,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 8,
-          "round": 14,
-          "year": 2013,
-        },
-        "playerId": "GB",
-        "playerName": "Green Bay Packers",
-        "timesDrafted": 2,
-        "years": [
-          2013,
-          2023,
         ],
       },
     ],
@@ -10308,17 +10304,17 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 12,
-      "leagueLosses": 100,
+      "leagueLosses": 96,
       "leagueTies": 0,
-      "leagueWins": 76,
-      "losses": 10,
+      "leagueWins": 72,
+      "losses": 11,
       "madePlayoffs": false,
-      "pointsAgainst": 1498.18,
-      "pointsFor": 1412.92,
+      "pointsAgainst": 1598.2600000000002,
+      "pointsFor": 1423.08,
       "pointsStanding": 11,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 6,
+      "wins": 5,
       "year": 2019,
     },
     {
@@ -10438,7 +10434,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1754,
-    "digest": "3e030-117b838938baf7-1b2ed11f651105",
+    "digest": "3e044-d5bd9c2976408-13025827aa8e39",
     "head": [
       {
         "matchup_id": 4,
@@ -10543,8 +10539,8 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
     ],
   },
   "totalLosses": 110,
-  "totalPointsAgainst": 18386.459999999995,
-  "totalPointsFor": 17500.820000000003,
+  "totalPointsAgainst": 18394.659999999996,
+  "totalPointsFor": 17517.980000000003,
   "totalTies": 0,
   "totalWins": 85,
 }
@@ -10645,8 +10641,8 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
     },
   ],
   "bestPointsSeason": {
-    "points": 1712.6200000000001,
-    "year": 2019,
+    "points": 1638.06,
+    "year": 2020,
   },
   "bestWinsSeason": {
     "wins": 11,
@@ -10741,7 +10737,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
     },
     "337297176361201664": {
       "avgPointsAgainst": 79.6825,
-      "avgPointsFor": 102.97,
+      "avgPointsFor": 104.47,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -10761,8 +10757,8 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       "wins": 7,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 100.52000000000001,
-      "avgPointsFor": 99.07999999999998,
+      "avgPointsAgainst": 89.17333333333333,
+      "avgPointsFor": 87.29333333333334,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -10779,11 +10775,11 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       },
       "teamName": "Pimpin Ain't Leesy",
       "ties": 0,
-      "wins": 2,
+      "wins": 1,
     },
     "411186928751230976": {
       "avgPointsAgainst": 98.53200000000001,
-      "avgPointsFor": 116.232,
+      "avgPointsFor": 119.232,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -10845,7 +10841,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       "wins": 3,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 108.32363636363635,
+      "avgPointsAgainst": 108.14181818181818,
       "avgPointsFor": 95.34363636363636,
       "currentStreak": {
         "count": 1,
@@ -10908,9 +10904,9 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       "wins": 2,
     },
   },
-  "leagueLosses": 348,
+  "leagueLosses": 347,
   "leagueTies": 0,
-  "leagueWins": 520,
+  "leagueWins": 506,
   "managerId": "nick",
   "managerName": "nick",
   "mostCappedPlayers": {
@@ -11017,23 +11013,8 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "210c-1103508754baf9-a6e7591e83368",
+    "digest": "2107-a1828ad87ae6b-175ee9331d4c9f",
     "head": [
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 2,
-          "year": 2019,
-        },
-        "playerId": "4199",
-        "playerName": "Aaron Jones",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2018,
-          2019,
-        ],
-      },
       {
         "bestPick": {
           "pick": 9,
@@ -11045,20 +11026,6 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 9,
-          "round": 3,
-          "year": 2021,
-        },
-        "playerId": "1992",
-        "playerName": "Allen Robinson",
-        "timesDrafted": 2,
-        "years": [
-          2019,
           2021,
         ],
       },
@@ -11092,6 +11059,34 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       },
       {
         "bestPick": {
+          "pick": 8,
+          "round": 5,
+          "year": 2017,
+        },
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
+        "timesDrafted": 2,
+        "years": [
+          2017,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 7,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4137",
+        "playerName": "James Conner",
+        "timesDrafted": 2,
+        "years": [
+          2018,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 4,
           "round": 1,
           "year": 2017,
@@ -11120,6 +11115,20 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       },
       {
         "bestPick": {
+          "pick": 5,
+          "round": 7,
+          "year": 2018,
+        },
+        "playerId": "4199",
+        "playerName": "Aaron Jones",
+        "timesDrafted": 2,
+        "years": [
+          2017,
+          2018,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 9,
           "round": 1,
           "year": 2021,
@@ -11139,19 +11148,6 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
         },
         "playerId": "2449",
         "playerName": "Stefon Diggs",
-        "timesDrafted": 1,
-        "years": [
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 9,
-          "round": 4,
-          "year": 2021,
-        },
-        "playerId": "2309",
-        "playerName": "Amari Cooper",
         "timesDrafted": 1,
         "years": [
           2021,
@@ -11198,17 +11194,17 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
     {
       "championshipResult": "runner-up",
       "finalStanding": 1,
-      "leagueLosses": 55,
+      "leagueLosses": 54,
       "leagueTies": 0,
-      "leagueWins": 121,
+      "leagueWins": 107,
       "losses": 5,
       "madePlayoffs": true,
-      "pointsAgainst": 1542.44,
-      "pointsFor": 1712.6200000000001,
+      "pointsAgainst": 1405.88,
+      "pointsFor": 1605.18,
       "pointsStanding": 1,
       "scoringCrown": true,
       "ties": 0,
-      "wins": 11,
+      "wins": 10,
       "year": 2019,
     },
     {
@@ -11248,10 +11244,10 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 675,
-    "digest": "17dff-173cd3554776e6-9d709b64d0fac",
+    "digest": "17dff-19a26ebc370f24-16b53e8cbd1fb5",
     "head": [
       {
-        "matchup_id": 4,
+        "matchup_id": 2,
         "opponentName": "The Unicorn",
         "playerId": "4199",
         "playerName": "Aaron Jones",
@@ -11261,7 +11257,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
         "year": 2019,
       },
       {
-        "matchup_id": 4,
+        "matchup_id": 2,
         "opponentName": "The Unicorn",
         "playerId": "4034",
         "playerName": "Christian McCaffrey",
@@ -11331,7 +11327,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
         "year": 2017,
       },
       {
-        "matchup_id": 2,
+        "matchup_id": 1,
         "opponentName": "Bush Johnson",
         "playerId": "4034",
         "playerName": "Christian McCaffrey",
@@ -11353,8 +11349,8 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
     ],
   },
   "totalLosses": 28,
-  "totalPointsAgainst": 6877.839999999999,
-  "totalPointsFor": 7519.740000000001,
+  "totalPointsAgainst": 6875.839999999999,
+  "totalPointsFor": 7548.740000000001,
   "totalTies": 0,
   "totalWins": 47,
 }
@@ -12177,8 +12173,8 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "firstPlaceStandings": 4,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 90.38699999999999,
-      "avgPointsFor": 91.43199999999999,
+      "avgPointsAgainst": 93.06842105263156,
+      "avgPointsFor": 91.10947368421053,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -12195,10 +12191,10 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       },
       "teamName": "Bush Johnson",
       "ties": 0,
-      "wins": 11,
+      "wins": 10,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 101.735,
+      "avgPointsAgainst": 101.77249999999998,
       "avgPointsFor": 89.90250000000002,
       "currentStreak": {
         "count": 1,
@@ -12219,7 +12215,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       "wins": 9,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 93.81142857142859,
+      "avgPointsAgainst": 93.71619047619049,
       "avgPointsFor": 88.0752380952381,
       "currentStreak": {
         "count": 1,
@@ -12240,8 +12236,8 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       "wins": 11,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 100.83800000000004,
-      "avgPointsFor": 86.24699999999999,
+      "avgPointsAgainst": 101.67800000000003,
+      "avgPointsFor": 86.23899999999999,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -12262,7 +12258,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 96.76727272727273,
-      "avgPointsFor": 96.74000000000001,
+      "avgPointsFor": 96.55818181818182,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -12282,8 +12278,8 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       "wins": 6,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 87.01333333333334,
-      "avgPointsFor": 92.96555555555555,
+      "avgPointsAgainst": 87.06888888888889,
+      "avgPointsFor": 92.85444444444444,
       "currentStreak": {
         "count": 3,
         "type": "W",
@@ -12346,7 +12342,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     },
     "438629899490553856": {
       "avgPointsAgainst": 83.99111111111112,
-      "avgPointsFor": 93.41333333333336,
+      "avgPointsFor": 93.30222222222224,
       "currentStreak": {
         "count": 5,
         "type": "W",
@@ -12388,7 +12384,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     },
     "77140390129844224": {
       "avgPointsAgainst": 96.79916666666666,
-      "avgPointsFor": 93.97333333333336,
+      "avgPointsFor": 93.89000000000003,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -12513,9 +12509,9 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       "wins": 3,
     },
   },
-  "leagueLosses": 1260,
+  "leagueLosses": 1253,
   "leagueTies": 0,
-  "leagueWins": 1130,
+  "leagueWins": 1122,
   "managerId": "rich",
   "managerName": "rich",
   "mostCappedPlayers": {
@@ -12636,23 +12632,23 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 192,
-    "digest": "5ed8-fe99831507df8-1a79f9f28b0890",
+    "count": 194,
+    "digest": "5fc9-99551ca953d4f-cb80ba9bedc18",
     "head": [
       {
         "bestPick": {
-          "pick": 2,
-          "round": 3,
-          "year": 2013,
+          "pick": 3,
+          "round": 1,
+          "year": 2022,
         },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
+        "playerId": "4034",
+        "playerName": "Christian McCaffrey",
         "timesDrafted": 4,
         "years": [
-          2013,
-          2014,
-          2016,
+          2017,
+          2018,
           2019,
+          2022,
         ],
       },
       {
@@ -12672,36 +12668,6 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       },
       {
         "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "BAL",
-        "playerName": "Baltimore Ravens",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2022,
-          2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2022,
-        },
-        "playerId": "4034",
-        "playerName": "Christian McCaffrey",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2018,
-          2022,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 3,
           "round": 2,
           "year": 2015,
@@ -12713,6 +12679,21 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
           2012,
           2015,
           2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 3,
+          "year": 2013,
+        },
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
+        "timesDrafted": 3,
+        "years": [
+          2013,
+          2014,
+          2016,
         ],
       },
       {
@@ -12765,6 +12746,20 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
         },
         "playerId": "8112",
         "playerName": "Drake London",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "BAL",
+        "playerName": "Baltimore Ravens",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -12906,17 +12901,17 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 5,
-      "leagueLosses": 90,
+      "leagueLosses": 83,
       "leagueTies": 0,
-      "leagueWins": 86,
+      "leagueWins": 78,
       "losses": 6,
       "madePlayoffs": true,
-      "pointsAgainst": 1317.7800000000002,
-      "pointsFor": 1476.6999999999998,
+      "pointsAgainst": 1295.0400000000002,
+      "pointsFor": 1370.9799999999998,
       "pointsStanding": 7,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 10,
+      "wins": 9,
       "year": 2019,
     },
     {
@@ -13036,7 +13031,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1809,
-    "digest": "3f7af-176aa3fd37d4cd-15b635a005b231",
+    "digest": "3f7af-1fa4306587e8c7-5f60dee313f94",
     "head": [
       {
         "matchup_id": 6,
@@ -13049,7 +13044,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
         "year": 2024,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 5,
         "opponentName": "King of Wishful Tinkering",
         "playerId": "4017",
         "playerName": "Deshaun Watson",
@@ -13141,8 +13136,8 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     ],
   },
   "totalLosses": 108,
-  "totalPointsAgainst": 19144.86,
-  "totalPointsFor": 18528.62,
+  "totalPointsAgainst": 19147.76,
+  "totalPointsFor": 18518.62,
   "totalTies": 0,
   "totalWins": 93,
 }
@@ -13276,7 +13271,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
     },
     "337221174670938112": {
       "avgPointsAgainst": 116.744,
-      "avgPointsFor": 92.514,
+      "avgPointsFor": 92.314,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -13296,7 +13291,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 3,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 97.482,
+      "avgPointsAgainst": 97.282,
       "avgPointsFor": 97.788,
       "currentStreak": {
         "count": 3,
@@ -13317,7 +13312,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 5,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 101.035,
+      "avgPointsAgainst": 100.91,
       "avgPointsFor": 93.80499999999999,
       "currentStreak": {
         "count": 2,
@@ -13338,7 +13333,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 3,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 100.54,
+      "avgPointsAgainst": 101.2,
       "avgPointsFor": 90.494,
       "currentStreak": {
         "count": 2,
@@ -13359,8 +13354,8 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 2,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 97.70500000000003,
-      "avgPointsFor": 87.32833333333333,
+      "avgPointsAgainst": 100.0690909090909,
+      "avgPointsFor": 82.60545454545455,
       "currentStreak": {
         "count": 7,
         "type": "L",
@@ -13377,11 +13372,11 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       },
       "teamName": "The Unicorn",
       "ties": 0,
-      "wins": 3,
+      "wins": 2,
     },
     "428943291145265152": {
       "avgPointsAgainst": 99.87750000000001,
-      "avgPointsFor": 89.59249999999999,
+      "avgPointsFor": 89.46749999999999,
       "currentStreak": {
         "count": 3,
         "type": "W",
@@ -13401,7 +13396,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 7,
     },
     "429243125446230016": {
-      "avgPointsAgainst": 86.62666666666667,
+      "avgPointsAgainst": 87.29333333333334,
       "avgPointsFor": 89.17333333333333,
       "currentStreak": {
         "count": 1,
@@ -13422,8 +13417,8 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 2,
     },
     "438629899490553856": {
-      "avgPointsAgainst": 79.52,
-      "avgPointsFor": 99.05777777777776,
+      "avgPointsAgainst": 77.27777777777777,
+      "avgPointsFor": 93.9,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -13464,8 +13459,8 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 6,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 99.05846153846154,
-      "avgPointsFor": 94.40307692307692,
+      "avgPointsAgainst": 99.28923076923077,
+      "avgPointsFor": 94.24923076923076,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -13485,8 +13480,8 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 7,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 95.98222222222222,
-      "avgPointsFor": 91.64888888888889,
+      "avgPointsAgainst": 98.78000000000002,
+      "avgPointsFor": 97.15111111111112,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -13506,14 +13501,14 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       "wins": 4,
     },
   },
-  "leagueLosses": 670,
+  "leagueLosses": 675,
   "leagueTies": 0,
-  "leagueWins": 628,
+  "leagueWins": 608,
   "managerId": "ryan",
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 164,
-    "digest": "41fa-cd1ea37d95740-b28b85eb3e9a4",
+    "digest": "4201-eca1a79d94f95-10a2d76246677f",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -13622,24 +13617,9 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 101,
-    "digest": "31f5-103ff7262f43a-7a3b539a7bf9c",
+    "count": 99,
+    "digest": "310d-1ff8bbc00b7f3-19e4ca39711543",
     "head": [
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 14,
-          "year": 2026,
-        },
-        "playerId": "PHI",
-        "playerName": "Philadelphia Eagles",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2024,
-          2026,
-        ],
-      },
       {
         "bestPick": {
           "pick": 4,
@@ -13653,6 +13633,21 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
           2020,
           2023,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 11,
+          "year": 2023,
+        },
+        "playerId": "3294",
+        "playerName": "Dak Prescott",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2023,
+          2025,
         ],
       },
       {
@@ -13687,6 +13682,34 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       },
       {
         "bestPick": {
+          "pick": 3,
+          "round": 5,
+          "year": 2019,
+        },
+        "playerId": "5967",
+        "playerName": "Tony Pollard",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 14,
+          "year": 2026,
+        },
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "timesDrafted": 2,
+        "years": [
+          2024,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 8,
           "round": 9,
           "year": 2025,
@@ -13701,16 +13724,30 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 1,
-          "round": 11,
-          "year": 2023,
+          "pick": 8,
+          "round": 14,
+          "year": 2025,
         },
-        "playerId": "3294",
-        "playerName": "Dak Prescott",
+        "playerId": "HOU",
+        "playerName": "Houston Texans",
         "timesDrafted": 2,
         "years": [
-          2023,
+          2019,
           2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "3164",
+        "playerName": "Ezekiel Elliott",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2024,
         ],
       },
       {
@@ -13727,48 +13764,6 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
           2024,
         ],
       },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 6,
-          "year": 2020,
-        },
-        "playerId": "5848",
-        "playerName": "Hollywood Brown",
-        "timesDrafted": 2,
-        "years": [
-          2020,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 11,
-          "round": 9,
-          "year": 2022,
-        },
-        "playerId": "2374",
-        "playerName": "Tyler Lockett",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 8,
-          "year": 2023,
-        },
-        "playerId": "4950",
-        "playerName": "Christian Kirk",
-        "timesDrafted": 2,
-        "years": [
-          2023,
-          2024,
-        ],
-      },
     ],
   },
   "playoffs": 2,
@@ -13778,17 +13773,17 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 7,
-      "leagueLosses": 77,
+      "leagueLosses": 82,
       "leagueTies": 0,
-      "leagueWins": 99,
+      "leagueWins": 79,
       "losses": 6,
       "madePlayoffs": false,
-      "pointsAgainst": 1547.56,
-      "pointsFor": 1585.18,
+      "pointsAgainst": 1489.46,
+      "pointsFor": 1443.0000000000002,
       "pointsStanding": 8,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 10,
+      "wins": 9,
       "year": 2019,
     },
     {
@@ -13907,8 +13902,8 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "teamName": "Pimpin Ain't Leesy",
   "thirdPlace": 0,
   "topPerformances": {
-    "count": 899,
-    "digest": "1ffc3-1c839400a21383-577c90ed95293",
+    "count": 900,
+    "digest": "2005e-1fc39e572e9546-1b458dd63d10db",
     "head": [
       {
         "matchup_id": 5,
@@ -14013,8 +14008,8 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
     ],
   },
   "totalLosses": 54,
-  "totalPointsAgainst": 9709.82,
-  "totalPointsFor": 9219.300000000001,
+  "totalPointsAgainst": 9717.42,
+  "totalPointsFor": 9211.68,
   "totalTies": 0,
   "totalWins": 46,
 }
@@ -14126,7 +14121,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   "firstPlaceStandings": 0,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 97.01299999999999,
+      "avgPointsAgainst": 97.223,
       "avgPointsFor": 88.28100000000002,
       "currentStreak": {
         "count": 1,
@@ -14168,8 +14163,8 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 5,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 92.96555555555555,
-      "avgPointsFor": 87.01333333333334,
+      "avgPointsAgainst": 92.85444444444444,
+      "avgPointsFor": 87.06888888888889,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -14210,8 +14205,8 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 8,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 88.55142857142857,
-      "avgPointsFor": 90.23619047619047,
+      "avgPointsAgainst": 88.8847619047619,
+      "avgPointsFor": 90.14095238095238,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -14231,13 +14226,13 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 12,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 87.32833333333333,
-      "avgPointsFor": 97.70500000000003,
+      "avgPointsAgainst": 82.60545454545455,
+      "avgPointsFor": 100.0690909090909,
       "currentStreak": {
         "count": 7,
         "type": "W",
       },
-      "losses": 3,
+      "losses": 2,
       "managerId": "359110473351696384",
       "managerName": "ryan",
       "mostRecent": {
@@ -14253,7 +14248,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 105.88,
-      "avgPointsFor": 93.55058823529413,
+      "avgPointsFor": 93.47411764705885,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -14273,7 +14268,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 7,
     },
     "429243125446230016": {
-      "avgPointsAgainst": 116.232,
+      "avgPointsAgainst": 119.232,
       "avgPointsFor": 98.53200000000001,
       "currentStreak": {
         "count": 1,
@@ -14294,13 +14289,13 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 3,
     },
     "438629899490553856": {
-      "avgPointsAgainst": 83.166,
-      "avgPointsFor": 94.523,
+      "avgPointsAgainst": 84.17499999999998,
+      "avgPointsFor": 92.105,
       "currentStreak": {
         "count": 1,
         "type": "W",
       },
-      "losses": 5,
+      "losses": 6,
       "managerId": "438629899490553856",
       "managerName": "fin",
       "mostRecent": {
@@ -14312,7 +14307,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       },
       "teamName": "Tha Dollar",
       "ties": 0,
-      "wins": 15,
+      "wins": 14,
     },
     "704708035829895168": {
       "avgPointsAgainst": 80.17999999999999,
@@ -14336,7 +14331,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 5,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 100.36461538461536,
+      "avgPointsAgainst": 100.21076923076922,
       "avgPointsFor": 91.69846153846153,
       "currentStreak": {
         "count": 2,
@@ -14357,13 +14352,13 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 5,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 93.64315789473683,
-      "avgPointsFor": 86.67473684210528,
+      "avgPointsAgainst": 91.73894736842105,
+      "avgPointsFor": 89.47263157894737,
       "currentStreak": {
         "count": 1,
         "type": "L",
       },
-      "losses": 12,
+      "losses": 11,
       "managerId": "77361676378587136",
       "managerName": "kitch",
       "mostRecent": {
@@ -14375,7 +14370,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       },
       "teamName": "The Roaches",
       "ties": 0,
-      "wins": 7,
+      "wins": 8,
     },
     "chumbolegacy_phil": {
       "avgPointsAgainst": 85.75,
@@ -14420,9 +14415,9 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "wins": 2,
     },
   },
-  "leagueLosses": 1140,
+  "leagueLosses": 1130,
   "leagueTies": 1,
-  "leagueWins": 983,
+  "leagueWins": 978,
   "managerId": "sol",
   "managerName": "sol",
   "mostCappedPlayers": {
@@ -14549,24 +14544,8 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5136-24128628a8ac-1b1739e08505fb",
+    "digest": "5124-276ff68dcfc32-1838ebcce50b94",
     "head": [
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "4866",
-        "playerName": "Saquon Barkley",
-        "timesDrafted": 4,
-        "years": [
-          2019,
-          2020,
-          2023,
-          2025,
-        ],
-      },
       {
         "bestPick": {
           "pick": 2,
@@ -14575,11 +14554,28 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
         },
         "playerId": "2078",
         "playerName": "Odell Beckham",
-        "timesDrafted": 3,
+        "timesDrafted": 4,
         "years": [
           2016,
+          2019,
           2021,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 7,
+          "year": 2024,
+        },
+        "playerId": "4033",
+        "playerName": "David Njoku",
+        "timesDrafted": 4,
+        "years": [
+          2017,
+          2018,
+          2019,
+          2024,
         ],
       },
       {
@@ -14600,16 +14596,16 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       {
         "bestPick": {
           "pick": 2,
-          "round": 7,
-          "year": 2024,
+          "round": 1,
+          "year": 2020,
         },
-        "playerId": "4033",
-        "playerName": "David Njoku",
+        "playerId": "4866",
+        "playerName": "Saquon Barkley",
         "timesDrafted": 3,
         "years": [
-          2017,
-          2018,
-          2024,
+          2020,
+          2023,
+          2025,
         ],
       },
       {
@@ -14785,13 +14781,13 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 8,
-      "leagueLosses": 91,
+      "leagueLosses": 81,
       "leagueTies": 0,
-      "leagueWins": 85,
-      "losses": 9,
+      "leagueWins": 80,
+      "losses": 8,
       "madePlayoffs": false,
-      "pointsAgainst": 1465.94,
-      "pointsFor": 1489.96,
+      "pointsAgainst": 1332.8600000000001,
+      "pointsFor": 1420.7599999999998,
       "pointsStanding": 6,
       "scoringCrown": false,
       "ties": 0,
@@ -14915,7 +14911,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1548,
-    "digest": "36e6b-18bee3d3726eea-26802dcffff30",
+    "digest": "36e6b-1f70d59138460a-46c29133c1e28",
     "head": [
       {
         "matchup_id": 2,
@@ -14928,7 +14924,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
         "year": 2021,
       },
       {
-        "matchup_id": 3,
+        "matchup_id": 2,
         "opponentName": "Pimpin Ain't Leesy",
         "playerId": "1234",
         "playerName": "Russell Wilson",
@@ -15020,8 +15016,8 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
     ],
   },
   "totalLosses": 90,
-  "totalPointsAgainst": 16315.880000000001,
-  "totalPointsFor": 15631.6,
+  "totalPointsAgainst": 16329.36,
+  "totalPointsFor": 15633.1,
   "totalTies": 0,
   "totalWins": 82,
 }
@@ -15133,7 +15129,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "firstPlaceStandings": 1,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 98.63500000000002,
+      "avgPointsAgainst": 98.78500000000001,
       "avgPointsFor": 99.016,
       "currentStreak": {
         "count": 3,
@@ -15154,8 +15150,8 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "wins": 9,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 100.3816666666667,
-      "avgPointsFor": 101.76833333333332,
+      "avgPointsAgainst": 100.59000000000003,
+      "avgPointsFor": 101.90166666666666,
       "currentStreak": {
         "count": 5,
         "type": "W",
@@ -15175,7 +15171,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "wins": 15,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 93.97333333333336,
+      "avgPointsAgainst": 93.89000000000003,
       "avgPointsFor": 96.79916666666666,
       "currentStreak": {
         "count": 2,
@@ -15196,13 +15192,13 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "wins": 16,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 98.71304347826086,
-      "avgPointsFor": 104.04434782608693,
+      "avgPointsAgainst": 98.62608695652172,
+      "avgPointsFor": 104.30521739130432,
       "currentStreak": {
         "count": 1,
         "type": "L",
       },
-      "losses": 11,
+      "losses": 10,
       "managerId": "337226046606704640",
       "managerName": "htc",
       "mostRecent": {
@@ -15214,7 +15210,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       },
       "teamName": "21st & Hine",
       "ties": 0,
-      "wins": 12,
+      "wins": 13,
     },
     "337297176361201664": {
       "avgPointsAgainst": 102.18272727272728,
@@ -15238,8 +15234,8 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "wins": 9,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 95.47333333333334,
-      "avgPointsFor": 98.40500000000002,
+      "avgPointsAgainst": 95.30666666666667,
+      "avgPointsFor": 98.65500000000002,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -15260,7 +15256,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     },
     "411186928751230976": {
       "avgPointsAgainst": 91.69846153846153,
-      "avgPointsFor": 100.36461538461536,
+      "avgPointsFor": 100.21076923076922,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -15281,7 +15277,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 92.48000000000002,
-      "avgPointsFor": 99.19368421052631,
+      "avgPointsFor": 99.08842105263159,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -15302,7 +15298,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     },
     "429243125446230016": {
       "avgPointsAgainst": 96.94,
-      "avgPointsFor": 102.83777777777777,
+      "avgPointsFor": 102.61555555555555,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -15322,7 +15318,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "wins": 3,
     },
     "438629899490553856": {
-      "avgPointsAgainst": 87.02,
+      "avgPointsAgainst": 86.9247619047619,
       "avgPointsFor": 91.59714285714287,
       "currentStreak": {
         "count": 3,
@@ -15365,7 +15361,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     },
     "77361676378587136": {
       "avgPointsAgainst": 82.85300000000001,
-      "avgPointsFor": 90.68900000000001,
+      "avgPointsFor": 90.58900000000001,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -15469,14 +15465,14 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "wins": 2,
     },
   },
-  "leagueLosses": 1097,
+  "leagueLosses": 1095,
   "leagueTies": 0,
-  "leagueWins": 1293,
+  "leagueWins": 1287,
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
-    "count": 364,
-    "digest": "9238-484d0790df23b-12407f94d7bf02",
+    "count": 365,
+    "digest": "9283-e5bb50e3d2ae0-334e19361c901",
     "head": [
       {
         "averageScore": 21.451162790697673,
@@ -15870,17 +15866,17 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 4,
-      "leagueLosses": 78,
+      "leagueLosses": 76,
       "leagueTies": 0,
-      "leagueWins": 98,
-      "losses": 7,
+      "leagueWins": 92,
+      "losses": 6,
       "madePlayoffs": true,
       "pointsAgainst": 1514.0800000000002,
-      "pointsFor": 1581.68,
+      "pointsFor": 1585.88,
       "pointsStanding": 4,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 9,
+      "wins": 10,
       "year": 2019,
     },
     {
@@ -16000,7 +15996,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1862,
-    "digest": "415ed-3ede87ed9e57e-c063e2bc27f32",
+    "digest": "415e5-1089f8cc0ee782-1aa06daf54603e",
     "head": [
       {
         "matchup_id": 6,
@@ -16023,7 +16019,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
         "year": 2025,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 5,
         "opponentName": "Tha Dollar",
         "playerId": "NE",
         "playerName": "New England Patriots",
@@ -16053,7 +16049,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
         "year": 2013,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 5,
         "opponentName": "Zaragoza's Zooting Zorro",
         "playerId": "3157",
         "playerName": "William Fuller",
@@ -16083,7 +16079,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
         "year": 2020,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 3,
         "opponentName": "Catch-22",
         "playerId": "4881",
         "playerName": "Lamar Jackson",
@@ -16104,11 +16100,11 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       },
     ],
   },
-  "totalLosses": 102,
-  "totalPointsAgainst": 19694.640000000003,
-  "totalPointsFor": 20117.659999999996,
+  "totalLosses": 101,
+  "totalPointsAgainst": 19689.640000000003,
+  "totalPointsFor": 20118.659999999996,
   "totalTies": 0,
-  "totalWins": 105,
+  "totalWins": 106,
 }
 `;
 
@@ -16365,14 +16361,14 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       "wins": 1,
     },
   },
-  "leagueLosses": 36,
+  "leagueLosses": 34,
   "leagueTies": 0,
-  "leagueWins": 76,
+  "leagueWins": 74,
   "managerId": "ant",
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 73,
-    "digest": "1b5e-8111d0350386d-10997b8f1cdcbb",
+    "digest": "1b5e-17cd4d728a5824-11f3dfd82ac0f8",
     "head": [
       {
         "averageScore": 6.75,
@@ -16472,8 +16468,8 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 107,
-    "digest": "34d8-14bfaa1f22d1d2-138480a4ef44b3",
+    "count": 106,
+    "digest": "3471-148c008edf5f6b-b936223f6db15",
     "head": [
       {
         "bestPick": {
@@ -16503,6 +16499,20 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
           2013,
           2015,
           2016,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 10,
+          "round": 14,
+          "year": 2025,
+        },
+        "playerId": "MIN",
+        "playerName": "Minnesota Vikings",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2025,
         ],
       },
       {
@@ -16563,12 +16573,12 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 7,
-          "round": 2,
+          "pick": 2,
+          "round": 1,
           "year": 2019,
         },
-        "playerId": "3199",
-        "playerName": "Michael Thomas",
+        "playerId": "4035",
+        "playerName": "Alvin Kamara",
         "timesDrafted": 2,
         "years": [
           2019,
@@ -16577,12 +16587,12 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 12,
-          "round": 2,
+          "pick": 2,
+          "round": 13,
           "year": 2016,
         },
-        "playerId": "2168",
-        "playerName": "Devonta Freeman",
+        "playerId": "LAR",
+        "playerName": "Los Angeles Rams",
         "timesDrafted": 2,
         "years": [
           2016,
@@ -16597,20 +16607,6 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
         },
         "playerId": "515",
         "playerName": "Rob Gronkowski",
-        "timesDrafted": 2,
-        "years": [
-          2012,
-          2015,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 7,
-          "round": 6,
-          "year": 2015,
-        },
-        "playerId": "380",
-        "playerName": "Rashad Jennings",
         "timesDrafted": 2,
         "years": [
           2012,
@@ -16738,9 +16734,9 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 6,
-      "leagueLosses": 5,
+      "leagueLosses": 3,
       "leagueTies": 0,
-      "leagueWins": 6,
+      "leagueWins": 4,
       "losses": 1,
       "madePlayoffs": true,
       "pointsAgainst": 92.78,
@@ -16868,7 +16864,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 108,
-    "digest": "3d19-12ede29fa14b17-e8185c09e7801",
+    "digest": "3d19-1f75e8363adb42-18b8b2694c237f",
     "head": [
       {
         "matchup_id": 3,
@@ -16891,7 +16887,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
         "year": 2015,
       },
       {
-        "matchup_id": 2,
+        "matchup_id": 4,
         "opponentName": "Kansas City Chumps",
         "playerId": "4663",
         "playerName": "Austin Ekeler",
@@ -18373,7 +18369,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 120.35333333333331,
-      "avgPointsFor": 77.92666666666668,
+      "avgPointsFor": 78.92666666666668,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -18435,14 +18431,14 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
       "wins": 1,
     },
   },
-  "leagueLosses": 46,
+  "leagueLosses": 45,
   "leagueTies": 0,
-  "leagueWins": 91,
+  "leagueWins": 88,
   "managerId": "dix",
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 86,
-    "digest": "2065-1119c701f680e3-1782b7ce03f743",
+    "digest": "2065-cadd23ee7245b-138157ea46faac",
     "head": [
       {
         "averageScore": 7.7250000000000005,
@@ -18549,24 +18545,9 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 127,
-    "digest": "3eab-d0a851fdf26ba-808029a664518",
+    "count": 124,
+    "digest": "3d30-a0f0d69b22b1e-b1f22c56e9f43",
     "head": [
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 8,
-          "year": 2020,
-        },
-        "playerId": "4227",
-        "playerName": "Harrison Butker",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2023,
-        ],
-      },
       {
         "bestPick": {
           "pick": 1,
@@ -18595,6 +18576,34 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
           2013,
           2014,
           2018,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 12,
+          "round": 2,
+          "year": 2023,
+        },
+        "playerId": "2449",
+        "playerName": "Stefon Diggs",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2023,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 8,
+          "year": 2020,
+        },
+        "playerId": "4227",
+        "playerName": "Harrison Butker",
+        "timesDrafted": 2,
+        "years": [
+          2020,
+          2023,
         ],
       },
       {
@@ -18678,20 +18687,6 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2020,
-        },
-        "playerId": "3164",
-        "playerName": "Ezekiel Elliott",
-        "timesDrafted": 2,
-        "years": [
-          2020,
           2021,
         ],
       },
@@ -18816,13 +18811,13 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 2,
-      "leagueLosses": 8,
+      "leagueLosses": 7,
       "leagueTies": 0,
-      "leagueWins": 3,
+      "leagueWins": 0,
       "losses": 1,
       "madePlayoffs": true,
       "pointsAgainst": 109.48,
-      "pointsFor": 74.4,
+      "pointsFor": 77.4,
       "pointsStanding": 2,
       "scoringCrown": false,
       "ties": 0,
@@ -18946,7 +18941,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 135,
-    "digest": "4c31-1a43220fdce37a-1290cbf41e5057",
+    "digest": "4c31-93085aa90ff9b-2080c96b0c2b5",
     "head": [
       {
         "matchup_id": 4,
@@ -19052,7 +19047,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
   },
   "totalLosses": 7,
   "totalPointsAgainst": 1517.7200000000003,
-  "totalPointsFor": 1520.36,
+  "totalPointsFor": 1523.36,
   "totalTies": 0,
   "totalWins": 8,
 }
@@ -21699,7 +21694,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
       "wins": 0,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 77.92666666666668,
+      "avgPointsAgainst": 78.92666666666668,
       "avgPointsFor": 120.35333333333331,
       "currentStreak": {
         "count": 3,
@@ -21867,9 +21862,9 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
       "wins": 0,
     },
   },
-  "leagueLosses": 48,
+  "leagueLosses": 46,
   "leagueTies": 0,
-  "leagueWins": 86,
+  "leagueWins": 80,
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
@@ -21980,21 +21975,21 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 109,
-    "digest": "35a3-5fc9464753232-1b10a4eb07cf3",
+    "count": 110,
+    "digest": "3617-184b0d2d6c12a3-195c046269d8d6",
     "head": [
       {
         "bestPick": {
-          "pick": 10,
-          "round": 2,
-          "year": 2023,
+          "pick": 11,
+          "round": 3,
+          "year": 2019,
         },
-        "playerId": "4039",
-        "playerName": "Cooper Kupp",
+        "playerId": "2309",
+        "playerName": "Amari Cooper",
         "timesDrafted": 2,
         "years": [
           2019,
-          2023,
+          2024,
         ],
       },
       {
@@ -22041,29 +22036,15 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
       },
       {
         "bestPick": {
-          "pick": 6,
-          "round": 2,
+          "pick": 11,
+          "round": 10,
           "year": 2019,
         },
-        "playerId": "1466",
-        "playerName": "Travis Kelce",
+        "playerId": "CHI",
+        "playerName": "Chicago Bears",
         "timesDrafted": 2,
         "years": [
-          2019,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 12,
-          "year": 2015,
-        },
-        "playerId": "110",
-        "playerName": "Stephen Gostkowski",
-        "timesDrafted": 2,
-        "years": [
-          2015,
+          2013,
           2019,
         ],
       },
@@ -22117,6 +22098,20 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
         },
         "playerId": "1195",
         "playerName": "Doug Martin",
+        "timesDrafted": 2,
+        "years": [
+          2015,
+          2016,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 7,
+          "year": 2015,
+        },
+        "playerId": "40",
+        "playerName": "Martellus Bennett",
         "timesDrafted": 2,
         "years": [
           2015,
@@ -22244,12 +22239,12 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
     {
       "championshipResult": "champion",
       "finalStanding": 3,
-      "leagueLosses": 7,
+      "leagueLosses": 5,
       "leagueTies": 0,
-      "leagueWins": 26,
+      "leagueWins": 20,
       "losses": 0,
       "madePlayoffs": true,
-      "pointsAgainst": 241.07999999999998,
+      "pointsAgainst": 244.07999999999998,
       "pointsFor": 326.38,
       "pointsStanding": 3,
       "scoringCrown": false,
@@ -22374,7 +22369,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 126,
-    "digest": "46a5-105f2cd45a9055-e223393ef5071",
+    "digest": "46a5-14483750c10ab5-3b474866b4e0b",
     "head": [
       {
         "matchup_id": 4,
@@ -22397,7 +22392,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
         "year": 2023,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 4,
         "opponentName": "Catch-22",
         "playerId": "IND",
         "playerName": "Indianapolis Colts",
@@ -22437,7 +22432,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
         "year": 2016,
       },
       {
-        "matchup_id": 2,
+        "matchup_id": 4,
         "opponentName": "Wolverhampton Wasters",
         "playerId": "4018",
         "playerName": "Joe Mixon",
@@ -22479,7 +22474,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
     ],
   },
   "totalLosses": 6,
-  "totalPointsAgainst": 1319.9,
+  "totalPointsAgainst": 1322.9,
   "totalPointsFor": 1439.9199999999998,
   "totalTies": 0,
   "totalWins": 8,
@@ -23634,7 +23629,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
       "wins": 0,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 101.5,
+      "avgPointsAgainst": 100.5,
       "avgPointsFor": 110.21000000000001,
       "currentStreak": {
         "count": 2,
@@ -23676,9 +23671,9 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
       "wins": 1,
     },
   },
-  "leagueLosses": 35,
+  "leagueLosses": 36,
   "leagueTies": 0,
-  "leagueWins": 52,
+  "leagueWins": 47,
   "managerId": "nick",
   "managerName": "nick",
   "mostCappedPlayers": {
@@ -23782,23 +23777,8 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "210c-1103508754baf9-a6e7591e83368",
+    "digest": "2107-a1828ad87ae6b-175ee9331d4c9f",
     "head": [
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 2,
-          "year": 2019,
-        },
-        "playerId": "4199",
-        "playerName": "Aaron Jones",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2018,
-          2019,
-        ],
-      },
       {
         "bestPick": {
           "pick": 9,
@@ -23810,20 +23790,6 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 9,
-          "round": 3,
-          "year": 2021,
-        },
-        "playerId": "1992",
-        "playerName": "Allen Robinson",
-        "timesDrafted": 2,
-        "years": [
-          2019,
           2021,
         ],
       },
@@ -23857,6 +23823,34 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
       },
       {
         "bestPick": {
+          "pick": 8,
+          "round": 5,
+          "year": 2017,
+        },
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
+        "timesDrafted": 2,
+        "years": [
+          2017,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 7,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4137",
+        "playerName": "James Conner",
+        "timesDrafted": 2,
+        "years": [
+          2018,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 4,
           "round": 1,
           "year": 2017,
@@ -23885,6 +23879,20 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
       },
       {
         "bestPick": {
+          "pick": 5,
+          "round": 7,
+          "year": 2018,
+        },
+        "playerId": "4199",
+        "playerName": "Aaron Jones",
+        "timesDrafted": 2,
+        "years": [
+          2017,
+          2018,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 9,
           "round": 1,
           "year": 2021,
@@ -23904,19 +23912,6 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
         },
         "playerId": "2449",
         "playerName": "Stefon Diggs",
-        "timesDrafted": 1,
-        "years": [
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 9,
-          "round": 4,
-          "year": 2021,
-        },
-        "playerId": "2309",
-        "playerName": "Amari Cooper",
         "timesDrafted": 1,
         "years": [
           2021,
@@ -23963,12 +23958,12 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
     {
       "championshipResult": "runner-up",
       "finalStanding": 1,
-      "leagueLosses": 8,
+      "leagueLosses": 9,
       "leagueTies": 0,
-      "leagueWins": 14,
+      "leagueWins": 9,
       "losses": 1,
       "madePlayoffs": true,
-      "pointsAgainst": 230.2,
+      "pointsAgainst": 228.2,
       "pointsFor": 195.60000000000002,
       "pointsStanding": 1,
       "scoringCrown": true,
@@ -24013,7 +24008,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 81,
-    "digest": "2e3f-d06d18a11e8b3-570d388ceef1",
+    "digest": "2e3f-1895244ac8fa6a-9a852e0b19b9a",
     "head": [
       {
         "matchup_id": 1,
@@ -24026,7 +24021,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
         "year": 2020,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 3,
         "opponentName": "King of Wishful Tinkering",
         "playerId": "4034",
         "playerName": "Christian McCaffrey",
@@ -24036,7 +24031,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
         "year": 2019,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 3,
         "opponentName": "King of Wishful Tinkering",
         "playerId": "3164",
         "playerName": "Ezekiel Elliott",
@@ -24118,7 +24113,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
     ],
   },
   "totalLosses": 4,
-  "totalPointsAgainst": 860.9000000000001,
+  "totalPointsAgainst": 858.9000000000001,
   "totalPointsFor": 831.88,
   "totalTies": 0,
   "totalWins": 5,
@@ -24471,9 +24466,9 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
       "wins": 1,
     },
   },
-  "leagueLosses": 54,
+  "leagueLosses": 51,
   "leagueTies": 0,
-  "leagueWins": 55,
+  "leagueWins": 54,
   "managerId": "rich",
   "managerName": "rich",
   "mostCappedPlayers": {
@@ -24575,7 +24570,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 96,
-    "digest": "2f49-b125ee9e31377-196731143978a7",
+    "digest": "2f42-abe68d8db6772-c2ec0c9f9cc5f",
     "head": [
       {
         "bestPick": {
@@ -24588,20 +24583,6 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 7,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "4137",
-        "playerName": "James Conner",
-        "timesDrafted": 2,
-        "years": [
-          2019,
           2024,
         ],
       },
@@ -24649,20 +24630,6 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
       },
       {
         "bestPick": {
-          "pick": 3,
-          "round": 2,
-          "year": 2021,
-        },
-        "playerId": "5892",
-        "playerName": "David Montgomery",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 7,
           "round": 3,
           "year": 2012,
@@ -24692,15 +24659,43 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
       {
         "bestPick": {
           "pick": 6,
-          "round": 1,
+          "round": 3,
           "year": 2020,
         },
-        "playerId": "5850",
-        "playerName": "Josh Jacobs",
+        "playerId": "4037",
+        "playerName": "Chris Godwin",
         "timesDrafted": 2,
         "years": [
           2019,
           2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 3,
+          "year": 2020,
+        },
+        "playerId": "4131",
+        "playerName": "Kenny Golladay",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4034",
+        "playerName": "Christian McCaffrey",
+        "timesDrafted": 2,
+        "years": [
+          2018,
+          2019,
         ],
       },
       {
@@ -24837,9 +24832,9 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 5,
-      "leagueLosses": 9,
+      "leagueLosses": 6,
       "leagueTies": 0,
-      "leagueWins": 2,
+      "leagueWins": 1,
       "losses": 1,
       "madePlayoffs": true,
       "pointsAgainst": 86.9,
@@ -24967,7 +24962,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 99,
-    "digest": "389e-9c4eecd19370d-fa669caec1a2c",
+    "digest": "389e-ef6363680c74d-1541b662b08c0d",
     "head": [
       {
         "matchup_id": 1,
@@ -24980,7 +24975,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
         "year": 2024,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 3,
         "opponentName": "King of Wishful Tinkering",
         "playerId": "4017",
         "playerName": "Deshaun Watson",
@@ -26793,7 +26788,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
     },
     "429243125446230016": {
       "avgPointsAgainst": 110.21000000000001,
-      "avgPointsFor": 101.5,
+      "avgPointsFor": 100.5,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -26855,9 +26850,9 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
       "wins": 0,
     },
   },
-  "leagueLosses": 66,
+  "leagueLosses": 64,
   "leagueTies": 0,
-  "leagueWins": 93,
+  "leagueWins": 87,
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
@@ -27232,13 +27227,13 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 4,
-      "leagueLosses": 10,
+      "leagueLosses": 8,
       "leagueTies": 0,
-      "leagueWins": 12,
+      "leagueWins": 6,
       "losses": 1,
       "madePlayoffs": true,
       "pointsAgainst": 192.98000000000002,
-      "pointsFor": 192.98000000000002,
+      "pointsFor": 190.98000000000002,
       "pointsStanding": 4,
       "scoringCrown": false,
       "ties": 0,
@@ -27362,10 +27357,10 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 153,
-    "digest": "56a4-be3a940b09f87-142b8d80c75e8b",
+    "digest": "56a4-18c6dadfb59c3d-19334659095e8b",
     "head": [
       {
-        "matchup_id": 1,
+        "matchup_id": 3,
         "opponentName": "Catch-22",
         "playerId": "4881",
         "playerName": "Lamar Jackson",
@@ -27455,7 +27450,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
         "year": 2024,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 3,
         "opponentName": "Catch-22",
         "playerId": "NE",
         "playerName": "New England Patriots",
@@ -27468,7 +27463,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
   },
   "totalLosses": 9,
   "totalPointsAgainst": 1695.38,
-  "totalPointsFor": 1712.16,
+  "totalPointsFor": 1710.16,
   "totalTies": 0,
   "totalWins": 8,
 }
@@ -27580,7 +27575,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "firstPlaceStandings": 1,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 94.93111111111108,
+      "avgPointsAgainst": 95.37555555555554,
       "avgPointsFor": 90.61444444444444,
       "currentStreak": {
         "count": 1,
@@ -27665,7 +27660,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 90.585,
-      "avgPointsFor": 100.72,
+      "avgPointsFor": 101.545,
       "currentStreak": {
         "count": 7,
         "type": "W",
@@ -27685,8 +27680,8 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "wins": 7,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 92.0925,
-      "avgPointsFor": 83.91625,
+      "avgPointsAgainst": 91.9675,
+      "avgPointsFor": 84.35375,
       "currentStreak": {
         "count": 5,
         "type": "L",
@@ -27706,7 +27701,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "wins": 5,
     },
     "428943291145265152": {
-      "avgPointsAgainst": 102.12888888888887,
+      "avgPointsAgainst": 103.62888888888887,
       "avgPointsFor": 98.54555555555557,
       "currentStreak": {
         "count": 1,
@@ -27727,7 +27722,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "wins": 8,
     },
     "429243125446230016": {
-      "avgPointsAgainst": 102.97,
+      "avgPointsAgainst": 104.47,
       "avgPointsFor": 79.6825,
       "currentStreak": {
         "count": 1,
@@ -27811,8 +27806,8 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "wins": 11,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 96.34555555555556,
-      "avgPointsFor": 94.47777777777777,
+      "avgPointsAgainst": 97.17888888888889,
+      "avgPointsFor": 94.55555555555556,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -27923,7 +27918,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 290,
-    "digest": "751b-161ccc57bfd2b2-1a7b812b54d551",
+    "digest": "750e-149d4c853b0768-28a2be22f0333",
     "head": [
       {
         "averageScore": 20.70470588235294,
@@ -28040,7 +28035,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5755-88e1624e57c5c-177dd5ccd32d98",
+    "digest": "5766-c517e59e2f7a1-31445582cd15",
     "head": [
       {
         "bestPick": {
@@ -28057,6 +28052,22 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
           2020,
           2021,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 11,
+          "year": 2018,
+        },
+        "playerId": "LAR",
+        "playerName": "Los Angeles Rams",
+        "timesDrafted": 4,
+        "years": [
+          2016,
+          2018,
+          2019,
+          2026,
         ],
       },
       {
@@ -28093,16 +28104,16 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 3,
-          "round": 11,
-          "year": 2018,
+          "pick": 2,
+          "round": 1,
+          "year": 2019,
         },
-        "playerId": "LAR",
-        "playerName": "Los Angeles Rams",
+        "playerId": "4035",
+        "playerName": "Alvin Kamara",
         "timesDrafted": 3,
         "years": [
-          2016,
-          2018,
+          2019,
+          2021,
           2026,
         ],
       },
@@ -28153,35 +28164,6 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 9,
-          "round": 2,
-          "year": 2018,
-        },
-        "playerId": "2168",
-        "playerName": "Devonta Freeman",
-        "timesDrafted": 3,
-        "years": [
-          2016,
-          2018,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 1,
-          "year": 2021,
-        },
-        "playerId": "4035",
-        "playerName": "Alvin Kamara",
-        "timesDrafted": 2,
-        "years": [
-          2021,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 5,
           "round": 13,
           "year": 2026,
@@ -28192,6 +28174,20 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
         "years": [
           2025,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 10,
+          "round": 14,
+          "year": 2025,
+        },
+        "playerId": "MIN",
+        "playerName": "Minnesota Vikings",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2025,
         ],
       },
     ],
@@ -28320,8 +28316,8 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "leagueWins": 72,
       "losses": 6,
       "madePlayoffs": true,
-      "pointsAgainst": 1189.0600000000002,
-      "pointsFor": 1235.14,
+      "pointsAgainst": 1249.0600000000002,
+      "pointsFor": 1250.1399999999999,
       "pointsStanding": 5,
       "scoringCrown": false,
       "ties": 0,
@@ -28445,7 +28441,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c064-793950076dc9c-d2c40f1605caf",
+    "digest": "3c063-101197e60b08a2-53e7acc83618b",
     "head": [
       {
         "matchup_id": 6,
@@ -28550,8 +28546,8 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
     ],
   },
   "totalLosses": 89,
-  "totalPointsAgainst": 17775.56,
-  "totalPointsFor": 18155.28,
+  "totalPointsAgainst": 17790.56,
+  "totalPointsFor": 18162.68,
   "totalTies": 0,
   "totalWins": 101,
 }
@@ -30384,7 +30380,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
     },
     "337222928615612416": {
       "avgPointsAgainst": 89.40571428571427,
-      "avgPointsFor": 103.22761904761903,
+      "avgPointsFor": 103.27047619047619,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -30405,12 +30401,12 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
     },
     "337226046606704640": {
       "avgPointsAgainst": 98.86,
-      "avgPointsFor": 105.54705882352941,
+      "avgPointsFor": 107.78235294117647,
       "currentStreak": {
         "count": 5,
         "type": "L",
       },
-      "losses": 9,
+      "losses": 8,
       "managerId": "337226046606704640",
       "managerName": "htc",
       "mostRecent": {
@@ -30422,7 +30418,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
       },
       "teamName": "21st & Hine",
       "ties": 0,
-      "wins": 8,
+      "wins": 9,
     },
     "337297176361201664": {
       "avgPointsAgainst": 94.98375000000003,
@@ -30446,7 +30442,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
       "wins": 10,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 92.514,
+      "avgPointsAgainst": 92.314,
       "avgPointsFor": 116.744,
       "currentStreak": {
         "count": 1,
@@ -30488,7 +30484,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
       "wins": 12,
     },
     "428943291145265152": {
-      "avgPointsAgainst": 102.50470588235295,
+      "avgPointsAgainst": 102.2694117647059,
       "avgPointsFor": 101.59411764705881,
       "currentStreak": {
         "count": 3,
@@ -30698,9 +30694,9 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
       "wins": 6,
     },
   },
-  "leagueLosses": 831,
+  "leagueLosses": 822,
   "leagueTies": 2,
-  "leagueWins": 1201,
+  "leagueWins": 1210,
   "managerId": "dix",
   "managerName": "dix",
   "mostCappedPlayers": {
@@ -30822,8 +30818,8 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 186,
-    "digest": "5bf9-1e9f222f18de4f-1fff703ed9e70a",
+    "count": 183,
+    "digest": "5a80-1b8c0f6ee0742b-1ed6149f49e331",
     "head": [
       {
         "bestPick": {
@@ -30839,36 +30835,6 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
           2022,
           2024,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 2,
-          "year": 2020,
-        },
-        "playerId": "4046",
-        "playerName": "Patrick Mahomes",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 8,
-          "year": 2020,
-        },
-        "playerId": "4227",
-        "playerName": "Harrison Butker",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2023,
         ],
       },
       {
@@ -30899,6 +30865,20 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
           2013,
           2014,
           2018,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 2,
+          "year": 2020,
+        },
+        "playerId": "4046",
+        "playerName": "Patrick Mahomes",
+        "timesDrafted": 2,
+        "years": [
+          2020,
+          2026,
         ],
       },
       {
@@ -30941,6 +30921,20 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
         "years": [
           2023,
           2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 8,
+          "round": 8,
+          "year": 2024,
+        },
+        "playerId": "5248",
+        "playerName": "Gus Edwards",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2024,
         ],
       },
       {
@@ -31092,17 +31086,17 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 2,
-      "leagueLosses": 64,
+      "leagueLosses": 55,
       "leagueTies": 0,
-      "leagueWins": 79,
-      "losses": 6,
+      "leagueWins": 88,
+      "losses": 5,
       "madePlayoffs": true,
-      "pointsAgainst": 1265.9399999999998,
-      "pointsFor": 1326.2000000000003,
+      "pointsAgainst": 1259.9399999999998,
+      "pointsFor": 1365.1,
       "pointsStanding": 2,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 7,
+      "wins": 8,
       "year": 2019,
     },
     {
@@ -31222,7 +31216,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3cc33-171eb519f95595-adf0d9e074a2c",
+    "digest": "3cc33-1adc46d3f8868a-1dfbc5d54a99c9",
     "head": [
       {
         "matchup_id": 5,
@@ -31285,7 +31279,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
         "year": 2017,
       },
       {
-        "matchup_id": 5,
+        "matchup_id": 6,
         "opponentName": "Tha Dollar",
         "playerId": "2216",
         "playerName": "Mike Evans",
@@ -31315,7 +31309,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
         "year": 2016,
       },
       {
-        "matchup_id": 4,
+        "matchup_id": 3,
         "opponentName": "Pimpin Ain't Leesy",
         "playerId": "2378",
         "playerName": "Tevin Coleman",
@@ -31327,8 +31321,8 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
     ],
   },
   "totalLosses": 77,
-  "totalPointsAgainst": 17672.379999999997,
-  "totalPointsFor": 19125.010000000002,
+  "totalPointsAgainst": 17671.68,
+  "totalPointsFor": 19125.120000000003,
   "totalTies": 0,
   "totalWins": 113,
 }
@@ -31441,7 +31435,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "h2hRecords": {
     "337210029620883456": {
       "avgPointsAgainst": 92.00333333333334,
-      "avgPointsFor": 87.64888888888888,
+      "avgPointsFor": 87.53777777777776,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -31482,7 +31476,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       "wins": 6,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 91.2625,
+      "avgPointsAgainst": 91.1375,
       "avgPointsFor": 83.73000000000002,
       "currentStreak": {
         "count": 4,
@@ -31503,7 +31497,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       "wins": 5,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 87.39125,
+      "avgPointsAgainst": 87.26625,
       "avgPointsFor": 87.28,
       "currentStreak": {
         "count": 1,
@@ -31545,7 +31539,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       "wins": 6,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 96.14571428571426,
+      "avgPointsAgainst": 96.58857142857143,
       "avgPointsFor": 75.84,
       "currentStreak": {
         "count": 1,
@@ -31566,7 +31560,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       "wins": 2,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 90.6375,
+      "avgPointsAgainst": 90.3875,
       "avgPointsFor": 82.24,
       "currentStreak": {
         "count": 1,
@@ -31651,7 +31645,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     },
     "77140390129844224": {
       "avgPointsAgainst": 96.35764705882355,
-      "avgPointsFor": 87.83411764705883,
+      "avgPointsFor": 87.7164705882353,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -31776,14 +31770,14 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       "wins": 5,
     },
   },
-  "leagueLosses": 1219,
+  "leagueLosses": 1223,
   "leagueTies": 0,
-  "leagueWins": 815,
+  "leagueWins": 811,
   "managerId": "fin",
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 254,
-    "digest": "65f7-74e9bb182b0c6-510b7dbcd1633",
+    "digest": "65ff-2f6ce662bf3e4-17761d8220c9ce",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -31901,8 +31895,8 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 176,
-    "digest": "572b-d4b3136f04d94-51022f3083338",
+    "count": 175,
+    "digest": "56be-5e16041f083fe-4b3a18c10b6d2",
     "head": [
       {
         "bestPick": {
@@ -31912,9 +31906,8 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
         },
         "playerId": "5967",
         "playerName": "Tony Pollard",
-        "timesDrafted": 5,
+        "timesDrafted": 4,
         "years": [
-          2019,
           2022,
           2023,
           2024,
@@ -31984,6 +31977,21 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       },
       {
         "bestPick": {
+          "pick": 10,
+          "round": 1,
+          "year": 2021,
+        },
+        "playerId": "2133",
+        "playerName": "Davante Adams",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2019,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 7,
           "round": 2,
           "year": 2017,
@@ -32040,21 +32048,6 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
           2015,
           2016,
           2017,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 5,
-          "year": 2012,
-        },
-        "playerId": "142",
-        "playerName": "Tony Romo",
-        "timesDrafted": 3,
-        "years": [
-          2012,
-          2014,
-          2015,
         ],
       },
     ],
@@ -32178,13 +32171,13 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 10,
-      "leagueLosses": 76,
+      "leagueLosses": 80,
       "leagueTies": 0,
-      "leagueWins": 67,
+      "leagueWins": 63,
       "losses": 9,
       "madePlayoffs": false,
-      "pointsAgainst": 1342.12,
-      "pointsFor": 1186.24,
+      "pointsAgainst": 1337.22,
+      "pointsFor": 1182.24,
       "pointsStanding": 9,
       "scoringCrown": false,
       "ties": 0,
@@ -32308,7 +32301,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c7d2-16714239bc6259-1327308150f091",
+    "digest": "3c7f1-afc4caa384a46-12cc0c265f6bb5",
     "head": [
       {
         "matchup_id": 6,
@@ -32413,8 +32406,8 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     ],
   },
   "totalLosses": 112,
-  "totalPointsAgainst": 17698.12,
-  "totalPointsFor": 16655.600000000002,
+  "totalPointsAgainst": 17697.92,
+  "totalPointsFor": 16656.600000000002,
   "totalTies": 0,
   "totalWins": 78,
 }
@@ -32547,8 +32540,8 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       "wins": 7,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 92.26777777777778,
-      "avgPointsFor": 91.52333333333331,
+      "avgPointsAgainst": 92.15666666666667,
+      "avgPointsFor": 91.68999999999998,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -32568,8 +32561,8 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       "wins": 8,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 95.26749999999998,
-      "avgPointsFor": 95.92875,
+      "avgPointsAgainst": 95.22374999999998,
+      "avgPointsFor": 95.85999999999999,
       "currentStreak": {
         "count": 3,
         "type": "W",
@@ -32590,7 +32583,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
     },
     "337297176361201664": {
       "avgPointsAgainst": 90.61444444444444,
-      "avgPointsFor": 94.93111111111108,
+      "avgPointsFor": 95.37555555555554,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -32632,7 +32625,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
     },
     "411186928751230976": {
       "avgPointsAgainst": 91.82250000000002,
-      "avgPointsFor": 95.32999999999998,
+      "avgPointsFor": 95.5925,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -32694,7 +32687,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       "wins": 2,
     },
     "438629899490553856": {
-      "avgPointsAgainst": 87.64888888888888,
+      "avgPointsAgainst": 87.53777777777776,
       "avgPointsFor": 92.00333333333334,
       "currentStreak": {
         "count": 2,
@@ -32737,7 +32730,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
     },
     "77140390129844224": {
       "avgPointsAgainst": 98.1711111111111,
-      "avgPointsFor": 99.2588888888889,
+      "avgPointsFor": 99.42555555555558,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -32869,7 +32862,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 249,
-    "digest": "644f-1c00e6591ef8c1-1fb09f044a3065",
+    "digest": "6444-192dae6add6401-1225d152a5661e",
     "head": [
       {
         "averageScore": 6.653846153846154,
@@ -32986,7 +32979,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "58f9-17d046fff74e30-2879dbb12823b",
+    "digest": "5903-11eab34b3e610d-1288d4d117ed77",
     "head": [
       {
         "bestPick": {
@@ -33037,32 +33030,17 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       },
       {
         "bestPick": {
-          "pick": 11,
-          "round": 3,
-          "year": 2020,
-        },
-        "playerId": "1689",
-        "playerName": "Adam Thielen",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2019,
-          2020,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 6,
           "round": 1,
-          "year": 2012,
+          "year": 2019,
         },
-        "playerId": "676",
-        "playerName": "LeSean McCoy",
+        "playerId": "4988",
+        "playerName": "Nick Chubb",
         "timesDrafted": 3,
         "years": [
-          2012,
-          2016,
           2019,
+          2021,
+          2025,
         ],
       },
       {
@@ -33135,6 +33113,20 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
         "years": [
           2024,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "4037",
+        "playerName": "Chris Godwin",
+        "timesDrafted": 2,
+        "years": [
+          2018,
+          2025,
         ],
       },
     ],
@@ -33263,8 +33255,8 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       "leagueWins": 48,
       "losses": 8,
       "madePlayoffs": false,
-      "pointsAgainst": 1235.64,
-      "pointsFor": 1052,
+      "pointsAgainst": 1230.94,
+      "pointsFor": 1069.1000000000001,
       "pointsStanding": 12,
       "scoringCrown": false,
       "ties": 0,
@@ -33387,8 +33379,8 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "teamName": "Bush Johnson",
   "thirdPlace": 0,
   "topPerformances": {
-    "count": 1709,
-    "digest": "3c6f9-15c1ba48bf1468-147e8c069f1a9b",
+    "count": 1710,
+    "digest": "3c78d-18acd7f98518a3-788d4f279483a",
     "head": [
       {
         "matchup_id": 5,
@@ -33494,7 +33486,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   },
   "totalLosses": 84,
   "totalPointsAgainst": 17433.399999999998,
-  "totalPointsFor": 18025.24,
+  "totalPointsFor": 18030.14,
   "totalTies": 1,
   "totalWins": 105,
 }
@@ -33606,8 +33598,8 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "firstPlaceStandings": 0,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 95.92875,
-      "avgPointsFor": 95.26749999999998,
+      "avgPointsAgainst": 95.85999999999999,
+      "avgPointsFor": 95.22374999999998,
       "currentStreak": {
         "count": 3,
         "type": "L",
@@ -33627,13 +33619,13 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       "wins": 7,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 105.54705882352941,
+      "avgPointsAgainst": 107.78235294117647,
       "avgPointsFor": 98.86,
       "currentStreak": {
         "count": 5,
         "type": "W",
       },
-      "losses": 8,
+      "losses": 9,
       "managerId": "337221174670938112",
       "managerName": "dix",
       "mostRecent": {
@@ -33645,11 +33637,11 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       },
       "teamName": "SIIIBON",
       "ties": 0,
-      "wins": 9,
+      "wins": 8,
     },
     "337222928615612416": {
       "avgPointsAgainst": 87.20842105263159,
-      "avgPointsFor": 95.04315789473685,
+      "avgPointsFor": 94.93789473684211,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -33691,7 +33683,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 93.80499999999999,
-      "avgPointsFor": 101.035,
+      "avgPointsFor": 100.91,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -33733,7 +33725,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 101.82625000000002,
-      "avgPointsFor": 93.01875000000001,
+      "avgPointsFor": 92.76875000000001,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -33775,7 +33767,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
     },
     "438629899490553856": {
       "avgPointsAgainst": 87.28,
-      "avgPointsFor": 87.39125,
+      "avgPointsFor": 87.26625,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -33816,13 +33808,13 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       "wins": 4,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 102.0094117647059,
-      "avgPointsFor": 101.18117647058823,
+      "avgPointsAgainst": 102.36235294117648,
+      "avgPointsFor": 101.0635294117647,
       "currentStreak": {
         "count": 1,
         "type": "W",
       },
-      "losses": 8,
+      "losses": 9,
       "managerId": "77140390129844224",
       "managerName": "thd",
       "mostRecent": {
@@ -33834,10 +33826,10 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       },
       "teamName": "King of Wishful Tinkering",
       "ties": 0,
-      "wins": 9,
+      "wins": 8,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 82.18222222222221,
+      "avgPointsAgainst": 82.52444444444444,
       "avgPointsFor": 96.72222222222223,
       "currentStreak": {
         "count": 1,
@@ -33900,9 +33892,9 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       "wins": 2,
     },
   },
-  "leagueLosses": 953,
+  "leagueLosses": 956,
   "leagueTies": 0,
-  "leagueWins": 955,
+  "leagueWins": 952,
   "managerId": "htc",
   "managerName": "htc",
   "mostCappedPlayers": {
@@ -34022,7 +34014,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 177,
-    "digest": "5777-d91c532e7434a-b0e8c9cd66529",
+    "digest": "5792-5334a3f7560e7-18d9e424d4169f",
     "head": [
       {
         "bestPick": {
@@ -34054,21 +34046,6 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
           2020,
           2023,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 11,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "1426",
-        "playerName": "DeAndre Hopkins",
-        "timesDrafted": 3,
-        "years": [
-          2018,
-          2019,
-          2022,
         ],
       },
       {
@@ -34165,6 +34142,20 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
         },
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2022,
+        },
+        "playerId": "6083",
+        "playerName": "Matt Gay",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -34276,17 +34267,17 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 11,
-      "leagueLosses": 80,
+      "leagueLosses": 83,
       "leagueTies": 0,
-      "leagueWins": 63,
-      "losses": 7,
+      "leagueWins": 60,
+      "losses": 9,
       "madePlayoffs": false,
-      "pointsAgainst": 1175.6,
-      "pointsFor": 1161.06,
+      "pointsAgainst": 1224.6599999999996,
+      "pointsFor": 1149.36,
       "pointsStanding": 10,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 6,
+      "wins": 4,
       "year": 2019,
     },
     {
@@ -34406,7 +34397,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1584,
-    "digest": "381eb-3d3c182afc3be-1ca2603cd199f9",
+    "digest": "381eb-280f14b488a83-11e909af6fb9e1",
     "head": [
       {
         "matchup_id": 1,
@@ -34511,7 +34502,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
     ],
   },
   "totalLosses": 88,
-  "totalPointsAgainst": 16459.340000000004,
+  "totalPointsAgainst": 16461.24,
   "totalPointsFor": 16730.640000000003,
   "totalTies": 0,
   "totalWins": 88,
@@ -34646,7 +34637,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     },
     "337221174670938112": {
       "avgPointsAgainst": 101.59411764705881,
-      "avgPointsFor": 102.50470588235295,
+      "avgPointsFor": 102.2694117647059,
       "currentStreak": {
         "count": 3,
         "type": "W",
@@ -34687,7 +34678,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "wins": 12,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 93.01875000000001,
+      "avgPointsAgainst": 92.76875000000001,
       "avgPointsFor": 101.82625000000002,
       "currentStreak": {
         "count": 1,
@@ -34709,7 +34700,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     },
     "337297176361201664": {
       "avgPointsAgainst": 98.54555555555557,
-      "avgPointsFor": 102.12888888888887,
+      "avgPointsFor": 103.62888888888887,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -34729,7 +34720,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "wins": 10,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 93.72909090909091,
+      "avgPointsAgainst": 93.54727272727273,
       "avgPointsFor": 97.21454545454544,
       "currentStreak": {
         "count": 2,
@@ -34750,7 +34741,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "wins": 6,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 92.6,
+      "avgPointsAgainst": 92.51875000000001,
       "avgPointsFor": 104.91875,
       "currentStreak": {
         "count": 1,
@@ -34834,7 +34825,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "wins": 2,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 98.31666666666666,
+      "avgPointsAgainst": 98.20555555555556,
       "avgPointsFor": 93.68777777777778,
       "currentStreak": {
         "count": 2,
@@ -34960,14 +34951,14 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "wins": 4,
     },
   },
-  "leagueLosses": 850,
+  "leagueLosses": 847,
   "leagueTies": 2,
-  "leagueWins": 1182,
+  "leagueWins": 1185,
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
-    "count": 339,
-    "digest": "889c-17f15d70c99691-19e890676373ae",
+    "count": 340,
+    "digest": "88de-1d40c7ce4f79a6-18e2f5c5db0a3a",
     "head": [
       {
         "averageScore": 22.006,
@@ -35091,8 +35082,8 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 181,
-    "digest": "59bf-45c10352180b9-ac3515473426f",
+    "count": 183,
+    "digest": "5aa8-32c61561a5ca9-1a515ad9fde770",
     "head": [
       {
         "bestPick": {
@@ -35151,21 +35142,6 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
         "timesDrafted": 3,
         "years": [
           2018,
-          2020,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 6,
-          "round": 2,
-          "year": 2019,
-        },
-        "playerId": "1466",
-        "playerName": "Travis Kelce",
-        "timesDrafted": 3,
-        "years": [
-          2019,
           2020,
           2021,
         ],
@@ -35240,6 +35216,20 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
         "timesDrafted": 2,
         "years": [
           2022,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2026,
+        },
+        "playerId": "8138",
+        "playerName": "James Cook",
+        "timesDrafted": 2,
+        "years": [
+          2023,
           2026,
         ],
       },
@@ -35364,13 +35354,13 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     {
       "championshipResult": "champion",
       "finalStanding": 3,
-      "leagueLosses": 56,
+      "leagueLosses": 53,
       "leagueTies": 0,
-      "leagueWins": 87,
+      "leagueWins": 90,
       "losses": 5,
       "madePlayoffs": true,
-      "pointsAgainst": 1243.68,
-      "pointsFor": 1302.3,
+      "pointsAgainst": 1234.3799999999999,
+      "pointsFor": 1325.3,
       "pointsStanding": 3,
       "scoringCrown": false,
       "ties": 0,
@@ -35493,8 +35483,8 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "teamName": "Kansas City Chumps",
   "thirdPlace": 0,
   "topPerformances": {
-    "count": 1709,
-    "digest": "3c3fb-11802174177bb3-1832b2f370fa2d",
+    "count": 1710,
+    "digest": "3c489-291ebbedb996b-13ae1e7f1f70e9",
     "head": [
       {
         "matchup_id": 3,
@@ -35599,7 +35589,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     ],
   },
   "totalLosses": 84,
-  "totalPointsAgainst": 18074.66,
+  "totalPointsAgainst": 18074.280000000002,
   "totalPointsFor": 18947.179999999997,
   "totalTies": 1,
   "totalWins": 105,
@@ -37114,7 +37104,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
     },
     "337226046606704640": {
       "avgPointsAgainst": 96.72222222222223,
-      "avgPointsFor": 82.18222222222221,
+      "avgPointsFor": 82.52444444444444,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -37134,8 +37124,8 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
       "wins": 6,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 94.47777777777777,
-      "avgPointsFor": 96.34555555555556,
+      "avgPointsAgainst": 94.55555555555556,
+      "avgPointsFor": 97.17888888888889,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -37176,8 +37166,8 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
       "wins": 5,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 89.65692307692308,
-      "avgPointsFor": 90.87384615384616,
+      "avgPointsAgainst": 90.33384615384617,
+      "avgPointsFor": 90.56615384615385,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -37281,7 +37271,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
       "wins": 6,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 92.85176470588236,
+      "avgPointsAgainst": 92.73411764705882,
       "avgPointsFor": 81.3294117647059,
       "currentStreak": {
         "count": 1,
@@ -37386,14 +37376,14 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
       "wins": 4,
     },
   },
-  "leagueLosses": 1106,
+  "leagueLosses": 1104,
   "leagueTies": 1,
-  "leagueWins": 927,
+  "leagueWins": 929,
   "managerId": "kitch",
   "managerName": "kitch",
   "mostCappedPlayers": {
-    "count": 336,
-    "digest": "8626-16177cf30b0d26-64d7c7d5cc04e",
+    "count": 337,
+    "digest": "8699-cc8f6d7b319fb-157d03392c4859",
     "head": [
       {
         "averageScore": 21.866875,
@@ -37511,8 +37501,8 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 191,
-    "digest": "5e44-f9ee5b7183e9-1280a01a428732",
+    "count": 194,
+    "digest": "5f99-16628ce8ecaf7c-164bb780ffc836",
     "head": [
       {
         "bestPick": {
@@ -37558,6 +37548,21 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
           2020,
           2022,
           2023,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 5,
+          "round": 4,
+          "year": 2019,
+        },
+        "playerId": "2320",
+        "playerName": "Melvin Gordon",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2021,
         ],
       },
       {
@@ -37644,20 +37649,6 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
         "years": [
           2020,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 8,
-          "round": 14,
-          "year": 2013,
-        },
-        "playerId": "GB",
-        "playerName": "Green Bay Packers",
-        "timesDrafted": 2,
-        "years": [
-          2013,
-          2023,
         ],
       },
     ],
@@ -37781,13 +37772,13 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 12,
-      "leagueLosses": 86,
+      "leagueLosses": 84,
       "leagueTies": 0,
-      "leagueWins": 57,
+      "leagueWins": 59,
       "losses": 9,
       "madePlayoffs": false,
-      "pointsAgainst": 1248.8,
-      "pointsFor": 1131.5200000000002,
+      "pointsAgainst": 1257,
+      "pointsFor": 1148.68,
       "pointsStanding": 11,
       "scoringCrown": false,
       "ties": 0,
@@ -37911,7 +37902,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c6e4-19494c119a00cd-f655bfb5c3477",
+    "digest": "3c6f8-2b585222bb9b2-d5f457a58390",
     "head": [
       {
         "matchup_id": 4,
@@ -38016,8 +38007,8 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
     ],
   },
   "totalLosses": 106,
-  "totalPointsAgainst": 17905.219999999998,
-  "totalPointsFor": 17063.38,
+  "totalPointsAgainst": 17914.619999999995,
+  "totalPointsFor": 17074.38,
   "totalTies": 0,
   "totalWins": 84,
 }
@@ -38118,7 +38109,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
     },
   ],
   "bestPointsSeason": {
-    "points": 1380.58,
+    "points": 1409.58,
     "year": 2019,
   },
   "bestWinsSeason": {
@@ -38214,7 +38205,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
     },
     "337297176361201664": {
       "avgPointsAgainst": 79.6825,
-      "avgPointsFor": 102.97,
+      "avgPointsFor": 104.47,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -38235,7 +38226,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 89.17333333333333,
-      "avgPointsFor": 86.62666666666667,
+      "avgPointsFor": 87.29333333333334,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -38256,7 +38247,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
     },
     "411186928751230976": {
       "avgPointsAgainst": 98.53200000000001,
-      "avgPointsFor": 116.232,
+      "avgPointsFor": 119.232,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -38381,9 +38372,9 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
       "wins": 1,
     },
   },
-  "leagueLosses": 291,
+  "leagueLosses": 289,
   "leagueTies": 0,
-  "leagueWins": 435,
+  "leagueWins": 437,
   "managerId": "nick",
   "managerName": "nick",
   "mostCappedPlayers": {
@@ -38491,23 +38482,8 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "210c-1103508754baf9-a6e7591e83368",
+    "digest": "2107-a1828ad87ae6b-175ee9331d4c9f",
     "head": [
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 2,
-          "year": 2019,
-        },
-        "playerId": "4199",
-        "playerName": "Aaron Jones",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2018,
-          2019,
-        ],
-      },
       {
         "bestPick": {
           "pick": 9,
@@ -38519,20 +38495,6 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 9,
-          "round": 3,
-          "year": 2021,
-        },
-        "playerId": "1992",
-        "playerName": "Allen Robinson",
-        "timesDrafted": 2,
-        "years": [
-          2019,
           2021,
         ],
       },
@@ -38566,6 +38528,34 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
       },
       {
         "bestPick": {
+          "pick": 8,
+          "round": 5,
+          "year": 2017,
+        },
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
+        "timesDrafted": 2,
+        "years": [
+          2017,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 7,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4137",
+        "playerName": "James Conner",
+        "timesDrafted": 2,
+        "years": [
+          2018,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 4,
           "round": 1,
           "year": 2017,
@@ -38594,6 +38584,20 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
       },
       {
         "bestPick": {
+          "pick": 5,
+          "round": 7,
+          "year": 2018,
+        },
+        "playerId": "4199",
+        "playerName": "Aaron Jones",
+        "timesDrafted": 2,
+        "years": [
+          2017,
+          2018,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 9,
           "round": 1,
           "year": 2021,
@@ -38613,19 +38617,6 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
         },
         "playerId": "2449",
         "playerName": "Stefon Diggs",
-        "timesDrafted": 1,
-        "years": [
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 9,
-          "round": 4,
-          "year": 2021,
-        },
-        "playerId": "2309",
-        "playerName": "Amari Cooper",
         "timesDrafted": 1,
         "years": [
           2021,
@@ -38672,13 +38663,13 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
     {
       "championshipResult": "runner-up",
       "finalStanding": 1,
-      "leagueLosses": 47,
+      "leagueLosses": 45,
       "leagueTies": 0,
-      "leagueWins": 96,
+      "leagueWins": 98,
       "losses": 4,
       "madePlayoffs": true,
       "pointsAgainst": 1177.68,
-      "pointsFor": 1380.58,
+      "pointsFor": 1409.58,
       "pointsStanding": 1,
       "scoringCrown": true,
       "ties": 0,
@@ -38722,10 +38713,10 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 594,
-    "digest": "14fc1-1c80f619a9355e-1cd79ee99c748f",
+    "digest": "14fc1-3855d5f30595e-151eb0daf07067",
     "head": [
       {
-        "matchup_id": 4,
+        "matchup_id": 2,
         "opponentName": "The Unicorn",
         "playerId": "4199",
         "playerName": "Aaron Jones",
@@ -38735,7 +38726,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
         "year": 2019,
       },
       {
-        "matchup_id": 4,
+        "matchup_id": 2,
         "opponentName": "The Unicorn",
         "playerId": "4034",
         "playerName": "Christian McCaffrey",
@@ -38805,7 +38796,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
         "year": 2017,
       },
       {
-        "matchup_id": 2,
+        "matchup_id": 1,
         "opponentName": "Bush Johnson",
         "playerId": "4034",
         "playerName": "Christian McCaffrey",
@@ -38828,7 +38819,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   },
   "totalLosses": 24,
   "totalPointsAgainst": 6016.9400000000005,
-  "totalPointsFor": 6712.86,
+  "totalPointsFor": 6716.86,
   "totalTies": 0,
   "totalWins": 42,
 }
@@ -39651,8 +39642,8 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "firstPlaceStandings": 4,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 91.52333333333331,
-      "avgPointsFor": 92.26777777777778,
+      "avgPointsAgainst": 91.68999999999998,
+      "avgPointsFor": 92.15666666666667,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -39672,7 +39663,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       "wins": 10,
     },
     "337221174670938112": {
-      "avgPointsAgainst": 103.22761904761903,
+      "avgPointsAgainst": 103.27047619047619,
       "avgPointsFor": 89.40571428571427,
       "currentStreak": {
         "count": 1,
@@ -39693,7 +39684,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       "wins": 7,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 95.04315789473685,
+      "avgPointsAgainst": 94.93789473684211,
       "avgPointsFor": 87.20842105263159,
       "currentStreak": {
         "count": 1,
@@ -39736,7 +39727,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     },
     "359110473351696384": {
       "avgPointsAgainst": 100.63250000000001,
-      "avgPointsFor": 100.185,
+      "avgPointsFor": 99.935,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -39756,8 +39747,8 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       "wins": 4,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 87.43866666666666,
-      "avgPointsFor": 93.23733333333332,
+      "avgPointsAgainst": 87.50533333333333,
+      "avgPointsFor": 93.104,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -39820,7 +39811,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     },
     "438629899490553856": {
       "avgPointsAgainst": 83.73000000000002,
-      "avgPointsFor": 91.2625,
+      "avgPointsFor": 91.1375,
       "currentStreak": {
         "count": 4,
         "type": "W",
@@ -39862,7 +39853,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     },
     "77140390129844224": {
       "avgPointsAgainst": 98.27666666666666,
-      "avgPointsFor": 95.07666666666665,
+      "avgPointsFor": 94.96555555555555,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -39987,9 +39978,9 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       "wins": 3,
     },
   },
-  "leagueLosses": 1066,
+  "leagueLosses": 1067,
   "leagueTies": 0,
-  "leagueWins": 968,
+  "leagueWins": 967,
   "managerId": "rich",
   "managerName": "rich",
   "mostCappedPlayers": {
@@ -40107,23 +40098,23 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 192,
-    "digest": "5ed8-fe99831507df8-1a79f9f28b0890",
+    "count": 194,
+    "digest": "5fc9-99551ca953d4f-cb80ba9bedc18",
     "head": [
       {
         "bestPick": {
-          "pick": 2,
-          "round": 3,
-          "year": 2013,
+          "pick": 3,
+          "round": 1,
+          "year": 2022,
         },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
+        "playerId": "4034",
+        "playerName": "Christian McCaffrey",
         "timesDrafted": 4,
         "years": [
-          2013,
-          2014,
-          2016,
+          2017,
+          2018,
           2019,
+          2022,
         ],
       },
       {
@@ -40143,36 +40134,6 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       },
       {
         "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "BAL",
-        "playerName": "Baltimore Ravens",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2022,
-          2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2022,
-        },
-        "playerId": "4034",
-        "playerName": "Christian McCaffrey",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2018,
-          2022,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 3,
           "round": 2,
           "year": 2015,
@@ -40184,6 +40145,21 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
           2012,
           2015,
           2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 3,
+          "year": 2013,
+        },
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
+        "timesDrafted": 3,
+        "years": [
+          2013,
+          2014,
+          2016,
         ],
       },
       {
@@ -40236,6 +40212,20 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
         },
         "playerId": "8112",
         "playerName": "Drake London",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "BAL",
+        "playerName": "Baltimore Ravens",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -40377,13 +40367,13 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 5,
-      "leagueLosses": 72,
+      "leagueLosses": 73,
       "leagueTies": 0,
-      "leagueWins": 71,
+      "leagueWins": 70,
       "losses": 5,
       "madePlayoffs": true,
-      "pointsAgainst": 1124.0600000000002,
-      "pointsFor": 1212.84,
+      "pointsAgainst": 1126.96,
+      "pointsFor": 1202.84,
       "pointsStanding": 7,
       "scoringCrown": false,
       "ties": 0,
@@ -40507,7 +40497,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3bf12-f25ac728cb0f0-147e49c847d960",
+    "digest": "3bf12-149de47dbf192-743417fb50fcc",
     "head": [
       {
         "matchup_id": 6,
@@ -40520,7 +40510,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
         "year": 2024,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 5,
         "opponentName": "King of Wishful Tinkering",
         "playerId": "4017",
         "playerName": "Deshaun Watson",
@@ -40612,7 +40602,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     ],
   },
   "totalLosses": 101,
-  "totalPointsAgainst": 18171.18,
+  "totalPointsAgainst": 18171.28,
   "totalPointsFor": 17507.719999999998,
   "totalTies": 0,
   "totalWins": 89,
@@ -40747,7 +40737,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     },
     "337221174670938112": {
       "avgPointsAgainst": 116.744,
-      "avgPointsFor": 92.514,
+      "avgPointsFor": 92.314,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -40767,7 +40757,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 3,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 100.185,
+      "avgPointsAgainst": 99.935,
       "avgPointsFor": 100.63250000000001,
       "currentStreak": {
         "count": 2,
@@ -40788,7 +40778,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 4,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 101.035,
+      "avgPointsAgainst": 100.91,
       "avgPointsFor": 93.80499999999999,
       "currentStreak": {
         "count": 2,
@@ -40809,7 +40799,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 3,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 100.72,
+      "avgPointsAgainst": 101.545,
       "avgPointsFor": 90.585,
       "currentStreak": {
         "count": 7,
@@ -40830,8 +40820,8 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 1,
     },
     "411186928751230976": {
-      "avgPointsAgainst": 101.77111111111111,
-      "avgPointsFor": 82.35777777777778,
+      "avgPointsAgainst": 101.66000000000001,
+      "avgPointsFor": 81.83333333333333,
       "currentStreak": {
         "count": 5,
         "type": "L",
@@ -40852,7 +40842,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 97.21454545454544,
-      "avgPointsFor": 93.72909090909091,
+      "avgPointsFor": 93.54727272727273,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -40872,7 +40862,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 5,
     },
     "429243125446230016": {
-      "avgPointsAgainst": 86.62666666666667,
+      "avgPointsAgainst": 87.29333333333334,
       "avgPointsFor": 89.17333333333333,
       "currentStreak": {
         "count": 1,
@@ -40894,7 +40884,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     },
     "438629899490553856": {
       "avgPointsAgainst": 75.84,
-      "avgPointsFor": 96.14571428571426,
+      "avgPointsFor": 96.58857142857143,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -40935,8 +40925,8 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 5,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 94.36800000000001,
-      "avgPointsFor": 89.22199999999998,
+      "avgPointsAgainst": 94.668,
+      "avgPointsFor": 89.02199999999998,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -40977,14 +40967,14 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       "wins": 3,
     },
   },
-  "leagueLosses": 561,
+  "leagueLosses": 567,
   "leagueTies": 0,
-  "leagueWins": 506,
+  "leagueWins": 500,
   "managerId": "ryan",
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 162,
-    "digest": "40fe-17eb428bc458fa-16a911f6e1588b",
+    "digest": "4105-1348fa6c48afac-16d2778253a0c5",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -41093,24 +41083,9 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 101,
-    "digest": "31f5-103ff7262f43a-7a3b539a7bf9c",
+    "count": 99,
+    "digest": "310d-1ff8bbc00b7f3-19e4ca39711543",
     "head": [
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 14,
-          "year": 2026,
-        },
-        "playerId": "PHI",
-        "playerName": "Philadelphia Eagles",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2024,
-          2026,
-        ],
-      },
       {
         "bestPick": {
           "pick": 4,
@@ -41124,6 +41099,21 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
           2020,
           2023,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 11,
+          "year": 2023,
+        },
+        "playerId": "3294",
+        "playerName": "Dak Prescott",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2023,
+          2025,
         ],
       },
       {
@@ -41158,6 +41148,34 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       },
       {
         "bestPick": {
+          "pick": 3,
+          "round": 5,
+          "year": 2019,
+        },
+        "playerId": "5967",
+        "playerName": "Tony Pollard",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 14,
+          "year": 2026,
+        },
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "timesDrafted": 2,
+        "years": [
+          2024,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 8,
           "round": 9,
           "year": 2025,
@@ -41172,16 +41190,30 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 1,
-          "round": 11,
-          "year": 2023,
+          "pick": 8,
+          "round": 14,
+          "year": 2025,
         },
-        "playerId": "3294",
-        "playerName": "Dak Prescott",
+        "playerId": "HOU",
+        "playerName": "Houston Texans",
         "timesDrafted": 2,
         "years": [
-          2023,
+          2019,
           2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "3164",
+        "playerName": "Ezekiel Elliott",
+        "timesDrafted": 2,
+        "years": [
+          2019,
+          2024,
         ],
       },
       {
@@ -41198,48 +41230,6 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
           2024,
         ],
       },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 6,
-          "year": 2020,
-        },
-        "playerId": "5848",
-        "playerName": "Hollywood Brown",
-        "timesDrafted": 2,
-        "years": [
-          2020,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 11,
-          "round": 9,
-          "year": 2022,
-        },
-        "playerId": "2374",
-        "playerName": "Tyler Lockett",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 8,
-          "year": 2023,
-        },
-        "playerId": "4950",
-        "playerName": "Christian Kirk",
-        "timesDrafted": 2,
-        "years": [
-          2023,
-          2024,
-        ],
-      },
     ],
   },
   "playoffs": 2,
@@ -41249,13 +41239,13 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 7,
-      "leagueLosses": 73,
+      "leagueLosses": 79,
       "leagueTies": 0,
-      "leagueWins": 70,
+      "leagueWins": 64,
       "losses": 6,
       "madePlayoffs": false,
-      "pointsAgainst": 1297.12,
-      "pointsFor": 1204.78,
+      "pointsAgainst": 1304.72,
+      "pointsFor": 1197.16,
       "pointsStanding": 8,
       "scoringCrown": false,
       "ties": 0,
@@ -41378,8 +41368,8 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "teamName": "Pimpin Ain't Leesy",
   "thirdPlace": 0,
   "topPerformances": {
-    "count": 872,
-    "digest": "1f012-1c7f2bbf887f5e-1b5ccd75681c79",
+    "count": 873,
+    "digest": "1f0ad-13b90ad4718510-12da56cfeaf8a2",
     "head": [
       {
         "matchup_id": 5,
@@ -41484,8 +41474,8 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     ],
   },
   "totalLosses": 53,
-  "totalPointsAgainst": 9436.84,
-  "totalPointsFor": 8934.680000000002,
+  "totalPointsAgainst": 9438.84,
+  "totalPointsFor": 8929.960000000001,
   "totalTies": 0,
   "totalWins": 44,
 }
@@ -41597,7 +41587,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   "firstPlaceStandings": 0,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 95.32999999999998,
+      "avgPointsAgainst": 95.5925,
       "avgPointsFor": 91.82250000000002,
       "currentStreak": {
         "count": 1,
@@ -41639,8 +41629,8 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 3,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 93.23733333333332,
-      "avgPointsFor": 87.43866666666666,
+      "avgPointsAgainst": 93.104,
+      "avgPointsFor": 87.50533333333333,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -41681,8 +41671,8 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 6,
     },
     "337297176361201664": {
-      "avgPointsAgainst": 83.91625,
-      "avgPointsFor": 92.0925,
+      "avgPointsAgainst": 84.35375,
+      "avgPointsFor": 91.9675,
       "currentStreak": {
         "count": 5,
         "type": "W",
@@ -41702,8 +41692,8 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 11,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 82.35777777777778,
-      "avgPointsFor": 101.77111111111111,
+      "avgPointsAgainst": 81.83333333333333,
+      "avgPointsFor": 101.66000000000001,
       "currentStreak": {
         "count": 5,
         "type": "W",
@@ -41724,7 +41714,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 104.91875,
-      "avgPointsFor": 92.6,
+      "avgPointsFor": 92.51875000000001,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -41744,7 +41734,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 7,
     },
     "429243125446230016": {
-      "avgPointsAgainst": 116.232,
+      "avgPointsAgainst": 119.232,
       "avgPointsFor": 98.53200000000001,
       "currentStreak": {
         "count": 1,
@@ -41766,7 +41756,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
     },
     "438629899490553856": {
       "avgPointsAgainst": 82.24,
-      "avgPointsFor": 90.6375,
+      "avgPointsFor": 90.3875,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -41807,7 +41797,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 4,
     },
     "77140390129844224": {
-      "avgPointsAgainst": 100.36461538461536,
+      "avgPointsAgainst": 100.21076923076922,
       "avgPointsFor": 91.69846153846153,
       "currentStreak": {
         "count": 2,
@@ -41828,8 +41818,8 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 5,
     },
     "77361676378587136": {
-      "avgPointsAgainst": 90.87384615384616,
-      "avgPointsFor": 89.65692307692308,
+      "avgPointsAgainst": 90.56615384615385,
+      "avgPointsFor": 90.33384615384617,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -41891,9 +41881,9 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "wins": 2,
     },
   },
-  "leagueLosses": 962,
+  "leagueLosses": 964,
   "leagueTies": 0,
-  "leagueWins": 820,
+  "leagueWins": 818,
   "managerId": "sol",
   "managerName": "sol",
   "mostCappedPlayers": {
@@ -42020,24 +42010,8 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5136-24128628a8ac-1b1739e08505fb",
+    "digest": "5124-276ff68dcfc32-1838ebcce50b94",
     "head": [
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "4866",
-        "playerName": "Saquon Barkley",
-        "timesDrafted": 4,
-        "years": [
-          2019,
-          2020,
-          2023,
-          2025,
-        ],
-      },
       {
         "bestPick": {
           "pick": 2,
@@ -42046,11 +42020,28 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
         },
         "playerId": "2078",
         "playerName": "Odell Beckham",
-        "timesDrafted": 3,
+        "timesDrafted": 4,
         "years": [
           2016,
+          2019,
           2021,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 7,
+          "year": 2024,
+        },
+        "playerId": "4033",
+        "playerName": "David Njoku",
+        "timesDrafted": 4,
+        "years": [
+          2017,
+          2018,
+          2019,
+          2024,
         ],
       },
       {
@@ -42071,16 +42062,16 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       {
         "bestPick": {
           "pick": 2,
-          "round": 7,
-          "year": 2024,
+          "round": 1,
+          "year": 2020,
         },
-        "playerId": "4033",
-        "playerName": "David Njoku",
+        "playerId": "4866",
+        "playerName": "Saquon Barkley",
         "timesDrafted": 3,
         "years": [
-          2017,
-          2018,
-          2024,
+          2020,
+          2023,
+          2025,
         ],
       },
       {
@@ -42256,13 +42247,13 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
     {
       "championshipResult": undefined,
       "finalStanding": 8,
-      "leagueLosses": 72,
+      "leagueLosses": 74,
       "leagueTies": 0,
-      "leagueWins": 71,
+      "leagueWins": 69,
       "losses": 7,
       "madePlayoffs": false,
-      "pointsAgainst": 1146.64,
-      "pointsFor": 1218.86,
+      "pointsAgainst": 1160.1200000000001,
+      "pointsFor": 1220.36,
       "pointsStanding": 6,
       "scoringCrown": false,
       "ties": 0,
@@ -42386,7 +42377,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1458,
-    "digest": "33b3d-165f859a18d1b6-f4e7c63381bab",
+    "digest": "33b3d-1e8f726802ac5b-177d7a0d3fdaa2",
     "head": [
       {
         "matchup_id": 2,
@@ -42399,7 +42390,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
         "year": 2021,
       },
       {
-        "matchup_id": 3,
+        "matchup_id": 2,
         "opponentName": "Pimpin Ain't Leesy",
         "playerId": "1234",
         "playerName": "Russell Wilson",
@@ -42491,7 +42482,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
     ],
   },
   "totalLosses": 86,
-  "totalPointsAgainst": 15325.860000000002,
+  "totalPointsAgainst": 15318.140000000001,
   "totalPointsFor": 14718.699999999999,
   "totalTies": 0,
   "totalWins": 76,
@@ -42604,7 +42595,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "firstPlaceStandings": 1,
   "h2hRecords": {
     "337210029620883456": {
-      "avgPointsAgainst": 99.2588888888889,
+      "avgPointsAgainst": 99.42555555555558,
       "avgPointsFor": 98.1711111111111,
       "currentStreak": {
         "count": 2,
@@ -42646,7 +42637,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "wins": 12,
     },
     "337222928615612416": {
-      "avgPointsAgainst": 95.07666666666665,
+      "avgPointsAgainst": 94.96555555555555,
       "avgPointsFor": 98.27666666666666,
       "currentStreak": {
         "count": 1,
@@ -42667,13 +42658,13 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "wins": 12,
     },
     "337226046606704640": {
-      "avgPointsAgainst": 101.18117647058823,
-      "avgPointsFor": 102.0094117647059,
+      "avgPointsAgainst": 101.0635294117647,
+      "avgPointsFor": 102.36235294117648,
       "currentStreak": {
         "count": 1,
         "type": "L",
       },
-      "losses": 9,
+      "losses": 8,
       "managerId": "337226046606704640",
       "managerName": "htc",
       "mostRecent": {
@@ -42685,7 +42676,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       },
       "teamName": "21st & Hine",
       "ties": 0,
-      "wins": 8,
+      "wins": 9,
     },
     "337297176361201664": {
       "avgPointsAgainst": 105.65882352941176,
@@ -42709,8 +42700,8 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "wins": 6,
     },
     "359110473351696384": {
-      "avgPointsAgainst": 89.22199999999998,
-      "avgPointsFor": 94.36800000000001,
+      "avgPointsAgainst": 89.02199999999998,
+      "avgPointsFor": 94.668,
       "currentStreak": {
         "count": 1,
         "type": "L",
@@ -42731,7 +42722,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
     },
     "411186928751230976": {
       "avgPointsAgainst": 91.69846153846153,
-      "avgPointsFor": 100.36461538461536,
+      "avgPointsFor": 100.21076923076922,
       "currentStreak": {
         "count": 2,
         "type": "W",
@@ -42752,7 +42743,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
     },
     "428943291145265152": {
       "avgPointsAgainst": 93.68777777777778,
-      "avgPointsFor": 98.31666666666666,
+      "avgPointsFor": 98.20555555555556,
       "currentStreak": {
         "count": 2,
         "type": "L",
@@ -42793,7 +42784,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "wins": 2,
     },
     "438629899490553856": {
-      "avgPointsAgainst": 87.83411764705883,
+      "avgPointsAgainst": 87.7164705882353,
       "avgPointsFor": 96.35764705882355,
       "currentStreak": {
         "count": 3,
@@ -42836,7 +42827,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
     },
     "77361676378587136": {
       "avgPointsAgainst": 81.3294117647059,
-      "avgPointsFor": 92.85176470588236,
+      "avgPointsFor": 92.73411764705882,
       "currentStreak": {
         "count": 1,
         "type": "W",
@@ -42946,8 +42937,8 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
-    "count": 352,
-    "digest": "8d34-1ff2e2ebbae2cc-be81a01563870",
+    "count": 353,
+    "digest": "8d7f-41cdf49c48e93-d14617983eb76",
     "head": [
       {
         "averageScore": 21.503783783783778,
@@ -43342,14 +43333,14 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "leagueLosses": 66,
       "leagueTies": 0,
       "leagueWins": 77,
-      "losses": 6,
+      "losses": 5,
       "madePlayoffs": true,
-      "pointsAgainst": 1243.96,
-      "pointsFor": 1278.78,
+      "pointsAgainst": 1238.96,
+      "pointsFor": 1281.78,
       "pointsStanding": 4,
       "scoringCrown": false,
       "ties": 0,
-      "wins": 7,
+      "wins": 8,
       "year": 2019,
     },
     {
@@ -43469,7 +43460,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3bf4a-1fe411087b37e7-12123958bba9b8",
+    "digest": "3bf42-93516076820e2-258c82d8ed1e",
     "head": [
       {
         "matchup_id": 6,
@@ -43492,7 +43483,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
         "year": 2025,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 5,
         "opponentName": "Tha Dollar",
         "playerId": "NE",
         "playerName": "New England Patriots",
@@ -43522,7 +43513,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
         "year": 2013,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 5,
         "opponentName": "Zaragoza's Zooting Zorro",
         "playerId": "3157",
         "playerName": "William Fuller",
@@ -43562,7 +43553,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
         "year": 2020,
       },
       {
-        "matchup_id": 1,
+        "matchup_id": 6,
         "opponentName": "Tha Dollar",
         "playerId": "4881",
         "playerName": "Lamar Jackson",
@@ -43574,8 +43565,8 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
     ],
   },
   "totalLosses": 92,
-  "totalPointsAgainst": 17991.36,
-  "totalPointsFor": 18409.399999999998,
+  "totalPointsAgainst": 17994.36,
+  "totalPointsFor": 18408.499999999996,
   "totalTies": 0,
   "totalWins": 98,
 }

@@ -118,15 +118,16 @@ describe("record invariants", () => {
    *   dix    2019 — matchups say 7-6, roster.settings says 8-5
    *   htc    2019 — matchups say 6-7, roster.settings says 4-9
    *
-   * Across all seasons that leaves:
+   * FIXED by the 2019 rebuild (scripts/rebuild-2019.js). Previously:
    *   thd  seasons sum 97-93  vs totals 98-92
    *   dix  seasons sum 112-78 vs totals 113-77
    *   htc  seasons sum 90-86  vs totals 88-88
    *
-   * Whichever number is "right", a manager's season rows should add up to the
-   * headline record shown on the same page. Pick one source and use it.
+   * The two sources disagreed only because 2019's matchup JSON had been
+   * overwritten with scores recomputed from an incomplete lineup. Both sides
+   * now derive from the same NFL.com record, so this is a real invariant.
    */
-  it.fails("season records sum to the all-time totals", () => {
+  it("season records sum to the all-time totals", () => {
     const violations: string[] = [];
 
     managers.forEach((manager) => {
@@ -182,12 +183,11 @@ describe("head-to-head invariants", () => {
   });
 
   /**
-   * KNOWN FAILURE — same root cause as "season records sum to the all-time
-   * totals" above. `h2hRecords` is built from the matchup JSON, `totalWins`
-   * from `roster.settings`, so thd, dix and htc are off by the same 2019
-   * games. Reported deltas are identical to that test.
+   * FIXED alongside "season records sum to the all-time totals" above, and for
+   * the same reason: `h2hRecords` comes from the matchup JSON and `totalWins`
+   * from `roster.settings`, which disagreed only over the three 2019 records.
    */
-  it.fails("a manager's H2H wins across all opponents sum to their total wins", () => {
+  it("a manager's H2H wins across all opponents sum to their total wins", () => {
     const violations: string[] = [];
 
     managers.forEach((manager) => {
