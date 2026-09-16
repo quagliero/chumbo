@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/check-bundle-size.js",
     "lint": "eslint .",
+    "check-size": "node scripts/check-bundle-size.js",
     "test": "vitest",
     "test:run": "vitest run",
     "preview": "vite preview",
