@@ -152,7 +152,8 @@ player page still resolves a name and position · `yarn build` clean.
 - [ ] A1b
 - [ ] A1c
 
-### A1d · Backfill historical teams from nflverse `M` *(optional, not blocking)*
+### A1d · Backfill historical teams from nflverse `M`
+**Upgraded from optional by `H1`:** this is now a correctness bug, not cosmetic.
 
 **There are currently no player dictionaries for 2012–2024** — only 2025 and 2026
 exist, so thirteen of the fifteen seasons already resolve against a modern
@@ -165,7 +166,16 @@ one-off script could join it to Sleeper IDs (via `gsis_id`, which the unfiltered
 dumps still carry — **capture the mapping during A1a before those fields are
 dropped**) and generate an overlay per season.
 
-**Acceptance:** the 2018 draft board shows 2018 teams.
+`H1` found `getOptimalLineup` returning *less* than the lineup actually started in
+**57 matchups**, which is arithmetically impossible — the started lineup is always
+a candidate. Worst case: 2012 w4 r8, actual 115.40 vs "optimal" 83.50. The cause
+is this task: positions resolve against a modern snapshot, so retired and legacy
+string-named players come back `"UNK"` and the optimiser cannot fill the slots
+they occupied. All 57 are 2012–2019. A companion test scoped to 2020+ passes, so
+there is a real net on the modern seasons meanwhile.
+
+**Acceptance:** the 2018 draft board shows 2018 teams · optimal >= actual across
+all seasons, not just 2020+.
 
 - [ ] A1d
 
@@ -267,7 +277,7 @@ bug.
 
 **Acceptance:** `document.scrollWidth === clientWidth` at 375 px on every route.
 
-- [ ] A6
+- [x] A6
 
 ---
 
@@ -621,7 +631,7 @@ anyone has ever pasted into WhatsApp rendered as a bare grey URL. Add title,
 description and the league logo. Ten minutes, and it retroactively improves every
 link already out there — **do this in M0.**
 
-- [ ] G5
+- [x] G5
 
 ### G6 · Per-route prerendered OG images `XL`
 **Blocked by:** G1, G5
@@ -651,7 +661,7 @@ refactor risky. Add Vitest; snapshot the current output of `getManagerStats`,
 `calculateStrengthOfSchedule` across all seasons **before touching anything**, so
 the whole plan has a net under it. An afternoon's work that de-risks the rest.
 
-- [ ] H1
+- [x] H1
 
 ### H2 · Split the large files `L`
 **Blocked by:** H1
@@ -672,6 +682,84 @@ initialised" three times. A loader typed on file pattern is shorter and safer.
 
 - [ ] H3
 
+### H6 · Stop `getCumulativeStandings` mutating shared data `XS`
+**Blocked by:** H1 · **Found by:** `H1` invariant test
+
+`src/utils/standings.ts:35` calls `season.rosters.sort(...)` to find the scoring
+crown. `Array.prototype.sort` is in place, so rendering the standings permanently
+reorders `seasons[year].rosters` on the shared module-level object — 2025 goes
+from `1,2,…,12` to `4,7,2,10,1,9,12,3,8,5,6,11`. Nothing visible depends on it
+today because lookups are by id, but it makes results order-dependent on which
+page you happened to open first, and it will produce genuinely baffling bugs once
+`A3` starts caching.
+
+Fix: `[...season.rosters].sort(...)`. One character of real change.
+`src/utils/__tests__/purity.test.ts` already covers it — flip it from `it.fails`
+to `it` in the same commit.
+
+**Acceptance:** `purity.test.ts` passes as a normal test.
+
+- [ ] H6
+
+### H7 · `calculateStrengthOfSchedule` never reads the schedule `M`
+**Blocked by:** H1 · **Found by:** `H1` invariant test
+
+`src/utils/strengthOfSchedule.ts` computes *remaining* strength of schedule by
+scanning `seasonData.matchups` for future weeks — but unplayed fixtures don't live
+there. They live in `schedule.json`, which it never opens. 2026 has only
+`matchups/1.json`, so every team's remaining-opponent average is 0, the sort is
+stable on equal values, and the rank collapses to insertion order: roster 1 → rank
+1, roster 2 → rank 2, and so on.
+
+**The "strength of schedule remaining" column in Standings is currently
+meaningless** — it is displaying roster ids. It is rendered at
+`src/presentation/components/Standings/Standings.tsx:796`.
+
+`PlayoffOdds` already solved this (commits `d7f96c4`, `4ff1103`); mirror its
+`schedule.json` read. Also returns `{}` for every completed season, which is
+defensible but should be explicit rather than incidental.
+
+**Acceptance:** two teams with demonstrably different remaining opponents get
+different ranks · the snapshot for 2026 changes from `1,2,3…` to something
+justified by the fixtures · the `it.fails` marker is removed.
+
+- [ ] H7
+
+### H8 · Reconcile the 2019 season data `M`
+**Blocked by:** H1 · **Found by:** `H1` invariant tests · **Needs owner input**
+
+`getManagerStats` has two sources of truth: headline totals come from Sleeper's
+`roster.settings.wins`, while `seasonStats[].wins` is recomputed from the matchup
+JSON. They agree everywhere except **2019**, where three rosters disagree:
+
+| roster | from matchups | from `roster.settings` | points diff |
+|---|---|---|---|
+| 1 (thd) | 7-6 | 8-5 | −3.90 |
+| 4 (htc) | 6-7 | **4-9** | +11.70 |
+| 8 (dix) | 7-6 | 8-5 | −38.79 |
+
+htc is off by two games. **The manager page's season table does not add up to the
+record printed above it.** `h2hRecords` is matchup-derived too, so it is wrong in
+the same way. Every one of the twelve 2019 rosters also has a points discrepancy,
+several of them suspiciously round (−23.00, −25.00, +10.00, +5.00), which looks
+like post-hoc stat corrections that landed in the season totals but never in the
+committed `matchups/*.json`.
+
+Likely fix is `yarn fetch-season -- --year 2019`, but that **overwrites committed
+data**, may not help if Sleeper never backfilled the corrections either, and is
+the owner's call. Do not run it unasked.
+
+Separately, and regardless of the data: `getManagerStats` should not have two
+sources of truth for the same number. Pick one — matchup-derived is the more
+defensible, since it is what every other page computes from — and make the
+headline agree with the breakdown.
+
+**Acceptance:** the two reconciliation invariants pass without `it.fails`, or the
+discrepancy is documented as unfixable upstream and the headline/breakdown
+disagreement is resolved in code.
+
+- [ ] H8
+
 ### H4 · Bundle budget in CI `S`
 
 Fail the build if gzipped initial JS exceeds a threshold. Without this, Workstream
@@ -686,7 +774,7 @@ A silently erodes.
 `scripts/filter-players.js`. Derive all three from `YEARS`, then delete the
 "two year lists must stay in sync" gotcha from CLAUDE.md.
 
-- [ ] H5
+- [x] H5
 
 ---
 
@@ -697,18 +785,21 @@ Ship before anything else. Independent, tiny, immediately felt.
 
 | | Task | Size |
 |---|---|---|
-| ☐ | `A6` Mobile horizontal scroll fix | XS |
-| ☐ | `G5` Static OG tags | XS |
-| ☐ | `H5` Single source of truth for years | S |
-| ☐ | `H4` Bundle budget in CI | S |
+| ☑ | `A6` Mobile horizontal scroll fix | XS |
+| ☑ | `G5` Static OG tags | XS |
+| ☑ | `H5` Single source of truth for years | S |
 
 ### M1 — Safety net & the big payload `~3 days`
 | | Task | Size |
 |---|---|---|
-| ☐ | `H1` Test harness + snapshots | L |
+| ☑ | `H1` Test harness + snapshots | L |
 | ☐ | `A1a` Rebuild dictionary as base + overlays | L |
 | ☐ | `A1b` Thread year through to render sites | M |
 | ☐ | `A1c` Prefer matchup slots for position | S |
+| ☐ | `H6` Stop standings mutating shared data | XS |
+| ☐ | `H7` Fix strength of schedule | M |
+| ☐ | `H8` Reconcile 2019 data *(needs owner)* | M |
+| ☐ | `H4` Bundle budget in CI | S |
 | ☐ | `A5` Fix usePlayerSearch | S |
 
 **Milestone test:** gzipped initial JS down from ~2.9 MB to well under 1 MB, with
@@ -721,7 +812,7 @@ snapshot tests proving no stat changed.
 | ☐ | `A2b` Move data to `public/`, add loader | L |
 | ☐ | `A3` + `H2` Memoise and split `managerStats` | L |
 | ☐ | `H3` Type the data loader | M |
-| ☐ | `A1d` Backfill historical teams from nflverse *(optional)* | M |
+| ☐ | `A1d` Backfill historical teams from nflverse | M |
 
 **Milestone test:** initial JS under 400 kB gzipped; a 2014 page fetches one file.
 

@@ -22,6 +22,8 @@ deploy step.
 yarn dev            # local dev server
 yarn build          # tsc -b && vite build
 yarn lint           # eslint
+yarn test           # vitest (watch)
+yarn test:run       # vitest (single run)
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -109,9 +111,8 @@ The fetch script reads `league_id` and `draft_id` from an existing
    `picks.json`, `rosters.json`, `users.json`, plus the latest matchup/transaction
    week (empty pre-season — harmless). Re-run through the season with
    `fetch-latest` / `fetch-week`, and `fetch-season` at the end for brackets.
-4. **Register the year in BOTH places** (kept in sync manually):
-   - `src/domain/constants.ts` → add `2026` to `YEARS`.
-   - `src/constants/fantasy.ts` → add `| 2026` to the `ValidYear` union.
+4. **Register the year** in `src/domain/constants.ts` → add `2026` to `YEARS`.
+   Everything else (`ValidYear`, the fetch scripts) derives from it.
 5. **Players dictionary.** 2026 rookies won't be in the current root
    `players.json` (last refreshed for 2025). Either refresh the root
    `players.json` from Sleeper's `/players/nfl` dump, or drop a
@@ -135,9 +136,10 @@ The fetch script reads `league_id` and `draft_id` from an existing
 
 ## Gotchas
 
-- **Two year lists must stay in sync**: `YEARS` (domain/constants) and the
-  `ValidYear` union (constants/fantasy). A third list lives in
-  `scripts/filter-players.js`.
+- **Adding a season is one line**: append to `YEARS` in `src/domain/constants.ts`.
+  `ValidYear` derives from it and `scripts/filter-players.js` discovers season
+  folders from disk. (Before H5 there were four copies of this list, one of which
+  silently resolved to plain `number`.)
 - The loader maps matchups/transactions for weeks **1–17** only, even though the
   fetch script pulls up to 18.
 - Transactions before 2020 are a single `transactions.json` grouped by `leg`;
