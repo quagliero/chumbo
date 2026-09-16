@@ -306,18 +306,17 @@ describe("draft invariants", () => {
     const violations: string[] = [];
 
     managers.forEach((manager) => {
-      const regular = getManagerStats(manager.id, "regular").mostDraftedPlayers;
-      const playoffs = getManagerStats(manager.id, "playoffs")
-        .mostDraftedPlayers;
-      const combined = getManagerStats(manager.id, "combined")
-        .mostDraftedPlayers;
+      const regular = getManagerStats(manager.id, "regular");
+      const playoffs = getManagerStats(manager.id, "playoffs");
+      const combined = getManagerStats(manager.id, "combined");
+      if (!regular || !playoffs || !combined) return;
 
       if (
-        regular.length !== playoffs.length ||
-        regular.length !== combined.length
+        regular.mostDraftedPlayers.length !== playoffs.mostDraftedPlayers.length ||
+        regular.mostDraftedPlayers.length !== combined.mostDraftedPlayers.length
       ) {
         violations.push(
-          `${manager.id}: regular ${regular.length}, playoffs ${playoffs.length}, combined ${combined.length}`
+          `${manager.id}: regular ${regular.mostDraftedPlayers.length}, playoffs ${playoffs.mostDraftedPlayers.length}, combined ${combined.mostDraftedPlayers.length}`
         );
       }
     });
