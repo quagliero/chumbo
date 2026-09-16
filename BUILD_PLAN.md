@@ -213,7 +213,7 @@ long-lived `Cache-Control` for `/data/` at the host.
 season older than the current year · navigating to a 2014 page fetches exactly
 one season file · a second visit to that page issues no network request.
 
-- [ ] A2a
+- [x] A2a
 - [ ] A2b
 
 ### A3 · Memoise the history scans `M`

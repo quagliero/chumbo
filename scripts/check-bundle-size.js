@@ -24,15 +24,18 @@ const dist = path.join(__dirname, "../dist/assets");
 
 // Gzipped kilobytes. Set just above the current figures so a regression is
 // caught rather than absorbed, and RATCHETED DOWN as the payload improves --
-// A2 (loading season data on demand) should take the critical path under
-// 400 kB, at which point these numbers come down with it.
+// A2a (matchups and transactions loaded on demand) took the critical path from
+// 1132 kB to 398 kB, so these came down with it. A2b (serving the season JSON
+// as static files rather than JS modules) should take it lower again.
 //
 // Update deliberately, never to make a build pass.
 const BUDGET_KB = {
-  // Everything the browser must parse before the first render. Currently 1132.
-  initial: 1200,
-  // Every JS chunk together, including lazily-loaded routes. Currently 1202.
-  total: 1260,
+  // Everything the browser must parse before the first render. Currently 398 --
+  // 196 of it the small per-season files, 104 the player dictionary.
+  initial: 420,
+  // Every JS chunk together, including the lazily-loaded routes and the
+  // per-season matchup (305) and transaction (421) chunks. Currently 1191.
+  total: 1220,
 };
 
 if (!fs.existsSync(dist)) {

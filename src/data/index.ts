@@ -1,4 +1,4 @@
-import { CURRENT_YEAR, ValidYear } from "@/domain/constants";
+import { ValidYear, YEARS } from "@/domain/constants";
 import { LosersBracket, WinnersBracket } from "@/types/bracket";
 import { ExtendedDraft } from "@/types/draft";
 import { ExtendedLeague } from "@/types/league";
@@ -45,7 +45,13 @@ type SeasonData = {
   users: ExtendedUser[];
   winners_bracket: WinnersBracket;
   losers_bracket: LosersBracket;
+  /**
+   * Loaded on demand (A2a). Empty until `loadSeasons([year])` — or
+   * `loadAllSeasons()` — has resolved for this season; read it through
+   * `useSeasonData` / `useAllSeasons`, which suspend until it is populated.
+   */
   matchups: Matchups;
+  /** Loaded on demand (A2a). See `matchups`, plus `useSeasonTransactions`. */
   transactions?: Transactions;
   /**
    * This season's corrections to the base player dictionary — team and position
@@ -56,127 +62,265 @@ type SeasonData = {
   schedule?: Record<string, ScheduledMatchup[]>; // In-progress seasons only
 };
 
-const validKeys: (keyof SeasonData)[] = [
-  "draft",
-  "picks",
-  "league",
-  "rosters",
-  "users",
-  "winners_bracket",
-  "losers_bracket",
-  "schedule",
-];
+/** The last week the loader maps; the fetch scripts pull up to 18. */
+const LAST_WEEK = 17;
 
-const allData = (() => {
-  const jsonFiles = import.meta.glob("./**/*.json", { eager: true });
+const asWeekKey = (raw: string): WeekKeys | null => {
+  const week = parseInt(raw, 10);
+  return week >= 1 && week <= LAST_WEEK ? (raw as WeekKeys) : null;
+};
 
-  const managers: Manager[] = (
-    jsonFiles["./managers.json"] as { default: Manager[] }
-  ).default;
+/* ------------------------------------------------------------------ *
+ * Eager: everything small.
+ *
+ * `league`, `rosters`, `users`, `draft`, `picks`, the brackets, the
+ * schedule and the player overlays come to ~1.7 MB raw across fifteen
+ * seasons and are read by nearly every page, so they stay in the main
+ * bundle. The per-week matchup and transaction files — 8.3 MB raw, and
+ * the whole reason the data chunk was 933 kB gzipped — are loaded on
+ * demand below.
+ * ------------------------------------------------------------------ */
 
-  // The base dictionary: every player we have ever seen, newest attributes.
-  const players: Record<string, Player> = (
-    jsonFiles["./players.json"] as { default: Record<string, Player> }
-  ).default;
+type JsonModule<T> = { default: T };
 
-  // Use Partial to allow flexibility during construction
-  const seasons: Partial<Record<ValidYear, Partial<SeasonData>>> = {};
+const eagerFiles = import.meta.glob(
+  [
+    "./**/*.json",
+    "!./*/matchups/*.json",
+    "!./*/transactions/*.json",
+    "!./*/transactions.json",
+  ],
+  { eager: true }
+) as Record<string, JsonModule<unknown>>;
 
-  Object.entries(jsonFiles).forEach(([path, module]) => {
-    // Skip root-level players.json and managers.json as they're handled separately
-    if (path === "./players.json" || path === "./managers.json") return;
+/** Read one eagerly-globbed file, or `undefined` if that season lacks it. */
+const eager = <T>(path: string): T | undefined =>
+  (eagerFiles[path] as JsonModule<T> | undefined)?.default;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = (module as { default: any }).default;
-    const matchYear = path.match(/\/(\d{4})\//);
-    const matchWeek = path.match(/\/matchups\/(\d+)\.json$/);
-    const matchTransaction = path.match(/\/transactions\/(\d+)\.json$/);
-    const isPlayerOverlay = path.match(/\/(\d{4})\/players\.delta\.json$/);
+/** Read one eagerly-globbed file, falling back for seasons that lack it. */
+const eagerOr = <T>(path: string, fallback: T): T =>
+  eager<T>(path) ?? fallback;
 
-    if (matchYear) {
-      const year = parseInt(matchYear[1], 10) as ValidYear;
+export const managers = eagerOr<Manager[]>("./managers.json", []);
 
-      if (year >= 2012 && year <= CURRENT_YEAR) {
-        // Ensure seasons[year] is initialized
-        if (!seasons[year]) {
-          seasons[year] = {
-            draft: {} as ExtendedDraft,
-            picks: [],
-            league: {} as ExtendedLeague,
-            rosters: [],
-            users: [],
-            winners_bracket: [] as WinnersBracket,
-            losers_bracket: [] as LosersBracket,
-            matchups: {},
-          };
-        }
+/** The base dictionary: every player we have ever seen, newest attributes. */
+export const players = eagerOr<Record<string, Player>>("./players.json", {});
 
-        // Ensure matchups is initialized
-        if (!seasons[year]!.matchups) {
-          seasons[year]!.matchups = {};
-        }
+const buildSeasons = (): Record<number, SeasonData> => {
+  const built: Partial<Record<ValidYear, SeasonData>> = {};
 
-        // Ensure transactions is initialized
-        if (!seasons[year]!.transactions) {
-          seasons[year]!.transactions = {};
-        }
+  for (const year of YEARS) {
+    built[year] = {
+      draft: eagerOr<ExtendedDraft>(`./${year}/draft.json`, {} as ExtendedDraft),
+      picks: eagerOr<ExtendedPick[]>(`./${year}/picks.json`, []),
+      league: eagerOr<ExtendedLeague>(
+        `./${year}/league.json`,
+        {} as ExtendedLeague
+      ),
+      rosters: eagerOr<ExtendedRoster[]>(`./${year}/rosters.json`, []),
+      users: eagerOr<ExtendedUser[]>(`./${year}/users.json`, []),
+      winners_bracket: eagerOr<WinnersBracket>(
+        `./${year}/winners_bracket.json`,
+        [] as WinnersBracket
+      ),
+      losers_bracket: eagerOr<LosersBracket>(
+        `./${year}/losers_bracket.json`,
+        [] as LosersBracket
+      ),
+      matchups: {},
+      transactions: {},
+      playerOverlay: eager<PlayerOverlay>(`./${year}/players.delta.json`),
+      schedule: eager<Record<string, ScheduledMatchup[]>>(
+        `./${year}/schedule.json`
+      ),
+    };
+  }
 
-        // Check if this is a year-specific player overlay
-        if (isPlayerOverlay) {
-          seasons[year]!.playerOverlay = data as PlayerOverlay;
-        } else if (matchWeek) {
-          const week = matchWeek[1];
-          if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
-            seasons[year]!.matchups[week as WeekKeys] = data;
-          }
-        } else if (matchTransaction) {
-          const week = matchTransaction[1];
-          if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
-            seasons[year]!.transactions![week as WeekKeys] = data;
-          }
-        } else {
-          const key = path.split("/").pop()?.replace(".json", "");
-          // Handle legacy transactions.json file (2012-2019 format)
-          if (key === "transactions" && Array.isArray(data)) {
-            // Group transactions by week (leg field)
-            const transactionsByWeek: Record<string, Transaction[]> = {};
-            data.forEach((transaction: Transaction) => {
-              const week = transaction.leg?.toString();
-              if (week && parseInt(week) >= 1 && parseInt(week) <= 17) {
-                if (!transactionsByWeek[week]) {
-                  transactionsByWeek[week] = [];
-                }
-                transactionsByWeek[week].push(transaction);
-              }
-            });
-            // Assign to transactions object
-            Object.entries(transactionsByWeek).forEach(
-              ([week, weekTransactions]) => {
-                seasons[year]!.transactions![week as WeekKeys] =
-                  weekTransactions;
-              }
-            );
-          } else if (key && validKeys.includes(key as keyof SeasonData)) {
-            seasons[year]![key as keyof SeasonData] = data;
-          }
-        }
-      }
-    }
-  });
+  // Indexed by plain `number`, not ValidYear, so the ~15 existing call sites
+  // that index with an unvalidated number keep compiling.
+  return built as Record<number, SeasonData>;
+};
 
-  return {
-    managers,
-    // Indexed by plain `number`, not ValidYear, so the ~15 existing call sites
-    // that index with an unvalidated number keep compiling. H3 replaces this
-    // with a getSeason(year) accessor that returns SeasonData | undefined --
-    // casting at every call site would add churn without adding safety.
-    seasons: seasons as Record<number, SeasonData>,
-    players,
-  };
-})();
+/**
+ * The resolved view of the league. Present synchronously, but `matchups` and
+ * `transactions` fill in as seasons are loaded — see `loadSeasons` below.
+ */
+export const seasons = buildSeasons();
 
-// Export the structured data
-export const { managers, seasons, players } = allData;
+/* ------------------------------------------------------------------ *
+ * Lazy: the per-week files.
+ *
+ * `import.meta.glob` without `eager` gives one dynamic import per file;
+ * `vite.config.ts` groups them into a chunk per season per kind, so a
+ * page that wants 2014 fetches 2014 and nothing else.
+ * ------------------------------------------------------------------ */
+
+type Loader<T> = () => Promise<JsonModule<T>>;
+
+/** A week file, or (for 2012-2019 transactions) a whole season in one file. */
+type WeekLoader<T> = { week: WeekKeys | null; load: Loader<T> };
+
+const groupByYear = <T>(
+  files: Record<string, Loader<T>>,
+  pattern: RegExp
+): Map<number, WeekLoader<T>[]> => {
+  const byYear = new Map<number, WeekLoader<T>[]>();
+
+  for (const [path, load] of Object.entries(files)) {
+    const match = path.match(pattern);
+    if (!match) continue;
+
+    const year = parseInt(match[1], 10);
+    if (!seasons[year]) continue;
+
+    // match[2] is absent for the legacy whole-season transactions.json.
+    const week = match[2] === undefined ? null : asWeekKey(match[2]);
+    if (match[2] !== undefined && week === null) continue;
+
+    const existing = byYear.get(year);
+    if (existing) existing.push({ week, load });
+    else byYear.set(year, [{ week, load }]);
+  }
+
+  return byYear;
+};
+
+const matchupLoaders = groupByYear(
+  import.meta.glob("./*/matchups/*.json") as Record<
+    string,
+    Loader<ExtendedMatchup[]>
+  >,
+  /^\.\/(\d{4})\/matchups\/(\d+)\.json$/
+);
+
+const transactionLoaders = groupByYear(
+  import.meta.glob([
+    "./*/transactions/*.json",
+    "./*/transactions.json",
+  ]) as Record<string, Loader<Transaction[]>>,
+  /^\.\/(\d{4})\/transactions(?:\/(\d+))?\.json$/
+);
+
+/**
+ * One cache per kind: the years already resolved, and the loads still in
+ * flight so that two components asking for 2014 at once issue one fetch.
+ */
+type LoadCache = { done: Set<number>; inFlight: Map<number, Promise<void>> };
+
+const newCache = (): LoadCache => ({ done: new Set(), inFlight: new Map() });
+
+const matchupCache = newCache();
+const transactionCache = newCache();
+
+const loadYear = <T>(
+  cache: LoadCache,
+  loaders: Map<number, WeekLoader<T>[]>,
+  year: number,
+  assign: (season: SeasonData, week: WeekKeys | null, data: T) => void
+): Promise<void> => {
+  if (cache.done.has(year)) return Promise.resolve();
+
+  const inFlight = cache.inFlight.get(year);
+  if (inFlight) return inFlight;
+
+  const season = seasons[year];
+  const files = loaders.get(year);
+  if (!season || !files?.length) {
+    cache.done.add(year);
+    return Promise.resolve();
+  }
+
+  const promise = Promise.all(
+    files.map(async ({ week, load }) => {
+      assign(season, week, (await load()).default);
+    })
+  )
+    .then(() => {
+      cache.done.add(year);
+    })
+    .finally(() => {
+      cache.inFlight.delete(year);
+    });
+
+  cache.inFlight.set(year, promise);
+  return promise;
+};
+
+const assignMatchups = (
+  season: SeasonData,
+  week: WeekKeys | null,
+  data: ExtendedMatchup[]
+) => {
+  if (week) season.matchups[week] = data;
+};
+
+const assignTransactions = (
+  season: SeasonData,
+  week: WeekKeys | null,
+  data: Transaction[]
+) => {
+  const transactions = (season.transactions ??= {});
+
+  if (week) {
+    transactions[week] = data;
+    return;
+  }
+
+  // 2012-2019 kept one transactions.json for the whole season, grouped by
+  // `leg` rather than split into per-week files.
+  for (const transaction of data) {
+    const key = transaction.leg?.toString();
+    const weekKey = key === undefined ? null : asWeekKey(key);
+    if (!weekKey) continue;
+    (transactions[weekKey] ??= []).push(transaction);
+  }
+};
+
+/** Have every one of `years` had its matchups loaded? */
+export const areSeasonsLoaded = (years: readonly number[]): boolean =>
+  years.every((year) => matchupCache.done.has(year));
+
+/** Have every one of `years` had its transactions loaded? */
+export const areTransactionsLoaded = (years: readonly number[]): boolean =>
+  years.every((year) => transactionCache.done.has(year));
+
+/**
+ * Load the matchups for `years` into `seasons`. Deduplicated and cached, so
+ * calling it on every render is cheap once the data is in.
+ */
+export const loadSeasons = (years: readonly number[]): Promise<void> =>
+  areSeasonsLoaded(years)
+    ? Promise.resolve()
+    : Promise.all(
+        years.map((year) =>
+          loadYear(matchupCache, matchupLoaders, year, assignMatchups)
+        )
+      ).then(() => undefined);
+
+/** Load the transactions for `years` into `seasons`. See `loadSeasons`. */
+export const loadTransactions = (years: readonly number[]): Promise<void> =>
+  areTransactionsLoaded(years)
+    ? Promise.resolve()
+    : Promise.all(
+        years.map((year) =>
+          loadYear(
+            transactionCache,
+            transactionLoaders,
+            year,
+            assignTransactions
+          )
+        )
+      ).then(() => undefined);
+
+/**
+ * Everything, for the all-time pages and the test suite's global setup —
+ * which awaits this so that every existing synchronous `seasons[...]` read
+ * keeps working unchanged.
+ */
+export const loadAllSeasons = (): Promise<void> =>
+  Promise.all([loadSeasons(YEARS), loadTransactions(YEARS)]).then(
+    () => undefined
+  );
 
 /**
  * Look a player up in the base dictionary, then apply that season's overlay.

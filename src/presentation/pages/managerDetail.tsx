@@ -27,8 +27,12 @@ import {
 } from "@/presentation/components/ManagerDetail";
 import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDetail";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 
 const ManagerDetail = () => {
+  // A2a: getManagerStats walks every season's matchups, which are a lazy
+  // chunk now; suspend until they are in.
+  useAllSeasons();
   const { managerId, tab, section } = useParams<{
     managerId: string;
     tab?: string;

@@ -11,8 +11,11 @@ import {
   DraftStatsCard,
   PerformanceTable,
 } from "@/presentation/components/PlayerDetail";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 
 const PlayerDetail = () => {
+  // A2a: every one of these hooks reads the matchups, a lazy chunk now.
+  useAllSeasons();
   const { playerId } = useParams<{ playerId: string }>();
   const navigate = useNavigate();
 

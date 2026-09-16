@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { PlayerSearch, PlayerResults } from "@/presentation/components/Players";
 import { usePlayerSearch } from "@/hooks/players";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 
 const Players = () => {
+  // A2a: the search sweeps every season's matchups for the legacy
+  // string-named players, and those are a lazy chunk now.
+  useAllSeasons();
   const [searchTerm, setSearchTerm] = useState("");
   const searchResults = usePlayerSearch(searchTerm);
 

@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "@/data";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
 import { getTeamName } from "@/utils/teamName";
@@ -50,6 +51,8 @@ interface AllTimeBreakdownStats {
 }
 
 const AllTimeBreakdown = () => {
+  // A2a: the matchups are a lazy chunk now; suspend until they are in.
+  useAllSeasons();
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const { number } = useFormatter();

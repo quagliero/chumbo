@@ -8,8 +8,11 @@ import {
   getAvailableYears,
   PositionalFilter,
 } from "@/utils/statsExplorer";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 
 const Stats: React.FC = () => {
+  // A2a: the explorer walks every season's matchups, a lazy chunk now.
+  useAllSeasons();
   const [filters, setFilters] = useState<PositionalFilter[]>([]);
   const [selectedYears, setSelectedYears] = useState<number[]>(
     getAvailableYears()

@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { YEARS, YEAR_NUMBERS } from "@/domain/constants";
 import { TabType } from "@/constants/fantasy";
-import { useSeasonData } from "@/hooks/useSeasonData";
+import { useSeasonData, useSeasonTransactions } from "@/hooks/useSeasonData";
 import { useTeamName } from "@/hooks/useTeamName";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
@@ -72,6 +72,13 @@ const History = () => {
   }, [year, tab]);
 
   const seasonData = useSeasonData(selectedYear);
+  // A2a: transactions are their own lazy chunk — 6.0 MB raw across the
+  // league, and only these two tabs read them, so the rest of the season
+  // never pays for the fetch.
+  useSeasonTransactions(
+    selectedYear,
+    activeTab === "trades" || activeTab === "matchups"
+  );
   const getTeamName = useTeamName(seasonData?.users);
 
   // Handle year change with URL update

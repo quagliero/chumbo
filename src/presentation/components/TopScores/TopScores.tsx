@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import { Link, useParams, NavLink } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import { seasons } from "@/data";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 import managers from "@/data/managers.json";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
@@ -57,6 +58,8 @@ interface PlayerScore {
 }
 
 const TopScores = () => {
+  // A2a: the matchups are a lazy chunk now; suspend until they are in.
+  useAllSeasons();
   const { number } = useFormatter();
   const { subTab } = useParams<{ subTab: string }>();
   const [displayCount, setDisplayCount] = useState<number>(20);
