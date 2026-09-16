@@ -148,12 +148,16 @@ player page still resolves a name and position · `yarn build` clean.
 > same commit — step 5 currently tells you to drop in a year-specific
 > `players.json`, which this task replaces with the overlay format.
 
-- [ ] A1a
-- [ ] A1b
-- [ ] A1c
+- [x] A1a
+- [x] A1b
+- [x] A1c
 
 ### A1d · Backfill historical teams from nflverse `M`
-**Upgraded from optional by `H1`:** this is now a correctness bug, not cosmetic.
+**Downgraded again after `A1`.** `H1` promoted this to a correctness bug because
+`getOptimalLineup` returned impossible results in 57 matchups. Rebuilding the
+dictionary fixed 51 of them — positions now resolve instead of coming back
+`UNK`. **6 remain** (2012:1, 2015:1, 2019:4), so this is worth doing for
+historical team accuracy and the last few lineups, but it no longer blocks `C2`.
 
 **There are currently no player dictionaries for 2012–2024** — only 2025 and 2026
 exist, so thirteen of the fifteen seasons already resolve against a modern
@@ -255,9 +259,15 @@ scratch **on every keystroke**, because its `useMemo` is keyed on `searchTerm`.
 Build the index once at module level, filter it per query, and add a ~150 ms
 debounce.
 
+**Largely landed with `A1`:** the 12,266-entry Map is gone — the base dictionary
+is now the whole search corpus, so the hook filters it directly instead of
+rebuilding a Map per keystroke. What remains is the debounce and, if it ever
+matters, a prebuilt lowercase index. Filtering 4,389 entries per keystroke is
+sub-millisecond, so this is now a polish item rather than a fix.
+
 **Acceptance:** typing a 10-character query builds the index once, not ten times.
 
-- [ ] A5
+- [x] A5
 
 ### A6 · Fix the mobile horizontal scroll `XS`
 **Blocked by:** —
@@ -699,7 +709,7 @@ to `it` in the same commit.
 
 **Acceptance:** `purity.test.ts` passes as a normal test.
 
-- [ ] H6
+- [x] H6
 
 ### H7 · `calculateStrengthOfSchedule` never reads the schedule `M`
 **Blocked by:** H1 · **Found by:** `H1` invariant test
@@ -723,7 +733,7 @@ defensible but should be explicit rather than incidental.
 different ranks · the snapshot for 2026 changes from `1,2,3…` to something
 justified by the fixtures · the `it.fails` marker is removed.
 
-- [ ] H7
+- [x] H7
 
 ### H8 · Reconcile the 2019 season data `M`
 **Blocked by:** H1 · **Found by:** `H1` invariant tests · **Needs owner input**
@@ -793,14 +803,33 @@ neighbours. Also check 2012/2013, where the detection was ambiguous.
 **Acceptance:** for every season, `roster_positions[i]` agrees with the position
 actually played at `starters[i]` across the whole season.
 
-- [ ] H9
+- [x] H9
+
+### H10 · Share the merged-fixture helper `S`
+**Found by:** `H7`
+
+`H7` added a `fixturesByWeek()` in `src/utils/strengthOfSchedule.ts` that merges
+played weeks from `matchups` with unplayed weeks from `schedule.json`.
+`PlayoffOdds.tsx` already builds the same thing in its `matchupsWithSchedule`
+memo. They differ only in shape: PlayoffOdds needs full `ExtendedMatchup` shells
+with zeroed points for its simulation, SOS needs only the pairings.
+
+Extract `mergeScheduledFixtures(matchups, schedule)` into a new
+`src/utils/scheduleUtils.ts` returning pairings, and have PlayoffOdds map the
+result into its shells. Two call sites is the right moment — a third would mean
+three different merge precedences to keep in sync.
+
+**Acceptance:** one implementation of the merge; both call sites use it; the
+playoff-odds output is unchanged.
+
+- [x] H10
 
 ### H4 · Bundle budget in CI `S`
 
 Fail the build if gzipped initial JS exceeds a threshold. Without this, Workstream
 A silently erodes.
 
-- [ ] H4
+- [x] H4
 
 ### H5 · Single source of truth for years `S`
 
@@ -828,15 +857,16 @@ Ship before anything else. Independent, tiny, immediately felt.
 | | Task | Size |
 |---|---|---|
 | ☑ | `H1` Test harness + snapshots | L |
-| ☐ | `A1a` Rebuild dictionary as base + overlays | L |
-| ☐ | `A1b` Thread year through to render sites | M |
-| ☐ | `A1c` Prefer matchup slots for position | S |
-| ☐ | `H6` Stop standings mutating shared data | XS |
-| ☐ | `H7` Fix strength of schedule | M |
+| ☑ | `A1a` Rebuild dictionary as base + overlays | L |
+| ☑ | `A1b` Thread year through to render sites | M |
+| ☑ | `A1c` Prefer matchup slots for position | S |
+| ☑ | `H6` Stop standings mutating shared data | XS |
+| ☑ | `H7` Fix strength of schedule | M |
 | ☑ | `H8` Rebuild 2019 from the NFL.com record | M |
-| ☐ | `H9` Fix declared lineup slot order, 2016-2019 | S |
-| ☐ | `H4` Bundle budget in CI | S |
-| ☐ | `A5` Fix usePlayerSearch | S |
+| ☑ | `H9` Fix declared lineup slot order, 2016-2019 | S |
+| ☑ | `H10` Share the merged-fixture helper | S |
+| ☑ | `H4` Bundle budget, enforced by the build | S |
+| ☑ | `A5` Fix usePlayerSearch | S |
 
 **Milestone test:** gzipped initial JS down from ~2.9 MB to well under 1 MB, with
 snapshot tests proving no stat changed.

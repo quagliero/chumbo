@@ -18,10 +18,11 @@ import { everyMatchup, round4, rostersFor, weeksFor } from "./helpers";
  * Invariants that must hold however the stat helpers are refactored.
  *
  * Unlike the snapshot suites, these encode intent — a failure here is a bug or
- * a data problem, not a diff to eyeball. Four of them fail on the data as it
- * stands today and are marked `it.fails` with the details written out above
+ * a data problem, not a diff to eyeball. The ones that still fail on the data
+ * as it stands today are marked `it.fails` with the details written out above
  * them. Do not relax them: if a refactor makes one start passing, `it.fails`
- * will go red, which is exactly the signal you want.
+ * will go red, which is exactly the signal you want — at which point promote
+ * it to a plain `it` and rewrite the comment as a "FIXED by" note.
  */
 
 /**
@@ -292,23 +293,25 @@ describe("lineup invariants", () => {
 
 describe("strength of schedule invariants", () => {
   /**
-   * KNOWN FAILURE — `calculateStrengthOfSchedule` produces no information at
-   * all for the live season, which is the only season it is ever called for
-   * (`Standings.tsx` guards on `currentYear >= YEARS[YEARS.length - 1]`).
+   * The live season is the only season this is ever called for
+   * (`Standings.tsx` guards on `currentYear >= YEARS[YEARS.length - 1]`), and
+   * its ranking has to come from the fixtures still to be played.
    *
-   * It looks for *future* weeks inside `seasonData.matchups`, but the fetch
-   * scripts only write a `matchups/<week>.json` once that week exists — 2026
-   * currently holds week 1 and nothing else. The unplayed fixtures live in
-   * `schedule.json`, which this function never reads. So the "remaining
-   * opponents" list is empty for every team, every average is 0, and the
-   * ranking collapses to `Object.entries` order: roster 1 gets rank 1,
-   * roster 2 rank 2, and so on. The Standings column is showing roster ids
-   * dressed up as a difficulty ranking.
+   * FIXED by H7. Previously `calculateStrengthOfSchedule` looked for *future*
+   * weeks inside `seasonData.matchups`, but the fetch scripts only write a
+   * `matchups/<week>.json` once that week has been played — 2026 held week 1
+   * and nothing else. The unplayed fixtures live in `schedule.json`, which the
+   * function never read, so the "remaining opponents" list was empty for every
+   * team, every average was 0, and the ranking collapsed to `Object.entries`
+   * order: roster 1 rank 1, roster 2 rank 2, and so on. The Standings column
+   * was showing roster ids dressed up as a difficulty ranking.
    *
-   * `getCumulativeStandings`/`PlayoffOdds` already read `schedule.json`
-   * (commits d7f96c4, 4ff1103); this helper needs the same treatment.
+   * It now merges `schedule.json` over the played weeks, the same way
+   * `PlayoffOdds` does (commits d7f96c4, 4ff1103), so the rank reflects the
+   * opponents each team has left. Passing the schedule in is part of the
+   * contract: without it there are no remaining fixtures to rank.
    */
-  it.fails("ranks the live season by something other than roster id", () => {
+  it("ranks the live season by something other than roster id", () => {
     const season = seasons[CURRENT_YEAR];
     const ranks = calculateStrengthOfSchedule({
       matchups: (season?.matchups ?? {}) as unknown as Record<
@@ -317,6 +320,7 @@ describe("strength of schedule invariants", () => {
       >,
       rosters: rostersFor(CURRENT_YEAR),
       league: season?.league as ExtendedLeague,
+      schedule: season?.schedule,
     });
 
     const identity = rostersFor(CURRENT_YEAR).map((r) => r.roster_id);

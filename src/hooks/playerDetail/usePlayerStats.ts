@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { seasons } from "@/data";
+import { getPlayer, seasons } from "@/data";
 import { CURRENT_YEAR } from "@/domain/constants";
 import {
   getPlayoffWeekStart,
@@ -118,6 +118,9 @@ export const usePlayerStats = (playerId: string | undefined) => {
                   isByeWeek: playerPoints === 0 && !wasStarted,
                   isPlayoffGame: isMeaningfulPlayoff,
                   isChampionshipGame,
+                  // The NFL team as at *this* season, not the player's current
+                  // one — the whole point of the per-season overlays (A1b).
+                  nflTeam: getPlayer(playerId, year)?.team ?? null,
                 };
 
                 performances.push(performance);
@@ -173,6 +176,7 @@ export const usePlayerStats = (playerId: string | undefined) => {
                     averagePoints: wasStarted ? playerPoints : 0,
                     starts: wasStarted ? 1 : 0,
                     bench: wasStarted ? 0 : playerPoints > 0 ? 1 : 0,
+                    nflTeams: [],
                   });
                 }
               }
@@ -240,9 +244,17 @@ export const usePlayerStats = (playerId: string | undefined) => {
           averagePoints: 0,
           starts: 0,
           bench: 0,
+          nflTeams: [],
         });
       }
       const ownerStats = ownerMapWithBye.get(performance.ownerId)!;
+      // Which NFL teams the player was on while this manager rostered him.
+      if (
+        performance.nflTeam &&
+        !ownerStats.nflTeams.includes(performance.nflTeam)
+      ) {
+        ownerStats.nflTeams.push(performance.nflTeam);
+      }
       // Only add points if player was started
       if (performance.wasStarted) {
         ownerStats.totalPoints += performance.points;

@@ -52,7 +52,12 @@ const PlayerResults = ({ searchResults, searchTerm }: PlayerResultsProps) => {
               <div className="text-sm text-gray-600">
                 {player.fantasy_positions?.join(", ")}
                 {player.team && (
-                  <span className="ml-2 bg-gray-100 px-2 py-1 rounded text-xs">
+                  // Search has no season context, so this is the player's most
+                  // recent team. Per-season teams live on the player page.
+                  <span
+                    className="ml-2 bg-gray-100 px-2 py-1 rounded text-xs"
+                    title="Most recent team"
+                  >
                     {player.team}
                   </span>
                 )}

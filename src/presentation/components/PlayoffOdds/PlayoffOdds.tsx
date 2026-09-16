@@ -12,6 +12,7 @@ import {
   TableHeaderCell,
   TableCell,
 } from "../Table";
+import { mergeScheduledMatchups } from "@/utils/scheduleUtils";
 
 interface UserPick {
   week: number;
@@ -49,31 +50,13 @@ const PlayoffOdds = ({
     undefined
   );
 
-  // Fill in unplayed weeks from the schedule. Matchup files only exist for
-  // weeks that have been played, but the simulation needs the games to come.
-  const matchupsWithSchedule = useMemo(() => {
-    if (!matchups || !schedule) return matchups;
-
-    const merged = { ...matchups };
-    Object.entries(schedule).forEach(([week, scheduledMatchups]) => {
-      if (merged[week]) return;
-
-      merged[week] = scheduledMatchups.map(
-        (scheduled): ExtendedMatchup => ({
-          ...scheduled,
-          points: 0,
-          starters: [],
-          players: [],
-          user_id: "",
-          custom_points: null,
-          starters_points: [],
-          players_points: {},
-        })
-      );
-    });
-
-    return merged;
-  }, [matchups, schedule]);
+  // Matchup files only exist for weeks that have been played, but the
+  // simulation needs the games still to come. Shared with the remaining
+  // strength of schedule calculation (H10).
+  const matchupsWithSchedule = useMemo(
+    () => mergeScheduledMatchups(matchups, schedule),
+    [matchups, schedule]
+  );
 
   // Calculate playoff odds
   const playoffOddsData = useMemo(() => {

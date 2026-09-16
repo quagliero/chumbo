@@ -32,7 +32,7 @@ export const getCumulativeStandings = (years: number[]) => {
     // Only calculate scoringCrown for completed seasons
     const scoringCrown =
       season.league.status === "complete"
-        ? season.rosters.sort(
+        ? [...season.rosters].sort(
             (a, b) =>
               Number(`${b.settings.fpts}.${b.settings.fpts_decimal}`) -
               Number(`${a.settings.fpts}.${a.settings.fpts_decimal}`)

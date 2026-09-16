@@ -1,19 +1,46 @@
-import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "./playoffUtils";
 import { getCompletedWeek } from "./weekUtils";
+import { mergeScheduledFixtures } from "@/utils/scheduleUtils";
 
 interface SeasonData {
   matchups: Record<string, ExtendedMatchup[]>;
   rosters: ExtendedRoster[];
   league: ExtendedLeague;
+  /**
+   * Unplayed fixtures, from `schedule.json`. Only written while a season is in
+   * progress, so it is absent for every completed season — and the whole
+   * calculation is about games still to come, so without it there is nothing
+   * to rank.
+   */
+  schedule?: Record<string, ScheduledMatchup[]>;
 }
 
 /**
- * Calculate strength of schedule remaining for all teams
- * @param seasonData - The season data containing matchups and rosters
- * @returns Object mapping roster_id to strength of schedule rank (1-12, where 1 is hardest)
+ * Calculate strength of schedule *remaining* for all teams.
+ *
+ * Each team's remaining regular season opponents are looked up from the
+ * fixture list (played weeks from `matchups`, unplayed weeks from
+ * `schedule.json`), and scored by those opponents' average points per game so
+ * far. Highest average opponent = hardest remaining schedule = rank 1.
+ *
+ * Returns `{}` — deliberately, not incidentally — whenever there is nothing
+ * remaining to rank:
+ *
+ *   - no matchups or rosters;
+ *   - a historical season with no `leg` setting (`getCompletedWeek` is null);
+ *   - **any completed season**, and any in-progress season whose regular
+ *     fixtures have all been played: there are no remaining opponents, so
+ *     every average would be 0 and the "ranking" would be nothing but the
+ *     order the rosters happen to be iterated in.
+ *
+ * Callers must treat `{}` as "not applicable" and show nothing, rather than
+ * rendering a column of empty cells.
+ *
+ * @param seasonData - matchups, rosters, league, and (for a live season) schedule
+ * @returns Object mapping roster_id to rank (1 = hardest remaining schedule)
  */
 export const calculateStrengthOfSchedule = (
   seasonData: SeasonData
@@ -27,8 +54,23 @@ export const calculateStrengthOfSchedule = (
   // Get the most recent completed week from league data
   const completedWeek = getCompletedWeek(seasonData.league);
 
-  // If no completed week info available, return empty
+  // No `leg` setting: a historical season, with no remaining schedule.
   if (completedWeek === null) {
+    return {};
+  }
+
+  const fixtures = mergeScheduledFixtures(
+    seasonData.matchups,
+    seasonData.schedule
+  );
+
+  const remainingWeeks = Object.keys(fixtures)
+    .map((week) => parseInt(week))
+    .filter((week) => week > completedWeek && week < playoffWeekStart);
+
+  // Nothing left to play — a completed season, or a live one whose regular
+  // season is over. There is no remaining schedule to have a strength.
+  if (remainingWeeks.length === 0) {
     return {};
   }
 
@@ -64,7 +106,7 @@ export const calculateStrengthOfSchedule = (
         : 0;
   });
 
-  // Calculate remaining opponents' total points for each team
+  // Calculate remaining opponents' average points for each team
   const remainingOpponentsPoints: Record<number, number[]> = {};
 
   // Initialize for all teams
@@ -73,26 +115,25 @@ export const calculateStrengthOfSchedule = (
   });
 
   // Find remaining opponents for each team (only future weeks)
-  Object.entries(seasonData.matchups).forEach(([weekStr, weekMatchups]) => {
-    const week = parseInt(weekStr);
+  remainingWeeks.forEach((week) => {
+    const weekFixtures = fixtures[String(week)];
+    if (!weekFixtures) return;
 
-    // Only look at regular season weeks that are in the future (after completed week)
-    if (week >= playoffWeekStart || week <= completedWeek) return;
-
-    weekMatchups.forEach((matchup: ExtendedMatchup) => {
+    weekFixtures.forEach((fixture) => {
       // Find the opponent for this matchup
-      const opponentMatchup = weekMatchups.find(
-        (m: ExtendedMatchup) =>
-          m.matchup_id === matchup.matchup_id &&
-          m.roster_id !== matchup.roster_id
+      const opponent = weekFixtures.find(
+        (other) =>
+          other.matchup_id === fixture.matchup_id &&
+          other.roster_id !== fixture.roster_id
       );
 
-      if (opponentMatchup) {
-        // Add opponent's average points to the remaining opponents list
-        remainingOpponentsPoints[matchup.roster_id].push(
-          teamAvgPoints[opponentMatchup.roster_id]
-        );
-      }
+      // Teams on a bye this week simply have one fewer remaining opponent
+      if (!opponent) return;
+      if (!remainingOpponentsPoints[fixture.roster_id]) return;
+
+      remainingOpponentsPoints[fixture.roster_id].push(
+        teamAvgPoints[opponent.roster_id] ?? 0
+      );
     });
   });
 
@@ -107,18 +148,20 @@ export const calculateStrengthOfSchedule = (
           opponentPoints.reduce((sum, points) => sum + points, 0) /
           opponentPoints.length;
       } else {
+        // No games left at all: ranked last, not "hardest".
         avgOpponentPoints[rosterId] = 0;
       }
     }
   );
 
-  // Rank teams by average opponent points (highest = hardest schedule = rank 1)
+  // Rank teams by average opponent points (highest = hardest schedule = rank 1).
+  // Ties break on roster id so the result never depends on iteration order.
   const sortedTeams = Object.entries(avgOpponentPoints)
     .map(([rosterIdStr, avgPoints]) => ({
       rosterId: parseInt(rosterIdStr),
       avgPoints,
     }))
-    .sort((a, b) => b.avgPoints - a.avgPoints); // Sort descending (highest first)
+    .sort((a, b) => b.avgPoints - a.avgPoints || a.rosterId - b.rosterId);
 
   // Create ranking object (1 = hardest schedule)
   const strengthOfScheduleRank: Record<number, number> = {};
@@ -132,8 +175,9 @@ export const calculateStrengthOfSchedule = (
 /**
  * Get strength of schedule remaining for a specific team
  * @param rosterId - The roster ID to get strength of schedule for
- * @param seasonData - The season data containing matchups and rosters
- * @returns Strength of schedule rank (1-12, where 1 is hardest)
+ * @param seasonData - The season data containing matchups, rosters and schedule
+ * @returns Strength of schedule rank (1 = hardest), or 0 when the season has
+ * no remaining schedule to rank (see `calculateStrengthOfSchedule`)
  */
 export const getStrengthOfSchedule = (
   rosterId: number,

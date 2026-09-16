@@ -84,7 +84,17 @@ const PlayerDetail = () => {
                 <span className="font-medium">
                   {player.fantasy_positions?.join(", ")}
                 </span>
-                {player.team && <span>{player.team}</span>}
+                {player.team && (
+                  // The dictionary is a *current* snapshot, so this is the
+                  // player's team now — the per-season team is on each row of
+                  // the ownership and performance tables below (A1b).
+                  <span>
+                    {player.team}
+                    <span className="ml-1 text-xs text-gray-400">
+                      (current)
+                    </span>
+                  </span>
+                )}
                 {player.number != null && <span>#{player.number}</span>}
               </div>
               {allNicknames.length > 0 && (

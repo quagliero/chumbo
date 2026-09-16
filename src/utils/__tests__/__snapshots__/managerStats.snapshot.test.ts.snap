@@ -449,7 +449,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 299,
-    "digest": "791f-9729bfce984f3-4ed5e40a50eba",
+    "digest": "7923-e5d5dfd183a80-b3f164560e750",
     "head": [
       {
         "averageScore": 10.981578947368419,
@@ -566,7 +566,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5766-c517e59e2f7a1-31445582cd15",
+    "digest": "5765-1b85da7f3d87f-b5d332d8b94e5",
     "head": [
       {
         "bestPick": {
@@ -972,7 +972,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1817,
-    "digest": "3fd7f-1ab5a446395e0f-b8851226bd152",
+    "digest": "3fd83-129f913524bdf1-1b25633a689529",
     "head": [
       {
         "matchup_id": 6,
@@ -1449,7 +1449,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
   "managerName": "brock",
   "mostCappedPlayers": {
     "count": 181,
-    "digest": "4778-16bb13a2792e6a-1ea884879899ee",
+    "digest": "4775-13302e9b6092c2-9c0c643cefb52",
     "head": [
       {
         "averageScore": 15.124,
@@ -1535,7 +1535,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
       {
         "averageScore": 7.707692307692308,
         "playerId": "5848",
-        "playerName": "Hollywood Brown",
+        "playerName": "Marquise Brown",
         "starts": 13,
         "years": [
           2022,
@@ -1555,7 +1555,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 107,
-    "digest": "34c6-15ee03678b5438-1c2b309fbb4ea3",
+    "digest": "34c3-1fed7d4f9a0507-719b24991d3bc",
     "head": [
       {
         "bestPick": {
@@ -1691,7 +1691,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
           "year": 2022,
         },
         "playerId": "5848",
-        "playerName": "Hollywood Brown",
+        "playerName": "Marquise Brown",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -1837,7 +1837,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 882,
-    "digest": "1f1e6-42d9c56c56f80-141bd3732ffd0",
+    "digest": "1f1d5-2d889648621dd-14ced5121b4d42",
     "head": [
       {
         "matchup_id": 4,
@@ -3230,7 +3230,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 325,
-    "digest": "82ec-8726ddc1ac6bb-128cb0958eafc",
+    "digest": "82f1-157b1704bf7293-73090413c43cf",
     "head": [
       {
         "averageScore": 12.211111111111112,
@@ -3745,7 +3745,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1845,
-    "digest": "41866-ffb8c75a85edb-9e3254ed76626",
+    "digest": "41867-14aaef859c4978-51ee801553ec1",
     "head": [
       {
         "matchup_id": 5,
@@ -4306,7 +4306,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 256,
-    "digest": "66e9-7694c5c44610-1e7d3e1e532af",
+    "digest": "66e5-107364c6f315d8-146b3df306ba3e",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -4425,7 +4425,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 175,
-    "digest": "56be-5e16041f083fe-4b3a18c10b6d2",
+    "digest": "56bb-9dfdf0eb305f7-1fe35281582c7d",
     "head": [
       {
         "bestPick": {
@@ -4830,7 +4830,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1745,
-    "digest": "3dce9-498e104ed36f6-306560dce4d47",
+    "digest": "3dccf-1eacc3704dafee-f2c4f9610efac",
     "head": [
       {
         "matchup_id": 6,
@@ -7488,7 +7488,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "managerName": "jay",
   "mostCappedPlayers": {
     "count": 348,
-    "digest": "8ca1-1cbc58750bb89a-12b03fc296638",
+    "digest": "8ca9-3deecbe911e27-17e7e475507cc3",
     "head": [
       {
         "averageScore": 10.804255319148934,
@@ -8016,7 +8016,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1836,
-    "digest": "40b2e-12bef5cf31900d-1de0bbb649f14",
+    "digest": "40b47-1be9ca87423f56-1a86d4f355c3af",
     "head": [
       {
         "matchup_id": 3,
@@ -9915,7 +9915,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 341,
-    "digest": "8899-18ad7318ce9263-10bb6dfca4f349",
+    "digest": "889f-11b914a1958bf8-121a4295c2523d",
     "head": [
       {
         "averageScore": 21.71352941176471,
@@ -10034,7 +10034,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 194,
-    "digest": "5f99-16628ce8ecaf7c-164bb780ffc836",
+    "digest": "5fa0-1c04a928d8a531-43b639b044b55",
     "head": [
       {
         "bestPick": {
@@ -10434,7 +10434,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1754,
-    "digest": "3e04c-56437120db8f1-1da80da029acb4",
+    "digest": "3e051-11dd103acd56da-8b45601093654",
     "head": [
       {
         "matchup_id": 4,
@@ -10911,7 +10911,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   "managerName": "nick",
   "mostCappedPlayers": {
     "count": 130,
-    "digest": "3335-1f51a87777f945-1823458051aeeb",
+    "digest": "3333-17e12366aa25a1-18036fb1a64b15",
     "head": [
       {
         "averageScore": 9.678571428571429,
@@ -11013,7 +11013,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "2107-a1828ad87ae6b-175ee9331d4c9f",
+    "digest": "2105-97de7ed77c57-3c8dfc63c694d",
     "head": [
       {
         "bestPick": {
@@ -11244,7 +11244,7 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 675,
-    "digest": "17e01-b77c6b47220b9-1d660e40ac3391",
+    "digest": "17df5-1c134c5e36418-1392a71571b329",
     "head": [
       {
         "matchup_id": 2,
@@ -12633,7 +12633,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 194,
-    "digest": "5fc9-99551ca953d4f-cb80ba9bedc18",
+    "digest": "5fc7-32813fd16fbae-1372b9a5e11d3f",
     "head": [
       {
         "bestPick": {
@@ -13508,7 +13508,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 164,
-    "digest": "4208-6c733018d3308-147e473d989c86",
+    "digest": "4207-bb7520d1537ca-14b16fe82f9f1d",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -13618,7 +13618,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 99,
-    "digest": "310d-1ff8bbc00b7f3-19e4ca39711543",
+    "digest": "310c-1f7ed71aec2158-81b9b005965f6",
     "head": [
       {
         "bestPick": {
@@ -13903,7 +13903,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 900,
-    "digest": "20064-ddf7149d253af-d38a55f33648a",
+    "digest": "20056-d289cde1b3209-5c1d70327e964",
     "head": [
       {
         "matchup_id": 5,
@@ -14422,7 +14422,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   "managerName": "sol",
   "mostCappedPlayers": {
     "count": 322,
-    "digest": "80a6-10228eae50441e-163c318800e2e9",
+    "digest": "80b0-fdabfa48e10c4-8f04ab617288b",
     "head": [
       {
         "averageScore": 13.286111111111111,
@@ -14544,7 +14544,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5124-276ff68dcfc32-1838ebcce50b94",
+    "digest": "5129-140530110457cd-1e8e752e96a130",
     "head": [
       {
         "bestPick": {
@@ -14911,7 +14911,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1548,
-    "digest": "36e6d-1bbb5fcc943f2a-b7f87a838ff71",
+    "digest": "36e90-6d2a256fb2ee6-d791fb1ce7fe0",
     "head": [
       {
         "matchup_id": 2,
@@ -15472,7 +15472,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "managerName": "thd",
   "mostCappedPlayers": {
     "count": 365,
-    "digest": "9283-d56f03cd6085a-10e302198b8ed9",
+    "digest": "9288-31e258e8047de-4f5f8df42a4a",
     "head": [
       {
         "averageScore": 21.451162790697673,
@@ -15595,7 +15595,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 184,
-    "digest": "5b0f-65959fd8acd18-13a455a1ea71ca",
+    "digest": "5b0b-1be6ceb0f45776-1c736fb10d5100",
     "head": [
       {
         "bestPick": {
@@ -15996,7 +15996,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1862,
-    "digest": "415e5-317b500e5a76b-6d3579ac0b233",
+    "digest": "415e2-1d762713940781-d646be72671cd",
     "head": [
       {
         "matchup_id": 6,
@@ -16469,7 +16469,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 106,
-    "digest": "3471-148c008edf5f6b-b936223f6db15",
+    "digest": "3470-fbad5d6e3c812-33c52af95bebe",
     "head": [
       {
         "bestPick": {
@@ -17197,7 +17197,7 @@ exports[`getManagerStats > dataMode: playoffs > brock 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 15,
-    "digest": "77b-1db931faa74627-60284e6b9a79c",
+    "digest": "778-1525219386a570-1cd40a934df2c4",
     "head": [
       {
         "bestPick": {
@@ -17258,7 +17258,7 @@ exports[`getManagerStats > dataMode: playoffs > brock 1`] = `
           "year": 2022,
         },
         "playerId": "5848",
-        "playerName": "Hollywood Brown",
+        "playerName": "Marquise Brown",
         "timesDrafted": 1,
         "years": [
           2022,
@@ -18438,7 +18438,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 86,
-    "digest": "2065-165fe90d2f73ea-1368afe59b0059",
+    "digest": "2063-ec2d25b07fc6-cf16404a4b4fb",
     "head": [
       {
         "averageScore": 7.7250000000000005,
@@ -18941,7 +18941,7 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 135,
-    "digest": "4c31-a6779bb23f586-39c93562d0c13",
+    "digest": "4c2f-13947e577a163d-7808e068fd96b",
     "head": [
       {
         "matchup_id": 4,
@@ -22941,7 +22941,7 @@ exports[`getManagerStats > dataMode: playoffs > kitch 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 57,
-    "digest": "1bec-1cd0a376ffa864-72e4b7cb8eb04",
+    "digest": "1bf3-43790637b3e5e-1bf70953ca4a4a",
     "head": [
       {
         "bestPick": {
@@ -23678,7 +23678,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
   "managerName": "nick",
   "mostCappedPlayers": {
     "count": 50,
-    "digest": "12df-10b9166dd1d21-85b89ddead880",
+    "digest": "12dd-bda5f3a96c0f1-fb5b5d9ff329f",
     "head": [
       {
         "averageScore": 8.75,
@@ -23777,7 +23777,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "2107-a1828ad87ae6b-175ee9331d4c9f",
+    "digest": "2105-97de7ed77c57-3c8dfc63c694d",
     "head": [
       {
         "bestPick": {
@@ -24008,7 +24008,7 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 81,
-    "digest": "2e3f-1895244ac8fa6a-9a852e0b19b9a",
+    "digest": "2e3d-153946feebae88-178ddc0ebe830b",
     "head": [
       {
         "matchup_id": 1,
@@ -24570,7 +24570,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 96,
-    "digest": "2f42-abe68d8db6772-c2ec0c9f9cc5f",
+    "digest": "2f40-1f6000b6321c8-f02b996de425f",
     "head": [
       {
         "bestPick": {
@@ -25347,7 +25347,7 @@ exports[`getManagerStats > dataMode: playoffs > ryan 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 29,
-    "digest": "e68-7ac875da0a0ad-f36abf4614f18",
+    "digest": "e67-1062216802c0b3-d46be5b9764ac",
     "head": [
       {
         "bestPick": {
@@ -25991,7 +25991,7 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
   "managerName": "sol",
   "mostCappedPlayers": {
     "count": 52,
-    "digest": "138d-1ef2016bd7981c-ebb47872f3353",
+    "digest": "1391-8ec6ba1c704e1-1b19017f8cb94b",
     "head": [
       {
         "averageScore": 18.4,
@@ -26443,7 +26443,7 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 90,
-    "digest": "332f-126c235cbf05dc-bce43c5b3ba44",
+    "digest": "3333-cde3acee6f6bf-4d0bca784ec66",
     "head": [
       {
         "matchup_id": 1,
@@ -27918,7 +27918,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 290,
-    "digest": "7510-1d73ca7e42aa43-db88657d93dfb",
+    "digest": "7514-5b88f69d317b2-13721992493257",
     "head": [
       {
         "averageScore": 20.70470588235294,
@@ -28035,7 +28035,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5766-c517e59e2f7a1-31445582cd15",
+    "digest": "5765-1b85da7f3d87f-b5d332d8b94e5",
     "head": [
       {
         "bestPick": {
@@ -28441,7 +28441,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c067-786d0dc35234d-15dab76e5b4914",
+    "digest": "3c06b-b3b1254030782-9093c4a26e0ac",
     "head": [
       {
         "matchup_id": 6,
@@ -28918,7 +28918,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
   "managerName": "brock",
   "mostCappedPlayers": {
     "count": 179,
-    "digest": "46a7-17eabe54061bd7-84019db59bb9c",
+    "digest": "46a4-1aa08f1f60dace-5a252b2fb674c",
     "head": [
       {
         "averageScore": 15.124,
@@ -29004,7 +29004,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
       {
         "averageScore": 7.707692307692308,
         "playerId": "5848",
-        "playerName": "Hollywood Brown",
+        "playerName": "Marquise Brown",
         "starts": 13,
         "years": [
           2022,
@@ -29024,7 +29024,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 107,
-    "digest": "34c6-15ee03678b5438-1c2b309fbb4ea3",
+    "digest": "34c3-1fed7d4f9a0507-719b24991d3bc",
     "head": [
       {
         "bestPick": {
@@ -29160,7 +29160,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
           "year": 2022,
         },
         "playerId": "5848",
-        "playerName": "Hollywood Brown",
+        "playerName": "Marquise Brown",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -29306,7 +29306,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 873,
-    "digest": "1ecf5-1ca6db77eba5ef-de56d1e97b9d",
+    "digest": "1ece4-15025f62dff1d4-1851f1bd621c06",
     "head": [
       {
         "matchup_id": 4,
@@ -30701,7 +30701,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 317,
-    "digest": "7f5f-e527f6380ca2e-a7ce529f7306c",
+    "digest": "7f64-1837b4ed68d1ff-1f538173aca84b",
     "head": [
       {
         "averageScore": 11.93939393939394,
@@ -31216,7 +31216,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3cc36-7faa02eab5710-12d0d87cb5094c",
+    "digest": "3cc39-12b6847b1e254-fe8694448c72c",
     "head": [
       {
         "matchup_id": 5,
@@ -31777,7 +31777,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 254,
-    "digest": "6601-17a2b944ab70c0-1bd1fb900a49f3",
+    "digest": "65fd-102457a9556c14-aa06b3691c0ee",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -31896,7 +31896,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 175,
-    "digest": "56be-5e16041f083fe-4b3a18c10b6d2",
+    "digest": "56bb-9dfdf0eb305f7-1fe35281582c7d",
     "head": [
       {
         "bestPick": {
@@ -32301,7 +32301,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c7f9-84aba48dd75a5-414683ab3ad0d",
+    "digest": "3c7df-195762602cebea-88f4f9fa5e972",
     "head": [
       {
         "matchup_id": 6,
@@ -34958,7 +34958,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "managerName": "jay",
   "mostCappedPlayers": {
     "count": 340,
-    "digest": "88de-686c3ad6ad4e5-c11d0bade23a2",
+    "digest": "88e6-8212890b5629d-1ff3f619ba9982",
     "head": [
       {
         "averageScore": 22.006,
@@ -35484,7 +35484,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c48a-12c28b07fc6670-bb11c00a4f9fa",
+    "digest": "3c4a3-67f9f8ea50ac5-a143bc1f36262",
     "head": [
       {
         "matchup_id": 3,
@@ -37383,7 +37383,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 337,
-    "digest": "86a0-bb3040b35bb3a-12a1fff00ec144",
+    "digest": "86a6-6276b27c2f367-182d0c65cf330b",
     "head": [
       {
         "averageScore": 21.866875,
@@ -37502,7 +37502,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 194,
-    "digest": "5f99-16628ce8ecaf7c-164bb780ffc836",
+    "digest": "5fa0-1c04a928d8a531-43b639b044b55",
     "head": [
       {
         "bestPick": {
@@ -37902,7 +37902,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c700-1df13a45b8f922-117474271c319f",
+    "digest": "3c705-19167e60802cd8-1a372ed2489cc7",
     "head": [
       {
         "matchup_id": 4,
@@ -38379,7 +38379,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   "managerName": "nick",
   "mostCappedPlayers": {
     "count": 122,
-    "digest": "3038-1c0f0d660a59c3-36815e20e7b10",
+    "digest": "3036-1ab6363a774e0c-3bcd3188acbb2",
     "head": [
       {
         "averageScore": 15.016666666666664,
@@ -38482,7 +38482,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "2107-a1828ad87ae6b-175ee9331d4c9f",
+    "digest": "2105-97de7ed77c57-3c8dfc63c694d",
     "head": [
       {
         "bestPick": {
@@ -38713,7 +38713,7 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 594,
-    "digest": "14fc3-70538685c2133-1d6cca223e9d5c",
+    "digest": "14fb9-10905c527b75a2-1f5d9e57b7d0e4",
     "head": [
       {
         "matchup_id": 2,
@@ -40099,7 +40099,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 194,
-    "digest": "5fc9-99551ca953d4f-cb80ba9bedc18",
+    "digest": "5fc7-32813fd16fbae-1372b9a5e11d3f",
     "head": [
       {
         "bestPick": {
@@ -40974,7 +40974,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 162,
-    "digest": "410b-db713605ba196-38da6c5674d2a",
+    "digest": "410a-16f6e48c4e1ea2-2664b19f220b5",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -41084,7 +41084,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 99,
-    "digest": "310d-1ff8bbc00b7f3-19e4ca39711543",
+    "digest": "310c-1f7ed71aec2158-81b9b005965f6",
     "head": [
       {
         "bestPick": {
@@ -41369,7 +41369,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 873,
-    "digest": "1f0b3-12d0b97ffbefbb-1ad32fd3eea9f6",
+    "digest": "1f0a5-2b3ce399a36a9-1f95944adea0fd",
     "head": [
       {
         "matchup_id": 5,
@@ -41888,7 +41888,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   "managerName": "sol",
   "mostCappedPlayers": {
     "count": 314,
-    "digest": "7cfb-1501661fb2ebf4-1191831a4ded25",
+    "digest": "7d05-1cedb9f1d843b2-14315aed8e05b",
     "head": [
       {
         "averageScore": 13.286111111111111,
@@ -42010,7 +42010,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5124-276ff68dcfc32-1838ebcce50b94",
+    "digest": "5129-140530110457cd-1e8e752e96a130",
     "head": [
       {
         "bestPick": {
@@ -42377,7 +42377,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1458,
-    "digest": "33b3f-e0ed3e97dd78e-5eb638b6b8503",
+    "digest": "33b5e-457ecd9662248-dbb38b12f1857",
     "head": [
       {
         "matchup_id": 2,
@@ -42938,7 +42938,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "managerName": "thd",
   "mostCappedPlayers": {
     "count": 353,
-    "digest": "8d7f-f52134cef05c0-10828635bbff85",
+    "digest": "8d84-b0b45ca4205c5-634529e971b48",
     "head": [
       {
         "averageScore": 21.503783783783778,
@@ -43059,7 +43059,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 184,
-    "digest": "5b0f-65959fd8acd18-13a455a1ea71ca",
+    "digest": "5b0b-1be6ceb0f45776-1c736fb10d5100",
     "head": [
       {
         "bestPick": {
@@ -43460,7 +43460,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3bf42-1a80609594f8f-11ded6a493f907",
+    "digest": "3bf3f-108bc0a31a6a8b-c92b82c514f07",
     "head": [
       {
         "matchup_id": 6,

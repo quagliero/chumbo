@@ -63,7 +63,8 @@ const createPlayerRow = (
 
   // Use utility functions for name and position resolution
   const name = getPlayerName(playerIdStr, year);
-  const position = positionLabel || getPlayerPosition(playerIdStr, year);
+  const position =
+    positionLabel || getPlayerPosition(playerIdStr, year, matchupData);
 
   return {
     playerId,
@@ -129,11 +130,10 @@ export const getPlayerRows = (
   // Normal case - determine position labels for starters (including FLEX)
   const starterRows = starters.map((p, idx) => {
     const playerIdStr = p.toString();
-    const player = getPlayer(playerIdStr, year);
 
     // Typical lineup: QB, RB, RB, WR, WR, TE, FLEX, K, DEF
     // FLEX is typically at index 6 (7th position)
-    let positionLabel = player?.position || "UNK";
+    let positionLabel = getPlayerPosition(playerIdStr, year, matchupData);
     if (idx === 6) {
       positionLabel = "FLEX";
     }
@@ -166,7 +166,11 @@ export const getOptimalLineup = (
       playerId,
       player,
       points,
-      position: player?.position || "UNK",
+      // Resolve against the matchup first (A1c). Reading `player.position`
+      // straight off the dictionary slots people by what they are *today*, which
+      // is how players end up unplaceable and the "optimal" lineup comes back
+      // lower than the one actually started.
+      position: getPlayerPosition(playerIdStr, year, matchupData),
     };
   });
 

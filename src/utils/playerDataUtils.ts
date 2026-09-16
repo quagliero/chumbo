@@ -88,12 +88,11 @@ export const getPlayerPosition = (
 
   const player = getPlayer(playerIdStr, year);
 
-  // First try to get position from player data
-  if (player?.position && player.position !== "UNK") {
-    return player.position;
-  }
-
-  // Check unmatched_players from transaction (if provided)
+  // Ground truth first (A1c). `unmatched_players` records the position the player
+  // was actually slotted at in that game; the dictionary only knows his position
+  // *now*, and Sleeper reclassifies people. Devin Funchess is a TE in the 2026
+  // dump but lined up at WR every year he was on a Chumbo roster, and Marcel Reece
+  // is listed FB — a slot this league does not field — though he played RB.
   if (unmatchedPlayers) {
     const position = getPositionFromUnmatchedPlayers(
       playerIdStr,
@@ -105,7 +104,6 @@ export const getPlayerPosition = (
     }
   }
 
-  // Check unmatched_players in provided matchup data
   if (matchupData?.unmatched_players) {
     const position = getPositionFromUnmatchedPlayers(
       playerIdStr,
@@ -115,6 +113,12 @@ export const getPlayerPosition = (
     if (position) {
       return position;
     }
+  }
+
+  // Then the dictionary — base, corrected by this season's overlay where one
+  // exists. The overlay's `p` is a rare correction; team is what actually varies.
+  if (player?.position && player.position !== "UNK") {
+    return player.position;
   }
 
   // Search through all seasons to find position information for this player
@@ -200,54 +204,34 @@ export const getPlayerPositionFromMatchups = (playerName: string): string => {
  * @returns Player position or "UNK" as fallback
  */
 export const getPlayerPositionFromData = (playerName: string): string => {
-  // Try to find player using getPlayer by searching for matching names
-  // This is a bit tricky since getPlayer expects an ID, but we have a name
-  // So we'll search through all players to find one with matching name
-  for (const [, seasonData] of Object.entries(seasons)) {
-    if (seasonData.players) {
-      const player = Object.values(seasonData.players).find(
-        (p) =>
-          p.full_name === playerName ||
-          `${p.first_name} ${p.last_name}` === playerName
-      );
-      if (player?.position) {
-        return player.position;
-      }
-    }
-  }
+  // The base dictionary is the union of every snapshot, so one scan covers what
+  // used to be a scan per season.
+  const player = Object.values(players).find(
+    (p) =>
+      p.full_name === playerName ||
+      `${p.first_name} ${p.last_name}` === playerName
+  );
 
-  // Also try root players.json
-  if (players) {
-    const player = Object.values(players).find(
-      (p) =>
-        p.full_name === playerName ||
-        `${p.first_name} ${p.last_name}` === playerName
-    );
-    if (player?.position) {
-      return player.position;
-    }
-  }
-
-  return "UNK";
+  return player?.position ?? "UNK";
 };
 
 /**
  * Comprehensive player position lookup that tries multiple sources
+ *
+ * Matchup data comes first: it records the position the player was actually
+ * slotted at in that game, whereas the dictionary only knows his position *now*.
+ * Sleeper reclassifies players — Devin Funchess is a TE in the 2026 dump and was a
+ * WR every year he was on a Chumbo roster — so the dictionary is the fallback, not
+ * the source of truth (A1c).
+ *
  * @param playerName - Player name to search for
  * @returns Player position or "UNK" as fallback
  */
 export const getPlayerPositionComprehensive = (playerName: string): string => {
-  // First try data files
-  const positionFromData = getPlayerPositionFromData(playerName);
-  if (positionFromData !== "UNK") {
-    return positionFromData;
-  }
-
-  // Then try matchup data
   const positionFromMatchups = getPlayerPositionFromMatchups(playerName);
   if (positionFromMatchups !== "UNK") {
     return positionFromMatchups;
   }
 
-  return "UNK";
+  return getPlayerPositionFromData(playerName);
 };
