@@ -147,7 +147,6 @@ export const collectSeasonPlayerHistory = (
   { playerPerformances, draftHistory }: PlayerHistory
 ): void => {
   const playoffWeekStart = getPlayoffWeekStart(seasonData);
-  let weeksCounted = 0;
 
   Object.keys(seasonData.matchups).forEach((weekKey) => {
     const weekNum = parseInt(weekKey);
@@ -189,16 +188,14 @@ export const collectSeasonPlayerHistory = (
       playerPerformances
     );
 
-    weeksCounted++;
   });
 
-  // A season's draft only counts if at least one of its weeks counted. That is
-  // a quirk of the original implementation — the draft was collected inside the
-  // week loop, so it inherited the week filter (and was re-collected once per
-  // week). It matters: in "playoffs" mode, a manager who missed the playoffs
-  // that year contributes no picks at all. Kept deliberately so the numbers do
-  // not move; see H2's notes.
-  if (weeksCounted > 0) {
-    collectDraftPicks(roster, year, seasonData, draftHistory);
-  }
+  // A draft happens once a season, before a single game is played, so it is not
+  // a regular-season or a playoff fact and must not inherit the week filter.
+  // The original implementation collected picks inside the week loop, so a
+  // season contributed nothing unless one of its weeks qualified: in "playoffs"
+  // mode a manager who missed the playoffs lost that entire draft. fin dropped
+  // from 175 drafted players to 28, kitch from 194 to 57. Collected once per
+  // season now, regardless of mode (H11).
+  collectDraftPicks(roster, year, seasonData, draftHistory);
 };
