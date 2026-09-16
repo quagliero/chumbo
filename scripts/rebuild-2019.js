@@ -139,6 +139,38 @@ const resolve = (id, pp) => (pp[id] !== undefined ? id : alias[id] ?? id);
  * he started KC, so it is attributed like the rest.
  */
 const EXCEPTIONS = [];
+
+/**
+ * Scores looked up from the real 2019 box scores, for the three team-weeks with
+ * more than one unscored starter - where the gap cannot be split by arithmetic
+ * alone. Each set sums exactly to that week's shortfall.
+ *
+ * ryan, week 3 (gap 11.38) -- SF 24-20 PIT / NO 33-27 SEA
+ *   Garoppolo 277 pass yds, 1 TD, 2 INT, 3 rush yds, 1 fumble lost
+ *             = 11.08 + 4 - 4 + 0.3 - 2                            =  9.38
+ *   Seattle   allowed 33 (-1), 1 sack (+1), 1 fumble rec (+2)      =  2.00
+ *   (also confirms pts_allow counts all points against, including the Saints'
+ *    defensive and special-teams scores - excluding them gives 5 and fails)
+ *
+ * kitch, week 3 (gap 29.70) -- NO 33-27 SEA / PHI 24-27 DET / NYG 32-31 TB
+ *   Metcalf   2 rec, 67 yds                                        =  6.70
+ *   Agholor   8 rec, 50 yds, 2 TD                                  = 17.00
+ *   Tampa Bay by remainder. Recomputing from its own line - allowed 32 (-1),
+ *             5 sacks (+5), 2 fumble recs (+4) - gives 8, so NFL.com credited
+ *             one recovery, not two. Same 2-point st_fum_rec / def_st_fum_rec
+ *             discrepancy as the 30 other negative residuals.              6.00
+ *
+ * ryan, week 6 (gap 14.10) -- WSH 17-16 MIA
+ *   Preston Williams 2 rec, 31 yds                                 =  3.10
+ *   Washington allowed 16 (+2), 5 sacks (+5), 2 INT (+4)           = 11.00
+ */
+const MANUAL = [
+  { week: 3, roster_id: 12, scores: { 1837: 9.38, SEA: 2 } },
+  { week: 3, roster_id: 8, scores: { "D.K. Metcalf": 6.7, 2325: 17, TB: 6 } },
+  { week: 6, roster_id: 12, scores: { 6148: 3.1, "Washington Redskins": 11 } },
+];
+const manualFor = (week, roster_id) =>
+  (MANUAL.find((m) => m.week === week && m.roster_id === roster_id) || {}).scores;
 const isException = (week, roster_id, player) =>
   EXCEPTIONS.some(
     (e) => e.week === week && e.roster_id === roster_id && e.player === player
@@ -153,6 +185,7 @@ const report = {
   unscoredStarters: [],
   lineupDiffs: 0,
   attributedMissing: 0,
+  attributedManual: 0,
   attributedDefense: 0,
   residuals: [],
 };
@@ -230,7 +263,21 @@ for (const w of weeks) {
     //  c) More than one starter unscored - the gap cannot be split. Left as a
     //     residual.
     let residual = adjustment;
-    if (residual !== 0) {
+    const manual = manualFor(w, om.roster_id);
+    if (residual !== 0 && manual) {
+      // Looked-up box-score values; assert they close the gap exactly.
+      for (const [id, v] of Object.entries(manual)) players_points[id] = v;
+      const check = round2(
+        (om.starters || []).reduce((t, id) => t + (players_points[id] || 0), 0)
+      );
+      if (check !== om.points) {
+        throw new Error(
+          `Manual attribution for week ${w} roster ${om.roster_id} gives ${check}, expected ${om.points}`
+        );
+      }
+      residual = 0;
+      report.attributedManual++;
+    } else if (residual !== 0) {
       if (unscored.length === 1 && !isException(w, om.roster_id, unscored[0])) {
         players_points[unscored[0]] = residual;
         residual = 0;
@@ -360,6 +407,7 @@ console.log(DRY ? "DRY RUN - nothing written\n" : "2019 rebuilt\n");
 console.log(`  weeks                      ${report.weeks}`);
 console.log(`  team-weeks                 ${report.teamWeeks}`);
 console.log(`  reconciled exactly         ${report.exact}`);
+console.log(`  attributed from box scores      ${report.attributedManual}`);
 console.log(`  attributed to a missing starter ${report.attributedMissing}`);
 console.log(`  attributed to the defence       ${report.attributedDefense}`);
 console.log(`  left as an unattributed residual ${report.residuals.length}`);

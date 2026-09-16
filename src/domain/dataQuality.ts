@@ -13,8 +13,10 @@
  *     (`st_fum_rec` 2 -> 0, `def_kr_td` / `def_pr_td` 6 -> 0, while
  *     `def_st_fum_rec` stayed at 2). All of it is defensive, so the difference
  *     was folded back into the starting defence's score.
- *   - 3 team-weeks remain unattributed and still carry a `points_adjustment`:
- *     each has two or more unscored starters, so the gap cannot be split.
+ *   - 3 team-weeks had two or more unscored starters and could not be split by
+ *     arithmetic; those were resolved by looking the players up in the real
+ *     2019 box scores. Every team-week now reconciles, and no
+ *     `points_adjustment` remains.
  *
  * Team scores, records, standings and head-to-head are CORRECT for 2019 - they
  * come from the NFL.com record and reconcile exactly. It is only the per-player

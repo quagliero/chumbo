@@ -9915,7 +9915,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 341,
-    "digest": "8897-1cdd723fbc8027-4102d8c24f30",
+    "digest": "8899-18ad7318ce9263-10bb6dfca4f349",
     "head": [
       {
         "averageScore": 21.71352941176471,
@@ -10434,7 +10434,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1754,
-    "digest": "3e049-4033178486ee7-15dfd2d973d43f",
+    "digest": "3e04c-56437120db8f1-1da80da029acb4",
     "head": [
       {
         "matchup_id": 4,
@@ -13508,7 +13508,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 164,
-    "digest": "4202-1d60c885f8f460-a99360bc225f9",
+    "digest": "4208-6c733018d3308-147e473d989c86",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -13903,7 +13903,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 900,
-    "digest": "2005e-166bcc90264985-7a058c37188fa",
+    "digest": "20064-ddf7149d253af-d38a55f33648a",
     "head": [
       {
         "matchup_id": 5,
@@ -37383,7 +37383,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 337,
-    "digest": "869e-cdd359288a667-13e790fc1b5ebc",
+    "digest": "86a0-bb3040b35bb3a-12a1fff00ec144",
     "head": [
       {
         "averageScore": 21.866875,
@@ -37902,7 +37902,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c6fd-109d4a64916f90-1bee98fed48845",
+    "digest": "3c700-1df13a45b8f922-117474271c319f",
     "head": [
       {
         "matchup_id": 4,
@@ -40974,7 +40974,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 162,
-    "digest": "4105-1617dec367096c-1d2fba6732024",
+    "digest": "410b-db713605ba196-38da6c5674d2a",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -41369,7 +41369,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 873,
-    "digest": "1f0ad-6291dffd83e96-16a884e9b3e5c4",
+    "digest": "1f0b3-12d0b97ffbefbb-1ad32fd3eea9f6",
     "head": [
       {
         "matchup_id": 5,
