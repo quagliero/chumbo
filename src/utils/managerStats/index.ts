@@ -1,4 +1,5 @@
 import { seasons } from "@/data";
+import { memoiseOverSeasons } from "@/utils/cache";
 import { YEARS } from "@/domain/constants";
 import managers from "@/data/managers.json";
 import { buildAllStarLineup } from "./allStarLineup";
@@ -42,9 +43,9 @@ export type {
  * and the player history the lineup and draft lists are derived from
  * (`playerHistory`). The derived lists are built once, at the end.
  */
-export const getManagerStats = (
+const computeManagerStats = (
   managerId: string,
-  dataMode: DataMode = "regular"
+  dataMode: DataMode
 ): ManagerStats | null => {
   const manager = managers.find((m) => m.id === managerId);
   if (!manager) return null;
@@ -152,3 +153,23 @@ export const getManagerStats = (
     topPerformances: buildTopPerformances(playerHistory),
   };
 };
+
+/**
+ * A manager's full career stats. Memoised: this walks every season, and the
+ * manager pages call it repeatedly as you move between managers and modes.
+ */
+const memoisedManagerStats = memoiseOverSeasons(
+  "getManagerStats",
+  computeManagerStats,
+  // The Managers page asks for every manager in one pass, so this has to hold
+  // at least that many or it evicts faster than it is read — measured at 12,
+  // a 17-manager sweep went 49ms cold to 34ms warm, i.e. almost no benefit.
+  // 20 covers the full league plus a little headroom. Entries are large
+  // (~300 KB), so this is the one cache where the bound costs real memory.
+  20
+);
+
+export const getManagerStats = (
+  managerId: string,
+  dataMode: DataMode = "regular"
+): ManagerStats | null => memoisedManagerStats(managerId, dataMode);

@@ -212,6 +212,21 @@ const newCache = (): LoadCache => ({ done: new Set(), inFlight: new Map() });
 const matchupCache = newCache();
 const transactionCache = newCache();
 
+/**
+ * Bumped every time a season finishes loading.
+ *
+ * `seasons` is a synchronous view that fills in over time (A2a), so anything
+ * that derives a value from it and caches the result has to know when the
+ * underlying data changed. Without this, a stat computed while only 2014 was
+ * loaded would be cached forever as if it were the whole league.
+ *
+ * See `src/utils/cache.ts`.
+ */
+let dataVersion = 0;
+
+/** The current data version. Include it in any key that caches derived stats. */
+export const getDataVersion = (): number => dataVersion;
+
 const loadYear = <T>(
   cache: LoadCache,
   loaders: Map<number, WeekLoader<T>[]>,
@@ -227,6 +242,7 @@ const loadYear = <T>(
   const files = loaders.get(year);
   if (!season || !files?.length) {
     cache.done.add(year);
+    dataVersion += 1;
     return Promise.resolve();
   }
 
@@ -237,6 +253,7 @@ const loadYear = <T>(
   )
     .then(() => {
       cache.done.add(year);
+      dataVersion += 1;
     })
     .finally(() => {
       cache.inFlight.delete(year);
