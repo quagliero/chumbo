@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { seasons, getPlayer } from "@/data";
 import { YEARS } from "@/domain/constants";
+import type { ExtendedMatchup } from "@/types/matchup";
 
 /**
  * `league.roster_positions` declares the lineup slots in order, and every
@@ -45,8 +46,12 @@ describe("declared lineup slots match the lineups actually played", () => {
     // tally the positions seen at each slot index across the season
     const seen: Record<number, Record<string, number>> = {};
     for (let week = 1; week <= 13; week += 1) {
-      for (const matchup of seasons[year].matchups?.[String(week)] ?? []) {
-        (matchup.starters ?? []).forEach((id, i) => {
+      // `matchups` is keyed on a WeekKeys union, so widen it to index by string
+      const byWeek = seasons[year].matchups as
+        | Record<string, ExtendedMatchup[]>
+        | undefined;
+      for (const matchup of byWeek?.[String(week)] ?? []) {
+        (matchup.starters ?? []).forEach((id: string, i: number) => {
           if (i >= declared.length) return;
           const pos = positionOf(String(id), year);
           if (!pos) return;
