@@ -10,6 +10,7 @@ import { getPlayer } from "@/data";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
+import { scrollableRowClasses } from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 
 type ScoreMode = "team-score" | "match-total" | "player-score";
 type SortOrder = "high-to-low" | "low-to-high";
@@ -825,8 +826,8 @@ const TopScores = () => {
     <div className="container mx-auto">
       {/* Mode Selector and Sort Options */}
       <div className="mb-6">
-        <div className="flex gap-2 items-center justify-between">
-          <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 items-center justify-between">
+          <div className={`${scrollableRowClasses} gap-2`}>
             <NavLink
               to="/top-scores/team-score"
               className={({ isActive }) =>
@@ -865,7 +866,7 @@ const TopScores = () => {
             </NavLink>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {scoreMode === "player-score" && (
               <>
                 <div className="flex items-center gap-2">

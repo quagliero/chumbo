@@ -1,4 +1,4 @@
-import { CURRENT_YEAR, YEARS } from "@/domain/constants";
+import { CURRENT_YEAR, ValidYear } from "@/domain/constants";
 import { LosersBracket, WinnersBracket } from "@/types/bracket";
 import { ExtendedDraft } from "@/types/draft";
 import { ExtendedLeague } from "@/types/league";
@@ -10,7 +10,6 @@ import { ExtendedRoster } from "@/types/roster";
 import { ExtendedUser } from "@/types/user";
 import { Transaction } from "@/types/transaction";
 
-type ValidYear = (typeof YEARS)[number];
 type WeekKeys =
   | "1"
   | "2"
@@ -162,7 +161,11 @@ const allData = (() => {
 
   return {
     managers,
-    seasons: seasons as Record<ValidYear, SeasonData>,
+    // Indexed by plain `number`, not ValidYear, so the ~15 existing call sites
+    // that index with an unvalidated number keep compiling. H3 replaces this
+    // with a getSeason(year) accessor that returns SeasonData | undefined --
+    // casting at every call site would add churn without adding safety.
+    seasons: seasons as Record<number, SeasonData>,
     players,
   };
 })();

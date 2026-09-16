@@ -1,4 +1,5 @@
 import { Outlet, NavLink } from "react-router-dom";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 
 const WikiOverview = () => {
   return (
@@ -48,7 +49,7 @@ const Wiki = () => {
 
       {/* Wiki Navigation */}
       <nav className="mb-8">
-        <ul className="flex gap-4 border-b border-gray-200">
+        <ScrollableTabs as="ul" className="gap-4 border-b border-gray-200">
           <li>
             <NavLink
               to="/wiki"
@@ -93,7 +94,7 @@ const Wiki = () => {
             </NavLink>
           </li>
           {/* Add more wiki navigation links here */}
-        </ul>
+        </ScrollableTabs>
       </nav>
 
       <Outlet />

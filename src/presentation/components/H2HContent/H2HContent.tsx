@@ -21,8 +21,7 @@ import {
   TableHeaderCell,
   TableCell,
 } from "../Table/Table";
-
-type ValidYear = keyof typeof seasons;
+import { ValidYear } from "@/domain/constants";
 
 interface H2HMatchup {
   year: number;
