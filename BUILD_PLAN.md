@@ -267,7 +267,7 @@ sub-millisecond, so this is now a polish item rather than a fix.
 
 **Acceptance:** typing a 10-character query builds the index once, not ten times.
 
-- [ ] A5
+- [x] A5
 
 ### A6 · Fix the mobile horizontal scroll `XS`
 **Blocked by:** —
@@ -822,14 +822,14 @@ three different merge precedences to keep in sync.
 **Acceptance:** one implementation of the merge; both call sites use it; the
 playoff-odds output is unchanged.
 
-- [ ] H10
+- [x] H10
 
 ### H4 · Bundle budget in CI `S`
 
 Fail the build if gzipped initial JS exceeds a threshold. Without this, Workstream
 A silently erodes.
 
-- [ ] H4
+- [x] H4
 
 ### H5 · Single source of truth for years `S`
 
@@ -864,9 +864,9 @@ Ship before anything else. Independent, tiny, immediately felt.
 | ☑ | `H7` Fix strength of schedule | M |
 | ☑ | `H8` Rebuild 2019 from the NFL.com record | M |
 | ☑ | `H9` Fix declared lineup slot order, 2016-2019 | S |
-| ☐ | `H10` Share the merged-fixture helper | S |
-| ☐ | `H4` Bundle budget in CI | S |
-| ☐ | `A5` Fix usePlayerSearch | S |
+| ☑ | `H10` Share the merged-fixture helper | S |
+| ☑ | `H4` Bundle budget, enforced by the build | S |
+| ☑ | `A5` Fix usePlayerSearch | S |
 
 **Milestone test:** gzipped initial JS down from ~2.9 MB to well under 1 MB, with
 snapshot tests proving no stat changed.
