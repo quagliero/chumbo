@@ -754,11 +754,16 @@ sources of truth for the same number. Pick one — matchup-derived is the more
 defensible, since it is what every other page computes from — and make the
 headline agree with the breakdown.
 
-**Acceptance:** the two reconciliation invariants pass without `it.fails`, or the
-discrepancy is documented as unfixable upstream and the headline/breakdown
-disagreement is resolved in code.
+**DONE** — `scripts/rebuild-2019.js`. Root cause was not stat corrections: the
+2019 folder had been replaced with Sleeper data whose `points` was recomputed as
+`sum(starters)` from an incomplete lineup, discarding the NFL.com scores. Rebuilt
+from `chumbo-api/data/2019-old`, which reconciles to the penny. 119 of 184
+team-weeks reconcile exactly; the rest carry an explicit `points_adjustment`.
+Both reconciliation invariants now pass as real tests. See
+`src/domain/dataQuality.ts` — 2019's per-player data stays approximate, so `C2`
+must exclude it from lineup-derived records.
 
-- [ ] H8
+- [x] H8
 
 ### H4 · Bundle budget in CI `S`
 
@@ -798,7 +803,7 @@ Ship before anything else. Independent, tiny, immediately felt.
 | ☐ | `A1c` Prefer matchup slots for position | S |
 | ☐ | `H6` Stop standings mutating shared data | XS |
 | ☐ | `H7` Fix strength of schedule | M |
-| ☐ | `H8` Reconcile 2019 data *(needs owner)* | M |
+| ☑ | `H8` Rebuild 2019 from the NFL.com record | M |
 | ☐ | `H4` Bundle budget in CI | S |
 | ☐ | `A5` Fix usePlayerSearch | S |
 
