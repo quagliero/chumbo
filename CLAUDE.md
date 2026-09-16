@@ -7,7 +7,8 @@ externally (no longer GitHub Pages) — pushing to `main` is enough; there is no
 deploy step.
 
 > The root `README.md` is the stock Vite template and is not useful. This file is
-> the real orientation doc.
+> the real orientation doc. `BUILD_PLAN.md` holds the sequenced backlog of
+> performance, design, stats, navigation and sharing work.
 
 ## Stack
 

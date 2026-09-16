@@ -1,0 +1,811 @@
+# The Chumbo — Build Plan
+
+Everything from the site review, planned, sequenced and made checkable.
+
+**How to use this doc.** Tasks are grouped into eight **workstreams** (A–H) by
+subject matter, and delivered in seven **milestones** (M0–M6) by dependency and
+value. The workstream sections are the specification; the milestone table at the
+bottom is the running order. Tick boxes as you go.
+
+Every task has: an ID, a size, its blockers, the files it touches, and an
+acceptance test — the thing that has to be true before it's done.
+
+**Sizes.** `XS` < 30 min · `S` ~1 hr · `M` a half day · `L` a full day · `XL` 2+ days.
+
+**Guardrails that apply to every task**
+- Nothing merges that regresses the gzipped bundle. Record the number before and after.
+- Stat changes land with a test (see `H1`). The whole site is derived numbers; a
+  silent arithmetic regression is the worst possible bug here because nobody
+  notices until someone quotes it in the group chat.
+- Mobile first on anything visual. Most opens come from a WhatsApp link on a phone.
+- Two year lists must stay in sync (`YEARS`, `ValidYear`) until `H5` removes the
+  duplication — see CLAUDE.md.
+
+---
+
+## Dependency map
+
+The only hard ordering constraints. Everything else can run in parallel.
+
+```
+H1 (tests) ─────────────► A3, A5, C*, H2       "don't refactor stats without a net"
+A1 (player dictionary) ─► A2                   "don't split data still carrying 17MB"
+A2 (data loading) ──────► A4 (precompute)
+B1 (tokens) ────────────► B2 (Card), B3 (DataTable)
+B3 (DataTable) ─────────► B4 (column types), E8 (table deep links)
+C1 (stat registry) ─────► C2–C6, D*, E7 (narrative)
+F2 (manager colours) ───► D1, D2, D4, F3, G2
+G1 (SVG card renderer) ─► G3 (clipboard), G6 (build-time OG images)
+```
+
+---
+
+## Workstream A — Performance & the data layer
+
+The single most consequential workstream. Current state: **~2.9 MB gzipped JS
+parsed on every page load**, of which the overwhelming majority is never read.
+
+### A1 · Rebuild the player dictionary as base + per-season overlays `L`
+**Blocks:** A2 · **Blocked by:** — · **Impact:** 17.3 MB → ~683 KB (105 KB gzipped)
+
+Three dictionaries (`src/data/players.json`, `2025/players.json`,
+`2026/players.json`) hold 12,266 records that collapse to **4,389 unique
+players**, each carrying 52 fields of which the app reads **8**
+(`player_id`, `first_name`, `last_name`, `full_name`, `position`, `team`,
+`number`, `fantasy_positions`).
+
+A straight newest-wins merge would lose the player's team and position *as at that
+season*, so the format is a base dictionary plus small per-season overlays.
+
+**What actually varies between years** (measured):
+
+| | root → 2025 | 2025 → 2026 |
+|---|---|---|
+| new players | 300 | 300 |
+| **team changed** | **429** | **400** |
+| **position changed** | **1** | **4** |
+| unchanged | 3,358 | 3,683 |
+
+Position is effectively static — one to five players a year. The overlay is almost
+entirely a team map.
+
+**Format**
+
+```
+src/data/players.json          base: union of all players, newest attributes,
+                               8 fields, minified.  665 KB / 105 KB gzipped
+src/data/<year>/players.delta.json
+                               { "<playerId>": { "t": "<team>", "p": "<pos>" } }
+                               only where that season differed from base.
+                               ~400–550 entries, ~8–10 KB per season.
+```
+
+Rookies need no special handling — the base is a union, so a 2026 rookie is simply
+present and never referenced by older seasons. A season with no overlay resolves
+to base, which is exactly today's behaviour, so nothing regresses.
+
+**Measured cost:** base + both overlays = 683 KB. Projected across all fifteen
+seasons ≈ 800 KB raw / ~120 KB gzipped. Year-accuracy costs **+18 KB** over a flat
+merge — free, relative to the 17.3 MB being removed.
+
+**A1a — build the dictionary**
+1. Rewrite `scripts/filter-players.js` into `scripts/build-players.js`:
+   - merge every dictionary into one base, newest-year-wins, 8 fields, drop nulls;
+   - emit a `players.delta.json` per season for any player whose team or position
+     that year differed from base — normalise `null`/`undefined` before comparing,
+     or every free agent falsely registers as a change;
+   - keep the existing position filter; write **minified** (no `null, 2`);
+   - write in place and idempotently — no `_filtered` / `_backup` files and no
+     manual `mv` step in the output instructions;
+   - read years from `src/domain/constants.ts`, not its own hardcoded list (`H5`).
+2. Delete `src/data/2025/players.json` and `src/data/2026/players.json`.
+3. `getPlayer(id, year)` in `src/data/index.ts` becomes: base lookup, then apply
+   that year's overlay if one exists. The per-season scan loop and the 50-field
+   fallback object (44 of them literally `undefined`) both collapse — the fallback
+   for legacy string-named players becomes a 5-field literal.
+4. Narrow `Player` in `src/types/player.ts` to the 8 fields so the compiler catches
+   anything quietly relying on a dropped field.
+5. Teach `scripts/fetch-sleeper-data.js` to emit the season's overlay, so future
+   seasons accrue year-accuracy automatically.
+
+**A1b — thread the year through to the render sites**
+
+The overlays are invisible until this lands. `.team` is displayed in exactly two
+places and **neither has year context**:
+- `src/presentation/components/Players/PlayerResults.tsx:54` — search results
+- `src/presentation/pages/playerDetail.tsx:87` — fed by
+  `src/hooks/playerDetail/usePlayerData.ts:15`, which calls `getPlayer(playerId)`
+  with no year argument
+
+On the player detail page the right fix is per-row resolution: the ownership and
+performance tables already know their season, so each row should show the team as
+at that row's year rather than one team in the header. Search results have no year
+and should keep showing the most recent team, labelled as such.
+
+**A1c — prefer ground truth for position** `S`
+
+For position specifically the dictionary isn't the best source: the slot a player
+actually occupied is derivable from the matchup `starters` array against
+`roster_positions`. `getPlayerPositionFromMatchups` already exists in
+`playerDataUtils.ts` as a fallback — promote it ahead of the dictionary where a
+matchup context is available, and treat the overlay's `p` field as a rarely-used
+correction.
+
+**Files:** `scripts/filter-players.js` → `scripts/build-players.js`,
+`scripts/fetch-sleeper-data.js`, `src/data/players.json`,
+`src/data/<year>/players.delta.json` (new), `src/data/2025|2026/players.json`
+(delete), `src/data/index.ts`, `src/types/player.ts`,
+`src/utils/playerDataUtils.ts`, `src/hooks/playerDetail/usePlayerData.ts`,
+`src/presentation/pages/playerDetail.tsx`,
+`src/presentation/components/Players/PlayerResults.tsx`, `package.json`, `CLAUDE.md`
+
+**Acceptance:** `players` chunk under 150 kB gzipped · a 2025 player who changed
+team in 2026 shows the 2025 team on 2025 pages and the 2026 team on 2026 pages ·
+player search returns the same result set for a sample of 20 queries · every
+player page still resolves a name and position · `yarn build` clean.
+
+> ⚠️ Update the "Adding a new season" and "Gotchas" sections of CLAUDE.md in the
+> same commit — step 5 currently tells you to drop in a year-specific
+> `players.json`, which this task replaces with the overlay format.
+
+- [ ] A1a
+- [ ] A1b
+- [ ] A1c
+
+### A1d · Backfill historical teams from nflverse `M` *(optional, not blocking)*
+
+**There are currently no player dictionaries for 2012–2024** — only 2025 and 2026
+exist, so thirteen of the fifteen seasons already resolve against a modern
+snapshot and show players on the wrong teams in old draft boards. A1's overlay
+format fixes this going forward but cannot fix it retroactively, because Sleeper's
+`/players/nfl` only ever returns current state.
+
+nflverse publishes free historical roster data going back well before 2012. A
+one-off script could join it to Sleeper IDs (via `gsis_id`, which the unfiltered
+dumps still carry — **capture the mapping during A1a before those fields are
+dropped**) and generate an overlay per season.
+
+**Acceptance:** the 2018 draft board shows 2018 teams.
+
+- [ ] A1d
+
+### A2 · Load season data on demand `XL`
+**Blocks:** A4 · **Blocked by:** A1
+
+After A1 there's still ~11 MB of season JSON in one eager chunk, dominated by
+transactions (6.0 MB) and matchups (2.3 MB). `src/data/index.ts` forces this with
+`import.meta.glob(..., { eager: true })`, which is also why the lazy routes in
+`App.tsx` buy nothing.
+
+Do it in two steps so there's a safe stopping point:
+
+**A2a — un-eager the heavy files.** Drop `eager: true` for `matchups/*` and
+`transactions/*`. Vite emits one chunk per season; make `useSeasonData` async and
+let the existing `<Suspense>` boundary cover it. All-time pages get an explicit
+`loadAllSeasons()` await.
+
+**A2b — move data out of the bundle.** Relocate `src/data/*` season JSON to
+`public/data/` and fetch it through a small cache module
+(`src/data/loader.ts`: in-flight dedupe, resolved cache, typed accessors).
+`JSON.parse` on a fetched string beats evaluating an equivalent JS module, and it
+puts 2012–2025 — which never change between deploys — into the HTTP cache. Add
+long-lived `Cache-Control` for `/data/` at the host.
+
+**Files:** `src/data/index.ts`, new `src/data/loader.ts`,
+`src/hooks/useSeasonData.ts`, `vite.config.ts` (drop the now-pointless
+`manualChunks` data/players branches), every all-time page.
+
+**Acceptance:** initial JS under 400 kB gzipped · landing on `/` fetches no
+season older than the current year · navigating to a 2014 page fetches exactly
+one season file · a second visit to that page issues no network request.
+
+- [ ] A2a
+- [ ] A2b
+
+### A3 · Memoise the history scans `M`
+**Blocked by:** H1
+
+There is no caching anywhere in `src/utils/` — no `Map`, no memo wrapper — while
+`managerStats.ts` makes three separate full-history passes, and `h2h.ts`,
+`standings.ts`, `playerDataUtils.ts` and the three `playerDetail` hooks each do
+their own full sweep. Managers → a manager → back re-runs all of it.
+
+Add `src/utils/cache.ts` — a module-level `Map` keyed on
+`(fnName, ...args)` — and wrap `getManagerStats`, `getAllTimeH2HRecord`,
+`getCumulativeStandings`, `getStrengthOfSchedule`. The data is immutable at
+runtime so there is no invalidation problem. Roughly 20 lines.
+
+**Acceptance:** second navigation to a manager page does zero recomputation
+(assert via a call counter in a test) · numbers identical to pre-change snapshots.
+
+- [ ] A3
+
+### A4 · Precompute all-time aggregates at build time `L`
+**Blocked by:** A2, C1
+
+Nothing about 2012–2025 changes between deploys, so recomputing all-time
+standings, H2H and records in every browser on every visit is pure waste.
+Add `scripts/build-aggregates.js` that runs the stat registry (`C1`) over
+completed seasons and emits `public/data/all-time.json`. The client merges that
+with the live season only.
+
+Wire it into `yarn build` and into the fetch scripts so it refreshes whenever new
+week data lands.
+
+**Acceptance:** `/` renders all-time standings from the prebuilt file with no
+client-side aggregation · the file regenerates on `yarn fetch-latest`.
+
+- [ ] A4
+
+### A5 · Fix `usePlayerSearch` `S`
+**Blocked by:** H1
+
+`src/hooks/players/usePlayerSearch.ts:15` rebuilds a 12,266-entry `Map` from
+scratch **on every keystroke**, because its `useMemo` is keyed on `searchTerm`.
+Build the index once at module level, filter it per query, and add a ~150 ms
+debounce.
+
+**Acceptance:** typing a 10-character query builds the index once, not ten times.
+
+- [ ] A5
+
+### A6 · Fix the mobile horizontal scroll `XS`
+**Blocked by:** —
+
+On a 375 px viewport `document.scrollWidth` is **532 px** — the entire page slides
+sideways, header and all. The cause is the tab strip at
+`src/presentation/pages/home.tsx:39`:
+
+```jsx
+<nav className="flex gap-8">
+```
+
+"Schedule Comparison" and "Trades" overflow with no scroll container. The header's
+own `<menu>` already does this correctly with `overflow-x-auto`; apply the same.
+Then sweep every other tab strip (`history.tsx`, `managerDetail.tsx`) for the same
+bug.
+
+**Acceptance:** `document.scrollWidth === clientWidth` at 375 px on every route.
+
+- [ ] A6
+
+---
+
+## Workstream B — Design system
+
+You already have `src/presentation/components/Table/Table.tsx` exporting `Table`,
+`TableHeader`, `TableRow`, `TableCell`, `SortIcon` and `StandardTable`. **Two
+files use it.** Everything else rolls its own markup, and the drift is measurable:
+header cells split `px-6 py-3` (10×) against `px-3 py-3` (1× — and the shared
+component uses the minority spelling); body cells run to six distinct
+padding/size combinations; card containers have ten variants, led by
+`bg-white rounded-lg shadow` (44×) and `bg-white p-6 rounded-lg shadow` (9×).
+
+### B1 · Design tokens `M`
+**Blocks:** B2, B3
+
+`tailwind.config.js` is empty (`theme.extend: {}`). Define the actual system
+there: surface/border/text colours, the elevation scale, radii, the numeric font
+stack with `tabular-nums`, position colours (QB/RB/WR/TE/K/DEF — currently
+hardcoded in `DraftBoard`), and result colours (win/loss/tie).
+
+**Acceptance:** no new component hardcodes a hex or an ad-hoc shadow.
+
+- [ ] B1
+
+### B2 · `<Card>` primitive `S`
+**Blocked by:** B1
+
+`<Card>` / `<CardHeader>` / `<CardBody>` / `<CardFooter>`. Replace the 60+ ad-hoc
+`bg-white rounded-lg shadow…` strings across the app.
+
+**Acceptance:** `grep -r "bg-white rounded-lg shadow" src/presentation` returns
+only the Card component.
+
+- [ ] B2
+
+### B3 · `<DataTable>` `L`
+**Blocks:** B4, E8 · **Blocked by:** B1
+
+Six components use `@tanstack/react-table` (`AllTimeBreakdown`, `OwnershipTable`,
+`Standings`, `AllTimeTable`, `AllTimeTrades`, `H2HTable`) and each renders its own
+`<thead>`/`<tbody>`. Sorting UI, striping, hover, empty states and sticky headers
+are reimplemented six times.
+
+Build one `<DataTable columns={} data={} />` that owns: sorting + indicator,
+**sticky header**, **sticky first column**, zebra rows, density toggle, empty
+state, and mobile card-collapse. Migrate all six, plus the four raw-`<table>`
+sites (`MatchupDetail`, `StatsResults`, `DraftBoard`).
+
+The payoff beyond consistency: sticky header and sticky first column fix mobile
+tables **in one place** rather than twelve.
+
+**Acceptance:** every table on the site scrolls with its team column pinned on a
+375 px viewport · one sort-indicator implementation remains.
+
+- [ ] B3
+
+### B4 · Semantic column types `M`
+**Blocked by:** B3
+
+`numeric` (tabular-nums, right-aligned), `record` (W-L-T), `points`, `manager`
+(avatar + link), `player` (headshot + position chip), `year` (link to season).
+Today points columns are left-aligned in some tables and right in others, and
+digits don't line up anywhere because `tabular-nums` is never applied.
+
+Note that `manager` and `player` column types deliver a large slice of `E1` for
+free — every table that uses them becomes linked automatically.
+
+**Acceptance:** no table declares its own alignment or cell link markup.
+
+- [ ] B4
+
+---
+
+## Workstream C — The stats engine
+
+### C1 · Stat registry `L`
+**Blocks:** C2–C6, D*, E7, A4 · **Blocked by:** H1
+
+Before adding twenty statistics, give them somewhere to live. A registry where
+each stat declares `id`, `label`, `description`, `scope` (league / manager /
+player / season / matchup), `format`, and a `compute(data)` — so that a new stat
+automatically becomes available to the records page, the Explorer, the narrative
+engine (`E7`), the share cards (`G4`) and the build-time precompute (`A4`)
+without being wired into each by hand.
+
+**Acceptance:** adding a stat is one file and one registry line.
+
+- [ ] C1
+
+### C2 · Lineup stats `M`
+**Blocked by:** C1
+
+`getOptimalLineup` already exists in `src/utils/lineupAnalysis.ts` and only feeds
+the All-Star Lineup tile. Surface what it can already tell you:
+
+- [ ] **C2a** Points left on the bench — per manager, per season, all-time
+- [ ] **C2b** Manager efficiency % (actual ÷ optimal) — separates drafting from managing
+- [ ] **C2c** The single worst start/sit in league history — week, player, manager, margin
+- [ ] **C2d** The Bench Bandit — most points scored while benched
+
+### C3 · Matchup stats `M`
+**Blocked by:** C1
+
+- [ ] **C3a** Biggest and closest margins ever (top scores exist; margins don't)
+- [ ] **C3b** Unluckiest loss (highest-scoring loss) and its twin, the lowest-scoring win
+- [ ] **C3c** "Beat almost everyone" — scores that would have won against 12 of 13 opponents and still lost
+- [ ] **C3d** Longest win/loss streaks, all-time and current (`getCurrentStreak` exists; streaks are not shown as records)
+- [ ] **C3e** Rivalry intensity — average margin per H2H pairing
+- [ ] **C3f** Revenge games — record in the rematch following a blowout loss
+
+### C4 · Draft stats `M`
+**Blocked by:** C1
+
+- [ ] **C4a** Best and worst picks ever — points per draft slot vs the slot average
+- [ ] **C4b** Draft position luck — does pick 1 actually win in this league? Fifteen years is enough to answer
+- [ ] **C4c** Most-drafted players league-wide, and who kept going back
+- [ ] **C4d** The one that got away — drafted, dropped, then scored for someone else
+
+### C5 · Transaction stats `L`
+**Blocked by:** C1
+
+6.0 MB of transaction data is currently near-unused — the largest untapped
+dataset in the repo.
+
+- [ ] **C5a** Waiver wire hit rate — points added via waivers per manager
+- [ ] **C5b** Trade ledger — points received vs given up, scored retrospectively. Who won each trade?
+- [ ] **C5c** Most churned roster — transactions per manager per season
+
+### C6 · Identity & fun stats `M`
+**Blocked by:** C1
+
+- [ ] **C6a** Manager archetypes — derived labels ("The Streamer", "The Set-and-Forget", "The Heartbreaker" for most narrow losses)
+- [ ] **C6b** Championship probability by week, retrospectively — at what point did each title become inevitable?
+- [ ] **C6c** On this day in Chumbo history — same week, previous seasons (feeds `E6`)
+
+---
+
+## Workstream D — Visualisation
+
+The site is currently ~95% tables and stat tiles, with **no charts at all**.
+
+### D0 · Pick the chart approach `S`
+Hand-rolled SVG for the simple marks (sparklines, bars, heatmap cells), `visx`
+only if something genuinely needs scales and axes. **Do not undo Workstream A by
+adding a 200 kB charting library.** Budget: +40 kB gzipped for the whole
+workstream.
+
+- [ ] D0
+
+Every chart must be clickable through to the underlying matchup, season or
+player. A chart that's a dead end is worth much less here — see Workstream E.
+
+- [ ] **D1** Season arc — cumulative wins or points-for by week, one line per manager, on the Seasons page. Shows instantly who collapsed in November. *(needs F2)*
+- [ ] **D2** All-time power ribbon — every manager's finishing position 2012→2026 as a bump chart. **The single highest-value visual on this list**: the whole league's story in one image. *(needs F2)*
+- [ ] **D3** H2H matrix — replace the two scroll-lists on `h2h.tsx` with a 14×14 colour-coded grid (green = winning record, red = losing, cell = record, click = detail). Today you must pick two managers from lists to learn anything; a matrix shows all 91 rivalries at once, including who owns whom.
+- [ ] **D4** Score distribution — violin or histogram per manager. Separates the boom/bust managers from the metronomes, which W-L records hide entirely. *(needs F2)*
+- [ ] **D5** Weekly score heatmap — season × week grid for one manager, coloured by score. A whole career in one image.
+- [ ] **D6** Draft value scatter — pick number vs points scored that season, across all drafts. Every steal and every bust, using your league's real history rather than generic ADP.
+- [ ] **D7** Luck chart — actual wins vs expected wins (from the all-play record you already compute in `calculateWeeklyLeagueRecord`), scatter against the diagonal. Distance from the line is a luck score. Managers will argue about this for years.
+
+---
+
+## Workstream E — Navigation & discovery
+
+The "get lost in Chumbo history" workstream. The audit is unambiguous —
+**components with zero outbound links**: `DraftBoard`, `Trades`, `TradeCard`,
+`OwnershipTable`, `PlayerStatsCard`, `DraftStatsCard`, `Breakdown`,
+`PlayoffOdds`, `ScenarioPlanner`, `AllTimeTrades`, `ManagerStatsCard`,
+`hallOfFame`, `stats`, `players`.
+
+### E1 · Link everything, bidirectionally `L`
+
+Every player name → player page. Every manager/team name → manager page. Every
+score → matchup detail. Every year → that season. Every H2H record → H2H detail.
+
+**The Draft Board is the worst offender and the biggest loss.** It is the best
+looking thing on the site — position colours, headshots, manager attribution —
+and it is a total dead end. Every one of its 200+ cells should link to the player;
+every column header to the manager. Do this one first.
+
+`MatchupDetail` links to players (twice) and to nothing else — not either
+manager, not the H2H page for the pairing, not that season's standings.
+
+Mechanical work, highest delight-per-hour on the list. `B4` does a chunk of it
+for free.
+
+- [ ] E1a DraftBoard
+- [ ] E1b MatchupDetail
+- [ ] E1c Trades / TradeCard / AllTimeTrades
+- [ ] E1d Player detail tables (Ownership, PlayerStats, DraftStats)
+- [ ] E1e Breakdown, PlayoffOdds, ScenarioPlanner, ManagerStatsCard
+- [ ] E1f hallOfFame, stats, players
+
+### E2 · Contextual "see also" rails `M`
+**Blocked by:** E1, C1
+
+On a matchup: *"These two have met 23 times → H2H"*, *"Other games this week"*,
+*"Both managers' seasons"*. On a player: *"Drafted 7 times by 4 managers"*,
+*"Best week: 41.2 for thd, 2019 W8"*.
+
+- [ ] E2
+
+### E3 · Command palette (⌘K) `L`
+**Blocked by:** A5
+
+Fuzzy search across managers, players, seasons and weeks from anywhere. For a site
+that is fundamentally an index of fifteen years, **this is the best single
+navigation addition available.** The search infrastructure already exists in
+`usePlayerSearch`.
+
+- [ ] E3
+
+### E4 · Breadcrumbs `S`
+
+Manager detail currently offers "← Back to Managers" and nothing else.
+`Seasons › 2024 › Week 8 › thd vs jay` is orientation and navigation at once.
+
+- [ ] E4
+
+### E5 · Random matchup button `S`
+**Blocked by:** E1
+
+A dice icon that drops you into a random matchup from league history. Genuinely:
+this is the exact mechanic that manufactures the WhatsApp nuggets you want.
+
+- [ ] E5
+
+### E6 · "On this day" homepage module `M`
+**Blocked by:** C6c
+
+- [ ] E6
+
+### E7 · Narrative engine `L`
+**Blocked by:** C1
+
+A small rules engine turning records into sentences on the page they belong to:
+*"This was the highest-scoring loss in Chumbo history."* *"jay has won 7 of the
+last 8 against fin."* **Facts get shared; tables don't.** This is also what makes
+`G4`'s share cards write themselves.
+
+- [ ] E7
+
+### E8 · Deep links for table state `M`
+**Blocked by:** B3
+
+Tab state already lives in the URL — sorted and filtered table state doesn't. If a
+manager sorts by "most bench points" and can't paste that link into the group
+chat, the nugget dies with them.
+
+- [ ] E8
+
+---
+
+## Workstream F — Pages
+
+### F1 · Managers page rebuild `L`
+**Blocked by:** B2, F2
+
+Currently 14 identical white cards, each a stack of `Label: value` rows in the
+same grey — no avatars, no colour, no hierarchy — and the cards don't align,
+because "Zaragoza's Zooting Zorro" wraps to two lines and shoves its stats down.
+
+- [ ] **F1a** Use the avatars. `userAvatar.ts` exists and matchup cards already show them; the one page that is literally about people doesn't.
+- [ ] **F1b** Trophy case as the hero, not a footnote row of emoji at the bottom. Championships are the point.
+- [ ] **F1c** Finishing-position sparkline per card — instant career shape, makes the grid scannable.
+- [ ] **F1d** Fix alignment — `grid-rows-subgrid` or a fixed-height name block, so the eye can compare across cards.
+- [ ] **F1e** Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
+
+### F2 · Manager identity colours `S`
+**Blocks:** D1, D2, D4, F1, F3, G2 · **Blocked by:** B1
+
+Derive a stable colour per manager once, then use it **everywhere** — their line
+in every chart, their cell in the H2H matrix, their accent on matchup cards and
+share images. This is the cheapest change that makes a data site feel like a place
+rather than a spreadsheet, and half of Workstream D depends on it.
+
+- [ ] F2
+
+### F3 · Manager detail rebuild `M`
+**Blocked by:** F2, D5
+
+The stat tiles wrap awkwardly — "Scoring Crowns" is taller than its neighbours
+because the label breaks. Replace eight tiles with a season-by-season timeline
+carrying trophy markers, plus the weekly heatmap from `D5`.
+
+- [ ] F3
+
+### F4 · Hall of Fame `M`
+**Blocked by:** E1f
+
+`src/presentation/pages/hallOfFame.tsx` is **entirely placeholder text** — all 15
+inductees read "This will be replaced with the actual blurb" — and it links to no
+player pages.
+
+- [ ] **F4a** Real blurbs (content task — needs you, not the code)
+- [ ] **F4b** Link every inductee to their player page
+- [ ] **F4c** A manager wing — inductees are currently all players
+- [ ] **F4d** A Ring of Shame, because obviously
+
+---
+
+## Workstream G — Sharing
+
+Two separate problems that share one renderer.
+
+### G1 · SVG card renderer `L`
+**Blocks:** G3, G6
+
+Build the cards as **SVG you control**, not a DOM screenshot — `html2canvas` is
+heavy, slow, and renders Tailwind inconsistently. Serialise the SVG, draw to a
+`<canvas>`, `canvas.toBlob()`. Design at **1200×630** so the same renderer serves
+both the clipboard flow and the build-time OG images.
+
+- [ ] G1
+
+### G2 · Card templates `M`
+**Blocked by:** G1, F2, E7
+
+Final score · manager season · H2H record · draft pick · record broken
+("🚨 NEW LEAGUE RECORD"). `E7` supplies the copy.
+
+- [ ] G2
+
+### G3 · Copy to clipboard `M`
+**Blocked by:** G1
+
+`navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])`. WhatsApp
+Web accepts a pasted image.
+
+> **Safari/iOS caveat that trips everyone up:** the `ClipboardItem` must be
+> constructed with a *promise* of the blob, synchronously inside the user
+> gesture — `new ClipboardItem({ 'image/png': makeBlob() })`. Await the blob
+> first and it fails silently.
+
+- [ ] G3
+
+### G4 · Native share sheet on mobile `S`
+**Blocked by:** G1
+
+`navigator.share({ files: [...] })` opens the native sheet with WhatsApp already
+in it — a much better flow on a phone than the clipboard. Feature-detect, fall
+back to `G3` on desktop.
+
+- [ ] G4
+
+### G5 · Static OG tags `XS`
+
+`index.html` has **no Open Graph or Twitter card tags at all**. Every Chumbo link
+anyone has ever pasted into WhatsApp rendered as a bare grey URL. Add title,
+description and the league logo. Ten minutes, and it retroactively improves every
+link already out there — **do this in M0.**
+
+- [ ] G5
+
+### G6 · Per-route prerendered OG images `XL`
+**Blocked by:** G1, G5
+
+You're a static SPA, so crawlers see one HTML file. Prerender static HTML per
+route — at minimum per manager, per season, per player — with route-specific OG
+tags and a matching OG image, generating the image with the `G1` renderer run
+through `satori` + `resvg` in a Node build step. All data is static and committed,
+so this is pure build-time work needing no server.
+
+A link that previews as a proper scorecard *and* a copy-image button is what turns
+"I found a thing" into something the group chat actually sees.
+
+- [ ] G6
+
+---
+
+## Workstream H — Code health
+
+### H1 · Test harness `L`
+**Blocks:** A3, A5, C*, H2
+
+There are **no tests and no test script**. For a site whose entire value is the
+correctness of derived statistics, this is the gap that makes every other
+refactor risky. Add Vitest; snapshot the current output of `getManagerStats`,
+`getAllTimeH2HRecord`, `getCumulativeStandings`, `getOptimalLineup` and
+`calculateStrengthOfSchedule` across all seasons **before touching anything**, so
+the whole plan has a net under it. An afternoon's work that de-risks the rest.
+
+- [ ] H1
+
+### H2 · Split the large files `L`
+**Blocked by:** H1
+
+`managerStats.ts` (1,203 lines, **one exported function**), `H2HContent.tsx`
+(1,159), `Standings.tsx` (1,014), `TopScores.tsx` (986),
+`AllTimeScheduleComparison.tsx` (773). The single 1,000-line function body in
+`managerStats.ts` is where `A3`'s three redundant full-history passes are hiding,
+so this and `A3` are best done together.
+
+- [ ] H2
+
+### H3 · Type the data loader `M`
+**Blocked by:** A2
+
+`src/data/index.ts` uses `any` behind an eslint-disable and reimplements "ensure
+initialised" three times. A loader typed on file pattern is shorter and safer.
+
+- [ ] H3
+
+### H4 · Bundle budget in CI `S`
+
+Fail the build if gzipped initial JS exceeds a threshold. Without this, Workstream
+A silently erodes.
+
+- [ ] H4
+
+### H5 · Single source of truth for years `S`
+
+`ValidYear` is declared twice — `src/constants/fantasy.ts` and again in
+`src/data/index.ts` as `typeof YEARS[number]` — plus a third hardcoded list in
+`scripts/filter-players.js`. Derive all three from `YEARS`, then delete the
+"two year lists must stay in sync" gotcha from CLAUDE.md.
+
+- [ ] H5
+
+---
+
+## Milestones
+
+### M0 — Quick wins `~1 day`
+Ship before anything else. Independent, tiny, immediately felt.
+
+| | Task | Size |
+|---|---|---|
+| ☐ | `A6` Mobile horizontal scroll fix | XS |
+| ☐ | `G5` Static OG tags | XS |
+| ☐ | `H5` Single source of truth for years | S |
+| ☐ | `H4` Bundle budget in CI | S |
+
+### M1 — Safety net & the big payload `~3 days`
+| | Task | Size |
+|---|---|---|
+| ☐ | `H1` Test harness + snapshots | L |
+| ☐ | `A1a` Rebuild dictionary as base + overlays | L |
+| ☐ | `A1b` Thread year through to render sites | M |
+| ☐ | `A1c` Prefer matchup slots for position | S |
+| ☐ | `A5` Fix usePlayerSearch | S |
+
+**Milestone test:** gzipped initial JS down from ~2.9 MB to well under 1 MB, with
+snapshot tests proving no stat changed.
+
+### M2 — Data layer `~4 days`
+| | Task | Size |
+|---|---|---|
+| ☐ | `A2a` Un-eager the heavy files | M |
+| ☐ | `A2b` Move data to `public/`, add loader | L |
+| ☐ | `A3` + `H2` Memoise and split `managerStats` | L |
+| ☐ | `H3` Type the data loader | M |
+| ☐ | `A1d` Backfill historical teams from nflverse *(optional)* | M |
+
+**Milestone test:** initial JS under 400 kB gzipped; a 2014 page fetches one file.
+
+### M3 — Design system & linking `~5 days`
+The milestone that most changes how the site *feels*.
+
+| | Task | Size |
+|---|---|---|
+| ☐ | `B1` Tokens | M |
+| ☐ | `F2` Manager identity colours | S |
+| ☐ | `B2` Card primitive | S |
+| ☐ | `B3` DataTable | L |
+| ☐ | `B4` Semantic column types | M |
+| ☐ | `E1a–f` Link everything | L |
+| ☐ | `E4` Breadcrumbs | S |
+
+**Milestone test:** every table sticky-scrolls on a phone; no dead-end components
+remain; the Draft Board is fully navigable.
+
+### M4 — Stats engine `~5 days`
+| | Task | Size |
+|---|---|---|
+| ☐ | `C1` Stat registry | L |
+| ☐ | `C2` Lineup stats (a–d) | M |
+| ☐ | `C3` Matchup stats (a–f) | M |
+| ☐ | `C4` Draft stats (a–d) | M |
+| ☐ | `C5` Transaction stats (a–c) | L |
+| ☐ | `C6` Identity & fun stats (a–c) | M |
+| ☐ | `A4` Build-time aggregates | L |
+
+**Milestone test:** ~20 new statistics live; all-time pages render from a
+prebuilt file.
+
+### M5 — Visualisation & pages `~6 days`
+| | Task | Size |
+|---|---|---|
+| ☐ | `D0` Chart approach + budget | S |
+| ☐ | `D3` H2H matrix | M |
+| ☐ | `D2` All-time power ribbon | L |
+| ☐ | `D1` Season arc | M |
+| ☐ | `D7` Luck chart | M |
+| ☐ | `D5` Weekly heatmap | M |
+| ☐ | `D4` Score distribution | M |
+| ☐ | `D6` Draft value scatter | M |
+| ☐ | `F1a–e` Managers page rebuild | L |
+| ☐ | `F3` Manager detail rebuild | M |
+| ☐ | `F4a–d` Hall of Fame | M |
+
+### M6 — Discovery & sharing `~6 days`
+The "get lost in it" payoff, once there's something worth getting lost in.
+
+| | Task | Size |
+|---|---|---|
+| ☐ | `E7` Narrative engine | L |
+| ☐ | `E2` See-also rails | M |
+| ☐ | `E3` Command palette (⌘K) | L |
+| ☐ | `E5` Random matchup button | S |
+| ☐ | `E6` On this day | M |
+| ☐ | `E8` Table deep links | M |
+| ☐ | `G1` SVG card renderer | L |
+| ☐ | `G2` Card templates | M |
+| ☐ | `G3` Clipboard copy | M |
+| ☐ | `G4` Native share sheet | S |
+| ☐ | `G6` Prerendered OG images | XL |
+
+---
+
+## Risks
+
+| Risk | Mitigation |
+|---|---|
+| A stat silently changes during the A/H refactors | `H1` first, always. Snapshots are the whole point. |
+| Workstream D undoes Workstream A | `D0` sets a +40 kB budget; `H4` enforces it in CI. |
+| `A2b` breaks the in-progress 2026 season mid-flight | Ship `A2a` first as the safe stopping point; do `A2b` in an off-week. |
+| Tailwind purge misses dynamically built class names (manager colours, position colours) | `F2`/`B1` must emit static class names or use CSS custom properties, never template-string classes. |
+| `G6` prerendering conflicts with client-side routing | Prerender to real static paths and let the SPA hydrate; test a cold WhatsApp open on iOS specifically. |
+| `A1a` drops `gsis_id` before `A1d` can use it to join nflverse data | Capture the ID mapping to a side file during `A1a`, even though the app doesn't need it. |
+| Scope creep in C4/C5 — retrospective trade scoring is genuinely hard | Timebox `C5b`; ship the simple version (points scored post-trade) and iterate. |
+
+---
+
+## Content tasks that need you, not the code
+
+- `F4a` — 15 Hall of Fame blurbs
+- `F4c/d` — who belongs in the manager wing and the Ring of Shame
+- `C6a` — sign-off on the archetype labels, which should be funny and slightly mean
+- Any league lore that should sit in the wiki
