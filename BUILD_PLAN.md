@@ -754,11 +754,46 @@ sources of truth for the same number. Pick one — matchup-derived is the more
 defensible, since it is what every other page computes from — and make the
 headline agree with the breakdown.
 
-**Acceptance:** the two reconciliation invariants pass without `it.fails`, or the
-discrepancy is documented as unfixable upstream and the headline/breakdown
-disagreement is resolved in code.
+**DONE** — `scripts/rebuild-2019.js`. Root cause was not stat corrections: the
+2019 folder had been replaced with Sleeper data whose `points` was recomputed as
+`sum(starters)` from an incomplete lineup, discarding the NFL.com scores. Rebuilt
+from `chumbo-api/data/2019-old`, which reconciles to the penny. 119 of 184
+team-weeks reconcile exactly; the rest carry an explicit `points_adjustment`.
+Both reconciliation invariants now pass as real tests. See
+`src/domain/dataQuality.ts` — 2019's per-player data stays approximate, so `C2`
+must exclude it from lineup-derived records.
 
-- [ ] H8
+- [x] H8
+
+### H9 · Declared lineup slots are in the wrong order for 2016–2019 `S`
+**Found by:** inspecting jay's 2019 week 7 lineup
+
+`league.json.roster_positions` declares `... TE K DEF FLEX` for 2016, 2017, 2018
+and 2019, but every `starters` array in those seasons is actually ordered
+`... TE FLEX K DEF`. Measured across all team-weeks:
+
+```
+index 6:  WR 98, RB 77, TE 5   -> FLEX
+index 7:  K 181                -> K
+index 8:  DEF 182              -> DEF
+```
+
+2020 onwards declares `FLEX K DEF` and matches. 2014 and 2015 match too, so the
+bad declaration is specific to 2016–2019.
+
+Only `src/utils/leagueRules.ts:90` reads it, so the damage is limited to the Rules
+page listing slots in the wrong order — but anything future that maps
+`starters[i]` to `roster_positions[i]` (the natural thing to do, and what `A1c`
+proposes for deriving position from the matchup) would silently mis-slot every
+lineup in those four seasons.
+
+Fix all four together rather than one; 2019 is currently consistent with its
+neighbours. Also check 2012/2013, where the detection was ambiguous.
+
+**Acceptance:** for every season, `roster_positions[i]` agrees with the position
+actually played at `starters[i]` across the whole season.
+
+- [ ] H9
 
 ### H4 · Bundle budget in CI `S`
 
@@ -798,7 +833,8 @@ Ship before anything else. Independent, tiny, immediately felt.
 | ☐ | `A1c` Prefer matchup slots for position | S |
 | ☐ | `H6` Stop standings mutating shared data | XS |
 | ☐ | `H7` Fix strength of schedule | M |
-| ☐ | `H8` Reconcile 2019 data *(needs owner)* | M |
+| ☑ | `H8` Rebuild 2019 from the NFL.com record | M |
+| ☐ | `H9` Fix declared lineup slot order, 2016-2019 | S |
 | ☐ | `H4` Bundle budget in CI | S |
 | ☐ | `A5` Fix usePlayerSearch | S |
 
