@@ -14,138 +14,33 @@ exports[`calculateStrengthOfSchedule > 2017 1`] = `{}`;
 
 exports[`calculateStrengthOfSchedule > 2018 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2019 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2019 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2020 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2020 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2021 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2021 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2022 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2022 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2023 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2023 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2024 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2024 1`] = `{}`;
 
-exports[`calculateStrengthOfSchedule > 2025 1`] = `
-{
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
-  "6": 6,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-}
-`;
+exports[`calculateStrengthOfSchedule > 2025 1`] = `{}`;
 
 exports[`calculateStrengthOfSchedule > 2026 1`] = `
 {
-  "1": 1,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  "2": 2,
-  "3": 3,
-  "4": 4,
-  "5": 5,
+  "1": 12,
+  "10": 3,
+  "11": 10,
+  "12": 2,
+  "2": 11,
+  "3": 4,
+  "4": 5,
+  "5": 1,
   "6": 6,
-  "7": 7,
-  "8": 8,
+  "7": 8,
+  "8": 7,
   "9": 9,
 }
 `;
@@ -267,136 +162,136 @@ exports[`getStrengthOfSchedule > 2018 — per roster 1`] = `
 
 exports[`getStrengthOfSchedule > 2019 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2020 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2021 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2022 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2023 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2024 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2025 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
-  "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
-  "roster 9": 9,
+  "roster 1": 0,
+  "roster 10": 0,
+  "roster 11": 0,
+  "roster 12": 0,
+  "roster 2": 0,
+  "roster 3": 0,
+  "roster 4": 0,
+  "roster 5": 0,
+  "roster 6": 0,
+  "roster 7": 0,
+  "roster 8": 0,
+  "roster 9": 0,
 }
 `;
 
 exports[`getStrengthOfSchedule > 2026 — per roster 1`] = `
 {
-  "roster 1": 1,
-  "roster 10": 10,
-  "roster 11": 11,
-  "roster 12": 12,
-  "roster 2": 2,
-  "roster 3": 3,
-  "roster 4": 4,
-  "roster 5": 5,
+  "roster 1": 12,
+  "roster 10": 3,
+  "roster 11": 10,
+  "roster 12": 2,
+  "roster 2": 11,
+  "roster 3": 4,
+  "roster 4": 5,
+  "roster 5": 1,
   "roster 6": 6,
-  "roster 7": 7,
-  "roster 8": 8,
+  "roster 7": 8,
+  "roster 8": 7,
   "roster 9": 9,
 }
 `;

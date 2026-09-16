@@ -13,7 +13,7 @@ import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
 import { League, ExtendedLeague } from "@/types/league";
 import { ExtendedUser } from "@/types/user";
-import { ExtendedMatchup } from "@/types/matchup";
+import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
@@ -457,20 +457,31 @@ const Standings = ({
 
   const { playoffTeams, playoffTeamSeeds } = getPlayoffTeams();
 
-  // Calculate strength of schedule remaining for current season only
+  // Calculate strength of schedule remaining for current season only.
+  // The unplayed fixtures live in schedule.json, not in the matchup files, so
+  // the season's schedule has to go in alongside the matchups.
   const strengthOfScheduleRemaining = useMemo(() => {
     return currentYear && currentYear >= YEARS[YEARS.length - 1]
       ? calculateStrengthOfSchedule({
           matchups: matchups || {},
           rosters: standings,
           league: league || ({} as League),
+          schedule: seasons[currentYear]?.schedule,
         } as {
           matchups: Record<string, ExtendedMatchup[]>;
           rosters: ExtendedRoster[];
           league: ExtendedLeague;
+          schedule?: Record<string, ScheduledMatchup[]>;
         })
       : {};
   }, [currentYear, matchups, standings, league]);
+
+  // `calculateStrengthOfSchedule` returns {} whenever there is no remaining
+  // schedule to rank — every completed season, and the live season once the
+  // regular season is done. In that case the column has nothing to say, so
+  // drop it rather than render a column of dashes.
+  const hasStrengthOfSchedule =
+    Object.keys(strengthOfScheduleRemaining).length > 0;
 
   // Create table columns
   const columns = useMemo(
@@ -622,9 +633,7 @@ const Standings = ({
         sortingFn: "alphanumeric",
         enableSorting: true,
       }),
-      ...(currentYear &&
-      currentYear >= YEARS[YEARS.length - 1] &&
-      !isSeasonComplete
+      ...(hasStrengthOfSchedule
         ? [
             columnHelper.accessor("sosRank", {
               header: () => "SOS",
@@ -653,7 +662,7 @@ const Standings = ({
           ]
         : []),
     ],
-    [columnHelper, hasDivisions, currentYear, number, users]
+    [columnHelper, hasDivisions, number, users, hasStrengthOfSchedule]
   );
 
   // Determine if a team gets a bye (top 2 seeds in 12-team leagues, or all playoff teams in 10-team leagues)
@@ -768,7 +777,6 @@ const Standings = ({
           : undefined;
 
         const playoffHighlight = getPlayoffHighlight(roster.roster_id);
-        console.log(firstPlace, thirdPlace, topScorer, bottomScorer);
         const isChampion =
           isSeasonComplete && firstPlace?.w === roster.roster_id;
         const isRunnerUp =
