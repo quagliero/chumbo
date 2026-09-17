@@ -37,6 +37,15 @@ export default defineConfig({
           if (id.includes("/data/players.json")) {
             return "players";
           }
+          // D0: every chart in workstream D lives under components/Chart, and
+          // they share one chunk so the workstream's 40 kB budget is a number
+          // the build can actually check rather than an intention. The cost is
+          // that opening one chart page loads the others' marks too; at this
+          // size that is cheaper than the bookkeeping to avoid it, and they
+          // share the frame and scales regardless.
+          if (id.includes("/presentation/components/Chart/")) {
+            return "charts";
+          }
           // A2a: the per-week files are loaded on demand, one chunk per season
           // per kind, so a page that wants 2014 fetches 2014 and nothing else.
           // Without this Rollup would emit ~500 chunks, one per week file.

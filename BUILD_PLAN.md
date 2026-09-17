@@ -528,7 +528,26 @@ only if something genuinely needs scales and axes. **Do not undo Workstream A by
 adding a 200 kB charting library.** Budget: +40 kB gzipped for the whole
 workstream.
 
-- [ ] D0
+**Decided: hand-rolled, no chart dependency at all.** What visx or d3 would
+supply here is a linear interpolation, a band position and a 1/2/5/10 tick
+series — about ninety lines, now in `components/Chart/scale.ts` with the tests
+d3 would have come with. `d3-scale` + `d3-shape` alone is ~15 kB gzip, which is
+over a third of the workstream budget for the smallest part of the job.
+
+`components/Chart/` holds the three things every chart needs and none should
+re-solve: `Chart` (measures the container, reserves margins, announces itself),
+`XAxis`/`YAxis`, and the scales. The frame measures in real CSS pixels via
+`ResizeObserver` rather than scaling a fixed `viewBox`, because a scaled viewBox
+also scales the type — and most of this league reads the site on a phone.
+
+**The budget was not being enforced.** The risk table said "D0 sets a +40 kB
+budget; H4 enforces it in CI", but H4's total sat at 1220 kB against an actual
+966 kB — 254 kB of headroom, so a 200 kB charting library would have passed
+without a murmur. Ratcheted to 1006 (966 + the 40 kB allowance), initial 420 →
+370, and chart code now builds into its own `charts` chunk with its own 40 kB
+line in the check. Verified the check fails rather than only that it passes.
+
+- [x] D0
 
 Every chart must be clickable through to the underlying matchup, season or
 player. A chart that's a dead end is worth much less here — see Workstream E.
