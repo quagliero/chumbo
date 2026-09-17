@@ -47,13 +47,42 @@ export interface Game {
    */
   lineupsApproximate: boolean;
 
+  /**
+   * False for a team-week with no opponent — an eliminated team in a playoff
+   * week. Such entries appear only in `teamWeeks`, never in `games`, so this
+   * is always true for anything read from `games`.
+   */
+  hasOpponent: boolean;
+
   /** The raw matchup, for anything this shape does not carry. */
   raw: ExtendedMatchup;
 }
 
-/** Everything a stat is given. Built once, shared by all of them. */
+/**
+ * Everything a stat is given. Built once, shared by all of them.
+ *
+ * There are two lists because the stats genuinely want different things, and
+ * conflating them silently loses data (found by C5):
+ *
+ *   `games`      Paired matchups only — both halves present, so there is a
+ *                real opponent, margin and result. Anything about winning,
+ *                losing, margins or streaks belongs here.
+ *   `teamWeeks`  EVERY team-week that scored, paired or not. Once the playoff
+ *                brackets are set, eliminated teams have `matchup_id: null`
+ *                for the remaining weeks — they have no opponent, so they are
+ *                absent from `games` — but they still set a lineup and still
+ *                scored. There are 48 such team-weeks worth 4,287 points.
+ *                Anything about lineups or player points belongs here, or a
+ *                player's season is silently shortened by whether his owner
+ *                made the playoffs.
+ *
+ * A `teamWeek` with no opponent has `opponentRosterId: -1`, `opponentPoints:
+ * 0` and `result: "tie"`; those fields are meaningless for it, which is
+ * exactly why result-shaped questions should use `games`.
+ */
 export interface StatContext {
   games: Game[];
+  teamWeeks: Game[];
   years: number[];
 }
 

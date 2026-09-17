@@ -21,7 +21,9 @@ const LINEUP_STATS = [
 ];
 
 const gamesFor = (year: number, week: number, managerId: string): Game[] =>
-  getStatContext().games.filter(
+  // teamWeeks, not games: these stats are about lineups, so they include
+  // the playoff weeks where an eliminated team had no opponent.
+  getStatContext().teamWeeks.filter(
     (game) =>
       game.year === year && game.week === week && game.managerId === managerId
   );
@@ -121,7 +123,7 @@ describe("lineup stats", () => {
     // Recompute the leader independently, straight off the raw lineups.
     const playerId = top.href!.replace("/players/", "");
     let total = 0;
-    for (const game of getStatContext().games) {
+    for (const game of getStatContext().teamWeeks) {
       if (game.lineupsApproximate || game.points <= 0) continue;
       if (game.starters.includes(playerId)) continue;
       if (!game.players.includes(playerId)) continue;

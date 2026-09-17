@@ -8,7 +8,12 @@ import type { Game, StatEntry } from "./types";
  *
  * These are the stats about managing rather than drafting: the points you had
  * on your roster and did not play. Each one is a filter and a map over
- * `context.games`, the flattened team-week list; none of them walks the seasons
+ * `context.teamWeeks` — NOT `context.games`. Every stat here is about a lineup,
+ * and `games` holds only paired matchups, so it omits the 48 team-weeks where
+ * an eliminated team still set a lineup in a playoff week and scored 4,287
+ * points between them. Those are exactly the weeks where the most is left on
+ * the bench, so excluding them understated the thing being measured. None of
+ * them walks the seasons
  * itself.
  *
  * Every stat here reads `starters` / `playersPoints`, so every one of them sets
@@ -164,7 +169,7 @@ export const benchPointsAllTime = defineStat({
   format: "points",
   direction: "high",
   requiresLineups: true,
-  compute: ({ games }) => {
+  compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
       { points: number; weeks: number; years: Set<number>; worst: Game | null; worstPoints: number }
@@ -213,7 +218,7 @@ export const benchPointsSeason = defineStat({
   format: "points",
   direction: "high",
   requiresLineups: true,
-  compute: ({ games }) => {
+  compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
       { managerId: string; year: number; points: number; weeks: number }
@@ -260,7 +265,7 @@ export const managerEfficiency = defineStat({
   format: "percent",
   direction: "high",
   requiresLineups: true,
-  compute: ({ games }) => {
+  compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
       { actual: number; optimal: number; weeks: number; years: Set<number> }
@@ -307,7 +312,7 @@ export const worstStartSit = defineStat({
   format: "points",
   direction: "high",
   requiresLineups: true,
-  compute: ({ games }) =>
+  compute: ({ teamWeeks: games }) =>
     gradable(games).flatMap(({ game, read }): StatEntry[] => {
       const swap = read.worstStartSit;
       if (!swap) return [];
@@ -333,7 +338,7 @@ export const benchBandit = defineStat({
   format: "points",
   direction: "high",
   requiresLineups: true,
-  compute: ({ games }) => {
+  compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
       {

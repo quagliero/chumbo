@@ -15,8 +15,67 @@ import type { Game, StatContext } from "./types";
  * data loader, so this cannot serve a list built before the seasons finished
  * loading.
  */
+/**
+ * Build a `Game` from one team's half of a week. `opponent` is null for an
+ * eliminated team in a playoff week: it still scored, but there is nobody to
+ * have beaten, so margin/result carry no meaning and such entries appear only
+ * in `teamWeeks`.
+ */
+const toGame = ({
+  year,
+  week,
+  matchupId,
+  self,
+  opponent,
+  ownerId,
+  opponentOwnerId,
+  playoff,
+  approximate,
+}: {
+  year: number;
+  week: number;
+  matchupId: number;
+  self: ExtendedMatchup;
+  opponent: ExtendedMatchup | null;
+  ownerId: string;
+  opponentOwnerId: string;
+  playoff: boolean;
+  approximate: boolean;
+}): Game => {
+  const opponentPoints = opponent?.points ?? 0;
+  const margin = opponent ? self.points - opponentPoints : 0;
+
+  return {
+    year,
+    week,
+    matchupId,
+    rosterId: self.roster_id,
+    ownerId,
+    managerId: ownerId ? getManagerIdBySleeperOwnerId(ownerId) ?? null : null,
+    points: self.points,
+    opponentRosterId: opponent?.roster_id ?? -1,
+    opponentOwnerId,
+    opponentManagerId: opponentOwnerId
+      ? getManagerIdBySleeperOwnerId(opponentOwnerId) ?? null
+      : null,
+    opponentPoints,
+    margin,
+    result: margin > 0 ? "win" : margin < 0 ? "loss" : "tie",
+    isPlayoff: playoff,
+    isRegularSeason: !playoff,
+    starters: (self.starters ?? []).map(String),
+    startersPoints: self.starters_points ?? [],
+    playersPoints: self.players_points ?? {},
+    players: (self.players ?? []).map(String),
+    lineupsApproximate: approximate,
+    hasOpponent: opponent !== null,
+    raw: self,
+  };
+};
+
 const buildContext = (): StatContext => {
   const games: Game[] = [];
+  const teamWeeks: Game[] = [];
 
   for (const year of YEAR_NUMBERS) {
     const season = seasons[year];
@@ -48,6 +107,27 @@ const buildContext = (): StatContext => {
         else pairs.set(matchup.matchup_id, [matchup]);
       }
 
+      // Every scored team-week, including the ones with no opponent. Once the
+      // brackets are set, eliminated teams have matchup_id null for the
+      // remaining weeks: no opponent, but they still set a lineup and scored.
+      for (const matchup of weekMatchups) {
+        if (matchup.matchup_id != null) continue;
+        const ownerId = ownerByRoster.get(matchup.roster_id) ?? "";
+        teamWeeks.push(
+          toGame({
+            year,
+            week,
+            matchupId: -1,
+            self: matchup,
+            opponent: null,
+            ownerId,
+            opponentOwnerId: "",
+            playoff: isPlayoffWeek(week, playoffWeekStart),
+            approximate,
+          })
+        );
+      }
+
       for (const [matchupId, pair] of pairs) {
         if (pair.length !== 2) continue;
 
@@ -61,7 +141,7 @@ const buildContext = (): StatContext => {
           const margin = self.points - opponent.points;
           const playoff = isPlayoffWeek(week, playoffWeekStart);
 
-          games.push({
+          const game: Game = {
             year,
             week,
             matchupId,
@@ -88,14 +168,17 @@ const buildContext = (): StatContext => {
             playersPoints: self.players_points ?? {},
             players: (self.players ?? []).map(String),
             lineupsApproximate: approximate,
+            hasOpponent: true,
             raw: self,
-          });
+          };
+          games.push(game);
+          teamWeeks.push(game);
         }
       }
     }
   }
 
-  return { games, years: [...YEAR_NUMBERS] };
+  return { games, teamWeeks, years: [...YEAR_NUMBERS] };
 };
 
 /** Every team-week in league history. Memoised and version-checked. */

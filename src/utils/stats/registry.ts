@@ -47,11 +47,17 @@ const runStat = (id: string, limit?: number): StatEntry[] => {
   if (!definition) return [];
 
   const context = getStatContext();
-  const games = definition.requiresLineups
-    ? context.games.filter((game) => !game.lineupsApproximate)
-    : context.games;
+  // Filter BOTH lists. `teamWeeks` is a superset of `games`, so filtering only
+  // one lets the excluded seasons back in through the other — which is exactly
+  // what happened when teamWeeks was introduced, and what the C2 test caught.
+  const keep = (game: { lineupsApproximate: boolean }) =>
+    !definition.requiresLineups || !game.lineupsApproximate;
 
-  const entries = definition.compute({ ...context, games });
+  const entries = definition.compute({
+    ...context,
+    games: context.games.filter(keep),
+    teamWeeks: context.teamWeeks.filter(keep),
+  });
   const ranked = [...entries].sort((a, b) =>
     definition.direction === "high" ? b.value - a.value : a.value - b.value
   );
