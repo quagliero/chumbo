@@ -86,7 +86,7 @@ const Header = () => {
               H2H
             </NavLink>
           </li>
-          {/* <li>
+          <li>
             <NavLink
               to="/hof"
               className={({ isActive }) =>
@@ -99,7 +99,7 @@ const Header = () => {
             >
               HOF
             </NavLink>
-          </li> */}
+          </li>
           <li>
             <NavLink
               to="/explorer"

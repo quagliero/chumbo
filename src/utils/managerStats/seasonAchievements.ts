@@ -78,8 +78,12 @@ export const getChampionshipResult = (
   const championship = seasonData.winners_bracket.find(
     (m: BracketMatch) => m.p === 1
   );
+  // The bracket's `p` is the PLACE the match decides, and a placement match
+  // ranks two teams — so the values that occur are 1, 3 and 5 (first/second,
+  // third/fourth, fifth/sixth) and never 2. Looking for 2 matched nothing, so
+  // every manager's third-place count has been zero since this was written.
   const thirdPlace = seasonData.winners_bracket.find(
-    (m: BracketMatch) => m.p === 2
+    (m: BracketMatch) => m.p === 3
   );
 
   if (championship?.w === roster.roster_id) return "champion";

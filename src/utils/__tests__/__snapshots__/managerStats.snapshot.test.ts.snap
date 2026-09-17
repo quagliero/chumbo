@@ -743,7 +743,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "year": 2012,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 52,
       "leagueTies": 0,
@@ -903,7 +903,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       "year": 2022,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 94,
       "leagueTies": 0,
@@ -968,7 +968,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
     },
   ],
   "teamName": "Wolverhampton Wasters",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1817,
     "digest": "3fd83-129f913524bdf1-1b25633a689529",
@@ -4636,7 +4636,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       "year": 2014,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 65,
       "leagueTies": 0,
@@ -4829,7 +4829,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     },
   ],
   "teamName": "Tha Dollar",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 1745,
     "digest": "3dca7-11875f5a61cfed-720512713a9a5",
@@ -5828,7 +5828,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       "year": 2021,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 98,
       "leagueTies": 0,
@@ -5909,7 +5909,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
     },
   ],
   "teamName": "Bush Johnson",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 1809,
     "digest": "3fed6-1052e1e302c2f9-1ec57fa8b740d4",
@@ -6767,7 +6767,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       "year": 2016,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 70,
       "leagueTies": 0,
@@ -6815,7 +6815,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
       "year": 2019,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 108,
       "leagueTies": 0,
@@ -6928,7 +6928,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
     },
   ],
   "teamName": "21st & Hine",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1746,
     "digest": "3de11-117021c6a78aec-8a7edcc2bc853",
@@ -7841,7 +7841,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "year": 2015,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 42,
       "leagueTies": 0,
@@ -7921,7 +7921,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
       "year": 2020,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 2,
       "leagueLosses": 52,
       "leagueTies": 0,
@@ -8018,7 +8018,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     },
   ],
   "teamName": "Kansas City Chumps",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1836,
     "digest": "40b3d-abe15159d4e4e-7d5d3f9c4edfa",
@@ -12792,7 +12792,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "scoringCrowns": 1,
   "seasonStats": [
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 56,
       "leagueTies": 0,
@@ -12888,7 +12888,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       "year": 2017,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 55,
       "leagueTies": 0,
@@ -13033,7 +13033,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     },
   ],
   "teamName": "Zaragoza's Zooting Zorro",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1809,
     "digest": "3f7ae-1894784b54458d-1f706cafc80561",
@@ -14863,7 +14863,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       "year": 2023,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 112,
       "leagueTies": 0,
@@ -14912,7 +14912,7 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
     },
   ],
   "teamName": "The Unicorn",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 1548,
     "digest": "36e90-6d2a256fb2ee6-d791fb1ce7fe0",
@@ -15788,7 +15788,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "year": 2013,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 6,
       "leagueLosses": 76,
       "leagueTies": 0,
@@ -15868,7 +15868,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "year": 2018,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 76,
       "leagueTies": 0,
@@ -15964,7 +15964,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
       "year": 2024,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 88,
       "leagueTies": 0,
@@ -15997,7 +15997,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
     },
   ],
   "teamName": "King of Wishful Tinkering",
-  "thirdPlace": 0,
+  "thirdPlace": 3,
   "topPerformances": {
     "count": 1862,
     "digest": "415ea-141498fc5ab956-1b1e693f1659f3",
@@ -16650,7 +16650,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       "year": 2012,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 2,
       "leagueTies": 0,
@@ -16810,7 +16810,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       "year": 2022,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 9,
       "leagueTies": 0,
@@ -16875,7 +16875,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
     },
   ],
   "teamName": "Wolverhampton Wasters",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 108,
     "digest": "3d19-1f75e8363adb42-18b8b2694c237f",
@@ -19595,7 +19595,7 @@ exports[`getManagerStats > dataMode: playoffs > fin 1`] = `
       "year": 2014,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 7,
       "leagueTies": 0,
@@ -19788,7 +19788,7 @@ exports[`getManagerStats > dataMode: playoffs > fin 1`] = `
     },
   ],
   "teamName": "Tha Dollar",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 36,
     "digest": "14f1-1526cfbafc16f4-1c6ebfe0f3a0ca",
@@ -20559,7 +20559,7 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
       "year": 2021,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 9,
       "leagueTies": 0,
@@ -20640,7 +20640,7 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
     },
   ],
   "teamName": "Bush Johnson",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 99,
     "digest": "3747-3afe687c02559-1a891bcae829e0",
@@ -21362,7 +21362,7 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
       "year": 2016,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 3,
       "leagueTies": 0,
@@ -21410,7 +21410,7 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
       "year": 2019,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 15,
       "leagueTies": 0,
@@ -21523,7 +21523,7 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
     },
   ],
   "teamName": "21st & Hine",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 162,
     "digest": "5c26-1ac15a24ccf03d-624a70bd97f77",
@@ -22269,7 +22269,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
       "year": 2015,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 4,
       "leagueTies": 0,
@@ -22349,7 +22349,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
       "year": 2020,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 2,
       "leagueLosses": 5,
       "leagueTies": 0,
@@ -22446,7 +22446,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
     },
   ],
   "teamName": "Kansas City Chumps",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 126,
     "digest": "46a5-14483750c10ab5-3b474866b4e0b",
@@ -25211,7 +25211,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
   "scoringCrowns": 1,
   "seasonStats": [
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 7,
       "leagueTies": 0,
@@ -25307,7 +25307,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
       "year": 2017,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 2,
       "leagueTies": 0,
@@ -25452,7 +25452,7 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
     },
   ],
   "teamName": "Zaragoza's Zooting Zorro",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 99,
     "digest": "389e-ef6363680c74d-1541b662b08c0d",
@@ -26908,7 +26908,7 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
       "year": 2023,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 12,
       "leagueTies": 0,
@@ -26957,7 +26957,7 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
     },
   ],
   "teamName": "The Unicorn",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 90,
     "digest": "3333-cde3acee6f6bf-4d0bca784ec66",
@@ -27669,7 +27669,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
       "year": 2013,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 6,
       "leagueLosses": 6,
       "leagueTies": 0,
@@ -27749,7 +27749,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
       "year": 2018,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 8,
       "leagueTies": 0,
@@ -27845,7 +27845,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
       "year": 2024,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 11,
       "leagueTies": 0,
@@ -27878,7 +27878,7 @@ exports[`getManagerStats > dataMode: playoffs > thd 1`] = `
     },
   ],
   "teamName": "King of Wishful Tinkering",
-  "thirdPlace": 0,
+  "thirdPlace": 3,
   "topPerformances": {
     "count": 153,
     "digest": "56a4-c53f8190eb30f-102bd2225fb413",
@@ -28736,7 +28736,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "year": 2012,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 50,
       "leagueTies": 0,
@@ -28896,7 +28896,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       "year": 2022,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 82,
       "leagueTies": 0,
@@ -28961,7 +28961,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
     },
   ],
   "teamName": "Wolverhampton Wasters",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1709,
     "digest": "3c06b-b3b1254030782-9093c4a26e0ac",
@@ -32631,7 +32631,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       "year": 2014,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 54,
       "leagueTies": 0,
@@ -32824,7 +32824,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     },
   ],
   "teamName": "Tha Dollar",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 1709,
     "digest": "3c7b7-1508e88cd85df4-f46369bd11724",
@@ -33823,7 +33823,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       "year": 2021,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 78,
       "leagueTies": 0,
@@ -33904,7 +33904,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
     },
   ],
   "teamName": "Bush Johnson",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 1710,
     "digest": "3c790-178eaf2344a059-103dcbea4f39e0",
@@ -34761,7 +34761,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       "year": 2016,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 67,
       "leagueTies": 0,
@@ -34809,7 +34809,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
       "year": 2019,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 85,
       "leagueTies": 0,
@@ -34922,7 +34922,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
     },
   ],
   "teamName": "21st & Hine",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1584,
     "digest": "381ec-1a32904aa1d8a2-17c736e86b07ae",
@@ -35833,7 +35833,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "year": 2015,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 38,
       "leagueTies": 0,
@@ -35913,7 +35913,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
       "year": 2020,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 2,
       "leagueLosses": 44,
       "leagueTies": 0,
@@ -36010,7 +36010,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     },
   ],
   "teamName": "Kansas City Chumps",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1710,
     "digest": "3c499-16ba443a222814-3c3c260d1aae7",
@@ -40782,7 +40782,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "scoringCrowns": 1,
   "seasonStats": [
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 1,
       "leagueLosses": 45,
       "leagueTies": 0,
@@ -40878,7 +40878,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       "year": 2017,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 3,
       "leagueLosses": 46,
       "leagueTies": 0,
@@ -41023,7 +41023,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     },
   ],
   "teamName": "Zaragoza's Zooting Zorro",
-  "thirdPlace": 0,
+  "thirdPlace": 2,
   "topPerformances": {
     "count": 1710,
     "digest": "3bf11-82ea94c6ecf36-612010e1afce0",
@@ -42853,7 +42853,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       "year": 2023,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 94,
       "leagueTies": 0,
@@ -42902,7 +42902,7 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
     },
   ],
   "teamName": "The Unicorn",
-  "thirdPlace": 0,
+  "thirdPlace": 1,
   "topPerformances": {
     "count": 1458,
     "digest": "33b5e-457ecd9662248-dbb38b12f1857",
@@ -43776,7 +43776,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "year": 2013,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 6,
       "leagueLosses": 67,
       "leagueTies": 0,
@@ -43856,7 +43856,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "year": 2018,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 4,
       "leagueLosses": 66,
       "leagueTies": 0,
@@ -43952,7 +43952,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
       "year": 2024,
     },
     {
-      "championshipResult": undefined,
+      "championshipResult": "third-place",
       "finalStanding": 5,
       "leagueLosses": 74,
       "leagueTies": 0,
@@ -43985,7 +43985,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
     },
   ],
   "teamName": "King of Wishful Tinkering",
-  "thirdPlace": 0,
+  "thirdPlace": 3,
   "topPerformances": {
     "count": 1709,
     "digest": "3bf47-181971b073d368-1a332588f36433",
