@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PositionalFilter } from "@/utils/statsExplorer";
 import managers from "@/data/managers.json";
+import { LINK_CLASS, ManagerLink } from "@/presentation/components/Links";
 
 interface FilterBuilderProps {
   filters: PositionalFilter[];
@@ -217,6 +218,17 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
             </option>
           ))}
         </select>
+        {selectedManagerId && (
+          <ManagerLink
+            managerId={selectedManagerId}
+            className={`ml-3 text-sm ${LINK_CLASS}`}
+          >
+            Open{" "}
+            {managers.find((m) => m.id === selectedManagerId)?.teamName ||
+              "manager"}
+            &rsquo;s page
+          </ManagerLink>
+        )}
       </div>
 
       {/* Preset Filters */}

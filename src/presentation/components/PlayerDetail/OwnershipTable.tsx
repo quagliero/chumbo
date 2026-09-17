@@ -16,6 +16,7 @@ import {
   TableCell,
   SortIcon,
 } from "../Table";
+import { ManagerLink } from "@/presentation/components/Links";
 
 export interface OwnerStats {
   ownerId: string;
@@ -41,7 +42,11 @@ const OwnershipTable = ({ data }: OwnershipTableProps) => {
     () => [
       columnHelper.accessor("teamName", {
         header: "Team",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <ManagerLink ownerId={info.row.original.ownerId}>
+            {info.getValue()}
+          </ManagerLink>
+        ),
       }),
       columnHelper.accessor("nflTeams", {
         header: "NFL",

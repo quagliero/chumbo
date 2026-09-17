@@ -1,8 +1,17 @@
 import { useState } from "react";
+import { PlayerLink, SeasonLink } from "@/presentation/components/Links";
 
 interface HOFInductee {
   name: string;
   blurb: string;
+  /**
+   * Sleeper id, where the inductee is a player the dictionary still carries.
+   * Four inductees have none — Jacob Hester, Braxton Hoyett and Damar Hamlin
+   * were trimmed out of players.json as non-fantasy positions, and
+   * "Commissioner HD" is a person, not a player — so those names stay as text
+   * rather than linking into a Player Not Found.
+   */
+  playerId?: string;
 }
 
 const hofInductees: Record<number, HOFInductee> = {
@@ -15,41 +24,49 @@ const hofInductees: Record<number, HOFInductee> = {
     name: "Jamaal Charles",
     blurb:
       "Placeholder text for Jamaal Charles's Hall of Fame induction in 2013. This will be replaced with the actual blurb.",
+    playerId: "323",
   },
   2014: {
     name: "Mark Sanchez",
     blurb:
       "Placeholder text for Mark Sanchez's Hall of Fame induction in 2014. This will be replaced with the actual blurb.",
+    playerId: "350",
   },
   2015: {
     name: "Eddie Lacy",
     blurb:
       "Placeholder text for Eddie Lacy's Hall of Fame induction in 2015. This will be replaced with the actual blurb.",
+    playerId: "1527",
   },
   2016: {
     name: "LeGarrette Blount",
     blurb:
       "Placeholder text for LeGarrette Blount's Hall of Fame induction in 2016. This will be replaced with the actual blurb.",
+    playerId: "730",
   },
   2017: {
     name: "Todd Gurley",
     blurb:
       "Placeholder text for Todd Gurley's Hall of Fame induction in 2017. This will be replaced with the actual blurb.",
+    playerId: "2315",
   },
   2018: {
     name: "Robbie Chosen",
     blurb:
       "Placeholder text for Robbie Chosen's Hall of Fame induction in 2018. This will be replaced with the actual blurb.",
+    playerId: "3423",
   },
   2019: {
     name: "Travis Kelce",
     blurb:
       "Placeholder text for Travis Kelce's Hall of Fame induction in 2019. This will be replaced with the actual blurb.",
+    playerId: "1466",
   },
   2020: {
     name: "Darren Waller",
     blurb:
       "Placeholder text for Darren Waller's Hall of Fame induction in 2020. This will be replaced with the actual blurb.",
+    playerId: "2505",
   },
   2021: {
     name: "Braxton Hoyett",
@@ -65,6 +82,7 @@ const hofInductees: Record<number, HOFInductee> = {
     name: "Christian McCaffrey",
     blurb:
       "Placeholder text for Christian McCaffrey's Hall of Fame induction in 2023. This will be replaced with the actual blurb.",
+    playerId: "4034",
   },
   2024: {
     name: "Commissioner HD",
@@ -163,12 +181,21 @@ const HallOfFame = () => {
               </button>
 
               {/* Name */}
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                {selectedMember.name}
+              <h2 className="text-3xl font-bold mb-4">
+                <PlayerLink
+                  playerId={selectedMember.playerId}
+                  className="text-blue-600 hover:text-blue-800 hover:underline"
+                  fallbackClassName="text-gray-800"
+                  title={`${selectedMember.name} — player page`}
+                >
+                  {selectedMember.name}
+                </PlayerLink>
               </h2>
 
               {/* Year */}
-              <p className="text-lg text-gray-600 mb-6">{selectedYear}</p>
+              <p className="text-lg mb-6">
+                <SeasonLink year={selectedYear}>{selectedYear}</SeasonLink>
+              </p>
 
               {/* Blurb */}
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">

@@ -18,6 +18,7 @@ import {
   TableHeaderCell,
   TableCell,
 } from "../Table";
+import { ManagerLink } from "@/presentation/components/Links";
 
 interface BreakdownProps {
   rosters: ExtendedRoster[];
@@ -236,7 +237,9 @@ const Breakdown = ({
               return (
                 <TableRow key={roster.roster_id}>
                   <TableCell className="text-left bg-gray-50 sticky left-0 z-10 font-medium">
-                    {getTeamName(roster.owner_id)}
+                    <ManagerLink ownerId={roster.owner_id}>
+                      {getTeamName(roster.owner_id)}
+                    </ManagerLink>
                   </TableCell>
                   {regularSeasonWeeks.map((week) => {
                     const weekRecord = getWeeklyRecord(roster, week);

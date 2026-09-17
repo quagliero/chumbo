@@ -13,6 +13,7 @@ import {
   TableCell,
 } from "../Table";
 import { mergeScheduledMatchups } from "@/utils/scheduleUtils";
+import { ManagerLink } from "@/presentation/components/Links";
 
 interface UserPick {
   week: number;
@@ -278,8 +279,13 @@ const PlayoffOdds = ({
                   )} ${getRowBorder(index)}`}
                 >
                   <TableCell className="text-left sticky left-0 z-10 font-medium transition-colors border-r border-gray-200">
-                    <div className="font-medium text-gray-900">
-                      {getTeamName(team.owner_id)}
+                    <div className="font-medium">
+                      <ManagerLink
+                        ownerId={team.owner_id}
+                        fallbackClassName="text-gray-900"
+                      >
+                        {getTeamName(team.owner_id)}
+                      </ManagerLink>
                     </div>
                     <div className="text-xs text-gray-600">
                       PF: {teamData.pointsFor.toFixed(1)} | PA:{" "}

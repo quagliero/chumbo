@@ -5,6 +5,7 @@ import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "@/utils/playoffUtils";
 import { getCompletedWeek } from "@/utils/weekUtils";
 import { calculateTeamStats } from "@/utils/playoffOdds";
+import { ManagerLink } from "@/presentation/components/Links";
 
 interface ScenarioPlannerProps {
   rosters: ExtendedRoster[];
@@ -404,15 +405,29 @@ const ScenarioPlanner = ({
             >
               <div className="flex items-center justify-between mb-3">
                 <h4 className="font-medium text-gray-800">
-                  {getTeamName(
-                    rosters.find((r) => r.roster_id === team1.roster_id)
-                      ?.owner_id || ""
-                  )}{" "}
+                  <ManagerLink
+                    ownerId={
+                      rosters.find((r) => r.roster_id === team1.roster_id)
+                        ?.owner_id
+                    }
+                  >
+                    {getTeamName(
+                      rosters.find((r) => r.roster_id === team1.roster_id)
+                        ?.owner_id || ""
+                    )}
+                  </ManagerLink>{" "}
                   vs{" "}
-                  {getTeamName(
-                    rosters.find((r) => r.roster_id === team2.roster_id)
-                      ?.owner_id || ""
-                  )}
+                  <ManagerLink
+                    ownerId={
+                      rosters.find((r) => r.roster_id === team2.roster_id)
+                        ?.owner_id
+                    }
+                  >
+                    {getTeamName(
+                      rosters.find((r) => r.roster_id === team2.roster_id)
+                        ?.owner_id || ""
+                    )}
+                  </ManagerLink>
                 </h4>
                 <div className="flex gap-2">
                   <button

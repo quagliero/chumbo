@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import { StandardTable } from "../Table";
+import { ManagerLink, SeasonLink } from "@/presentation/components/Links";
 
 export interface DraftPick {
   year: number;
@@ -55,11 +57,28 @@ const DraftStatsCard = ({
         rows={draftPicks.map((pick) => ({
           key: `${pick.year}-${pick.pickNo}`,
           cells: [
-            { content: pick.year, className: "font-medium" },
+            {
+              content: (
+                <SeasonLink
+                  year={pick.year}
+                  tab="draft"
+                  title={`${pick.year} draft board`}
+                >
+                  {pick.year}
+                </SeasonLink>
+              ),
+              className: "font-medium",
+            },
             { content: pick.round },
             { content: pick.draftSlot },
             { content: `#${pick.pickNo}` },
-            { content: pick.teamName },
+            {
+              content: (
+                <ManagerLink ownerId={pick.ownerId} title={pick.managerName}>
+                  {pick.teamName}
+                </ManagerLink>
+              ),
+            },
           ],
         }))}
       />
@@ -77,7 +96,18 @@ const DraftStatsCard = ({
           <p className="text-lg font-bold text-gray-900">
             {mostDraftedBy ? (
               <>
-                {mostDraftedBy.teams.join(", ")}
+                {mostDraftedBy.teams.map((teamName, index) => (
+                  <Fragment key={teamName}>
+                    {index > 0 && ", "}
+                    <ManagerLink
+                      ownerId={
+                        draftPicks.find((p) => p.teamName === teamName)?.ownerId
+                      }
+                    >
+                      {teamName}
+                    </ManagerLink>
+                  </Fragment>
+                ))}
                 <span className="text-sm font-normal text-gray-600 ml-1">
                   ({mostDraftedBy.count}x)
                 </span>

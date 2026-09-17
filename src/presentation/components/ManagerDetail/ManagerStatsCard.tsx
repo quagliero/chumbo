@@ -1,4 +1,5 @@
 import { useFormatter } from "use-intl";
+import { SeasonLink } from "@/presentation/components/Links";
 
 export interface ManagerStats {
   managerName: string;
@@ -167,8 +168,10 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
             <div className="text-2xl font-bold">
               {managerStats.bestWinsSeason.wins} wins
             </div>
-            <div className="text-gray-600">
-              {managerStats.bestWinsSeason.year}
+            <div>
+              <SeasonLink year={managerStats.bestWinsSeason.year}>
+                {managerStats.bestWinsSeason.year}
+              </SeasonLink>
             </div>
           </div>
           <div>
@@ -179,8 +182,10 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
               })}{" "}
               points
             </div>
-            <div className="text-gray-600">
-              {managerStats.bestPointsSeason.year}
+            <div>
+              <SeasonLink year={managerStats.bestPointsSeason.year}>
+                {managerStats.bestPointsSeason.year}
+              </SeasonLink>
             </div>
           </div>
         </div>

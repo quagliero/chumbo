@@ -1,5 +1,11 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { getPlayer } from "@/data";
+import {
+  LINK_CLASS,
+  ManagerLink,
+  hasPlayerPage,
+} from "@/presentation/components/Links";
 import { ExtendedDraft } from "@/types/draft";
 import { ExtendedPick } from "@/types/pick";
 import { ExtendedRoster } from "@/types/roster";
@@ -75,7 +81,7 @@ const DraftBoard = ({
     const roster = rosters.find((r) => r.roster_id === rosterId);
     const teamName = roster ? getTeamName(roster.owner_id) : "Unknown";
     const managerAbbr = roster ? getManagerAbbr(roster.owner_id) : "??";
-    return { slot, teamName, rosterId, managerAbbr };
+    return { slot, teamName, rosterId, managerAbbr, ownerId: roster?.owner_id };
   });
 
   return (
@@ -85,32 +91,46 @@ const DraftBoard = ({
           {/* Header row with team names */}
           <thead>
             <tr>
-              {slotHeaders.map(({ slot, teamName, rosterId, managerAbbr }) => (
-                <th
-                  key={slot}
-                  onClick={() =>
-                    setSelectedRosterId(
-                      selectedRosterId === rosterId ? null : rosterId
-                    )
-                  }
-                  className={`p-2 text-xs font-semibold min-w-32 max-w-32 cursor-pointer transition-colors rounded-md ${
-                    selectedRosterId === rosterId
-                      ? "bg-blue-600 text-white"
-                      : ""
-                  }`}
-                >
-                  <div className="truncate">{teamName}</div>
-                  <div
-                    className={`text-[8px] ${
-                      selectedRosterId === rosterId
-                        ? "text-white"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {managerAbbr}
-                  </div>
-                </th>
-              ))}
+              {slotHeaders.map(
+                ({ slot, teamName, rosterId, managerAbbr, ownerId }) => {
+                  const isSelected = selectedRosterId === rosterId;
+
+                  return (
+                    <th
+                      key={slot}
+                      onClick={() =>
+                        setSelectedRosterId(isSelected ? null : rosterId)
+                      }
+                      className={`p-2 text-xs font-semibold min-w-32 max-w-32 cursor-pointer transition-colors rounded-md ${
+                        isSelected ? "bg-blue-600 text-white" : ""
+                      }`}
+                      title="Click to filter this team's picks"
+                    >
+                      {/* The header's own click filters the board, so the link
+                          to the manager lives on the abbreviation and isolates
+                          its click rather than doubling up on navigation. */}
+                      <div className="truncate">{teamName}</div>
+                      <div className="text-[8px]">
+                        <ManagerLink
+                          ownerId={ownerId}
+                          isolate
+                          className={
+                            isSelected
+                              ? "text-white hover:text-blue-100 underline"
+                              : LINK_CLASS
+                          }
+                          fallbackClassName={
+                            isSelected ? "text-white" : "text-gray-400"
+                          }
+                          title={`${teamName} — manager page`}
+                        >
+                          {managerAbbr}
+                        </ManagerLink>
+                      </div>
+                    </th>
+                  );
+                }
+              )}
             </tr>
           </thead>
           <tbody>
@@ -171,14 +191,17 @@ const DraftBoard = ({
                       selectedRosterId !== null &&
                       pick.roster_id !== selectedRosterId;
 
-                    return (
-                      <td
-                        key={slotIndex}
-                        className={`p-2 ${bgColor} min-w-32 max-w-32 relative transition-opacity rounded-md ${
-                          isFaded ? "opacity-20" : "opacity-100"
-                        }`}
-                      >
-                        <div className="flex flex-col h-full">
+                    // Pre-2016 picks store a bare name rather than a Sleeper
+                    // id for a handful of players; those have no page, so the
+                    // cell stays plain text rather than linking into a 404.
+                    const isLinkable = hasPlayerPage(pick.player_id);
+
+                    // The cell is one link target (the grid is tight, and a
+                    // 128px cell is a better target than the name alone). The
+                    // traded-pick badge is a second, separate link and so has
+                    // to sit outside it — anchors cannot nest.
+                    const cellBody = (
+                      <>
                           {/* Pick number and position badge */}
                           <div className="flex justify-between items-start mb-1">
                             <span className="text-xs text-gray-500 font-medium">
@@ -238,7 +261,9 @@ const DraftBoard = ({
                                 ?
                               </div>
                             </div>
-                            <span className="truncate">{playerName}</span>
+                            <span className="truncate group-hover:underline">
+                              {playerName}
+                            </span>
                           </div>
 
                           {/* Position number picked */}
@@ -246,14 +271,47 @@ const DraftBoard = ({
                             {position}
                             {positionRank}
                           </div>
+                      </>
+                    );
 
-                          {/* Traded pick indicator */}
-                          {isTraded && (
-                            <div className="absolute bottom-px right-px text-[8px] text-gray-600 bg-white/80 px-1 py-0.5 rounded border border-gray-300">
+                    return (
+                      <td
+                        key={slotIndex}
+                        className={`p-2 ${bgColor} min-w-32 max-w-32 relative transition-opacity rounded-md ${
+                          isFaded ? "opacity-20" : "opacity-100"
+                        }`}
+                      >
+                        {isLinkable ? (
+                          <Link
+                            to={`/players/${pick.player_id}`}
+                            title={`${playerName} — player page`}
+                            className="group flex flex-col h-full rounded-sm hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                          >
+                            {cellBody}
+                          </Link>
+                        ) : (
+                          <div
+                            className="flex flex-col h-full"
+                            title={`${playerName} — no player page for this pick`}
+                          >
+                            {cellBody}
+                          </div>
+                        )}
+
+                        {/* Traded pick indicator — links to whoever made the
+                            pick, not to the slot's original owner. */}
+                        {isTraded && (
+                          <div className="absolute bottom-px right-px text-[8px] bg-white/80 px-1 py-0.5 rounded border border-gray-300">
+                            <ManagerLink
+                              ownerId={pickerRoster?.owner_id}
+                              className={LINK_CLASS}
+                              fallbackClassName="text-gray-600"
+                              title={`Traded pick — ${pickerAbbr}`}
+                            >
                               {pickerAbbr}
-                            </div>
-                          )}
-                        </div>
+                            </ManagerLink>
+                          </div>
+                        )}
                       </td>
                     );
                   })}
@@ -268,12 +326,19 @@ const DraftBoard = ({
           {selectedRosterId !== null && (
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
               Showing picks for{" "}
-              <strong>
+              <ManagerLink
+                ownerId={
+                  rosters.find((r) => r.roster_id === selectedRosterId)
+                    ?.owner_id
+                }
+                className={`font-bold ${LINK_CLASS}`}
+                fallbackClassName="font-bold"
+              >
                 {getTeamName(
                   rosters.find((r) => r.roster_id === selectedRosterId)
                     ?.owner_id || ""
                 )}
-              </strong>
+              </ManagerLink>
               . Click the team name again to show all picks.
             </div>
           )}
@@ -293,6 +358,10 @@ const DraftBoard = ({
               </div>
               <div className="ml-4 text-gray-600">
                 • Click team name to filter their picks
+              </div>
+              <div className="ml-4 text-gray-600">
+                • Click a pick for the player, or the initials under a team for
+                the manager
               </div>
             </div>
           </div>

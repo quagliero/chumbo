@@ -11,6 +11,7 @@ import {
   TableHeaderCell,
   TableCell,
 } from "../Table";
+import { ManagerLink } from "@/presentation/components/Links";
 
 interface ScheduleComparisonProps {
   rosters: ExtendedRoster[];
@@ -191,7 +192,9 @@ const ScheduleComparison = ({
                   key={roster.roster_id}
                   className="text-center bg-gray-50 min-w-24"
                 >
-                  {getTeamName(roster.owner_id)}
+                  <ManagerLink ownerId={roster.owner_id}>
+                    {getTeamName(roster.owner_id)}
+                  </ManagerLink>
                 </TableHeaderCell>
               ))}
             </TableRow>
@@ -203,7 +206,9 @@ const ScheduleComparison = ({
                 className="hover:bg-gray-50 transition-colors"
               >
                 <TableCell className="text-left bg-gray-50 sticky left-0 z-10 font-medium hover:bg-gray-100 transition-colors">
-                  {getTeamName(teamRoster.owner_id)}
+                  <ManagerLink ownerId={teamRoster.owner_id}>
+                    {getTeamName(teamRoster.owner_id)}
+                  </ManagerLink>
                 </TableCell>
                 {sortedRosters.map((opponentRoster) => {
                   const crossRecord = calculateCrossScheduleRecord(

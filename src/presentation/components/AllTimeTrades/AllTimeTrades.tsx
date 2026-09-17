@@ -21,6 +21,38 @@ import {
   SortIcon,
 } from "../Table";
 import { getPlayerName } from "@/utils/playerDataUtils";
+import { Link } from "react-router-dom";
+import {
+  LINK_CLASS,
+  ManagerLink,
+  PlayerLink,
+  SeasonLink,
+} from "@/presentation/components/Links";
+
+/**
+ * The years columns are pre-formatted strings ("2019 (2x), 2018 (1x)"), so the
+ * year is pulled back out for the link rather than reshaping the stats.
+ */
+const renderYearList = (years: string) => {
+  if (!years) return "—";
+
+  return years.split(", ").map((entry, index) => {
+    const year = entry.match(/^(\d{4})/)?.[1];
+
+    return (
+      <span key={entry}>
+        {index > 0 && ", "}
+        {year ? (
+          <SeasonLink year={year} tab="trades" title={`${year} trades`}>
+            {entry}
+          </SeasonLink>
+        ) : (
+          entry
+        )}
+      </span>
+    );
+  });
+};
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -313,7 +345,11 @@ const AllTimeTrades = () => {
     return [
       columnHelper.accessor("team_name", {
         header: "Team",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <ManagerLink ownerId={info.row.original.owner_id}>
+            {info.getValue()}
+          </ManagerLink>
+        ),
       }),
       columnHelper.accessor("totalTrades", {
         header: "Total Trades",
@@ -336,7 +372,11 @@ const AllTimeTrades = () => {
     return [
       columnHelper.accessor("playerName", {
         header: "Player",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <PlayerLink playerId={info.row.original.playerId}>
+            {info.getValue()}
+          </PlayerLink>
+        ),
       }),
       columnHelper.accessor("tradeCount", {
         header: "Times Traded",
@@ -344,7 +384,7 @@ const AllTimeTrades = () => {
       }),
       columnHelper.accessor("yearsTraded", {
         header: "Years",
-        cell: (info) => info.getValue(),
+        cell: (info) => renderYearList(info.getValue()),
       }),
     ];
   }, []);
@@ -355,11 +395,19 @@ const AllTimeTrades = () => {
     return [
       columnHelper.accessor("manager1TeamName", {
         header: "Team 1",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <ManagerLink managerId={info.row.original.manager1Id}>
+            {info.getValue()}
+          </ManagerLink>
+        ),
       }),
       columnHelper.accessor("manager2TeamName", {
         header: "Team 2",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <ManagerLink managerId={info.row.original.manager2Id}>
+            {info.getValue()}
+          </ManagerLink>
+        ),
       }),
       columnHelper.accessor("tradeCount", {
         header: "Trades",
@@ -367,7 +415,19 @@ const AllTimeTrades = () => {
       }),
       columnHelper.accessor("years", {
         header: "Years",
-        cell: (info) => info.getValue(),
+        cell: (info) => renderYearList(info.getValue()),
+      }),
+      columnHelper.display({
+        id: "h2h",
+        header: "H2H",
+        cell: (info) => (
+          <Link
+            to={`/h2h/${info.row.original.manager1Id}/${info.row.original.manager2Id}`}
+            className={LINK_CLASS}
+          >
+            Head to head
+          </Link>
+        ),
       }),
     ];
   }, []);
