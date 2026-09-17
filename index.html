@@ -27,7 +27,17 @@
 
     <!-- Twitter -->
     <!-- summary, not summary_large_image: the crest is portrait 256x338 and
-         letterboxes badly. Flip to summary_large_image when G6 generates 1200x630. -->
+         letterboxes badly.
+
+         G6 has landed, and every manager, season and head-to-head page now
+         serves its own 1200x630 card with summary_large_image — but it does
+         that by rewriting this head into dist/<route>/index.html, never by
+         editing this file (scripts/prerender-og.ts). This one stays on the
+         crest because it is two things at once: the home page's own head, and
+         the fallback Netlify serves for every path nobody prerendered. A card
+         about one manager's season would be wrong on both. Giving the front
+         door a card of its own needs a template for "the whole almanac",
+         which G2's five do not include. -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="The Chumbo" />
     <meta

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && yarn build-aggregates && vite build && node scripts/check-bundle-size.js",
+    "build": "tsc -b && yarn build-aggregates && vite build && yarn prerender-og && node scripts/check-bundle-size.js",
     "lint": "eslint .",
     "check-size": "node scripts/check-bundle-size.js",
     "test": "vitest",
@@ -21,7 +21,8 @@
     "fetch-matchup": "node scripts/fetch-matchup.js",
     "fix-player-ids": "node scripts/fix-player-ids.js",
     "build-aggregates": "vite-node scripts/build-aggregates.ts",
-    "check-aggregates": "vite-node scripts/build-aggregates.ts --check"
+    "check-aggregates": "vite-node scripts/build-aggregates.ts --check",
+    "prerender-og": "vite-node scripts/prerender-og.ts"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.20.6",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
