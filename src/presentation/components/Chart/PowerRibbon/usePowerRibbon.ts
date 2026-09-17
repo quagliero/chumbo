@@ -64,14 +64,20 @@ export const usePowerRibbon = (years: readonly number[] = YEAR_NUMBERS) => {
       .map((manager) => {
         const points = byManager.get(manager.id) ?? [];
         const played = points.filter((p): p is RibbonPoint => p !== null);
+        const settled = played.filter((p) => !p.provisional);
         return {
           managerId: manager.id,
           name: manager.name,
           points,
           seasonsPlayed: played.length,
           titles: played.filter((p) => p.position === 1 && !p.provisional).length,
-          bestFinish: played.length
-            ? Math.min(...played.map((p) => p.position))
+          // Settled seasons only, for the same reason `titles` excludes them: a
+          // manager leading the season being played has not finished first, and
+          // counting it here made the legend sort them among the champions
+          // while `titles` said zero. Found by F1c, which hit the sharper
+          // version of it -- a card reading "No titles yet - best 1st".
+          bestFinish: settled.length
+            ? Math.min(...settled.map((p) => p.position))
             : null,
         };
       })
