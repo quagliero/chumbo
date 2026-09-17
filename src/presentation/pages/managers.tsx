@@ -1,254 +1,184 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useFormatter } from "use-intl";
-import { getManagerStats, DataMode } from "@/utils/managerStats";
+import { useMemo, useState } from "react";
 import managers from "@/data/managers.json";
 import { useAllSeasons } from "@/hooks/useSeasonData";
-import { cardClassName } from "@/presentation/components/Card";
+import { getManagerStats, type DataMode, type ManagerStats } from "@/utils/managerStats";
+import { ManagerCard, useManagerAvatars } from "@/presentation/components/ManagerCard";
+import { useCareerSparklines } from "@/presentation/components/Chart/CareerSparkline/useCareerSparkline";
 
-type SortOption =
-  | "wins"
-  | "winPct"
-  | "leagueRecord"
-  | "leagueRecordPct"
-  | "pointsTotal"
-  | "pointsAverage"
-  | "championships"
-  | "playoffs";
+/**
+ * The Managers page (F1).
+ *
+ * The card itself is `components/ManagerCard`; this file is the controls, the
+ * ordering, and the grid that the cards' subgrid rows hang off.
+ *
+ * The sort comparators used to be a 90-line `switch` inside the render, with
+ * every branch recomputing win percentages from four fields. They are a table
+ * now — one row per option, carrying its own label so the card's rank badge can
+ * say what the number means rather than showing an unexplained "#3".
+ */
+
+const winPct = (m: ManagerStats) => {
+  const games = m.totalWins + m.totalLosses + m.totalTies;
+  return games > 0 ? m.totalWins / games : 0;
+};
+
+const leaguePct = (m: ManagerStats) => {
+  const games = m.leagueWins + m.leagueLosses + m.leagueTies;
+  return games > 0 ? m.leagueWins / games : 0;
+};
+
+const pointsAvg = (m: ManagerStats) => {
+  const games = m.totalWins + m.totalLosses + m.totalTies;
+  return games > 0 ? m.totalPointsFor / games : 0;
+};
+
+/**
+ * Every sort is "this, then that": a tie on championships is broken by finals
+ * appearances, a tie on wins by win percentage. Each option lists its keys in
+ * order of precedence and the comparator walks them, so adding one is a line
+ * rather than another branch of a switch.
+ */
+const SORTS = {
+  wins: { label: "win total", keys: [(m: ManagerStats) => m.totalWins, winPct] },
+  winPct: { label: "win %", keys: [winPct, (m: ManagerStats) => m.totalWins] },
+  leagueRecord: {
+    label: "league record",
+    keys: [(m: ManagerStats) => m.leagueWins, leaguePct],
+  },
+  leagueRecordPct: {
+    label: "league record %",
+    keys: [leaguePct, (m: ManagerStats) => m.leagueWins],
+  },
+  pointsTotal: {
+    label: "points total",
+    keys: [(m: ManagerStats) => m.totalPointsFor],
+  },
+  pointsAverage: {
+    label: "points average",
+    keys: [pointsAvg, (m: ManagerStats) => m.totalPointsFor],
+  },
+  championships: {
+    label: "championships",
+    keys: [
+      (m: ManagerStats) => m.championships,
+      (m: ManagerStats) => m.runnerUps,
+      (m: ManagerStats) => m.scoringCrowns,
+    ],
+  },
+  playoffs: {
+    label: "playoff berths",
+    keys: [
+      (m: ManagerStats) => m.playoffs,
+      (m: ManagerStats) => m.championships,
+      (m: ManagerStats) => m.runnerUps,
+    ],
+  },
+} satisfies Record<
+  string,
+  { label: string; keys: ((m: ManagerStats) => number)[] }
+>;
+
+type SortOption = keyof typeof SORTS;
+
+const SORT_LABELS: Record<SortOption, string> = {
+  wins: "Win Total",
+  winPct: "Win %",
+  leagueRecord: "League Record",
+  leagueRecordPct: "League Record %",
+  pointsTotal: "Points Total",
+  pointsAverage: "Points Average",
+  championships: "Championships",
+  playoffs: "Playoffs",
+};
+
+const selectClassName =
+  "rounded border border-line bg-surface px-3 py-1.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-series-1";
 
 const Managers = () => {
   // A2a: getManagerStats walks every season's matchups, which are a lazy
   // chunk now; suspend until they are in.
   useAllSeasons();
-  const navigate = useNavigate();
-  const { number } = useFormatter();
   const [sortBy, setSortBy] = useState<SortOption>("wins");
   const [dataMode, setDataMode] = useState<DataMode>("regular");
 
-  const managerStatsList = managers
-    .map((manager) => getManagerStats(manager.id, dataMode))
-    .filter(Boolean)
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "wins": {
-          // Sort by total wins, then win percentage
-          const aWinPct =
-            a!.totalWins / (a!.totalWins + a!.totalLosses + a!.totalTies);
-          const bWinPct =
-            b!.totalWins / (b!.totalWins + b!.totalLosses + b!.totalTies);
-          if (a!.totalWins !== b!.totalWins) return b!.totalWins - a!.totalWins;
-          return bWinPct - aWinPct;
+  const avatars = useManagerAvatars();
+  // One walk over the seasons for all fourteen sparklines, not fourteen.
+  const { byManager: careers, years } = useCareerSparklines();
+
+  const ordered = useMemo(() => {
+    const { keys } = SORTS[sortBy];
+    return managers
+      .map((manager) => getManagerStats(manager.id, dataMode))
+      .filter((m): m is ManagerStats => m !== null)
+      .sort((a, b) => {
+        for (const key of keys) {
+          const difference = key(b) - key(a);
+          if (difference !== 0) return difference;
         }
-        case "winPct": {
-          // Sort by win percentage, then total wins
-          const aWinPct =
-            a!.totalWins / (a!.totalWins + a!.totalLosses + a!.totalTies);
-          const bWinPct =
-            b!.totalWins / (b!.totalWins + b!.totalLosses + b!.totalTies);
-          if (aWinPct !== bWinPct) return bWinPct - aWinPct;
-          return b!.totalWins - a!.totalWins;
-        }
-        case "leagueRecord": {
-          // Sort by league wins, then league win percentage
-          const aLeagueWinPct =
-            a!.leagueWins / (a!.leagueWins + a!.leagueLosses + a!.leagueTies);
-          const bLeagueWinPct =
-            b!.leagueWins / (b!.leagueWins + b!.leagueLosses + b!.leagueTies);
-          if (a!.leagueWins !== b!.leagueWins)
-            return b!.leagueWins - a!.leagueWins;
-          return bLeagueWinPct - aLeagueWinPct;
-        }
-        case "leagueRecordPct": {
-          // Sort by league win percentage, then league wins
-          const aLeagueWinPct =
-            a!.leagueWins / (a!.leagueWins + a!.leagueLosses + a!.leagueTies);
-          const bLeagueWinPct =
-            b!.leagueWins / (b!.leagueWins + b!.leagueLosses + b!.leagueTies);
-          if (aLeagueWinPct !== bLeagueWinPct)
-            return bLeagueWinPct - aLeagueWinPct;
-          return b!.leagueWins - a!.leagueWins;
-        }
-        case "pointsTotal": {
-          // Sort by total points
-          return b!.totalPointsFor - a!.totalPointsFor;
-        }
-        case "pointsAverage": {
-          // Sort by points per game, then total points
-          const aGames = a!.totalWins + a!.totalLosses + a!.totalTies;
-          const bGames = b!.totalWins + b!.totalLosses + b!.totalTies;
-          const aAvg = aGames > 0 ? a!.totalPointsFor / aGames : 0;
-          const bAvg = bGames > 0 ? b!.totalPointsFor / bGames : 0;
-          if (aAvg !== bAvg) return bAvg - aAvg;
-          return b!.totalPointsFor - a!.totalPointsFor;
-        }
-        case "championships": {
-          // Sort by championships, then finals appearances (runner-ups), then scoring crowns
-          if (a!.championships !== b!.championships)
-            return b!.championships - a!.championships;
-          if (a!.runnerUps !== b!.runnerUps) return b!.runnerUps - a!.runnerUps;
-          return b!.scoringCrowns - a!.scoringCrowns;
-        }
-        case "playoffs": {
-          // Sort by playoff appearances, then championships, then runner-ups
-          if (a!.playoffs !== b!.playoffs) return b!.playoffs - a!.playoffs;
-          if (a!.championships !== b!.championships)
-            return b!.championships - a!.championships;
-          return b!.runnerUps - a!.runnerUps;
-        }
-        default:
-          return 0;
-      }
-    });
+        return 0;
+      });
+  }, [sortBy, dataMode]);
 
   return (
     <div className="container mx-auto">
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        <h1 className="text-2xl font-bold">Managers</h1>
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600">Data Mode:</span>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-ink">Managers</h1>
+          <p className="mt-1 text-sm text-ink-muted">
+            {ordered.length} careers, by {SORTS[sortBy].label}.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-sm text-ink-muted">
+            <span className="hidden sm:inline">Games</span>
             <select
               value={dataMode}
               onChange={(e) => setDataMode(e.target.value as DataMode)}
-              className="px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={selectClassName}
             >
               <option value="regular">Regular Season Only</option>
               <option value="playoffs">Playoffs Only</option>
               <option value="combined">Regular + Playoffs</option>
             </select>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-600">Sort by:</span>
+          </label>
+          <label className="flex items-center gap-2 text-sm text-ink-muted">
+            <span className="hidden sm:inline">Sort by</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-3 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={selectClassName}
             >
-              <option value="wins">Win Total</option>
-              <option value="winPct">Win %</option>
-              <option value="leagueRecord">League Record</option>
-              <option value="leagueRecordPct">League Record %</option>
-              <option value="pointsTotal">Points Total</option>
-              <option value="pointsAverage">Points Average</option>
-              <option value="championships">Championships</option>
-              <option value="playoffs">Playoffs</option>
+              {(Object.keys(SORTS) as SortOption[]).map((option) => (
+                <option key={option} value={option}>
+                  {SORT_LABELS[option]}
+                </option>
+              ))}
             </select>
-          </div>
+          </label>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {managerStatsList.map((manager) => {
-          const winPercentage =
-            (manager!.totalWins /
-              (manager!.totalWins +
-                manager!.totalLosses +
-                manager!.totalTies)) *
-            100;
-
-          const leagueWinPercentage =
-            dataMode !== "playoffs"
-              ? (manager!.leagueWins /
-                  (manager!.leagueWins +
-                    manager!.leagueLosses +
-                    manager!.leagueTies)) *
-                100
-              : 0;
-
-          const pointsAverage =
-            manager!.totalWins + manager!.totalLosses + manager!.totalTies > 0
-              ? manager!.totalPointsFor /
-                (manager!.totalWins + manager!.totalLosses + manager!.totalTies)
-              : 0;
-
-          return (
-            <div
-              key={manager!.managerId}
-              className={cardClassName({ interactive: true })}
-              onClick={() => navigate(`/managers/${manager!.managerId}`)}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-bold">{manager!.managerName}</h3>
-                  <p className="text-gray-600">{manager!.teamName}</p>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold">
-                    {manager!.totalWins}-{manager!.totalLosses}
-                    {manager!.totalTies > 0 && `-${manager!.totalTies}`}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {number(winPercentage, { maximumFractionDigits: 1 })}%
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Championships:</span>
-                  <span className="font-semibold">
-                    {manager!.championships}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Playoffs:</span>
-                  <span className="font-semibold">{manager!.playoffs}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Scoring Crowns:</span>
-                  <span className="font-semibold">
-                    {manager!.scoringCrowns}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Points:</span>
-                  <span className="font-semibold">
-                    {number(manager!.totalPointsFor, {
-                      maximumFractionDigits: 0,
-                    })}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Points Avg:</span>
-                  <span className="font-semibold">
-                    {number(pointsAverage, {
-                      maximumFractionDigits: 1,
-                    })}
-                  </span>
-                </div>
-                {dataMode !== "playoffs" && (
-                  <>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">League Record:</span>
-                      <span className="font-semibold">
-                        {manager!.leagueWins}-{manager!.leagueLosses}
-                        {manager!.leagueTies > 0 && `-${manager!.leagueTies}`}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">League Win %:</span>
-                      <span className="font-semibold">
-                        {number(leagueWinPercentage, {
-                          maximumFractionDigits: 1,
-                        })}
-                        %
-                      </span>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="mt-4 pt-4 border-t">
-                <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
-                  <span>🏆 {manager!.championships}</span>
-                  <span>🥈 {manager!.runnerUps}</span>
-                  <span>🏈 {manager!.playoffs}</span>
-                  <span>👑 {manager!.scoringCrowns}</span>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+      {/*
+        F1d. The cards do not size their own rows: each spans four of this
+        grid's rows and lays its sections out with `grid-rows-subgrid`, so the
+        trophy shelves, the stat blocks and the sparklines of every card in a
+        row share a baseline. `auto-rows-auto` is what the subgrid children
+        then size, which is why the row heights still come from the content
+        rather than being pinned to a guess.
+      */}
+      <div className="grid auto-rows-auto grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {ordered.map((stats, index) => (
+          <ManagerCard
+            key={stats.managerId}
+            stats={stats}
+            shape={careers.get(stats.managerId)}
+            years={years}
+            avatarUrl={avatars[stats.managerId] ?? null}
+            dataMode={dataMode}
+            rank={index + 1}
+            rankLabel={SORTS[sortBy].label}
+          />
+        ))}
       </div>
     </div>
   );
