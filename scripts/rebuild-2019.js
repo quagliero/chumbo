@@ -374,10 +374,22 @@ if (exists(txPath)) {
 // the scoring rules and roster slots the season was actually played under.
 const oldLeague = read(path.join(OLD_DIR, "league.json"));
 const curLeague = read(path.join(SLEEPER_DIR, "league.json"));
+// The archive declares roster_positions as "... TE K DEF FLEX", but every
+// starters array that season is ordered "... TE FLEX K DEF" (measured in H9
+// across the full season). Mapping starters[i] to roster_positions[i] is the
+// obvious way to derive a slot, so ship the order the data actually uses.
+const rosterPositions = [...oldLeague.roster_positions];
+const flex = rosterPositions.indexOf("FLEX");
+const kicker = rosterPositions.indexOf("K");
+if (flex > kicker && kicker !== -1) {
+  rosterPositions.splice(flex, 1);
+  rosterPositions.splice(kicker, 0, "FLEX");
+}
+
 const outLeague = {
   ...curLeague,
   scoring_settings: oldLeague.scoring_settings,
-  roster_positions: oldLeague.roster_positions,
+  roster_positions: rosterPositions,
 };
 
 // ---------------------------------------------------------------- passthrough
@@ -385,6 +397,59 @@ const passthrough = {};
 for (const f of ["draft.json", "picks.json", "winners_bracket.json", "losers_bracket.json"]) {
   const p = path.join(OLD_DIR, f);
   if (exists(p)) passthrough[f] = read(p);
+}
+
+// ------------------------------------------------------------------- picks
+// The NFL.com archive has no picks of its own — 2019-old/picks.json is a copy of
+// the Sleeper import, so its roster_ids are in Sleeper space while everything
+// else we write is in NFL.com space. Left alone, only thd's 15 picks join to a
+// roster (he is roster 1 in both), and the draft can't be tied to the season.
+// Every pick carries picked_by, so the remap is fully determined: resolve the
+// owner through the Sleeper rosters, then look that owner's NFL.com roster up.
+const ownerOfSleeperRoster = Object.fromEntries(
+  sleeperRosters.map((r) => [r.roster_id, r.owner_id])
+);
+const oldRosterOfOwner = Object.fromEntries(
+  oldRosters.map((r) => [r.owner_id, r.roster_id])
+);
+let picksRemapped = 0;
+if (passthrough["picks.json"]) {
+  passthrough["picks.json"] = passthrough["picks.json"].map((pick) => {
+    // picked_by is authoritative; fall back to the roster join for any pick that
+    // somehow lacks it (none do in 2019, but don't silently drop one if that
+    // ever changes).
+    const owner = pick.picked_by || ownerOfSleeperRoster[pick.roster_id];
+    const mapped = oldRosterOfOwner[owner];
+    if (mapped === undefined) {
+      throw new Error(`Pick ${pick.pick_no}: no NFL.com roster for owner ${owner}`);
+    }
+    if (mapped !== pick.roster_id) picksRemapped++;
+    return { ...pick, roster_id: mapped };
+  });
+
+  // Assert the join we just repaired, so a future rebuild can't quietly lose it.
+  const rosterIds = new Set(outRosters.map((r) => r.roster_id));
+  const unjoined = passthrough["picks.json"].filter((pk) => !rosterIds.has(pk.roster_id));
+  if (unjoined.length) {
+    throw new Error(`${unjoined.length} picks do not join to a roster`);
+  }
+  for (const pick of passthrough["picks.json"]) {
+    if (oldRosterOfOwner[pick.picked_by] !== pick.roster_id) {
+      throw new Error(`Pick ${pick.pick_no} roster_id disagrees with picked_by`);
+    }
+  }
+}
+
+// draft.slot_to_roster_id points into the same Sleeper space; remap it too so
+// the draft board's slot columns line up with the rosters.
+if (passthrough["draft.json"] && passthrough["draft.json"].slot_to_roster_id) {
+  const d = passthrough["draft.json"];
+  passthrough["draft.json"] = {
+    ...d,
+    slot_to_roster_id: Object.fromEntries(
+      Object.entries(d.slot_to_roster_id).map(([slot, r]) => [slot, n2o[r] ?? r])
+    ),
+  };
 }
 
 // ---------------------------------------------------------------- write
@@ -414,6 +479,7 @@ console.log(`  left as an unattributed residual ${report.residuals.length}`);
 console.log(`  total |adjustment|         ${report.totalAdjustment}`);
 console.log(`  lineups differing from Sleeper ${report.lineupDiffs}`);
 console.log(`  divisions grafted          ${report.divisionsGrafted}`);
+console.log(`  picks remapped to rosters  ${picksRemapped} of ${(passthrough["picks.json"] || []).length}`);
 console.log(`  player id aliases resolved ${Object.keys(alias).length}`);
 for (const e of aliasEvidence) console.log(`    ${e}`);
 if (outTransactions) {

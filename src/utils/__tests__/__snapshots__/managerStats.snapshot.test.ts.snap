@@ -566,7 +566,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5765-1b85da7f3d87f-b5d332d8b94e5",
+    "digest": "5755-88e1624e57c5c-177dd5ccd32d98",
     "head": [
       {
         "bestPick": {
@@ -583,22 +583,6 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
           2020,
           2021,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 11,
-          "year": 2018,
-        },
-        "playerId": "LAR",
-        "playerName": "Los Angeles Rams",
-        "timesDrafted": 4,
-        "years": [
-          2016,
-          2018,
-          2019,
-          2026,
         ],
       },
       {
@@ -635,16 +619,16 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 2,
-          "round": 1,
-          "year": 2019,
+          "pick": 3,
+          "round": 11,
+          "year": 2018,
         },
-        "playerId": "4035",
-        "playerName": "Alvin Kamara",
+        "playerId": "LAR",
+        "playerName": "Los Angeles Rams",
         "timesDrafted": 3,
         "years": [
-          2019,
-          2021,
+          2016,
+          2018,
           2026,
         ],
       },
@@ -695,6 +679,35 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
       },
       {
         "bestPick": {
+          "pick": 9,
+          "round": 2,
+          "year": 2018,
+        },
+        "playerId": "2168",
+        "playerName": "Devonta Freeman",
+        "timesDrafted": 3,
+        "years": [
+          2016,
+          2018,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 1,
+          "year": 2021,
+        },
+        "playerId": "4035",
+        "playerName": "Alvin Kamara",
+        "timesDrafted": 2,
+        "years": [
+          2021,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 5,
           "round": 13,
           "year": 2026,
@@ -705,20 +718,6 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
         "years": [
           2025,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 10,
-          "round": 14,
-          "year": 2025,
-        },
-        "playerId": "MIN",
-        "playerName": "Minnesota Vikings",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2025,
         ],
       },
     ],
@@ -3347,8 +3346,8 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 183,
-    "digest": "5a80-1b8c0f6ee0742b-1ed6149f49e331",
+    "count": 186,
+    "digest": "5c00-616d70c713874-1099c6238adc1",
     "head": [
       {
         "bestPick": {
@@ -3364,6 +3363,36 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
           2022,
           2024,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 2,
+          "year": 2020,
+        },
+        "playerId": "4046",
+        "playerName": "Patrick Mahomes",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 8,
+          "year": 2020,
+        },
+        "playerId": "4227",
+        "playerName": "Harrison Butker",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2023,
         ],
       },
       {
@@ -3394,20 +3423,6 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
           2013,
           2014,
           2018,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 2,
-          "year": 2020,
-        },
-        "playerId": "4046",
-        "playerName": "Patrick Mahomes",
-        "timesDrafted": 2,
-        "years": [
-          2020,
-          2026,
         ],
       },
       {
@@ -3450,20 +3465,6 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
         "years": [
           2023,
           2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 8,
-          "round": 8,
-          "year": 2024,
-        },
-        "playerId": "5248",
-        "playerName": "Gus Edwards",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2024,
         ],
       },
       {
@@ -4424,8 +4425,8 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 175,
-    "digest": "56bb-9dfdf0eb305f7-1fe35281582c7d",
+    "count": 176,
+    "digest": "5728-1908ee3cc5e3cb-10f5d41c6d3be6",
     "head": [
       {
         "bestPick": {
@@ -4435,8 +4436,9 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
         },
         "playerId": "5967",
         "playerName": "Tony Pollard",
-        "timesDrafted": 4,
+        "timesDrafted": 5,
         "years": [
+          2019,
           2022,
           2023,
           2024,
@@ -4506,21 +4508,6 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
       },
       {
         "bestPick": {
-          "pick": 10,
-          "round": 1,
-          "year": 2021,
-        },
-        "playerId": "2133",
-        "playerName": "Davante Adams",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2019,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 7,
           "round": 2,
           "year": 2017,
@@ -4577,6 +4564,21 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
           2015,
           2016,
           2017,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 5,
+          "year": 2012,
+        },
+        "playerId": "142",
+        "playerName": "Tony Romo",
+        "timesDrafted": 3,
+        "years": [
+          2012,
+          2014,
+          2015,
         ],
       },
     ],
@@ -5508,7 +5510,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "5903-11eab34b3e610d-1288d4d117ed77",
+    "digest": "58f9-17d046fff74e30-2879dbb12823b",
     "head": [
       {
         "bestPick": {
@@ -5559,17 +5561,32 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       },
       {
         "bestPick": {
-          "pick": 6,
-          "round": 1,
-          "year": 2019,
+          "pick": 11,
+          "round": 3,
+          "year": 2020,
         },
-        "playerId": "4988",
-        "playerName": "Nick Chubb",
+        "playerId": "1689",
+        "playerName": "Adam Thielen",
         "timesDrafted": 3,
         "years": [
+          2017,
           2019,
-          2021,
-          2025,
+          2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 6,
+          "round": 1,
+          "year": 2012,
+        },
+        "playerId": "676",
+        "playerName": "LeSean McCoy",
+        "timesDrafted": 3,
+        "years": [
+          2012,
+          2016,
+          2019,
         ],
       },
       {
@@ -5642,20 +5659,6 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
         "years": [
           2024,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "4037",
-        "playerName": "Chris Godwin",
-        "timesDrafted": 2,
-        "years": [
-          2018,
-          2025,
         ],
       },
     ],
@@ -6544,7 +6547,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 177,
-    "digest": "5792-5334a3f7560e7-18d9e424d4169f",
+    "digest": "5777-d91c532e7434a-b0e8c9cd66529",
     "head": [
       {
         "bestPick": {
@@ -6576,6 +6579,21 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
           2020,
           2023,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 11,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "1426",
+        "playerName": "DeAndre Hopkins",
+        "timesDrafted": 3,
+        "years": [
+          2018,
+          2019,
+          2022,
         ],
       },
       {
@@ -6672,20 +6690,6 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
         },
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2022,
-        },
-        "playerId": "6083",
-        "playerName": "Matt Gay",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -7614,8 +7618,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 183,
-    "digest": "5aa8-32c61561a5ca9-1a515ad9fde770",
+    "count": 181,
+    "digest": "59bf-45c10352180b9-ac3515473426f",
     "head": [
       {
         "bestPick": {
@@ -7674,6 +7678,21 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
         "timesDrafted": 3,
         "years": [
           2018,
+          2020,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 6,
+          "round": 2,
+          "year": 2019,
+        },
+        "playerId": "1466",
+        "playerName": "Travis Kelce",
+        "timesDrafted": 3,
+        "years": [
+          2019,
           2020,
           2021,
         ],
@@ -7748,20 +7767,6 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
         "timesDrafted": 2,
         "years": [
           2022,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2026,
-        },
-        "playerId": "8138",
-        "playerName": "James Cook",
-        "timesDrafted": 2,
-        "years": [
-          2023,
           2026,
         ],
       },
@@ -10033,8 +10038,8 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 194,
-    "digest": "5fa0-1c04a928d8a531-43b639b044b55",
+    "count": 191,
+    "digest": "5e4b-101c34838082fd-16cc1394fc0a62",
     "head": [
       {
         "bestPick": {
@@ -10080,21 +10085,6 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
           2020,
           2022,
           2023,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 4,
-          "year": 2019,
-        },
-        "playerId": "2320",
-        "playerName": "Melvin Gordon",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2021,
         ],
       },
       {
@@ -10181,6 +10171,20 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
         "years": [
           2020,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 8,
+          "round": 14,
+          "year": 2013,
+        },
+        "playerId": "GB",
+        "playerName": "Green Bay Packers",
+        "timesDrafted": 2,
+        "years": [
+          2013,
+          2023,
         ],
       },
     ],
@@ -11013,8 +11017,23 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "2105-97de7ed77c57-3c8dfc63c694d",
+    "digest": "210a-150c1e2436303e-1a3d8ab91cba3",
     "head": [
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 2,
+          "year": 2019,
+        },
+        "playerId": "4199",
+        "playerName": "Aaron Jones",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2018,
+          2019,
+        ],
+      },
       {
         "bestPick": {
           "pick": 9,
@@ -11026,6 +11045,20 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 9,
+          "round": 3,
+          "year": 2021,
+        },
+        "playerId": "1992",
+        "playerName": "Allen Robinson",
+        "timesDrafted": 2,
+        "years": [
+          2019,
           2021,
         ],
       },
@@ -11059,34 +11092,6 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       },
       {
         "bestPick": {
-          "pick": 8,
-          "round": 5,
-          "year": 2017,
-        },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
-        "timesDrafted": 2,
-        "years": [
-          2017,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 7,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "4137",
-        "playerName": "James Conner",
-        "timesDrafted": 2,
-        "years": [
-          2018,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 4,
           "round": 1,
           "year": 2017,
@@ -11115,20 +11120,6 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
       },
       {
         "bestPick": {
-          "pick": 5,
-          "round": 7,
-          "year": 2018,
-        },
-        "playerId": "4199",
-        "playerName": "Aaron Jones",
-        "timesDrafted": 2,
-        "years": [
-          2017,
-          2018,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 9,
           "round": 1,
           "year": 2021,
@@ -11148,6 +11139,19 @@ exports[`getManagerStats > dataMode: combined > nick 1`] = `
         },
         "playerId": "2449",
         "playerName": "Stefon Diggs",
+        "timesDrafted": 1,
+        "years": [
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 9,
+          "round": 4,
+          "year": 2021,
+        },
+        "playerId": "2309",
+        "playerName": "Amari Cooper",
         "timesDrafted": 1,
         "years": [
           2021,
@@ -12632,23 +12636,23 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 194,
-    "digest": "5fc7-32813fd16fbae-1372b9a5e11d3f",
+    "count": 192,
+    "digest": "5ed6-155514554fcda1-c646cce84c5d5",
     "head": [
       {
         "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2022,
+          "pick": 2,
+          "round": 3,
+          "year": 2013,
         },
-        "playerId": "4034",
-        "playerName": "Christian McCaffrey",
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
         "timesDrafted": 4,
         "years": [
-          2017,
-          2018,
+          2013,
+          2014,
+          2016,
           2019,
-          2022,
         ],
       },
       {
@@ -12668,6 +12672,36 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
       },
       {
         "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "BAL",
+        "playerName": "Baltimore Ravens",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2022,
+          2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2022,
+        },
+        "playerId": "4034",
+        "playerName": "Christian McCaffrey",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2018,
+          2022,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 3,
           "round": 2,
           "year": 2015,
@@ -12679,21 +12713,6 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
           2012,
           2015,
           2020,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 3,
-          "year": 2013,
-        },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
-        "timesDrafted": 3,
-        "years": [
-          2013,
-          2014,
-          2016,
         ],
       },
       {
@@ -12746,20 +12765,6 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
         },
         "playerId": "8112",
         "playerName": "Drake London",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "BAL",
-        "playerName": "Baltimore Ravens",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -13617,9 +13622,24 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 99,
-    "digest": "310c-1f7ed71aec2158-81b9b005965f6",
+    "count": 101,
+    "digest": "31f4-14de5315e06a98-134b3bd60ba16a",
     "head": [
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 14,
+          "year": 2026,
+        },
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2024,
+          2026,
+        ],
+      },
       {
         "bestPick": {
           "pick": 4,
@@ -13633,21 +13653,6 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
           2020,
           2023,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 11,
-          "year": 2023,
-        },
-        "playerId": "3294",
-        "playerName": "Dak Prescott",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2023,
-          2025,
         ],
       },
       {
@@ -13682,34 +13687,6 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 3,
-          "round": 5,
-          "year": 2019,
-        },
-        "playerId": "5967",
-        "playerName": "Tony Pollard",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 14,
-          "year": 2026,
-        },
-        "playerId": "PHI",
-        "playerName": "Philadelphia Eagles",
-        "timesDrafted": 2,
-        "years": [
-          2024,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 8,
           "round": 9,
           "year": 2025,
@@ -13724,30 +13701,16 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 8,
-          "round": 14,
-          "year": 2025,
+          "pick": 1,
+          "round": 11,
+          "year": 2023,
         },
-        "playerId": "HOU",
-        "playerName": "Houston Texans",
+        "playerId": "3294",
+        "playerName": "Dak Prescott",
         "timesDrafted": 2,
         "years": [
-          2019,
+          2023,
           2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "3164",
-        "playerName": "Ezekiel Elliott",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2024,
         ],
       },
       {
@@ -13761,6 +13724,48 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
         "timesDrafted": 2,
         "years": [
           2020,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 6,
+          "year": 2020,
+        },
+        "playerId": "5848",
+        "playerName": "Marquise Brown",
+        "timesDrafted": 2,
+        "years": [
+          2020,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 11,
+          "round": 9,
+          "year": 2022,
+        },
+        "playerId": "2374",
+        "playerName": "Tyler Lockett",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 8,
+          "year": 2023,
+        },
+        "playerId": "4950",
+        "playerName": "Christian Kirk",
+        "timesDrafted": 2,
+        "years": [
+          2023,
           2024,
         ],
       },
@@ -14544,8 +14549,24 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5129-140530110457cd-1e8e752e96a130",
+    "digest": "513a-f85d12150d215-2e0b63432072e",
     "head": [
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4866",
+        "playerName": "Saquon Barkley",
+        "timesDrafted": 4,
+        "years": [
+          2019,
+          2020,
+          2023,
+          2025,
+        ],
+      },
       {
         "bestPick": {
           "pick": 2,
@@ -14554,28 +14575,11 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
         },
         "playerId": "2078",
         "playerName": "Odell Beckham",
-        "timesDrafted": 4,
+        "timesDrafted": 3,
         "years": [
           2016,
-          2019,
           2021,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 7,
-          "year": 2024,
-        },
-        "playerId": "4033",
-        "playerName": "David Njoku",
-        "timesDrafted": 4,
-        "years": [
-          2017,
-          2018,
-          2019,
-          2024,
         ],
       },
       {
@@ -14596,16 +14600,16 @@ exports[`getManagerStats > dataMode: combined > sol 1`] = `
       {
         "bestPick": {
           "pick": 2,
-          "round": 1,
-          "year": 2020,
+          "round": 7,
+          "year": 2024,
         },
-        "playerId": "4866",
-        "playerName": "Saquon Barkley",
+        "playerId": "4033",
+        "playerName": "David Njoku",
         "timesDrafted": 3,
         "years": [
-          2020,
-          2023,
-          2025,
+          2017,
+          2018,
+          2024,
         ],
       },
       {
@@ -16469,7 +16473,7 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5765-1b85da7f3d87f-b5d332d8b94e5",
+    "digest": "5755-88e1624e57c5c-177dd5ccd32d98",
     "head": [
       {
         "bestPick": {
@@ -16486,22 +16490,6 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
           2020,
           2021,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 11,
-          "year": 2018,
-        },
-        "playerId": "LAR",
-        "playerName": "Los Angeles Rams",
-        "timesDrafted": 4,
-        "years": [
-          2016,
-          2018,
-          2019,
-          2026,
         ],
       },
       {
@@ -16538,16 +16526,16 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 2,
-          "round": 1,
-          "year": 2019,
+          "pick": 3,
+          "round": 11,
+          "year": 2018,
         },
-        "playerId": "4035",
-        "playerName": "Alvin Kamara",
+        "playerId": "LAR",
+        "playerName": "Los Angeles Rams",
         "timesDrafted": 3,
         "years": [
-          2019,
-          2021,
+          2016,
+          2018,
           2026,
         ],
       },
@@ -16598,6 +16586,35 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
       },
       {
         "bestPick": {
+          "pick": 9,
+          "round": 2,
+          "year": 2018,
+        },
+        "playerId": "2168",
+        "playerName": "Devonta Freeman",
+        "timesDrafted": 3,
+        "years": [
+          2016,
+          2018,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 1,
+          "year": 2021,
+        },
+        "playerId": "4035",
+        "playerName": "Alvin Kamara",
+        "timesDrafted": 2,
+        "years": [
+          2021,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 5,
           "round": 13,
           "year": 2026,
@@ -16608,20 +16625,6 @@ exports[`getManagerStats > dataMode: playoffs > ant 1`] = `
         "years": [
           2025,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 10,
-          "round": 14,
-          "year": 2025,
-        },
-        "playerId": "MIN",
-        "playerName": "Minnesota Vikings",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2025,
         ],
       },
     ],
@@ -18575,8 +18578,8 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 183,
-    "digest": "5a80-1b8c0f6ee0742b-1ed6149f49e331",
+    "count": 186,
+    "digest": "5c00-616d70c713874-1099c6238adc1",
     "head": [
       {
         "bestPick": {
@@ -18592,6 +18595,36 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
           2022,
           2024,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 2,
+          "year": 2020,
+        },
+        "playerId": "4046",
+        "playerName": "Patrick Mahomes",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 8,
+          "year": 2020,
+        },
+        "playerId": "4227",
+        "playerName": "Harrison Butker",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2023,
         ],
       },
       {
@@ -18622,20 +18655,6 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
           2013,
           2014,
           2018,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 2,
-          "year": 2020,
-        },
-        "playerId": "4046",
-        "playerName": "Patrick Mahomes",
-        "timesDrafted": 2,
-        "years": [
-          2020,
-          2026,
         ],
       },
       {
@@ -18678,20 +18697,6 @@ exports[`getManagerStats > dataMode: playoffs > dix 1`] = `
         "years": [
           2023,
           2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 8,
-          "round": 8,
-          "year": 2024,
-        },
-        "playerId": "5248",
-        "playerName": "Gus Edwards",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2024,
         ],
       },
       {
@@ -19379,8 +19384,8 @@ exports[`getManagerStats > dataMode: playoffs > fin 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 175,
-    "digest": "56bb-9dfdf0eb305f7-1fe35281582c7d",
+    "count": 176,
+    "digest": "5728-1908ee3cc5e3cb-10f5d41c6d3be6",
     "head": [
       {
         "bestPick": {
@@ -19390,8 +19395,9 @@ exports[`getManagerStats > dataMode: playoffs > fin 1`] = `
         },
         "playerId": "5967",
         "playerName": "Tony Pollard",
-        "timesDrafted": 4,
+        "timesDrafted": 5,
         "years": [
+          2019,
           2022,
           2023,
           2024,
@@ -19461,21 +19467,6 @@ exports[`getManagerStats > dataMode: playoffs > fin 1`] = `
       },
       {
         "bestPick": {
-          "pick": 10,
-          "round": 1,
-          "year": 2021,
-        },
-        "playerId": "2133",
-        "playerName": "Davante Adams",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2019,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 7,
           "round": 2,
           "year": 2017,
@@ -19532,6 +19523,21 @@ exports[`getManagerStats > dataMode: playoffs > fin 1`] = `
           2015,
           2016,
           2017,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 5,
+          "year": 2012,
+        },
+        "playerId": "142",
+        "playerName": "Tony Romo",
+        "timesDrafted": 3,
+        "years": [
+          2012,
+          2014,
+          2015,
         ],
       },
     ],
@@ -20235,7 +20241,7 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "5903-11eab34b3e610d-1288d4d117ed77",
+    "digest": "58f9-17d046fff74e30-2879dbb12823b",
     "head": [
       {
         "bestPick": {
@@ -20286,17 +20292,32 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
       },
       {
         "bestPick": {
-          "pick": 6,
-          "round": 1,
-          "year": 2019,
+          "pick": 11,
+          "round": 3,
+          "year": 2020,
         },
-        "playerId": "4988",
-        "playerName": "Nick Chubb",
+        "playerId": "1689",
+        "playerName": "Adam Thielen",
         "timesDrafted": 3,
         "years": [
+          2017,
           2019,
-          2021,
-          2025,
+          2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 6,
+          "round": 1,
+          "year": 2012,
+        },
+        "playerId": "676",
+        "playerName": "LeSean McCoy",
+        "timesDrafted": 3,
+        "years": [
+          2012,
+          2016,
+          2019,
         ],
       },
       {
@@ -20369,20 +20390,6 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
         "years": [
           2024,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "4037",
-        "playerName": "Chris Godwin",
-        "timesDrafted": 2,
-        "years": [
-          2018,
-          2025,
         ],
       },
     ],
@@ -21135,7 +21142,7 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 177,
-    "digest": "5792-5334a3f7560e7-18d9e424d4169f",
+    "digest": "5777-d91c532e7434a-b0e8c9cd66529",
     "head": [
       {
         "bestPick": {
@@ -21167,6 +21174,21 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
           2020,
           2023,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 11,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "1426",
+        "playerName": "DeAndre Hopkins",
+        "timesDrafted": 3,
+        "years": [
+          2018,
+          2019,
+          2022,
         ],
       },
       {
@@ -21263,20 +21285,6 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
         },
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2022,
-        },
-        "playerId": "6083",
-        "playerName": "Matt Gay",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -22038,8 +22046,8 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 183,
-    "digest": "5aa8-32c61561a5ca9-1a515ad9fde770",
+    "count": 181,
+    "digest": "59bf-45c10352180b9-ac3515473426f",
     "head": [
       {
         "bestPick": {
@@ -22098,6 +22106,21 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
         "timesDrafted": 3,
         "years": [
           2018,
+          2020,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 6,
+          "round": 2,
+          "year": 2019,
+        },
+        "playerId": "1466",
+        "playerName": "Travis Kelce",
+        "timesDrafted": 3,
+        "years": [
+          2019,
           2020,
           2021,
         ],
@@ -22172,20 +22195,6 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
         "timesDrafted": 2,
         "years": [
           2022,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2026,
-        },
-        "playerId": "8138",
-        "playerName": "James Cook",
-        "timesDrafted": 2,
-        "years": [
-          2023,
           2026,
         ],
       },
@@ -23273,8 +23282,8 @@ exports[`getManagerStats > dataMode: playoffs > kitch 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 194,
-    "digest": "5fa0-1c04a928d8a531-43b639b044b55",
+    "count": 191,
+    "digest": "5e4b-101c34838082fd-16cc1394fc0a62",
     "head": [
       {
         "bestPick": {
@@ -23320,21 +23329,6 @@ exports[`getManagerStats > dataMode: playoffs > kitch 1`] = `
           2020,
           2022,
           2023,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 4,
-          "year": 2019,
-        },
-        "playerId": "2320",
-        "playerName": "Melvin Gordon",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2021,
         ],
       },
       {
@@ -23421,6 +23415,20 @@ exports[`getManagerStats > dataMode: playoffs > kitch 1`] = `
         "years": [
           2020,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 8,
+          "round": 14,
+          "year": 2013,
+        },
+        "playerId": "GB",
+        "playerName": "Green Bay Packers",
+        "timesDrafted": 2,
+        "years": [
+          2013,
+          2023,
         ],
       },
     ],
@@ -24124,8 +24132,23 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "2105-97de7ed77c57-3c8dfc63c694d",
+    "digest": "210a-150c1e2436303e-1a3d8ab91cba3",
     "head": [
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 2,
+          "year": 2019,
+        },
+        "playerId": "4199",
+        "playerName": "Aaron Jones",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2018,
+          2019,
+        ],
+      },
       {
         "bestPick": {
           "pick": 9,
@@ -24137,6 +24160,20 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 9,
+          "round": 3,
+          "year": 2021,
+        },
+        "playerId": "1992",
+        "playerName": "Allen Robinson",
+        "timesDrafted": 2,
+        "years": [
+          2019,
           2021,
         ],
       },
@@ -24170,34 +24207,6 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
       },
       {
         "bestPick": {
-          "pick": 8,
-          "round": 5,
-          "year": 2017,
-        },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
-        "timesDrafted": 2,
-        "years": [
-          2017,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 7,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "4137",
-        "playerName": "James Conner",
-        "timesDrafted": 2,
-        "years": [
-          2018,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 4,
           "round": 1,
           "year": 2017,
@@ -24226,20 +24235,6 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
       },
       {
         "bestPick": {
-          "pick": 5,
-          "round": 7,
-          "year": 2018,
-        },
-        "playerId": "4199",
-        "playerName": "Aaron Jones",
-        "timesDrafted": 2,
-        "years": [
-          2017,
-          2018,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 9,
           "round": 1,
           "year": 2021,
@@ -24259,6 +24254,19 @@ exports[`getManagerStats > dataMode: playoffs > nick 1`] = `
         },
         "playerId": "2449",
         "playerName": "Stefon Diggs",
+        "timesDrafted": 1,
+        "years": [
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 9,
+          "round": 4,
+          "year": 2021,
+        },
+        "playerId": "2309",
+        "playerName": "Amari Cooper",
         "timesDrafted": 1,
         "years": [
           2021,
@@ -25047,23 +25055,23 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 194,
-    "digest": "5fc7-32813fd16fbae-1372b9a5e11d3f",
+    "count": 192,
+    "digest": "5ed6-155514554fcda1-c646cce84c5d5",
     "head": [
       {
         "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2022,
+          "pick": 2,
+          "round": 3,
+          "year": 2013,
         },
-        "playerId": "4034",
-        "playerName": "Christian McCaffrey",
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
         "timesDrafted": 4,
         "years": [
-          2017,
-          2018,
+          2013,
+          2014,
+          2016,
           2019,
-          2022,
         ],
       },
       {
@@ -25083,6 +25091,36 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
       },
       {
         "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "BAL",
+        "playerName": "Baltimore Ravens",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2022,
+          2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2022,
+        },
+        "playerId": "4034",
+        "playerName": "Christian McCaffrey",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2018,
+          2022,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 3,
           "round": 2,
           "year": 2015,
@@ -25094,21 +25132,6 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
           2012,
           2015,
           2020,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 3,
-          "year": 2013,
-        },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
-        "timesDrafted": 3,
-        "years": [
-          2013,
-          2014,
-          2016,
         ],
       },
       {
@@ -25161,20 +25184,6 @@ exports[`getManagerStats > dataMode: playoffs > rich 1`] = `
         },
         "playerId": "8112",
         "playerName": "Drake London",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "BAL",
-        "playerName": "Baltimore Ravens",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -25830,9 +25839,24 @@ exports[`getManagerStats > dataMode: playoffs > ryan 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 99,
-    "digest": "310c-1f7ed71aec2158-81b9b005965f6",
+    "count": 101,
+    "digest": "31f4-14de5315e06a98-134b3bd60ba16a",
     "head": [
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 14,
+          "year": 2026,
+        },
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2024,
+          2026,
+        ],
+      },
       {
         "bestPick": {
           "pick": 4,
@@ -25846,21 +25870,6 @@ exports[`getManagerStats > dataMode: playoffs > ryan 1`] = `
           2020,
           2023,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 11,
-          "year": 2023,
-        },
-        "playerId": "3294",
-        "playerName": "Dak Prescott",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2023,
-          2025,
         ],
       },
       {
@@ -25895,34 +25904,6 @@ exports[`getManagerStats > dataMode: playoffs > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 3,
-          "round": 5,
-          "year": 2019,
-        },
-        "playerId": "5967",
-        "playerName": "Tony Pollard",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 14,
-          "year": 2026,
-        },
-        "playerId": "PHI",
-        "playerName": "Philadelphia Eagles",
-        "timesDrafted": 2,
-        "years": [
-          2024,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 8,
           "round": 9,
           "year": 2025,
@@ -25937,30 +25918,16 @@ exports[`getManagerStats > dataMode: playoffs > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 8,
-          "round": 14,
-          "year": 2025,
+          "pick": 1,
+          "round": 11,
+          "year": 2023,
         },
-        "playerId": "HOU",
-        "playerName": "Houston Texans",
+        "playerId": "3294",
+        "playerName": "Dak Prescott",
         "timesDrafted": 2,
         "years": [
-          2019,
+          2023,
           2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "3164",
-        "playerName": "Ezekiel Elliott",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2024,
         ],
       },
       {
@@ -25974,6 +25941,48 @@ exports[`getManagerStats > dataMode: playoffs > ryan 1`] = `
         "timesDrafted": 2,
         "years": [
           2020,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 6,
+          "year": 2020,
+        },
+        "playerId": "5848",
+        "playerName": "Marquise Brown",
+        "timesDrafted": 2,
+        "years": [
+          2020,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 11,
+          "round": 9,
+          "year": 2022,
+        },
+        "playerId": "2374",
+        "playerName": "Tyler Lockett",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 8,
+          "year": 2023,
+        },
+        "playerId": "4950",
+        "playerName": "Christian Kirk",
+        "timesDrafted": 2,
+        "years": [
+          2023,
           2024,
         ],
       },
@@ -26585,8 +26594,24 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5129-140530110457cd-1e8e752e96a130",
+    "digest": "513a-f85d12150d215-2e0b63432072e",
     "head": [
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4866",
+        "playerName": "Saquon Barkley",
+        "timesDrafted": 4,
+        "years": [
+          2019,
+          2020,
+          2023,
+          2025,
+        ],
+      },
       {
         "bestPick": {
           "pick": 2,
@@ -26595,28 +26620,11 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
         },
         "playerId": "2078",
         "playerName": "Odell Beckham",
-        "timesDrafted": 4,
+        "timesDrafted": 3,
         "years": [
           2016,
-          2019,
           2021,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 7,
-          "year": 2024,
-        },
-        "playerId": "4033",
-        "playerName": "David Njoku",
-        "timesDrafted": 4,
-        "years": [
-          2017,
-          2018,
-          2019,
-          2024,
         ],
       },
       {
@@ -26637,16 +26645,16 @@ exports[`getManagerStats > dataMode: playoffs > sol 1`] = `
       {
         "bestPick": {
           "pick": 2,
-          "round": 1,
-          "year": 2020,
+          "round": 7,
+          "year": 2024,
         },
-        "playerId": "4866",
-        "playerName": "Saquon Barkley",
+        "playerId": "4033",
+        "playerName": "David Njoku",
         "timesDrafted": 3,
         "years": [
-          2020,
-          2023,
-          2025,
+          2017,
+          2018,
+          2024,
         ],
       },
       {
@@ -28551,7 +28559,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 176,
-    "digest": "5765-1b85da7f3d87f-b5d332d8b94e5",
+    "digest": "5755-88e1624e57c5c-177dd5ccd32d98",
     "head": [
       {
         "bestPick": {
@@ -28568,22 +28576,6 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
           2020,
           2021,
           2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 11,
-          "year": 2018,
-        },
-        "playerId": "LAR",
-        "playerName": "Los Angeles Rams",
-        "timesDrafted": 4,
-        "years": [
-          2016,
-          2018,
-          2019,
-          2026,
         ],
       },
       {
@@ -28620,16 +28612,16 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       },
       {
         "bestPick": {
-          "pick": 2,
-          "round": 1,
-          "year": 2019,
+          "pick": 3,
+          "round": 11,
+          "year": 2018,
         },
-        "playerId": "4035",
-        "playerName": "Alvin Kamara",
+        "playerId": "LAR",
+        "playerName": "Los Angeles Rams",
         "timesDrafted": 3,
         "years": [
-          2019,
-          2021,
+          2016,
+          2018,
           2026,
         ],
       },
@@ -28680,6 +28672,35 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
       },
       {
         "bestPick": {
+          "pick": 9,
+          "round": 2,
+          "year": 2018,
+        },
+        "playerId": "2168",
+        "playerName": "Devonta Freeman",
+        "timesDrafted": 3,
+        "years": [
+          2016,
+          2018,
+          2019,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 1,
+          "year": 2021,
+        },
+        "playerId": "4035",
+        "playerName": "Alvin Kamara",
+        "timesDrafted": 2,
+        "years": [
+          2021,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 5,
           "round": 13,
           "year": 2026,
@@ -28690,20 +28711,6 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
         "years": [
           2025,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 10,
-          "round": 14,
-          "year": 2025,
-        },
-        "playerId": "MIN",
-        "playerName": "Minnesota Vikings",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2025,
         ],
       },
     ],
@@ -31334,8 +31341,8 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 183,
-    "digest": "5a80-1b8c0f6ee0742b-1ed6149f49e331",
+    "count": 186,
+    "digest": "5c00-616d70c713874-1099c6238adc1",
     "head": [
       {
         "bestPick": {
@@ -31351,6 +31358,36 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
           2022,
           2024,
           2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 2,
+          "year": 2020,
+        },
+        "playerId": "4046",
+        "playerName": "Patrick Mahomes",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2026,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 8,
+          "year": 2020,
+        },
+        "playerId": "4227",
+        "playerName": "Harrison Butker",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2020,
+          2023,
         ],
       },
       {
@@ -31381,20 +31418,6 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
           2013,
           2014,
           2018,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 2,
-          "year": 2020,
-        },
-        "playerId": "4046",
-        "playerName": "Patrick Mahomes",
-        "timesDrafted": 2,
-        "years": [
-          2020,
-          2026,
         ],
       },
       {
@@ -31437,20 +31460,6 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
         "years": [
           2023,
           2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 8,
-          "round": 8,
-          "year": 2024,
-        },
-        "playerId": "5248",
-        "playerName": "Gus Edwards",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2024,
         ],
       },
       {
@@ -32411,8 +32420,8 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 175,
-    "digest": "56bb-9dfdf0eb305f7-1fe35281582c7d",
+    "count": 176,
+    "digest": "5728-1908ee3cc5e3cb-10f5d41c6d3be6",
     "head": [
       {
         "bestPick": {
@@ -32422,8 +32431,9 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
         },
         "playerId": "5967",
         "playerName": "Tony Pollard",
-        "timesDrafted": 4,
+        "timesDrafted": 5,
         "years": [
+          2019,
           2022,
           2023,
           2024,
@@ -32493,21 +32503,6 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
       },
       {
         "bestPick": {
-          "pick": 10,
-          "round": 1,
-          "year": 2021,
-        },
-        "playerId": "2133",
-        "playerName": "Davante Adams",
-        "timesDrafted": 3,
-        "years": [
-          2017,
-          2019,
-          2021,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 7,
           "round": 2,
           "year": 2017,
@@ -32564,6 +32559,21 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
           2015,
           2016,
           2017,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 2,
+          "round": 5,
+          "year": 2012,
+        },
+        "playerId": "142",
+        "playerName": "Tony Romo",
+        "timesDrafted": 3,
+        "years": [
+          2012,
+          2014,
+          2015,
         ],
       },
     ],
@@ -33495,7 +33505,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "5903-11eab34b3e610d-1288d4d117ed77",
+    "digest": "58f9-17d046fff74e30-2879dbb12823b",
     "head": [
       {
         "bestPick": {
@@ -33546,17 +33556,32 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       },
       {
         "bestPick": {
-          "pick": 6,
-          "round": 1,
-          "year": 2019,
+          "pick": 11,
+          "round": 3,
+          "year": 2020,
         },
-        "playerId": "4988",
-        "playerName": "Nick Chubb",
+        "playerId": "1689",
+        "playerName": "Adam Thielen",
         "timesDrafted": 3,
         "years": [
+          2017,
           2019,
-          2021,
-          2025,
+          2020,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 6,
+          "round": 1,
+          "year": 2012,
+        },
+        "playerId": "676",
+        "playerName": "LeSean McCoy",
+        "timesDrafted": 3,
+        "years": [
+          2012,
+          2016,
+          2019,
         ],
       },
       {
@@ -33629,20 +33654,6 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
         "years": [
           2024,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "4037",
-        "playerName": "Chris Godwin",
-        "timesDrafted": 2,
-        "years": [
-          2018,
-          2025,
         ],
       },
     ],
@@ -34530,7 +34541,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 177,
-    "digest": "5792-5334a3f7560e7-18d9e424d4169f",
+    "digest": "5777-d91c532e7434a-b0e8c9cd66529",
     "head": [
       {
         "bestPick": {
@@ -34562,6 +34573,21 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
           2020,
           2023,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 11,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "1426",
+        "playerName": "DeAndre Hopkins",
+        "timesDrafted": 3,
+        "years": [
+          2018,
+          2019,
+          2022,
         ],
       },
       {
@@ -34658,20 +34684,6 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
         },
         "playerId": "BUF",
         "playerName": "Buffalo Bills",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2024,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2022,
-        },
-        "playerId": "6083",
-        "playerName": "Matt Gay",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -35598,8 +35610,8 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 183,
-    "digest": "5aa8-32c61561a5ca9-1a515ad9fde770",
+    "count": 181,
+    "digest": "59bf-45c10352180b9-ac3515473426f",
     "head": [
       {
         "bestPick": {
@@ -35658,6 +35670,21 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
         "timesDrafted": 3,
         "years": [
           2018,
+          2020,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 6,
+          "round": 2,
+          "year": 2019,
+        },
+        "playerId": "1466",
+        "playerName": "Travis Kelce",
+        "timesDrafted": 3,
+        "years": [
+          2019,
           2020,
           2021,
         ],
@@ -35732,20 +35759,6 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
         "timesDrafted": 2,
         "years": [
           2022,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2026,
-        },
-        "playerId": "8138",
-        "playerName": "James Cook",
-        "timesDrafted": 2,
-        "years": [
-          2023,
           2026,
         ],
       },
@@ -38017,8 +38030,8 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 194,
-    "digest": "5fa0-1c04a928d8a531-43b639b044b55",
+    "count": 191,
+    "digest": "5e4b-101c34838082fd-16cc1394fc0a62",
     "head": [
       {
         "bestPick": {
@@ -38064,21 +38077,6 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
           2020,
           2022,
           2023,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 4,
-          "year": 2019,
-        },
-        "playerId": "2320",
-        "playerName": "Melvin Gordon",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2020,
-          2021,
         ],
       },
       {
@@ -38165,6 +38163,20 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
         "years": [
           2020,
           2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 8,
+          "round": 14,
+          "year": 2013,
+        },
+        "playerId": "GB",
+        "playerName": "Green Bay Packers",
+        "timesDrafted": 2,
+        "years": [
+          2013,
+          2023,
         ],
       },
     ],
@@ -38998,8 +39010,23 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 67,
-    "digest": "2105-97de7ed77c57-3c8dfc63c694d",
+    "digest": "210a-150c1e2436303e-1a3d8ab91cba3",
     "head": [
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 2,
+          "year": 2019,
+        },
+        "playerId": "4199",
+        "playerName": "Aaron Jones",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2018,
+          2019,
+        ],
+      },
       {
         "bestPick": {
           "pick": 9,
@@ -39011,6 +39038,20 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
         "timesDrafted": 2,
         "years": [
           2018,
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 9,
+          "round": 3,
+          "year": 2021,
+        },
+        "playerId": "1992",
+        "playerName": "Allen Robinson",
+        "timesDrafted": 2,
+        "years": [
+          2019,
           2021,
         ],
       },
@@ -39044,34 +39085,6 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
       },
       {
         "bestPick": {
-          "pick": 8,
-          "round": 5,
-          "year": 2017,
-        },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
-        "timesDrafted": 2,
-        "years": [
-          2017,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 7,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "4137",
-        "playerName": "James Conner",
-        "timesDrafted": 2,
-        "years": [
-          2018,
-          2019,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 4,
           "round": 1,
           "year": 2017,
@@ -39100,20 +39113,6 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
       },
       {
         "bestPick": {
-          "pick": 5,
-          "round": 7,
-          "year": 2018,
-        },
-        "playerId": "4199",
-        "playerName": "Aaron Jones",
-        "timesDrafted": 2,
-        "years": [
-          2017,
-          2018,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 9,
           "round": 1,
           "year": 2021,
@@ -39133,6 +39132,19 @@ exports[`getManagerStats > dataMode: regular > nick 1`] = `
         },
         "playerId": "2449",
         "playerName": "Stefon Diggs",
+        "timesDrafted": 1,
+        "years": [
+          2021,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 9,
+          "round": 4,
+          "year": 2021,
+        },
+        "playerId": "2309",
+        "playerName": "Amari Cooper",
         "timesDrafted": 1,
         "years": [
           2021,
@@ -40614,23 +40626,23 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 194,
-    "digest": "5fc7-32813fd16fbae-1372b9a5e11d3f",
+    "count": 192,
+    "digest": "5ed6-155514554fcda1-c646cce84c5d5",
     "head": [
       {
         "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2022,
+          "pick": 2,
+          "round": 3,
+          "year": 2013,
         },
-        "playerId": "4034",
-        "playerName": "Christian McCaffrey",
+        "playerId": "223",
+        "playerName": "Larry Fitzgerald",
         "timesDrafted": 4,
         "years": [
-          2017,
-          2018,
+          2013,
+          2014,
+          2016,
           2019,
-          2022,
         ],
       },
       {
@@ -40650,6 +40662,36 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
       },
       {
         "bestPick": {
+          "pick": 5,
+          "round": 13,
+          "year": 2025,
+        },
+        "playerId": "BAL",
+        "playerName": "Baltimore Ravens",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2022,
+          2025,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 3,
+          "round": 1,
+          "year": 2022,
+        },
+        "playerId": "4034",
+        "playerName": "Christian McCaffrey",
+        "timesDrafted": 3,
+        "years": [
+          2017,
+          2018,
+          2022,
+        ],
+      },
+      {
+        "bestPick": {
           "pick": 3,
           "round": 2,
           "year": 2015,
@@ -40661,21 +40703,6 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
           2012,
           2015,
           2020,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 3,
-          "year": 2013,
-        },
-        "playerId": "223",
-        "playerName": "Larry Fitzgerald",
-        "timesDrafted": 3,
-        "years": [
-          2013,
-          2014,
-          2016,
         ],
       },
       {
@@ -40728,20 +40755,6 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
         },
         "playerId": "8112",
         "playerName": "Drake London",
-        "timesDrafted": 2,
-        "years": [
-          2022,
-          2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 5,
-          "round": 13,
-          "year": 2025,
-        },
-        "playerId": "BAL",
-        "playerName": "Baltimore Ravens",
         "timesDrafted": 2,
         "years": [
           2022,
@@ -41599,9 +41612,24 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 99,
-    "digest": "310c-1f7ed71aec2158-81b9b005965f6",
+    "count": 101,
+    "digest": "31f4-14de5315e06a98-134b3bd60ba16a",
     "head": [
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 14,
+          "year": 2026,
+        },
+        "playerId": "PHI",
+        "playerName": "Philadelphia Eagles",
+        "timesDrafted": 3,
+        "years": [
+          2019,
+          2024,
+          2026,
+        ],
+      },
       {
         "bestPick": {
           "pick": 4,
@@ -41615,21 +41643,6 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
           2020,
           2023,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 1,
-          "round": 11,
-          "year": 2023,
-        },
-        "playerId": "3294",
-        "playerName": "Dak Prescott",
-        "timesDrafted": 3,
-        "years": [
-          2019,
-          2023,
-          2025,
         ],
       },
       {
@@ -41664,34 +41677,6 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 3,
-          "round": 5,
-          "year": 2019,
-        },
-        "playerId": "5967",
-        "playerName": "Tony Pollard",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 14,
-          "year": 2026,
-        },
-        "playerId": "PHI",
-        "playerName": "Philadelphia Eagles",
-        "timesDrafted": 2,
-        "years": [
-          2024,
-          2026,
-        ],
-      },
-      {
-        "bestPick": {
           "pick": 8,
           "round": 9,
           "year": 2025,
@@ -41706,30 +41691,16 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
       },
       {
         "bestPick": {
-          "pick": 8,
-          "round": 14,
-          "year": 2025,
+          "pick": 1,
+          "round": 11,
+          "year": 2023,
         },
-        "playerId": "HOU",
-        "playerName": "Houston Texans",
+        "playerId": "3294",
+        "playerName": "Dak Prescott",
         "timesDrafted": 2,
         "years": [
-          2019,
+          2023,
           2025,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 3,
-          "round": 1,
-          "year": 2019,
-        },
-        "playerId": "3164",
-        "playerName": "Ezekiel Elliott",
-        "timesDrafted": 2,
-        "years": [
-          2019,
-          2024,
         ],
       },
       {
@@ -41743,6 +41714,48 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
         "timesDrafted": 2,
         "years": [
           2020,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 6,
+          "year": 2020,
+        },
+        "playerId": "5848",
+        "playerName": "Marquise Brown",
+        "timesDrafted": 2,
+        "years": [
+          2020,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 11,
+          "round": 9,
+          "year": 2022,
+        },
+        "playerId": "2374",
+        "playerName": "Tyler Lockett",
+        "timesDrafted": 2,
+        "years": [
+          2022,
+          2024,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 8,
+          "year": 2023,
+        },
+        "playerId": "4950",
+        "playerName": "Christian Kirk",
+        "timesDrafted": 2,
+        "years": [
+          2023,
           2024,
         ],
       },
@@ -42526,8 +42539,24 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 164,
-    "digest": "5129-140530110457cd-1e8e752e96a130",
+    "digest": "513a-f85d12150d215-2e0b63432072e",
     "head": [
+      {
+        "bestPick": {
+          "pick": 1,
+          "round": 1,
+          "year": 2019,
+        },
+        "playerId": "4866",
+        "playerName": "Saquon Barkley",
+        "timesDrafted": 4,
+        "years": [
+          2019,
+          2020,
+          2023,
+          2025,
+        ],
+      },
       {
         "bestPick": {
           "pick": 2,
@@ -42536,28 +42565,11 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
         },
         "playerId": "2078",
         "playerName": "Odell Beckham",
-        "timesDrafted": 4,
+        "timesDrafted": 3,
         "years": [
           2016,
-          2019,
           2021,
           2026,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 2,
-          "round": 7,
-          "year": 2024,
-        },
-        "playerId": "4033",
-        "playerName": "David Njoku",
-        "timesDrafted": 4,
-        "years": [
-          2017,
-          2018,
-          2019,
-          2024,
         ],
       },
       {
@@ -42578,16 +42590,16 @@ exports[`getManagerStats > dataMode: regular > sol 1`] = `
       {
         "bestPick": {
           "pick": 2,
-          "round": 1,
-          "year": 2020,
+          "round": 7,
+          "year": 2024,
         },
-        "playerId": "4866",
-        "playerName": "Saquon Barkley",
+        "playerId": "4033",
+        "playerName": "David Njoku",
         "timesDrafted": 3,
         "years": [
-          2020,
-          2023,
-          2025,
+          2017,
+          2018,
+          2024,
         ],
       },
       {

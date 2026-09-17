@@ -323,6 +323,60 @@ describe("draft invariants", () => {
 
     expect(violations).toEqual([]);
   });
+
+  /**
+   * Every pick has to name a roster that actually played that season, or the
+   * draft is an island: no pick can be tied to a manager, a matchup or a
+   * result.
+   *
+   * H12: 2019 failed this for 165 of its 180 picks. The NFL.com archive has no
+   * picks of its own, so the rebuild passed through a copy of the Sleeper
+   * import whose roster_ids were in Sleeper's numbering while every other file
+   * it wrote used NFL.com's. Exactly 15 picks survived -- thd's, because he is
+   * roster 1 in both numberings. It read as a clean 8% join rather than an
+   * error.
+   */
+  it("every pick joins to a roster that played that season", () => {
+    const violations: string[] = [];
+
+    YEARS.forEach((year) => {
+      const season = seasons[year];
+      if (!season?.picks?.length || !season?.rosters?.length) return;
+
+      const rosterIds = new Set(season.rosters.map((r) => r.roster_id));
+      const unjoined = season.picks.filter((p) => !rosterIds.has(p.roster_id));
+      if (unjoined.length) {
+        violations.push(`${year}: ${unjoined.length}/${season.picks.length} picks join to no roster`);
+      }
+    });
+
+    expect(violations).toEqual([]);
+  });
+
+  /**
+   * The roster a pick is credited to must be the roster owned by the manager
+   * who made it. This is what catches a numbering mismatch that happens to
+   * stay inside 1..12 -- the failure above was a permutation, so every id was
+   * individually plausible and only the owner disagreed.
+   */
+  it("each pick is credited to the roster owned by the manager who made it", () => {
+    const violations: string[] = [];
+
+    YEARS.forEach((year) => {
+      const season = seasons[year];
+      if (!season?.picks?.length || !season?.rosters?.length) return;
+
+      const ownerOf = new Map(season.rosters.map((r) => [r.roster_id, r.owner_id]));
+      const mismatched = season.picks.filter(
+        (p) => p.picked_by && ownerOf.get(p.roster_id) !== p.picked_by
+      );
+      if (mismatched.length) {
+        violations.push(`${year}: ${mismatched.length}/${season.picks.length} picks disagree with picked_by`);
+      }
+    });
+
+    expect(violations).toEqual([]);
+  });
 });
 
 describe("strength of schedule invariants", () => {
