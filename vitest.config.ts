@@ -17,7 +17,10 @@ export default defineConfig({
   test: {
     // These are pure functions over committed JSON — no DOM needed.
     environment: "node",
-    include: ["src/**/*.test.ts"],
+    // `scripts/` is in here for G6: the route enumeration and the OG tag
+    // generation are pure functions, and they are the parts of a build step
+    // whose failures are invisible (a crawler never reports a bad tag).
+    include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
     // A2a: matchups and transactions are dynamic imports now. This runs before
     // each test file is imported and awaits them, so every suite keeps reading
     // `seasons` synchronously exactly as it did.
