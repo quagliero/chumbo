@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useMemo, useEffect, lazy, Suspense } from "react";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { YEARS, YEAR_NUMBERS } from "@/domain/constants";
 import { TabType } from "@/constants/fantasy";
 import { useSeasonData, useSeasonTransactions } from "@/hooks/useSeasonData";
@@ -21,6 +21,15 @@ import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableT
 import { getWeekTrades } from "@/utils/transactionUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
 
+// D1 lives in the `charts` chunk (see vite.config.ts). Lazy, the same way
+// home.tsx loads the power ribbon and the luck chart, so a season's tables are
+// never made to wait on chart code.
+const SeasonArc = lazy(() =>
+  import("@/presentation/components/Chart/SeasonArc/SeasonArc").then((m) => ({
+    default: m.SeasonArc,
+  }))
+);
+
 const History = () => {
   const { year, tab, week, matchupId } = useParams<{
     year: string;
@@ -29,6 +38,13 @@ const History = () => {
     matchupId: string;
   }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // D1: the season arc's week labels link to `?week=n`, because that is the
+  // only way to address a week — the matchup LIST route carries no week
+  // segment, and `/seasons/:year/:tab/:week/:matchupId` needs a specific game.
+  // Read only: the week picker below goes on setting state without rewriting
+  // the URL, so its behaviour is unchanged and there is no feedback loop.
+  const weekParam = searchParams.get("week");
 
   // Parse URL params with fallbacks
   const initialYear = year ? parseInt(year) : YEARS[YEARS.length - 1];
@@ -70,6 +86,14 @@ const History = () => {
       setActiveTab(tab as TabType);
     }
   }, [year, tab]);
+
+  // Depends on the string, not on the `searchParams` object — React Router
+  // hands that back as a new instance on every render, which would re-run this
+  // effect and snap the picker back to the linked week.
+  useEffect(() => {
+    const parsed = weekParam ? parseInt(weekParam) : NaN;
+    if (Number.isFinite(parsed) && parsed > 0) setSelectedWeek(parsed);
+  }, [weekParam]);
 
   const seasonData = useSeasonData(selectedYear);
   // A2a: transactions are their own lazy chunk — 6.0 MB raw across the
@@ -390,15 +414,33 @@ const History = () => {
       <div className="min-h-96">
         {/* Standings Tab */}
         {activeTab === "standings" && (
-          <Standings
-            standings={standings}
-            getTeamName={getTeamName}
-            league={seasonData?.league}
-            winnersBracket={seasonData?.winners_bracket}
-            users={seasonData?.users}
-            matchups={seasonData?.matchups}
-            currentYear={selectedYear}
-          />
+          <div className="space-y-6">
+            {/* D1 sits ABOVE the standings rather than behind a tab of its
+                own. The table says who finished where; the arc says when it
+                happened, and the two are only worth much read together — a
+                flat November is interesting next to the row it produced.
+                Standings is also the tab the page lands on, so a tab of its
+                own would have hidden the chart from most visits. (It would
+                also mean a new member of `TabType` in constants/fantasy.ts,
+                which this change does not own.) */}
+            <div className="container mx-auto">
+              <h2 className="mb-3 text-lg font-semibold text-gray-900">
+                Season arc
+              </h2>
+              <Suspense fallback={<div className="h-64" aria-hidden="true" />}>
+                <SeasonArc year={selectedYear} />
+              </Suspense>
+            </div>
+            <Standings
+              standings={standings}
+              getTeamName={getTeamName}
+              league={seasonData?.league}
+              winnersBracket={seasonData?.winners_bracket}
+              users={seasonData?.users}
+              matchups={seasonData?.matchups}
+              currentYear={selectedYear}
+            />
+          </div>
         )}
 
         {/* Matchups Tab */}
