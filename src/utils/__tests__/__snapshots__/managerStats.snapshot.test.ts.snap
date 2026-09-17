@@ -4307,7 +4307,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 256,
-    "digest": "66e5-107364c6f315d8-146b3df306ba3e",
+    "digest": "66eb-1dca10cc0c517e-68b4bace5ef2f",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -4832,7 +4832,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1745,
-    "digest": "3dccf-1eacc3704dafee-f2c4f9610efac",
+    "digest": "3dca7-11875f5a61cfed-720512713a9a5",
     "head": [
       {
         "matchup_id": 6,
@@ -5393,7 +5393,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 252,
-    "digest": "6577-73bfb115f8e6d-54a29f0da62ef",
+    "digest": "6573-1cbb06aa915036-ac78b561d4fa7",
     "head": [
       {
         "averageScore": 6.704878048780487,
@@ -5912,7 +5912,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1809,
-    "digest": "3fed5-11f3406b26b136-16af9db15fc62a",
+    "digest": "3fed6-1052e1e302c2f9-1ec57fa8b740d4",
     "head": [
       {
         "matchup_id": 3,
@@ -7491,8 +7491,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
-    "count": 348,
-    "digest": "8ca9-3deecbe911e27-17e7e475507cc3",
+    "count": 347,
+    "digest": "8c59-13a778ee01162d-3631d54d6714b",
     "head": [
       {
         "averageScore": 10.804255319148934,
@@ -8021,7 +8021,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1836,
-    "digest": "40b47-1be9ca87423f56-1a86d4f355c3af",
+    "digest": "40b3d-abe15159d4e4e-7d5d3f9c4edfa",
     "head": [
       {
         "matchup_id": 3,
@@ -9920,7 +9920,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 341,
-    "digest": "889f-11b914a1958bf8-121a4295c2523d",
+    "digest": "8895-6ae8d12de021c-a5d36364656d7",
     "head": [
       {
         "averageScore": 21.71352941176471,
@@ -10438,7 +10438,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1754,
-    "digest": "3e051-11dd103acd56da-8b45601093654",
+    "digest": "3e03d-18775be74a7ef-14c684e3edc716",
     "head": [
       {
         "matchup_id": 4,
@@ -13513,7 +13513,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 164,
-    "digest": "4207-bb7520d1537ca-14b16fe82f9f1d",
+    "digest": "41f9-93e387dcfc5df-15a86dda97ff3e",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -13908,7 +13908,7 @@ exports[`getManagerStats > dataMode: combined > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 900,
-    "digest": "20056-d289cde1b3209-5c1d70327e964",
+    "digest": "20048-d509f05bf9bde-19de12e58de563",
     "head": [
       {
         "matchup_id": 5,
@@ -15475,8 +15475,8 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
-    "count": 365,
-    "digest": "9288-31e258e8047de-4f5f8df42a4a",
+    "count": 364,
+    "digest": "923d-6bdd8877c5a22-1f139f2e4e53c0",
     "head": [
       {
         "averageScore": 21.451162790697673,
@@ -16000,7 +16000,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1862,
-    "digest": "415e2-1d762713940781-d646be72671cd",
+    "digest": "415ea-141498fc5ab956-1b1e693f1659f3",
     "head": [
       {
         "matchup_id": 6,
@@ -32302,7 +32302,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "managerName": "fin",
   "mostCappedPlayers": {
     "count": 254,
-    "digest": "65fd-102457a9556c14-aa06b3691c0ee",
+    "digest": "65f3-1f645d9a518743-801556ce716dc",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -32827,7 +32827,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c7df-195762602cebea-88f4f9fa5e972",
+    "digest": "3c7b7-1508e88cd85df4-f46369bd11724",
     "head": [
       {
         "matchup_id": 6,
@@ -33388,7 +33388,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 249,
-    "digest": "6435-1d5ddd89d1a33f-1c531261aac39d",
+    "digest": "6431-182290741f3572-17eda10290081a",
     "head": [
       {
         "averageScore": 6.653846153846154,
@@ -33907,7 +33907,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c78f-1a71cdbd0e90cc-5c05dd0012ac7",
+    "digest": "3c790-178eaf2344a059-103dcbea4f39e0",
     "head": [
       {
         "matchup_id": 5,
@@ -35485,8 +35485,8 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
-    "count": 340,
-    "digest": "88e6-8212890b5629d-1ff3f619ba9982",
+    "count": 339,
+    "digest": "8896-1d4b0bf90a4725-64ca7c499decd",
     "head": [
       {
         "averageScore": 22.006,
@@ -36013,7 +36013,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c4a3-67f9f8ea50ac5-a143bc1f36262",
+    "digest": "3c499-16ba443a222814-3c3c260d1aae7",
     "head": [
       {
         "matchup_id": 3,
@@ -37912,7 +37912,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 337,
-    "digest": "86a6-6276b27c2f367-182d0c65cf330b",
+    "digest": "869c-114d5ef2fe2bfe-c1f6d25b8496e",
     "head": [
       {
         "averageScore": 21.866875,
@@ -38430,7 +38430,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c705-19167e60802cd8-1a372ed2489cc7",
+    "digest": "3c6f1-1e0efeed8bf64f-11cead40f696c6",
     "head": [
       {
         "matchup_id": 4,
@@ -41503,7 +41503,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "managerName": "ryan",
   "mostCappedPlayers": {
     "count": 162,
-    "digest": "410a-16f6e48c4e1ea2-2664b19f220b5",
+    "digest": "40fc-190c73888ac1bc-172c57bd9c7815",
     "head": [
       {
         "averageScore": 11.507142857142858,
@@ -41898,7 +41898,7 @@ exports[`getManagerStats > dataMode: regular > ryan 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 873,
-    "digest": "1f0a5-2b3ce399a36a9-1f95944adea0fd",
+    "digest": "1f097-1ed0f5f6a26c85-1a535d6d4177c2",
     "head": [
       {
         "matchup_id": 5,
@@ -43465,8 +43465,8 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
-    "count": 353,
-    "digest": "8d84-b0b45ca4205c5-634529e971b48",
+    "count": 352,
+    "digest": "8d39-a6308636129c8-6774d311a9dbb",
     "head": [
       {
         "averageScore": 21.503783783783778,
@@ -43988,7 +43988,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3bf3f-108bc0a31a6a8b-c92b82c514f07",
+    "digest": "3bf47-181971b073d368-1a332588f36433",
     "head": [
       {
         "matchup_id": 6,

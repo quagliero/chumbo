@@ -4966,8 +4966,8 @@ exports[`getOptimalLineup > 2018 — every matchup 1`] = `
 exports[`getOptimalLineup > 2019 — every matchup 1`] = `
 {
   "w1 r1": {
-    "optimalTotal": 134.46,
-    "pointsLeftOnBench": 44.80000000000001,
+    "optimalTotal": 134.36,
+    "pointsLeftOnBench": 44.70000000000002,
   },
   "w1 r10": {
     "optimalTotal": 148.82,
@@ -5030,8 +5030,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 1.4210854715202004e-14,
   },
   "w10 r2": {
-    "optimalTotal": 104.46000000000001,
-    "pointsLeftOnBench": 7.1000000000000085,
+    "optimalTotal": 110.46000000000001,
+    "pointsLeftOnBench": 13.100000000000009,
   },
   "w10 r3": {
     "optimalTotal": 86.72,
@@ -5082,8 +5082,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 0,
   },
   "w11 r3": {
-    "optimalTotal": 48.99999999999999,
-    "pointsLeftOnBench": -1.1000000000000085,
+    "optimalTotal": 57.99999999999999,
+    "pointsLeftOnBench": 7.8999999999999915,
   },
   "w11 r4": {
     "optimalTotal": 89.56,
@@ -5134,8 +5134,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 15.700000000000003,
   },
   "w12 r4": {
-    "optimalTotal": 91.48,
-    "pointsLeftOnBench": 3.9000000000000057,
+    "optimalTotal": 89.48,
+    "pointsLeftOnBench": 1.9000000000000057,
   },
   "w12 r5": {
     "optimalTotal": 119.38,
@@ -5174,8 +5174,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 16.58,
   },
   "w13 r2": {
-    "optimalTotal": 112.75999999999999,
-    "pointsLeftOnBench": 16.939999999999998,
+    "optimalTotal": 120.75999999999999,
+    "pointsLeftOnBench": 24.939999999999998,
   },
   "w13 r3": {
     "optimalTotal": 113.62,
@@ -5214,8 +5214,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 25,
   },
   "w14 r2": {
-    "optimalTotal": 107.67999999999999,
-    "pointsLeftOnBench": 14.899999999999991,
+    "optimalTotal": 107.38,
+    "pointsLeftOnBench": 14.599999999999994,
   },
   "w14 r3": {
     "optimalTotal": 87.89999999999999,
@@ -5254,8 +5254,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 18.799999999999997,
   },
   "w15 r4": {
-    "optimalTotal": 99.78000000000002,
-    "pointsLeftOnBench": 9.600000000000009,
+    "optimalTotal": 103.68,
+    "pointsLeftOnBench": 13.5,
   },
   "w15 r5": {
     "optimalTotal": 84.4,
@@ -5358,16 +5358,16 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 16.10000000000001,
   },
   "w2 r8": {
-    "optimalTotal": 114.96,
-    "pointsLeftOnBench": 18.39999999999999,
+    "optimalTotal": 121.46,
+    "pointsLeftOnBench": 24.89999999999999,
   },
   "w2 r9": {
     "optimalTotal": 114.1,
     "pointsLeftOnBench": 13.799999999999997,
   },
   "w3 r1": {
-    "optimalTotal": 109.38,
-    "pointsLeftOnBench": 19.799999999999997,
+    "optimalTotal": 103.28,
+    "pointsLeftOnBench": 13.700000000000003,
   },
   "w3 r10": {
     "optimalTotal": 109.23999999999998,
@@ -5462,8 +5462,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 11.659999999999997,
   },
   "w5 r1": {
-    "optimalTotal": 138.34,
-    "pointsLeftOnBench": 20.299999999999997,
+    "optimalTotal": 134.14000000000001,
+    "pointsLeftOnBench": 16.10000000000001,
   },
   "w5 r10": {
     "optimalTotal": 141.14000000000001,
@@ -5502,16 +5502,16 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 16.80000000000001,
   },
   "w5 r8": {
-    "optimalTotal": 105.52000000000001,
-    "pointsLeftOnBench": 24.500000000000014,
+    "optimalTotal": 108.42000000000002,
+    "pointsLeftOnBench": 27.40000000000002,
   },
   "w5 r9": {
     "optimalTotal": 95.6,
     "pointsLeftOnBench": 0.5999999999999943,
   },
   "w6 r1": {
-    "optimalTotal": 151.24,
-    "pointsLeftOnBench": 34.400000000000006,
+    "optimalTotal": 148.54,
+    "pointsLeftOnBench": 31.69999999999999,
   },
   "w6 r10": {
     "optimalTotal": 124.30000000000001,
@@ -5522,8 +5522,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 36.400000000000006,
   },
   "w6 r12": {
-    "optimalTotal": 56.800000000000004,
-    "pointsLeftOnBench": -8.600000000000001,
+    "optimalTotal": 67.80000000000001,
+    "pointsLeftOnBench": 2.4000000000000057,
   },
   "w6 r2": {
     "optimalTotal": 140.22,
@@ -5534,8 +5534,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 15.800000000000011,
   },
   "w6 r4": {
-    "optimalTotal": 86.82,
-    "pointsLeftOnBench": 0,
+    "optimalTotal": 90.81999999999998,
+    "pointsLeftOnBench": 3.999999999999986,
   },
   "w6 r5": {
     "optimalTotal": 78.02,
@@ -5558,8 +5558,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 17.5,
   },
   "w7 r1": {
-    "optimalTotal": 129.62,
-    "pointsLeftOnBench": 38,
+    "optimalTotal": 129.42,
+    "pointsLeftOnBench": 37.79999999999998,
   },
   "w7 r10": {
     "optimalTotal": 75.02,
@@ -5582,8 +5582,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 1.8999999999999915,
   },
   "w7 r4": {
-    "optimalTotal": 77.56,
-    "pointsLeftOnBench": -0.3999999999999915,
+    "optimalTotal": 77.96,
+    "pointsLeftOnBench": 0,
   },
   "w7 r5": {
     "optimalTotal": 53.24000000000001,
@@ -5630,8 +5630,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 3.4000000000000057,
   },
   "w8 r4": {
-    "optimalTotal": 121.78,
-    "pointsLeftOnBench": -6.800000000000011,
+    "optimalTotal": 128.88,
+    "pointsLeftOnBench": 0.29999999999998295,
   },
   "w8 r5": {
     "optimalTotal": 158.54,
@@ -5678,8 +5678,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 24.799999999999997,
   },
   "w9 r4": {
-    "optimalTotal": 84.04,
-    "pointsLeftOnBench": 20.160000000000004,
+    "optimalTotal": 101.04,
+    "pointsLeftOnBench": 37.160000000000004,
   },
   "w9 r5": {
     "optimalTotal": 115.16,

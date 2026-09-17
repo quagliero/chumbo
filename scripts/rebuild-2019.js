@@ -126,6 +126,77 @@ for (const w of fs
   }
 }
 
+/**
+ * Second pass: names the scrape never gave an id to, and which the Sleeper
+ * week could not supply either.
+ *
+ * The pass above can only alias a player Sleeper scored that same week, so a
+ * starter missing from both sides stays a literal name -- "D.K. Metcalf" sat
+ * on a roster for sixteen team-weeks and 40.5 points under that string, while
+ * the pick that drafted him pointed at 5846 and joined to nothing.
+ *
+ * Resolve those against the dictionary instead, by three rules in order, each
+ * requiring a UNIQUE hit or it is left alone:
+ *
+ *   1. The same name ignoring case and punctuation  ("D.K." vs "DK").
+ *   2. A defence, by its city   ("Washington Redskins" -> WAS, which the
+ *      dictionary now calls the Commanders, so the last name cannot match).
+ *   3. Surname plus first initial  ("Mike Badgley" -> Michael Badgley).
+ */
+const normName = (value) => String(value).toLowerCase().replace(/[^a-z0-9]/g, "");
+const fullNameOf = (p) =>
+  (p.full_name || `${p.first_name || ""} ${p.last_name || ""}`).trim();
+
+const byFullName = new Map();
+const byDefenceCity = new Map();
+const bySurnameInitial = new Map();
+const push = (map, key, id) => {
+  const bucket = map.get(key);
+  if (bucket) bucket.push(id);
+  else map.set(key, [id]);
+};
+for (const [id, p] of Object.entries(playersDict)) {
+  push(byFullName, normName(fullNameOf(p)), id);
+  if (p.position === "DEF" && p.first_name) {
+    push(byDefenceCity, normName(p.first_name), id);
+  }
+  if (p.last_name && p.first_name) {
+    push(bySurnameInitial, `${normName(p.last_name)}|${normName(p.first_name)[0]}`, id);
+  }
+}
+const unique = (map, key) => {
+  const bucket = map.get(key);
+  return bucket && bucket.length === 1 ? bucket[0] : null;
+};
+const resolveByName = (name) => {
+  const words = String(name).trim().split(/\s+/);
+  return (
+    unique(byFullName, normName(name)) ||
+    unique(byDefenceCity, normName(words[0])) ||
+    (words.length > 1
+      ? unique(
+          bySurnameInitial,
+          `${normName(words[words.length - 1])}|${normName(words[0])[0]}`
+        )
+      : null)
+  );
+};
+
+for (const w of fs
+  .readdirSync(path.join(OLD_DIR, "matchups"))
+  .filter((f) => f.endsWith(".json"))
+  .map((f) => parseInt(f, 10))) {
+  for (const om of read(path.join(OLD_DIR, `matchups/${w}.json`))) {
+    for (const id of om.players || []) {
+      if (alias[id] || !looksLikeName(id)) continue;
+      const hit = resolveByName(id);
+      if (!hit) continue;
+      alias[id] = hit;
+      aliasEvidence.push(`${id} -> ${hit}  (${fullNameOf(playersDict[hit])})`);
+    }
+  }
+}
+
 const resolve = (id, pp) => (pp[id] !== undefined ? id : alias[id] ?? id);
 
 /**
@@ -187,6 +258,7 @@ const report = {
   attributedMissing: 0,
   attributedManual: 0,
   attributedDefense: 0,
+  idsCanonicalised: 0,
   residuals: [],
 };
 
@@ -313,6 +385,35 @@ for (const w of weeks) {
     if (residual !== 0) out.points_adjustment = residual;
     return out;
   });
+
+  // ---- canonicalise the player ids -------------------------------------
+  // The NFL.com lineup is authoritative for WHO played; it is not
+  // authoritative for their ids. Where the scrape and the Sleeper dictionary
+  // disagree -- two same-name pairs, and a handful of entries the scrape left
+  // as literal names -- everything above deliberately keys off the scrape's
+  // id, so that MANUAL and the attribution rules can address a player by the
+  // id they were written against.
+  //
+  // Nothing downstream joins on that id though. picks.json, the player pages
+  // and the draft stats all use the Sleeper dictionary, so a scrape id is a
+  // player who never appears: thd's 2019 David Johnson (RB, 2391) held his
+  // points under 362, a tight end, which read as a first-round pick that
+  // scored nothing and took "worst draft pick in Chumbo history".
+  //
+  // So relabel once, at the end, after every rule above has run on the ids it
+  // expects. An alias only exists where the new id was absent from the old
+  // lineup, so this can never collide.
+  for (const out of outMatchups[w]) {
+    const remap = (id) => alias[id] ?? id;
+    out.players = (out.players || []).map(remap);
+    out.starters = (out.starters || []).map(remap);
+    const points = {};
+    for (const [id, value] of Object.entries(out.players_points)) {
+      if (alias[id]) report.idsCanonicalised++;
+      points[remap(id)] = value;
+    }
+    out.players_points = points;
+  }
 }
 
 // ---------------------------------------------------------------- rosters
@@ -481,6 +582,7 @@ console.log(`  lineups differing from Sleeper ${report.lineupDiffs}`);
 console.log(`  divisions grafted          ${report.divisionsGrafted}`);
 console.log(`  picks remapped to rosters  ${picksRemapped} of ${(passthrough["picks.json"] || []).length}`);
 console.log(`  player id aliases resolved ${Object.keys(alias).length}`);
+console.log(`  player-week ids canonicalised ${report.idsCanonicalised}`);
 for (const e of aliasEvidence) console.log(`    ${e}`);
 if (outTransactions) {
   console.log(
