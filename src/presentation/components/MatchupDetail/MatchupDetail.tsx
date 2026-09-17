@@ -11,6 +11,9 @@ import { getRecordUpToWeek, getCurrentStreak } from "@/utils/matchupStats";
 import { getPlayerRows, getOptimalLineup } from "@/utils/lineupAnalysis";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 import { NarrativeNotes } from "@/presentation/components/Narrative";
+import { ShareButton } from "@/presentation/components/ShareButton";
+import { avatarDataUri } from "./shareAvatar";
+import { getManagerAccent } from "@/domain/managerColors";
 
 interface MatchupDetailProps {
   matchup: [ExtendedMatchup, ExtendedMatchup];
@@ -72,11 +75,21 @@ const MatchupDetail = ({
   const team1Optimal = getOptimalLineup(team1Data, year);
   const team2Optimal = getOptimalLineup(team2Data, year);
 
+  // The winner's accent, for the share card's rule. A tie has no winner, and a
+  // roster with no manager entry falls back to the template's neutral ink.
+  const winnerAccent = (() => {
+    if (winner === null) return undefined;
+    const roster = rosters.find((r) => r.roster_id === winner);
+    const manager = managers.find((m) => m.sleeper.id === roster?.owner_id);
+    return manager ? getManagerAccent(manager.id) : undefined;
+  })();
+
   // Prepare team data for looping
   const teams = [
     {
       name: team1Name,
       data: team1Data,
+      ownerId: team1Roster?.owner_id,
       manager: managers.find((m) => m.sleeper.id === team1Roster?.owner_id),
       players: team1Players,
       optimal: team1Optimal,
@@ -86,6 +99,7 @@ const MatchupDetail = ({
     {
       name: team2Name,
       data: team2Data,
+      ownerId: team2Roster?.owner_id,
       manager: managers.find((m) => m.sleeper.id === team2Roster?.owner_id),
       players: team2Players,
       optimal: team2Optimal,
@@ -106,18 +120,50 @@ const MatchupDetail = ({
         ]}
       />
 
-      {/* E7: what this game was, if it was anything. Renders nothing at all on
-          an ordinary week — the rail is only worth reading because it stays
-          quiet the rest of the time. */}
-      <NarrativeNotes
-        subject={{
-          year,
-          week,
-          managerIds: teams
-            .map((team) => team.manager?.id)
-            .filter((id): id is string => Boolean(id)),
-        }}
-      />
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        {/* E7: what this game was, if it was anything. Renders nothing at all on
+            an ordinary week — the rail is only worth reading because it stays
+            quiet the rest of the time. */}
+        <NarrativeNotes
+          subject={{
+            year,
+            week,
+            managerIds: teams
+              .map((team) => team.manager?.id)
+              .filter((id): id is string => Boolean(id)),
+          }}
+        />
+
+        {/* G2/G3/G4: the whole point of the project — "I love it when one of the
+            managers goes on the site and then comes back and shares a nugget".
+            The card is built on click rather than up front, because embedding
+            the avatars is a fetch and nobody should pay for it just by opening
+            a matchup. */}
+        <ShareButton
+          className="ml-auto"
+          card={async () => {
+            const [{ finalScoreCard }, { embedImage }] = await Promise.all([
+              import("@/presentation/components/ShareCard/templates"),
+              import("@/presentation/components/ShareCard"),
+            ]);
+            const sides = await Promise.all(
+              teams.map(async (team) => ({
+                name: team.name,
+                score: team.data.points ?? 0,
+                avatar: await avatarDataUri(embedImage, users, team.ownerId),
+              }))
+            );
+            return finalScoreCard({
+              year,
+              week,
+              teams: [sides[0], sides[1]] as const,
+              // One manager's accent, and only as a rule: the winner's, so the
+              // card is not a neutral grey slab. Two accents would collide.
+              accent: winnerAccent,
+            });
+          }}
+        />
+      </div>
 
       {/* Header with team info */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">

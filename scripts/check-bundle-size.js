@@ -30,9 +30,18 @@ const dist = path.join(__dirname, "../dist/assets");
 //
 // Update deliberately, never to make a build pass.
 const BUDGET_KB = {
-  // Everything the browser must parse before the first render. Currently 347 --
-  // 145 of it the small per-season files, 104 the player dictionary.
-  initial: 370,
+  // Everything the browser fetches before the first render, read from
+  // index.html. Currently 77: the 4 kB entry and the 73 kB vendor chunk.
+  //
+  // Ratcheted from 370, which was measuring a different thing -- a name-based
+  // guess that summed data + players + vendor + index to 344. Those data and
+  // player chunks are NOT preloaded; they arrive with the first route. So the
+  // old figure over-counted by ~267 kB while simultaneously missing the 24 kB
+  // of charts that genuinely was preloaded.
+  //
+  // 120 leaves room for vendor to grow and still fails if either data (145) or
+  // the player dictionary (104) is ever pulled onto the critical path again.
+  initial: 120,
   // Every JS chunk together, including the lazily-loaded routes and the
   // per-season matchup (305) and transaction (243) chunks. Currently 966.
   //
@@ -45,16 +54,13 @@ const BUDGET_KB = {
   // 4 kB of headroom, and the share cards still to come. The +25 below is
   // workstream G's allowance, the same deal workstream D got.
   total: 1030,
-  // D0: workstream D gets 40 kB gzipped for seven charts. Hand-rolled SVG, with
-  // visx or d3 only if something genuinely needs them -- and if one is ever
-  // added, this is the line that fails. Chart code lives in its own chunk (see
-  // vite.config.ts) so the figure means what it says.
-  charts: 40,
-  // G1's renderer plus G2's templates. Currently 0: nothing imports the
-  // renderer yet, so it is tree-shaken out entirely. The line exists now so
-  // that G2/G3/G4 land against a number rather than setting one afterwards.
-  share: 25,
 };
+
+// D0's +40 kB chart allowance and G1's +25 kB share allowance are enforced by
+// `initial` and `total` above rather than by per-chunk lines. The per-chunk
+// version required a manual chunk per workstream, and that is precisely what
+// dragged the charts onto the critical path -- see vite.config.ts. A charting
+// library large enough to matter cannot hide from either number.
 
 if (!fs.existsSync(dist)) {
   console.error("No dist/assets — run `yarn build` first.");
@@ -71,20 +77,28 @@ const sizes = js
 
 const total = sizes.reduce((sum, s) => sum + s.kb, 0);
 
-// The data and vendor chunks are imported by every route, so they land on the
-// critical path however the routes are split. Named lazily so that A2 moving
-// data out of the bundle is reflected automatically.
-const initial = sizes
-  .filter(({ file }) => /^(data|players|vendor|index)-/.test(file))
-  .reduce((sum, s) => sum + s.kb, 0);
-
-const charts = sizes
-  .filter(({ file }) => /^charts-/.test(file))
-  .reduce((sum, s) => sum + s.kb, 0);
-
-const share = sizes
-  .filter(({ file }) => /^share-/.test(file))
-  .reduce((sum, s) => sum + s.kb, 0);
+// What the browser actually fetches before the first render, read out of
+// index.html rather than guessed from chunk names.
+//
+// This used to be a regex over the filenames — /^(data|players|vendor|index)-/
+// — and that is how D0's mistake stayed invisible. Rollup had put a shared
+// module inside the `charts` chunk, so every page statically depended on it and
+// Vite added it to index.html's `modulepreload`; 24 kB downloaded on every
+// visit while this script reported a critical path that excluded it. A budget
+// that measures the wrong bytes is worse than no budget, because it is trusted.
+//
+// The entry script and every modulepreload in index.html IS the critical path,
+// by definition. Nothing to keep in sync.
+const html = fs.readFileSync(path.join(__dirname, "../dist/index.html"), "utf8");
+const preloaded = [...html.matchAll(/(?:href|src)="\/assets\/([^"]+\.js)"/g)].map(
+  (match) => match[1]
+);
+const missing = preloaded.filter((file) => !js.includes(file));
+if (missing.length) {
+  console.error(`index.html references files not in dist/assets: ${missing.join(", ")}`);
+  process.exit(1);
+}
+const initial = preloaded.reduce((sum, file) => sum + gzipKb(file), 0);
 
 const fmt = (kb) => `${kb.toFixed(0)} kB`;
 console.log("\nGzipped JavaScript");
@@ -93,20 +107,18 @@ for (const { file, kb } of sizes.slice(0, 6)) {
 }
 if (sizes.length > 6) console.log(`  ${"…".padStart(9)}  +${sizes.length - 6} more`);
 console.log(`  ${"—".repeat(9)}`);
-console.log(`  ${fmt(initial).padStart(9)}  on the critical path  (budget ${BUDGET_KB.initial} kB)`);
+console.log(
+  `  ${fmt(initial).padStart(9)}  on the critical path  (budget ${BUDGET_KB.initial} kB, ${preloaded.length} files from index.html)`
+);
 console.log(`  ${fmt(total).padStart(9)}  total                 (budget ${BUDGET_KB.total} kB)`);
-console.log(`  ${fmt(charts).padStart(9)}  charts (workstream D) (budget ${BUDGET_KB.charts} kB)`);
-console.log(`  ${fmt(share).padStart(9)}  share  (workstream G) (budget ${BUDGET_KB.share} kB)\n`);
+console.log("");
 
 const failures = [];
 if (initial > BUDGET_KB.initial)
   failures.push(`critical path ${fmt(initial)} exceeds ${BUDGET_KB.initial} kB`);
 if (total > BUDGET_KB.total)
   failures.push(`total ${fmt(total)} exceeds ${BUDGET_KB.total} kB`);
-if (charts > BUDGET_KB.charts)
-  failures.push(`charts ${fmt(charts)} exceeds ${BUDGET_KB.charts} kB`);
-if (share > BUDGET_KB.share)
-  failures.push(`share ${fmt(share)} exceeds ${BUDGET_KB.share} kB`);
+
 
 if (failures.length) {
   console.error("Bundle budget exceeded:");

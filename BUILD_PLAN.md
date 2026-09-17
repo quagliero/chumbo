@@ -741,7 +741,7 @@ both the clipboard flow and the build-time OG images.
 Final score · manager season · H2H record · draft pick · record broken
 ("🚨 NEW LEAGUE RECORD"). `E7` supplies the copy.
 
-- [ ] G2
+- [x] G2
 
 ### G3 · Copy to clipboard `M`
 **Blocked by:** G1
@@ -754,7 +754,7 @@ Web accepts a pasted image.
 > gesture — `new ClipboardItem({ 'image/png': makeBlob() })`. Await the blob
 > first and it fails silently.
 
-- [ ] G3
+- [x] G3
 
 ### G4 · Native share sheet on mobile `S`
 **Blocked by:** G1
@@ -763,7 +763,7 @@ Web accepts a pasted image.
 in it — a much better flow on a phone than the clipboard. Feature-detect, fall
 back to `G3` on desktop.
 
-- [ ] G4
+- [x] G4
 
 ### G5 · Static OG tags `XS`
 
@@ -1083,9 +1083,9 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 | ☑ | `E6` On this day | M |
 | ☑ | `E8` Table deep links | M |
 | ☑ | `G1` SVG card renderer | L |
-| ☐ | `G2` Card templates | M |
-| ☐ | `G3` Clipboard copy | M |
-| ☐ | `G4` Native share sheet | S |
+| ☑ | `G2` Card templates | M |
+| ☑ | `G3` Clipboard copy | M |
+| ☑ | `G4` Native share sheet | S |
 | ☐ | `G6` Prerendered OG images | XL |
 
 ---
