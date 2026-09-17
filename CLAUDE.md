@@ -20,7 +20,7 @@ deploy step.
 
 ```bash
 yarn dev            # local dev server
-yarn build          # tsc -b && vite build
+yarn build          # tsc -b, build-aggregates, vite build, then the bundle budget
 yarn lint           # eslint
 yarn test           # vitest (watch)
 yarn test:run       # vitest (single run)
@@ -138,6 +138,63 @@ The fetch script reads `league_id` and `draft_id` from an existing
 - Several components branch on `year === CURRENT_YEAR` to treat the live season
   differently (see `managerStats.ts`, `Breakdown.tsx`, `AllTimeBreakdown.tsx`,
   `usePlayerStats.ts`).
+
+## The derived layers (added M4-M6)
+
+Four things sit between the committed JSON and the pages. Each exists so the
+same fact cannot be computed two different ways in two places.
+
+- **`src/utils/stats/`** — the stat registry (C1). One flattened pass over
+  history, twenty-five statistics reading it. `defineStat` registers one;
+  `computeStat(id)` runs it. Two lists, and the difference matters: `games` is
+  paired matchups only (for anything about winning), `teamWeeks` is EVERY
+  team-week that scored (for anything about lineups), because an eliminated
+  team still sets a lineup and there are 48 such team-weeks worth 4,287 points.
+- **`public/data/all-time.json`** — those answers, precomputed at build time by
+  `yarn build-aggregates` and committed. 19 kB gzip against the ~550 kB of
+  matchups and transactions the registry needs, so a page can carry a record
+  without downloading the archive. `precomputed.test.ts` fails if it is stale.
+- **`src/utils/narrative/`** — turns a ranked entry into a sentence (E7): "The
+  biggest margin of victory in Chumbo history." It invents nothing; a note is
+  always "this entry you already computed is Nth in that list". Reads the
+  precomputed file, so a share card and a page cannot disagree about what was
+  notable.
+- **`src/presentation/components/ShareCard/`** — hand-rolled SVG to a canvas
+  (G1), five templates (G2). Every template is a pure function of flat
+  primitives, deliberately: no `managers.json` import and no season loader, so
+  the same code can render an OG image in Node. `ShareButton/` is the flow —
+  native share sheet on a phone, clipboard on desktop.
+
+Three data-quality rules these all obey:
+
+- **2019's per-player data is a reconstruction** (`src/domain/dataQuality.ts`).
+  Team scores are correct; the lineup breakdown is inferred. A stat that ranks a
+  single lineup decision sets `requiresLineups` and 2019 is excluded before it
+  runs; a stat that ranks a whole season sets `allowsApproximateLineups` and its
+  2019 entries arrive flagged `approximate`. Anything that shows a flagged fact
+  must say so — a caveated fact presented flat is worse than no fact.
+- **The Scumbo is the worst BREAKDOWN, not last place** (`seasonBreakdown.ts`).
+  They disagree in five of fourteen completed seasons. `crowns.ts` models it and
+  the Triple Crown as three legs each.
+- **Finishing position comes from the brackets** (`finalStandings.ts`), not from
+  regular-season order. The two brackets use different conventions — pre-2020
+  the losers bracket numbers the league, 2020+ it restarts at 1 — so reading
+  `p` straight off makes the consolation winner joint champion.
+
+## The bundle budget
+
+`yarn build` fails if the payload grows. `initial` is read out of
+`dist/index.html` — the entry script plus every `modulepreload` — because that
+IS the critical path by definition. It used to be a regex over chunk names, and
+that is how a real regression hid: a `manualChunks` entry for charts became
+Rollup's home for a shared module, so every page statically depended on 24 kB of
+chart code and it was preloaded on every visit, while the check reported a
+critical path that excluded it.
+
+Two rules follow. **Do not add a manual chunk per feature** — see the comment in
+`vite.config.ts`. And if a number here has to move, move it deliberately and say
+why in the commit; a budget that is edited to make a build pass is worse than no
+budget, because it is still trusted.
 
 ## Gotchas
 
