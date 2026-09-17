@@ -17,9 +17,17 @@ const PowerRibbon = lazy(() =>
   }))
 );
 
+// D7, same deal: the `charts` chunk, fetched only when this tab is opened.
+const LuckChart = lazy(() =>
+  import("@/presentation/components/Chart/LuckChart/LuckChart").then((m) => ({
+    default: m.LuckChart,
+  }))
+);
+
 type HomeTabType =
   | "standings"
   | "careers"
+  | "luck"
   | "breakdown"
   | "top-scores"
   | "schedule-comparison"
@@ -51,6 +59,7 @@ const Home = () => {
             {[
               "standings",
               "careers",
+              "luck",
               "breakdown",
               "top-scores",
               "schedule-comparison",
@@ -90,6 +99,8 @@ const Home = () => {
               >
                 {tabName === "careers"
                   ? "Careers"
+                  : tabName === "luck"
+                  ? "Luck"
                   : tabName === "breakdown"
                   ? "Breakdown"
                   : tabName === "top-scores"
@@ -116,6 +127,19 @@ const Home = () => {
             </p>
             <Suspense fallback={<div className="h-64" />}>
               <PowerRibbon />
+            </Suspense>
+          </div>
+        )}
+        {activeTab === "luck" && (
+          <div className="container mx-auto">
+            <h2 className="mb-1 text-lg font-semibold">
+              Who the schedule flattered
+            </h2>
+            <p className="mb-4 text-sm text-ink-muted">
+              Wins you got against wins your scores deserved.
+            </p>
+            <Suspense fallback={<div className="h-64" />}>
+              <LuckChart className="max-w-xl" />
             </Suspense>
           </div>
         )}
