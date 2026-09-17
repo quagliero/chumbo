@@ -5,6 +5,7 @@ import { seasons } from "@/data";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getCumulativeStandings, TeamStats } from "@/utils/standings";
 import { DataTable } from "../Table";
+import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -57,7 +58,13 @@ const AllTimeTable = () => {
 
   const columns = [
     columnHelper.accessor("team_name", {
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+          <ManagerIdentity
+            ownerId={info.row.original.owner_id}
+            teamName={String(info.getValue())}
+            showAvatar={false}
+          />
+        ),
       header: () => "Team",
       enableSorting: false,
       meta: {

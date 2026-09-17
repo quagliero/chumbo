@@ -19,6 +19,7 @@ import { seasons } from "@/data";
 import { DataTable } from "../Table";
 import type { AnyColumnDef } from "../Table";
 import { YEARS } from "@/domain/constants";
+import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
 // One table per division. Kept as its own component because each needs its own
 // table instance.
@@ -433,23 +434,11 @@ const Standings = ({
           const teamName = info.getValue();
 
           return (
-            <div className="flex items-center space-x-3">
-              {avatarUrl ? (
-                <img
-                  src={avatarUrl}
-                  alt={`${teamName} avatar`}
-                  className="w-8 h-8 rounded-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-500">
-                  {teamName.charAt(0).toUpperCase()}
-                </div>
-              )}
-              <span>{teamName}</span>
-            </div>
+            <ManagerIdentity
+              ownerId={row.roster.owner_id}
+              teamName={teamName}
+              avatarUrl={avatarUrl}
+            />
           );
         },
         enableSorting: false,

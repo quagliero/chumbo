@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useFormatter } from "use-intl";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "../Table";
+import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
 export interface OwnerStats {
   ownerId: string;
@@ -27,7 +28,13 @@ const OwnershipTable = ({ data }: OwnershipTableProps) => {
     () => [
       columnHelper.accessor("teamName", {
         header: "Team",
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+          <ManagerIdentity
+            ownerId={info.row.original.ownerId}
+            teamName={String(info.getValue())}
+            showAvatar={false}
+          />
+        ),
         meta: {
           kind: "manager",
           ownerId: (row) => row.ownerId,
