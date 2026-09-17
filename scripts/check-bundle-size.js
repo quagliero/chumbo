@@ -40,12 +40,20 @@ const BUDGET_KB = {
   // budget; H4 enforces it in CI" -- but 1220 left 254 kB of headroom, so a
   // 200 kB charting library would have passed this check without a murmur. The
   // budget only enforces the decision if it is set where the decision is.
-  total: 1006,
+  // Raised from 1006 by G1. M6 added the command palette, the random-matchup
+  // picker, "on this day" and table URL state, which took the figure to 1002 --
+  // 4 kB of headroom, and the share cards still to come. The +25 below is
+  // workstream G's allowance, the same deal workstream D got.
+  total: 1030,
   // D0: workstream D gets 40 kB gzipped for seven charts. Hand-rolled SVG, with
   // visx or d3 only if something genuinely needs them -- and if one is ever
   // added, this is the line that fails. Chart code lives in its own chunk (see
   // vite.config.ts) so the figure means what it says.
   charts: 40,
+  // G1's renderer plus G2's templates. Currently 0: nothing imports the
+  // renderer yet, so it is tree-shaken out entirely. The line exists now so
+  // that G2/G3/G4 land against a number rather than setting one afterwards.
+  share: 25,
 };
 
 if (!fs.existsSync(dist)) {
@@ -74,6 +82,10 @@ const charts = sizes
   .filter(({ file }) => /^charts-/.test(file))
   .reduce((sum, s) => sum + s.kb, 0);
 
+const share = sizes
+  .filter(({ file }) => /^share-/.test(file))
+  .reduce((sum, s) => sum + s.kb, 0);
+
 const fmt = (kb) => `${kb.toFixed(0)} kB`;
 console.log("\nGzipped JavaScript");
 for (const { file, kb } of sizes.slice(0, 6)) {
@@ -83,7 +95,8 @@ if (sizes.length > 6) console.log(`  ${"…".padStart(9)}  +${sizes.length - 6} 
 console.log(`  ${"—".repeat(9)}`);
 console.log(`  ${fmt(initial).padStart(9)}  on the critical path  (budget ${BUDGET_KB.initial} kB)`);
 console.log(`  ${fmt(total).padStart(9)}  total                 (budget ${BUDGET_KB.total} kB)`);
-console.log(`  ${fmt(charts).padStart(9)}  charts (workstream D) (budget ${BUDGET_KB.charts} kB)\n`);
+console.log(`  ${fmt(charts).padStart(9)}  charts (workstream D) (budget ${BUDGET_KB.charts} kB)`);
+console.log(`  ${fmt(share).padStart(9)}  share  (workstream G) (budget ${BUDGET_KB.share} kB)\n`);
 
 const failures = [];
 if (initial > BUDGET_KB.initial)
@@ -92,6 +105,8 @@ if (total > BUDGET_KB.total)
   failures.push(`total ${fmt(total)} exceeds ${BUDGET_KB.total} kB`);
 if (charts > BUDGET_KB.charts)
   failures.push(`charts ${fmt(charts)} exceeds ${BUDGET_KB.charts} kB`);
+if (share > BUDGET_KB.share)
+  failures.push(`share ${fmt(share)} exceeds ${BUDGET_KB.share} kB`);
 
 if (failures.length) {
   console.error("Bundle budget exceeded:");

@@ -46,6 +46,13 @@ export default defineConfig({
           if (id.includes("/presentation/components/Chart/")) {
             return "charts";
           }
+          // Workstream G, budgeted the same way and for the same reason: the
+          // share card renderer and its templates are only needed when
+          // somebody shares, so they must never land on the critical path, and
+          // a number the build checks is the only thing that keeps it true.
+          if (id.includes("/presentation/components/ShareCard/")) {
+            return "share";
+          }
           // A2a: the per-week files are loaded on demand, one chunk per season
           // per kind, so a page that wants 2014 fetches 2014 and nothing else.
           // Without this Rollup would emit ~500 chunks, one per week file.

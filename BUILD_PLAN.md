@@ -610,7 +610,7 @@ that is fundamentally an index of fifteen years, **this is the best single
 navigation addition available.** The search infrastructure already exists in
 `usePlayerSearch`.
 
-- [ ] E3
+- [x] E3
 
 ### E4 · Breadcrumbs `S`
 
@@ -625,12 +625,12 @@ Manager detail currently offers "← Back to Managers" and nothing else.
 A dice icon that drops you into a random matchup from league history. Genuinely:
 this is the exact mechanic that manufactures the WhatsApp nuggets you want.
 
-- [ ] E5
+- [x] E5
 
 ### E6 · "On this day" homepage module `M`
 **Blocked by:** C6c
 
-- [ ] E6
+- [x] E6
 
 ### E7 · Narrative engine `L`
 **Blocked by:** C1
@@ -649,7 +649,7 @@ Tab state already lives in the URL — sorted and filtered table state doesn't. 
 manager sorts by "most bench points" and can't paste that link into the group
 chat, the nugget dies with them.
 
-- [ ] E8
+- [x] E8
 
 ---
 
@@ -733,7 +733,7 @@ heavy, slow, and renders Tailwind inconsistently. Serialise the SVG, draw to a
 `<canvas>`, `canvas.toBlob()`. Design at **1200×630** so the same renderer serves
 both the clipboard flow and the build-time OG images.
 
-- [ ] G1
+- [x] G1
 
 ### G2 · Card templates `M`
 **Blocked by:** G1, F2, E7
@@ -1078,11 +1078,11 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 |---|---|---|
 | ☑ | `E7` Narrative engine | L |
 | ☐ | `E2` See-also rails | M |
-| ☐ | `E3` Command palette (⌘K) | L |
-| ☐ | `E5` Random matchup button | S |
-| ☐ | `E6` On this day | M |
-| ☐ | `E8` Table deep links | M |
-| ☐ | `G1` SVG card renderer | L |
+| ☑ | `E3` Command palette (⌘K) | L |
+| ☑ | `E5` Random matchup button | S |
+| ☑ | `E6` On this day | M |
+| ☑ | `E8` Table deep links | M |
+| ☑ | `G1` SVG card renderer | L |
 | ☐ | `G2` Card templates | M |
 | ☐ | `G3` Clipboard copy | M |
 | ☐ | `G4` Native share sheet | S |
