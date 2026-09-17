@@ -25,10 +25,19 @@ const LuckChart = lazy(() =>
   }))
 );
 
+// D4, same deal again — seventeen histograms are the last thing a visit to the
+// standings should pay for.
+const ScoreDistribution = lazy(() =>
+  import(
+    "@/presentation/components/Chart/ScoreDistribution/ScoreDistribution"
+  ).then((m) => ({ default: m.ScoreDistribution }))
+);
+
 type HomeTabType =
   | "standings"
   | "careers"
   | "luck"
+  | "spread"
   | "breakdown"
   | "top-scores"
   | "schedule-comparison"
@@ -69,6 +78,7 @@ const Home = () => {
               "standings",
               "careers",
               "luck",
+              "spread",
               "breakdown",
               "top-scores",
               "schedule-comparison",
@@ -110,6 +120,8 @@ const Home = () => {
                   ? "Careers"
                   : tabName === "luck"
                   ? "Luck"
+                  : tabName === "spread"
+                  ? "Spread"
                   : tabName === "breakdown"
                   ? "Breakdown"
                   : tabName === "top-scores"
@@ -149,6 +161,19 @@ const Home = () => {
             </p>
             <Suspense fallback={<div className="h-64" />}>
               <LuckChart />
+            </Suspense>
+          </div>
+        )}
+        {activeTab === "spread" && (
+          <div className="container mx-auto">
+            <h2 className="mb-1 text-lg font-semibold">
+              Metronomes and gamblers
+            </h2>
+            <p className="mb-4 text-sm text-ink-muted">
+              Every week anyone has scored, one histogram per manager.
+            </p>
+            <Suspense fallback={<div className="h-64" />}>
+              <ScoreDistribution />
             </Suspense>
           </div>
         )}
