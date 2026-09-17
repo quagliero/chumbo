@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { lazy, Suspense, useState, useMemo } from "react";
 import {
   FilterBuilder,
   StatsResults,
@@ -10,6 +10,16 @@ import {
 } from "@/utils/statsExplorer";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { Card } from "@/presentation/components/Card";
+
+// D6 lives in the `charts` chunk (see vite.config.ts), lazy like the charts on
+// the home page: the Explorer's own job is the filter builder below, and a
+// reader who came here to ask about RB scoring should not download the chart
+// code before the page paints.
+const DraftScatter = lazy(() =>
+  import("@/presentation/components/Chart/DraftScatter/DraftScatter").then(
+    (m) => ({ default: m.DraftScatter })
+  )
+);
 
 const Stats: React.FC = () => {
   // A2a: the explorer walks every season's matchups, a lazy chunk now.
@@ -70,6 +80,21 @@ const Stats: React.FC = () => {
           Explore correlations between positional scoring and win rates. Add
           filters to analyze specific scenarios.
         </p>
+      </Card>
+
+      {/* D6: every pick the league has ever made, against what it returned. */}
+      <Card>
+        <h2 className="text-xl font-bold text-gray-900 mb-1">
+          Draft value — every pick, every draft
+        </h2>
+        <p className="mb-4 text-sm text-gray-600">
+          Where the steals and the busts actually were, measured against what
+          this league&rsquo;s own picks return rather than somebody else&rsquo;s
+          ADP.
+        </p>
+        <Suspense fallback={<div className="h-80" />}>
+          <DraftScatter />
+        </Suspense>
       </Card>
 
       {/* Year Selection */}
