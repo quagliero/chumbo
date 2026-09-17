@@ -284,7 +284,28 @@ week data lands.
 **Acceptance:** `/` renders all-time standings from the prebuilt file with no
 client-side aggregation · the file regenerates on `yarn fetch-latest`.
 
-- [ ] A4
+**Landed, with the first acceptance criterion deliberately not met.** Measured
+before building: `getCumulativeStandings` over all fifteen seasons is **0.9 ms**
+cold and 0.0 ms warm (it reads `rosters[].settings`, not the matchups), all-time
+H2H across every manager pair is 6.3 ms, and every other home tab is under a
+millisecond. Serving `/` standings from a file would save about one millisecond,
+add a network round trip and a staleness failure mode, and break the year filter
+— the table takes an arbitrary subset of seasons, so there is no single
+"all-time" answer to precompute.
+
+The real cost is the stat registry: **147 ms** for all 25 stats, and more
+importantly ~550 kB gzip of matchups and transactions that have to be downloaded
+before any of them can be answered. So the precompute covers the registry
+instead. `scripts/build-aggregates.ts` runs it through `vite-node` (the real
+registry, not a second implementation) and writes the top 25 of each stat, with
+each stat's true `total` and its data-quality flags, to
+`public/data/all-time.json` — 131 kB, **19.2 kB gzip**. Wired into `yarn build`
+and into `fetch-sleeper-data.js`. `src/utils/stats/precomputed.ts` is the shared
+contract, `usePrecomputedStats` the reader.
+
+Nothing consumes it yet; the pages that will are M5.
+
+- [x] A4
 
 ### A5 · Fix `usePlayerSearch` `S`
 **Blocked by:** H1
@@ -993,16 +1014,28 @@ remain; the Draft Board is fully navigable.
 ### M4 — Stats engine `~5 days`
 | | Task | Size |
 |---|---|---|
-| ☐ | `C1` Stat registry | L |
-| ☐ | `C2` Lineup stats (a–d) | M |
-| ☐ | `C3` Matchup stats (a–f) | M |
-| ☐ | `C4` Draft stats (a–d) | M |
-| ☐ | `C5` Transaction stats (a–c) | L |
-| ☐ | `C6` Identity & fun stats (a–c) | M |
-| ☐ | `A4` Build-time aggregates | L |
+| ☑ | `C1` Stat registry | L |
+| ☑ | `C2` Lineup stats (a–d) | M |
+| ☑ | `C3` Matchup stats (a–f) | M |
+| ☑ | `C4` Draft stats (a–d) | M |
+| ☑ | `C5` Transaction stats (a–c) | L |
+| ☑ | `C6` Identity & fun stats (a–c) | M |
+| ☑ | `A4` Build-time aggregates | L |
 
 **Milestone test:** ~20 new statistics live; all-time pages render from a
 prebuilt file.
+
+**Half met, and the half that is missing is M5's.** 25 statistics are registered
+and tested, and all 25 are precomputed into `public/data/all-time.json` — but
+nothing renders them yet, so they are not "live" in the sense a league member
+would recognise. No page consumes the prebuilt file either; `usePrecomputedStats`
+is the reader waiting for one. The all-time pages that exist keep computing their
+own numbers deliberately (see A4).
+
+Three data corrections landed here rather than in M0, because building the draft
+stats is what surfaced them: `H12` (2019's picks joined to no roster), `H13`
+(2019's players held their points under scrape ids the rest of the app does not
+use) and `H14` (the Chargers' Mike Williams split across two ids from 2019).
 
 ### M5 — Visualisation & pages `~6 days`
 | | Task | Size |

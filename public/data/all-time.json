@@ -1,0 +1,4197 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-17T13:25:41.930Z",
+  "years": [
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "limit": 25,
+  "stats": [
+    {
+      "id": "biggest-margin",
+      "label": "Biggest blowout",
+      "description": "The largest winning margin in league history.",
+      "scope": "league",
+      "format": "points",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 1295,
+      "entries": [
+        {
+          "value": 125.98,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/17/2",
+          "detail": "2022 Week 17 vs sol",
+          "year": 2022,
+          "week": 17
+        },
+        {
+          "value": 93.28,
+          "subject": "ant",
+          "href": "/seasons/2022/matchups/17/4",
+          "detail": "2022 Week 17 vs jay",
+          "year": 2022,
+          "week": 17
+        },
+        {
+          "value": 89.12,
+          "subject": "jay",
+          "href": "/seasons/2024/matchups/7/6",
+          "detail": "2024 Week 7 vs sol",
+          "year": 2024,
+          "week": 7
+        },
+        {
+          "value": 88.04,
+          "subject": "thd",
+          "href": "/seasons/2018/matchups/4/5",
+          "detail": "2018 Week 4 vs htc",
+          "year": 2018,
+          "week": 4
+        },
+        {
+          "value": 84.14,
+          "subject": "htc",
+          "href": "/seasons/2014/matchups/9/2",
+          "detail": "2014 Week 9 vs sol",
+          "year": 2014,
+          "week": 9
+        },
+        {
+          "value": 83.48,
+          "subject": "chris",
+          "href": "/seasons/2016/matchups/11/4",
+          "detail": "2016 Week 11 vs kitch",
+          "year": 2016,
+          "week": 11
+        },
+        {
+          "value": 82.26,
+          "subject": "dix",
+          "href": "/seasons/2018/matchups/11/6",
+          "detail": "2018 Week 11 vs htc",
+          "year": 2018,
+          "week": 11
+        },
+        {
+          "value": 82.04,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/2/6",
+          "detail": "2020 Week 2 vs sol",
+          "year": 2020,
+          "week": 2
+        },
+        {
+          "value": 81.54,
+          "subject": "ant",
+          "href": "/seasons/2022/matchups/7/2",
+          "detail": "2022 Week 7 vs thd",
+          "year": 2022,
+          "week": 7
+        },
+        {
+          "value": 80.96,
+          "subject": "kitch",
+          "href": "/seasons/2015/matchups/16/2",
+          "detail": "2015 Week 16 vs sol",
+          "year": 2015,
+          "week": 16
+        },
+        {
+          "value": 77.68,
+          "subject": "htc",
+          "href": "/seasons/2017/matchups/12/4",
+          "detail": "2017 Week 12 vs kitch",
+          "year": 2017,
+          "week": 12
+        },
+        {
+          "value": 76.54,
+          "subject": "dix",
+          "href": "/seasons/2014/matchups/6/3",
+          "detail": "2014 Week 6 vs htc",
+          "year": 2014,
+          "week": 6
+        },
+        {
+          "value": 76.46,
+          "subject": "jay",
+          "href": "/seasons/2024/matchups/14/4",
+          "detail": "2024 Week 14 vs fin",
+          "year": 2024,
+          "week": 14
+        },
+        {
+          "value": 76.04,
+          "subject": "ant",
+          "href": "/seasons/2022/matchups/12/4",
+          "detail": "2022 Week 12 vs brock",
+          "year": 2022,
+          "week": 12
+        },
+        {
+          "value": 75.1,
+          "subject": "thd",
+          "href": "/seasons/2023/matchups/4/2",
+          "detail": "2023 Week 4 vs jay",
+          "year": 2023,
+          "week": 4
+        },
+        {
+          "value": 74.92,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/16/1",
+          "detail": "2022 Week 16 vs sol",
+          "year": 2022,
+          "week": 16
+        },
+        {
+          "value": 74.66,
+          "subject": "sol",
+          "href": "/seasons/2019/matchups/3/2",
+          "detail": "2019 Week 3 vs ryan",
+          "year": 2019,
+          "week": 3
+        },
+        {
+          "value": 73.74,
+          "subject": "jay",
+          "href": "/seasons/2014/matchups/11/2",
+          "detail": "2014 Week 11 vs sol",
+          "year": 2014,
+          "week": 11
+        },
+        {
+          "value": 73.54,
+          "subject": "jay",
+          "href": "/seasons/2015/matchups/5/3",
+          "detail": "2015 Week 5 vs htc",
+          "year": 2015,
+          "week": 5
+        },
+        {
+          "value": 73.32,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/8/5",
+          "detail": "2023 Week 8 vs fin",
+          "year": 2023,
+          "week": 8
+        },
+        {
+          "value": 73.26,
+          "subject": "thd",
+          "href": "/seasons/2015/matchups/8/3",
+          "detail": "2015 Week 8 vs jay",
+          "year": 2015,
+          "week": 8
+        },
+        {
+          "value": 73.24,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/10/1",
+          "detail": "2014 Week 10 vs thd",
+          "year": 2014,
+          "week": 10
+        },
+        {
+          "value": 71.98,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/13/2",
+          "detail": "2025 Week 13 vs rich",
+          "year": 2025,
+          "week": 13
+        },
+        {
+          "value": 71.56,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/10/2",
+          "detail": "2022 Week 10 vs thd",
+          "year": 2022,
+          "week": 10
+        },
+        {
+          "value": 71.3,
+          "subject": "rich",
+          "href": "/seasons/2022/matchups/15/4",
+          "detail": "2022 Week 15 vs fin",
+          "year": 2022,
+          "week": 15
+        }
+      ]
+    },
+    {
+      "id": "closest-margin",
+      "label": "Closest game",
+      "description": "The narrowest winning margin. Ties are excluded — they are their own thing.",
+      "scope": "league",
+      "format": "points",
+      "direction": "low",
+      "excluded": [],
+      "caveat": [],
+      "total": 1295,
+      "entries": [
+        {
+          "value": 0.04,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/13/4",
+          "detail": "2013 Week 13 vs brock",
+          "year": 2013,
+          "week": 13
+        },
+        {
+          "value": 0.08,
+          "subject": "dix",
+          "href": "/seasons/2018/matchups/6/3",
+          "detail": "2018 Week 6 vs sol",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 0.08,
+          "subject": "fin",
+          "href": "/seasons/2018/matchups/6/4",
+          "detail": "2018 Week 6 vs chris",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 0.1,
+          "subject": "jay",
+          "href": "/seasons/2015/matchups/3/6",
+          "detail": "2015 Week 3 vs fin",
+          "year": 2015,
+          "week": 3
+        },
+        {
+          "value": 0.12,
+          "subject": "thd",
+          "href": "/seasons/2019/matchups/13/2",
+          "detail": "2019 Week 13 vs nick",
+          "year": 2019,
+          "week": 13
+        },
+        {
+          "value": 0.14,
+          "subject": "kitch",
+          "href": "/seasons/2024/matchups/12/6",
+          "detail": "2024 Week 12 vs rich",
+          "year": 2024,
+          "week": 12
+        },
+        {
+          "value": 0.14,
+          "subject": "ryan",
+          "href": "/seasons/2025/matchups/4/5",
+          "detail": "2025 Week 4 vs fin",
+          "year": 2025,
+          "week": 4
+        },
+        {
+          "value": 0.2,
+          "subject": "hadkiss",
+          "href": "/seasons/2020/matchups/4/3",
+          "detail": "2020 Week 4 vs kitch",
+          "year": 2020,
+          "week": 4
+        },
+        {
+          "value": 0.24,
+          "subject": "hadkiss",
+          "href": "/seasons/2021/matchups/3/5",
+          "detail": "2021 Week 3 vs fin",
+          "year": 2021,
+          "week": 3
+        },
+        {
+          "value": 0.26,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/16/1",
+          "detail": "2021 Week 16 vs ant",
+          "year": 2021,
+          "week": 16
+        },
+        {
+          "value": 0.34,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/5/2",
+          "detail": "2015 Week 5 vs ant",
+          "year": 2015,
+          "week": 5
+        },
+        {
+          "value": 0.5,
+          "subject": "jay",
+          "href": "/seasons/2020/matchups/6/2",
+          "detail": "2020 Week 6 vs nick",
+          "year": 2020,
+          "week": 6
+        },
+        {
+          "value": 0.54,
+          "subject": "hadkiss",
+          "href": "/seasons/2018/matchups/16/2",
+          "detail": "2018 Week 16 vs fin",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 0.58,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/4/6",
+          "detail": "2024 Week 4 vs rich",
+          "year": 2024,
+          "week": 4
+        },
+        {
+          "value": 0.62,
+          "subject": "thd",
+          "href": "/seasons/2022/matchups/2/2",
+          "detail": "2022 Week 2 vs kitch",
+          "year": 2022,
+          "week": 2
+        },
+        {
+          "value": 0.68,
+          "subject": "jay",
+          "href": "/seasons/2024/matchups/8/6",
+          "detail": "2024 Week 8 vs rich",
+          "year": 2024,
+          "week": 8
+        },
+        {
+          "value": 0.72,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/17/1",
+          "detail": "2023 Week 17 vs rich",
+          "year": 2023,
+          "week": 17
+        },
+        {
+          "value": 0.8,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/15/4",
+          "detail": "2018 Week 15 vs rich",
+          "year": 2018,
+          "week": 15
+        },
+        {
+          "value": 0.86,
+          "subject": "thd",
+          "href": "/seasons/2017/matchups/2/5",
+          "detail": "2017 Week 2 vs chris",
+          "year": 2017,
+          "week": 2
+        },
+        {
+          "value": 0.9,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/2/4",
+          "detail": "2015 Week 2 vs rich",
+          "year": 2015,
+          "week": 2
+        },
+        {
+          "value": 0.92,
+          "subject": "hadkiss",
+          "href": "/seasons/2014/matchups/5/4",
+          "detail": "2014 Week 5 vs htc",
+          "year": 2014,
+          "week": 5
+        },
+        {
+          "value": 0.92,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/5/5",
+          "detail": "2020 Week 5 vs fin",
+          "year": 2020,
+          "week": 5
+        },
+        {
+          "value": 0.92,
+          "subject": "sol",
+          "href": "/seasons/2025/matchups/2/4",
+          "detail": "2025 Week 2 vs ant",
+          "year": 2025,
+          "week": 2
+        },
+        {
+          "value": 0.96,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/9/3",
+          "detail": "2014 Week 9 vs chris",
+          "year": 2014,
+          "week": 9
+        },
+        {
+          "value": 0.98,
+          "subject": "hadkiss",
+          "href": "/seasons/2016/matchups/8/3",
+          "detail": "2016 Week 8 vs ant",
+          "year": 2016,
+          "week": 8
+        }
+      ]
+    },
+    {
+      "id": "highest-scoring-loss",
+      "label": "Unluckiest loss",
+      "description": "The most points anyone has ever scored and still lost. Any other week it would have won.",
+      "scope": "league",
+      "format": "points",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 1295,
+      "entries": [
+        {
+          "value": 138.42,
+          "subject": "ryan",
+          "href": "/seasons/2021/matchups/16/6",
+          "detail": "2021 Week 16 vs thd",
+          "year": 2021,
+          "week": 16
+        },
+        {
+          "value": 127.6,
+          "subject": "ant",
+          "href": "/seasons/2013/matchups/15/4",
+          "detail": "2013 Week 15 vs jay",
+          "year": 2013,
+          "week": 15
+        },
+        {
+          "value": 127.44,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/11/1",
+          "detail": "2024 Week 11 vs dix",
+          "year": 2024,
+          "week": 11
+        },
+        {
+          "value": 126,
+          "subject": "hadkiss",
+          "href": "/seasons/2023/matchups/8/2",
+          "detail": "2023 Week 8 vs thd",
+          "year": 2023,
+          "week": 8
+        },
+        {
+          "value": 125.44,
+          "subject": "jay",
+          "href": "/seasons/2012/matchups/1/1",
+          "detail": "2012 Week 1 vs thd",
+          "year": 2012,
+          "week": 1
+        },
+        {
+          "value": 124.7,
+          "subject": "jay",
+          "href": "/seasons/2020/matchups/2/3",
+          "detail": "2020 Week 2 vs hadkiss",
+          "year": 2020,
+          "week": 2
+        },
+        {
+          "value": 123.66,
+          "subject": "rich",
+          "href": "/seasons/2018/matchups/4/4",
+          "detail": "2018 Week 4 vs dix",
+          "year": 2018,
+          "week": 4
+        },
+        {
+          "value": 120.9,
+          "subject": "htc",
+          "href": "/seasons/2015/matchups/16/4",
+          "detail": "2015 Week 16 vs ant",
+          "year": 2015,
+          "week": 16
+        },
+        {
+          "value": 120.62,
+          "subject": "sol",
+          "href": "/seasons/2021/matchups/13/2",
+          "detail": "2021 Week 13 vs jay",
+          "year": 2021,
+          "week": 13
+        },
+        {
+          "value": 118.6,
+          "subject": "dix",
+          "href": "/seasons/2018/matchups/6/3",
+          "detail": "2018 Week 6 vs sol",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 118.16,
+          "subject": "ant",
+          "href": "/seasons/2026/matchups/1/1",
+          "detail": "2026 Week 1 vs rich",
+          "year": 2026,
+          "week": 1
+        },
+        {
+          "value": 117.86,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/10/1",
+          "detail": "2023 Week 10 vs rich",
+          "year": 2023,
+          "week": 10
+        },
+        {
+          "value": 117.86,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/13/5",
+          "detail": "2023 Week 13 vs sol",
+          "year": 2023,
+          "week": 13
+        },
+        {
+          "value": 117.12,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/15/3",
+          "detail": "2013 Week 15 vs hadkiss",
+          "year": 2013,
+          "week": 15
+        },
+        {
+          "value": 116.86,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/13/4",
+          "detail": "2018 Week 13 vs jay",
+          "year": 2018,
+          "week": 13
+        },
+        {
+          "value": 116.68,
+          "subject": "jay",
+          "href": "/seasons/2015/matchups/3/6",
+          "detail": "2015 Week 3 vs fin",
+          "year": 2015,
+          "week": 3
+        },
+        {
+          "value": 116.66,
+          "subject": "nick",
+          "href": "/seasons/2019/matchups/8/6",
+          "detail": "2019 Week 8 vs fin",
+          "year": 2019,
+          "week": 8
+        },
+        {
+          "value": 116.6,
+          "subject": "jay",
+          "href": "/seasons/2024/matchups/8/6",
+          "detail": "2024 Week 8 vs rich",
+          "year": 2024,
+          "week": 8
+        },
+        {
+          "value": 116.58,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/1/5",
+          "detail": "2015 Week 1 vs thd",
+          "year": 2015,
+          "week": 1
+        },
+        {
+          "value": 116.56,
+          "subject": "fin",
+          "href": "/seasons/2014/matchups/12/3",
+          "detail": "2014 Week 12 vs sol",
+          "year": 2014,
+          "week": 12
+        },
+        {
+          "value": 116.28,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/7/1",
+          "detail": "2019 Week 7 vs ant",
+          "year": 2019,
+          "week": 7
+        },
+        {
+          "value": 116.1,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/13/4",
+          "detail": "2013 Week 13 vs brock",
+          "year": 2013,
+          "week": 13
+        },
+        {
+          "value": 116.06,
+          "subject": "brock",
+          "href": "/seasons/2025/matchups/12/5",
+          "detail": "2025 Week 12 vs thd",
+          "year": 2025,
+          "week": 12
+        },
+        {
+          "value": 115.82,
+          "subject": "htc",
+          "href": "/seasons/2014/matchups/8/1",
+          "detail": "2014 Week 8 vs thd",
+          "year": 2014,
+          "week": 8
+        },
+        {
+          "value": 115.36,
+          "subject": "thd",
+          "href": "/seasons/2012/matchups/16/3",
+          "detail": "2012 Week 16 vs dix",
+          "year": 2012,
+          "week": 16
+        }
+      ]
+    },
+    {
+      "id": "lowest-scoring-win",
+      "label": "Luckiest win",
+      "description": "The fewest points anyone has ever scored and still won. The opposite of the unluckiest loss.",
+      "scope": "league",
+      "format": "points",
+      "direction": "low",
+      "excluded": [],
+      "caveat": [],
+      "total": 1295,
+      "entries": [
+        {
+          "value": 50.92,
+          "subject": "hadkiss",
+          "href": "/seasons/2012/matchups/7/5",
+          "detail": "2012 Week 7 vs fin",
+          "year": 2012,
+          "week": 7
+        },
+        {
+          "value": 55.42,
+          "subject": "fin",
+          "href": "/seasons/2018/matchups/6/4",
+          "detail": "2018 Week 6 vs chris",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 60.18,
+          "subject": "brock",
+          "href": "/seasons/2015/matchups/11/5",
+          "detail": "2015 Week 11 vs sol",
+          "year": 2015,
+          "week": 11
+        },
+        {
+          "value": 61.7,
+          "subject": "fin",
+          "href": "/seasons/2022/matchups/16/6",
+          "detail": "2022 Week 16 vs thd",
+          "year": 2022,
+          "week": 16
+        },
+        {
+          "value": 65.02,
+          "subject": "kitch",
+          "href": "/seasons/2020/matchups/7/6",
+          "detail": "2020 Week 7 vs sol",
+          "year": 2020,
+          "week": 7
+        },
+        {
+          "value": 67.04,
+          "subject": "htc",
+          "href": "/seasons/2018/matchups/14/1",
+          "detail": "2018 Week 14 vs chris",
+          "year": 2018,
+          "week": 14
+        },
+        {
+          "value": 67.72,
+          "subject": "kitch",
+          "href": "/seasons/2016/matchups/14/1",
+          "detail": "2016 Week 14 vs rich",
+          "year": 2016,
+          "week": 14
+        },
+        {
+          "value": 68.16,
+          "subject": "ant",
+          "href": "/seasons/2023/matchups/2/4",
+          "detail": "2023 Week 2 vs jay",
+          "year": 2023,
+          "week": 2
+        },
+        {
+          "value": 69.06,
+          "subject": "htc",
+          "href": "/seasons/2019/matchups/16/3",
+          "detail": "2019 Week 16 vs hadkiss",
+          "year": 2019,
+          "week": 16
+        },
+        {
+          "value": 69.1,
+          "subject": "chris",
+          "href": "/seasons/2018/matchups/4/6",
+          "detail": "2018 Week 4 vs nick",
+          "year": 2018,
+          "week": 4
+        },
+        {
+          "value": 69.64,
+          "subject": "rich",
+          "href": "/seasons/2015/matchups/5/4",
+          "detail": "2015 Week 5 vs brock",
+          "year": 2015,
+          "week": 5
+        },
+        {
+          "value": 69.68,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/2/4",
+          "detail": "2014 Week 2 vs ant",
+          "year": 2014,
+          "week": 2
+        },
+        {
+          "value": 69.72,
+          "subject": "kitch",
+          "href": "/seasons/2023/matchups/15/5",
+          "detail": "2023 Week 15 vs htc",
+          "year": 2023,
+          "week": 15
+        },
+        {
+          "value": 69.92,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/4/2",
+          "detail": "2024 Week 4 vs jay",
+          "year": 2024,
+          "week": 4
+        },
+        {
+          "value": 70.14,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/2/4",
+          "detail": "2015 Week 2 vs rich",
+          "year": 2015,
+          "week": 2
+        },
+        {
+          "value": 70.24,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/14/1",
+          "detail": "2020 Week 14 vs rich",
+          "year": 2020,
+          "week": 14
+        },
+        {
+          "value": 70.52,
+          "subject": "fin",
+          "href": "/seasons/2021/matchups/15/5",
+          "detail": "2021 Week 15 vs thd",
+          "year": 2021,
+          "week": 15
+        },
+        {
+          "value": 70.86,
+          "subject": "jay",
+          "href": "/seasons/2017/matchups/16/2",
+          "detail": "2017 Week 16 vs fin",
+          "year": 2017,
+          "week": 16
+        },
+        {
+          "value": 71.54,
+          "subject": "rich",
+          "href": "/seasons/2013/matchups/6/3",
+          "detail": "2013 Week 6 vs fin",
+          "year": 2013,
+          "week": 6
+        },
+        {
+          "value": 71.64,
+          "subject": "hadkiss",
+          "href": "/seasons/2018/matchups/16/2",
+          "detail": "2018 Week 16 vs fin",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 71.68,
+          "subject": "jay",
+          "href": "/seasons/2022/matchups/6/5",
+          "detail": "2022 Week 6 vs fin",
+          "year": 2022,
+          "week": 6
+        },
+        {
+          "value": 71.72,
+          "subject": "ryan",
+          "href": "/seasons/2022/matchups/7/6",
+          "detail": "2022 Week 7 vs fin",
+          "year": 2022,
+          "week": 7
+        },
+        {
+          "value": 72,
+          "subject": "fin",
+          "href": "/seasons/2021/matchups/7/6",
+          "detail": "2021 Week 7 vs dix",
+          "year": 2021,
+          "week": 7
+        },
+        {
+          "value": 72.74,
+          "subject": "brock",
+          "href": "/seasons/2013/matchups/11/3",
+          "detail": "2013 Week 11 vs fin",
+          "year": 2013,
+          "week": 11
+        },
+        {
+          "value": 72.96,
+          "subject": "sol",
+          "href": "/seasons/2023/matchups/7/6",
+          "detail": "2023 Week 7 vs jay",
+          "year": 2023,
+          "week": 7
+        }
+      ]
+    },
+    {
+      "id": "beat-almost-everyone",
+      "label": "Beat almost everyone",
+      "description": "Losses that would have been wins against nearly the whole league. The number is how many of the other teams playing that week the losing score would have beaten — a score that tops ten of eleven and still loses is the worst luck the schedule can hand out.",
+      "scope": "league",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 1295,
+      "entries": [
+        {
+          "value": 10,
+          "subject": "ryan",
+          "href": "/seasons/2021/matchups/16/6",
+          "detail": "138.42 points in 2021 Week 16 — better than 10 of the other 11, but lost to thd by 8.14",
+          "year": 2021,
+          "week": 16
+        },
+        {
+          "value": 10,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/11/1",
+          "detail": "127.44 points in 2024 Week 11 — better than 10 of the other 11, but lost to dix by 1.04",
+          "year": 2024,
+          "week": 11
+        },
+        {
+          "value": 10,
+          "subject": "hadkiss",
+          "href": "/seasons/2023/matchups/8/2",
+          "detail": "126 points in 2023 Week 8 — better than 10 of the other 11, but lost to thd by 4.62",
+          "year": 2023,
+          "week": 8
+        },
+        {
+          "value": 10,
+          "subject": "sol",
+          "href": "/seasons/2021/matchups/13/2",
+          "detail": "120.62 points in 2021 Week 13 — better than 10 of the other 11, but lost to jay by 24.2",
+          "year": 2021,
+          "week": 13
+        },
+        {
+          "value": 10,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/13/4",
+          "detail": "116.86 points in 2018 Week 13 — better than 10 of the other 11, but lost to jay by 21",
+          "year": 2018,
+          "week": 13
+        },
+        {
+          "value": 10,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/7/1",
+          "detail": "116.28 points in 2019 Week 7 — better than 10 of the other 11, but lost to ant by 27.24",
+          "year": 2019,
+          "week": 7
+        },
+        {
+          "value": 10,
+          "subject": "brock",
+          "href": "/seasons/2025/matchups/12/5",
+          "detail": "116.06 points in 2025 Week 12 — better than 10 of the other 11, but lost to thd by 24.86",
+          "year": 2025,
+          "week": 12
+        },
+        {
+          "value": 10,
+          "subject": "htc",
+          "href": "/seasons/2014/matchups/8/1",
+          "detail": "115.82 points in 2014 Week 8 — better than 10 of the other 11, but lost to thd by 7.16",
+          "year": 2014,
+          "week": 8
+        },
+        {
+          "value": 10,
+          "subject": "ryan",
+          "href": "/seasons/2025/matchups/5/6",
+          "detail": "115.08 points in 2025 Week 5 — better than 10 of the other 11, but lost to ant by 8.26",
+          "year": 2025,
+          "week": 5
+        },
+        {
+          "value": 10,
+          "subject": "thd",
+          "href": "/seasons/2021/matchups/10/5",
+          "detail": "114.12 points in 2021 Week 10 — better than 10 of the other 11, but lost to nick by 1.42",
+          "year": 2021,
+          "week": 10
+        },
+        {
+          "value": 10,
+          "subject": "dix",
+          "href": "/seasons/2020/matchups/6/6",
+          "detail": "113 points in 2020 Week 6 — better than 10 of the other 11, but lost to thd by 28",
+          "year": 2020,
+          "week": 6
+        },
+        {
+          "value": 10,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/5/1",
+          "detail": "111.42 points in 2018 Week 5 — better than 10 of the other 11, but lost to sol by 19.34",
+          "year": 2018,
+          "week": 5
+        },
+        {
+          "value": 10,
+          "subject": "thd",
+          "href": "/seasons/2014/matchups/4/1",
+          "detail": "107.96 points in 2014 Week 4 — better than 10 of the other 11, but lost to dix by 18.76",
+          "year": 2014,
+          "week": 4
+        },
+        {
+          "value": 10,
+          "subject": "fin",
+          "href": "/seasons/2025/matchups/1/4",
+          "detail": "101.62 points in 2025 Week 1 — better than 10 of the other 11, but lost to ant by 12.96",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 9,
+          "subject": "jay",
+          "href": "/seasons/2020/matchups/2/3",
+          "detail": "124.7 points in 2020 Week 2 — better than 9 of the other 11, but lost to hadkiss by 6.92",
+          "year": 2020,
+          "week": 2
+        },
+        {
+          "value": 9,
+          "subject": "rich",
+          "href": "/seasons/2018/matchups/4/4",
+          "detail": "123.66 points in 2018 Week 4 — better than 9 of the other 11, but lost to dix by 6.7",
+          "year": 2018,
+          "week": 4
+        },
+        {
+          "value": 9,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/10/1",
+          "detail": "117.86 points in 2023 Week 10 — better than 9 of the other 11, but lost to rich by 4.1",
+          "year": 2023,
+          "week": 10
+        },
+        {
+          "value": 9,
+          "subject": "nick",
+          "href": "/seasons/2019/matchups/8/6",
+          "detail": "116.66 points in 2019 Week 8 — better than 9 of the other 11, but lost to fin by 11.92",
+          "year": 2019,
+          "week": 8
+        },
+        {
+          "value": 9,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/1/5",
+          "detail": "116.58 points in 2015 Week 1 — better than 9 of the other 11, but lost to thd by 1.14",
+          "year": 2015,
+          "week": 1
+        },
+        {
+          "value": 9,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/6/5",
+          "detail": "114.84 points in 2014 Week 6 — better than 9 of the other 11, but lost to hadkiss by 23.4",
+          "year": 2014,
+          "week": 6
+        },
+        {
+          "value": 9,
+          "subject": "ant",
+          "href": "/seasons/2019/matchups/12/2",
+          "detail": "113.88 points in 2019 Week 12 — better than 9 of the other 11, but lost to dix by 3.5",
+          "year": 2019,
+          "week": 12
+        },
+        {
+          "value": 9,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/16/6",
+          "detail": "112.88 points in 2018 Week 16 — better than 9 of the other 11, but lost to thd by 10.56",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 9,
+          "subject": "dix",
+          "href": "/seasons/2023/matchups/12/2",
+          "detail": "111.38 points in 2023 Week 12 — better than 9 of the other 11, but lost to htc by 14.78",
+          "year": 2023,
+          "week": 12
+        },
+        {
+          "value": 9,
+          "subject": "phil",
+          "href": "/seasons/2016/matchups/4/3",
+          "detail": "110.22 points in 2016 Week 4 — better than 9 of the other 11, but lost to dix by 10.82",
+          "year": 2016,
+          "week": 4
+        },
+        {
+          "value": 9,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/6/2",
+          "detail": "109.4 points in 2025 Week 6 — better than 9 of the other 11, but lost to ant by 23.36",
+          "year": 2025,
+          "week": 6
+        }
+      ]
+    },
+    {
+      "id": "longest-win-streak",
+      "label": "Longest win streak",
+      "description": "The longest run of wins any manager has put together, counted straight through the playoffs and on into the next season. A tie ends a streak.",
+      "scope": "manager",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 17,
+      "entries": [
+        {
+          "value": 12,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2018 Week 4 – 2018 Week 16",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 11,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "2022 Week 7 – 2023 Week 1",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 9,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2020 Week 6 – 2020 Week 15",
+          "year": 2020,
+          "week": 15
+        },
+        {
+          "value": 9,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "2017 Week 3 – 2017 Week 11",
+          "year": 2017,
+          "week": 11
+        },
+        {
+          "value": 9,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "2015 Week 3 – 2015 Week 11",
+          "year": 2015,
+          "week": 11
+        },
+        {
+          "value": 9,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "2022 Week 14 – 2023 Week 6",
+          "year": 2023,
+          "week": 6
+        },
+        {
+          "value": 7,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2023 Week 6 – 2023 Week 12",
+          "year": 2023,
+          "week": 12
+        },
+        {
+          "value": 7,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2020 Week 14 – 2021 Week 4",
+          "year": 2021,
+          "week": 4
+        },
+        {
+          "value": 7,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "2020 Week 10 – 2021 Week 1",
+          "year": 2021,
+          "week": 1
+        },
+        {
+          "value": 6,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2017 Week 4 – 2017 Week 9",
+          "year": 2017,
+          "week": 9
+        },
+        {
+          "value": 6,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "2019 Week 10 – 2019 Week 16",
+          "year": 2019,
+          "week": 16
+        },
+        {
+          "value": 5,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "2014 Week 9 – 2014 Week 13",
+          "year": 2014,
+          "week": 13
+        },
+        {
+          "value": 5,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "2013 Week 9 – 2013 Week 13",
+          "year": 2013,
+          "week": 13
+        },
+        {
+          "value": 5,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "2015 Week 9 – 2015 Week 13",
+          "year": 2015,
+          "week": 13
+        },
+        {
+          "value": 3,
+          "subject": "jimmie",
+          "href": "/managers/jimmie",
+          "detail": "2012 Week 5 – 2012 Week 7",
+          "year": 2012,
+          "week": 7
+        },
+        {
+          "value": 2,
+          "subject": "karsten",
+          "href": "/managers/karsten",
+          "detail": "2012 Week 13 – 2012 Week 14",
+          "year": 2012,
+          "week": 14
+        },
+        {
+          "value": 2,
+          "subject": "phil",
+          "href": "/managers/phil",
+          "detail": "2016 Week 7 – 2016 Week 8",
+          "year": 2016,
+          "week": 8
+        }
+      ]
+    },
+    {
+      "id": "longest-loss-streak",
+      "label": "Longest losing streak",
+      "description": "The longest run of losses any manager has endured, counted straight through the playoffs and on into the next season. A tie ends a streak.",
+      "scope": "manager",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 17,
+      "entries": [
+        {
+          "value": 10,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2022 Week 1 – 2022 Week 10",
+          "year": 2022,
+          "week": 10
+        },
+        {
+          "value": 9,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2015 Week 5 – 2015 Week 13",
+          "year": 2015,
+          "week": 13
+        },
+        {
+          "value": 8,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2017 Week 4 – 2017 Week 11",
+          "year": 2017,
+          "week": 11
+        },
+        {
+          "value": 8,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2018 Week 10 – 2019 Week 2",
+          "year": 2019,
+          "week": 2
+        },
+        {
+          "value": 8,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "2012 Week 4 – 2012 Week 11",
+          "year": 2012,
+          "week": 11
+        },
+        {
+          "value": 7,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "2018 Week 8 – 2018 Week 15",
+          "year": 2018,
+          "week": 15
+        },
+        {
+          "value": 7,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "2015 Week 4 – 2015 Week 10",
+          "year": 2015,
+          "week": 10
+        },
+        {
+          "value": 6,
+          "subject": "karsten",
+          "href": "/managers/karsten",
+          "detail": "2012 Week 4 – 2012 Week 9",
+          "year": 2012,
+          "week": 9
+        },
+        {
+          "value": 6,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "2014 Week 7 – 2014 Week 12",
+          "year": 2014,
+          "week": 12
+        },
+        {
+          "value": 6,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "2021 Week 2 – 2021 Week 7",
+          "year": 2021,
+          "week": 7
+        },
+        {
+          "value": 5,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2014 Week 6 – 2014 Week 10",
+          "year": 2014,
+          "week": 10
+        },
+        {
+          "value": 5,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "2016 Week 11 – 2016 Week 16",
+          "year": 2016,
+          "week": 16
+        },
+        {
+          "value": 5,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "2023 Week 7 – 2023 Week 11",
+          "year": 2023,
+          "week": 11
+        },
+        {
+          "value": 5,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "2016 Week 3 – 2016 Week 7",
+          "year": 2016,
+          "week": 7
+        },
+        {
+          "value": 4,
+          "subject": "phil",
+          "href": "/managers/phil",
+          "detail": "2016 Week 1 – 2016 Week 4",
+          "year": 2016,
+          "week": 4
+        },
+        {
+          "value": 4,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "2018 Week 12 – 2018 Week 16",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 3,
+          "subject": "jimmie",
+          "href": "/managers/jimmie",
+          "detail": "2012 Week 2 – 2012 Week 4",
+          "year": 2012,
+          "week": 4
+        }
+      ]
+    },
+    {
+      "id": "rivalry-intensity",
+      "label": "Closest rivalry",
+      "description": "The head-to-head pairing with the smallest average margin — the two managers whose games are always tight. Pairings with fewer than 12 meetings are left out, because two flukey games would otherwise top the list forever.",
+      "scope": "manager",
+      "format": "points",
+      "direction": "low",
+      "excluded": [],
+      "caveat": [],
+      "total": 50,
+      "entries": [
+        {
+          "value": 16.41,
+          "subject": "fin vs sol",
+          "href": "/h2h/fin/sol",
+          "detail": "20 meetings since 2014, sol leads 14–6"
+        },
+        {
+          "value": 16.57,
+          "subject": "hadkiss vs jay",
+          "href": "/h2h/hadkiss/jay",
+          "detail": "18 meetings since 2012, hadkiss leads 9–8 with a tie"
+        },
+        {
+          "value": 17.7,
+          "subject": "rich vs thd",
+          "href": "/h2h/rich/thd",
+          "detail": "24 meetings since 2012, thd leads 16–8"
+        },
+        {
+          "value": 17.75,
+          "subject": "hadkiss vs thd",
+          "href": "/h2h/hadkiss/thd",
+          "detail": "20 meetings since 2012, hadkiss leads 11–9"
+        },
+        {
+          "value": 19.17,
+          "subject": "ant vs hadkiss",
+          "href": "/h2h/ant/hadkiss",
+          "detail": "19 meetings since 2012, hadkiss leads 12–7"
+        },
+        {
+          "value": 19.7,
+          "subject": "ryan vs thd",
+          "href": "/h2h/ryan/thd",
+          "detail": "12 meetings since 2019, ryan leads 7–5"
+        },
+        {
+          "value": 20.13,
+          "subject": "fin vs thd",
+          "href": "/h2h/fin/thd",
+          "detail": "21 meetings since 2012, fin leads 11–10"
+        },
+        {
+          "value": 20.93,
+          "subject": "kitch vs rich",
+          "href": "/h2h/kitch/rich",
+          "detail": "18 meetings since 2012, kitch leads 10–8"
+        },
+        {
+          "value": 21.19,
+          "subject": "rich vs sol",
+          "href": "/h2h/rich/sol",
+          "detail": "18 meetings since 2014, rich leads 10–8"
+        },
+        {
+          "value": 21.3,
+          "subject": "kitch vs thd",
+          "href": "/h2h/kitch/thd",
+          "detail": "19 meetings since 2012, thd leads 12–7"
+        },
+        {
+          "value": 21.37,
+          "subject": "fin vs hadkiss",
+          "href": "/h2h/fin/hadkiss",
+          "detail": "22 meetings since 2012, hadkiss leads 13–9"
+        },
+        {
+          "value": 21.94,
+          "subject": "ant vs thd",
+          "href": "/h2h/ant/thd",
+          "detail": "21 meetings since 2012, ant leads 13–8"
+        },
+        {
+          "value": 22.28,
+          "subject": "ant vs htc",
+          "href": "/h2h/ant/htc",
+          "detail": "18 meetings since 2013, htc leads 10–8"
+        },
+        {
+          "value": 22.29,
+          "subject": "brock vs rich",
+          "href": "/h2h/brock/rich",
+          "detail": "13 meetings since 2013, rich leads 7–6"
+        },
+        {
+          "value": 22.33,
+          "subject": "brock vs jay",
+          "href": "/h2h/brock/jay",
+          "detail": "12 meetings since 2013, brock leads 9–3"
+        },
+        {
+          "value": 22.55,
+          "subject": "ant vs kitch",
+          "href": "/h2h/ant/kitch",
+          "detail": "19 meetings since 2012, ant leads 11–8"
+        },
+        {
+          "value": 22.55,
+          "subject": "fin vs rich",
+          "href": "/h2h/fin/rich",
+          "detail": "18 meetings since 2012, rich leads 12–6"
+        },
+        {
+          "value": 22.59,
+          "subject": "dix vs fin",
+          "href": "/h2h/dix/fin",
+          "detail": "19 meetings since 2012, dix leads 13–6"
+        },
+        {
+          "value": 22.76,
+          "subject": "jay vs kitch",
+          "href": "/h2h/jay/kitch",
+          "detail": "19 meetings since 2012, jay leads 12–7"
+        },
+        {
+          "value": 22.79,
+          "subject": "dix vs hadkiss",
+          "href": "/h2h/dix/hadkiss",
+          "detail": "19 meetings since 2012, dix leads 10–9"
+        },
+        {
+          "value": 23.15,
+          "subject": "ant vs fin",
+          "href": "/h2h/ant/fin",
+          "detail": "22 meetings since 2012, ant leads 16–6"
+        },
+        {
+          "value": 23.24,
+          "subject": "kitch vs sol",
+          "href": "/h2h/kitch/sol",
+          "detail": "19 meetings since 2014, kitch leads 11–8"
+        },
+        {
+          "value": 23.34,
+          "subject": "htc vs sol",
+          "href": "/h2h/htc/sol",
+          "detail": "17 meetings since 2014, htc leads 9–8"
+        },
+        {
+          "value": 23.65,
+          "subject": "jay vs rich",
+          "href": "/h2h/jay/rich",
+          "detail": "19 meetings since 2012, jay leads 14–5"
+        },
+        {
+          "value": 23.75,
+          "subject": "hadkiss vs rich",
+          "href": "/h2h/hadkiss/rich",
+          "detail": "18 meetings since 2012, rich leads 10–8"
+        }
+      ]
+    },
+    {
+      "id": "revenge-games",
+      "label": "Revenge games",
+      "description": "How managers do in the rematch. Take every loss by 40 points or more, then look at the very next meeting with that same opponent — whenever it comes, even a season later. The number is the win percentage in those rematches, for managers with at least 5 of them.",
+      "scope": "manager",
+      "format": "percent",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 13,
+      "entries": [
+        {
+          "value": 71.43,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "15–6 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 64.71,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "11–6 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 55,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "11–9 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 50,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "4–4 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 47.06,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "8–9 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 45.45,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "5–6 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 44,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "11–14 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 40,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "8–12 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 36.36,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "4–7 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 36.36,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "4–7 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 33.33,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "8–16 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 33.33,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "7–14 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 27.27,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "3–8 in rematches after a 40+ point loss"
+        }
+      ]
+    },
+    {
+      "id": "bench-points",
+      "label": "Points left on the bench",
+      "description": "Every point a manager had on their roster and did not start, added up across their whole career. The worst lineup-setter in Chumbo history is at the top of this list.",
+      "scope": "manager",
+      "format": "points",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 17,
+      "entries": [
+        {
+          "value": 2949.3,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "14.1 a week across 209 games, 2012–2026; worst single week 50.9 in 2015 Week 13"
+        },
+        {
+          "value": 2778.5,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "13.2 a week across 210 games, 2012–2026; worst single week 59.3 in 2023 Week 3"
+        },
+        {
+          "value": 2755.4,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "13.1 a week across 210 games, 2012–2026; worst single week 60.3 in 2013 Week 3"
+        },
+        {
+          "value": 2676,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "12.9 a week across 208 games, 2012–2026; worst single week 59.8 in 2016 Week 3"
+        },
+        {
+          "value": 2663,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "12.8 a week across 208 games, 2012–2026; worst single week 56.3 in 2015 Week 15"
+        },
+        {
+          "value": 2451.4,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "11.7 a week across 209 games, 2012–2026; worst single week 46.4 in 2021 Week 1"
+        },
+        {
+          "value": 2412.4,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "11.5 a week across 209 games, 2012–2026; worst single week 51.1 in 2017 Week 3"
+        },
+        {
+          "value": 2367,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "11.2 a week across 211 games, 2012–2026; worst single week 59.7 in 2023 Week 2"
+        },
+        {
+          "value": 2270.1,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "12.7 a week across 179 games, 2014–2026; worst single week 45.9 in 2025 Week 11"
+        },
+        {
+          "value": 2179.2,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "11.1 a week across 196 games, 2013–2026; worst single week 61 in 2023 Week 7"
+        },
+        {
+          "value": 1775,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "15.3 a week across 116 games, 2013–2026; worst single week 46.4 in 2023 Week 16"
+        },
+        {
+          "value": 1194.6,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "11.7 a week across 102 games, 2020–2026; worst single week 50.3 in 2024 Week 4"
+        },
+        {
+          "value": 919.9,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "12.1 a week across 76 games, 2014–2018; worst single week 53.5 in 2018 Week 14"
+        },
+        {
+          "value": 723.1,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "11.3 a week across 64 games, 2017–2021; worst single week 55.2 in 2021 Week 17"
+        },
+        {
+          "value": 219.5,
+          "subject": "jimmie",
+          "href": "/managers/jimmie",
+          "detail": "13.7 a week across 16 games, 2012; worst single week 34.6 in 2012 Week 3"
+        },
+        {
+          "value": 209.1,
+          "subject": "phil",
+          "href": "/managers/phil",
+          "detail": "13.9 a week across 15 games, 2016; worst single week 31.1 in 2016 Week 12"
+        },
+        {
+          "value": 178.7,
+          "subject": "karsten",
+          "href": "/managers/karsten",
+          "detail": "12.8 a week across 14 games, 2012; worst single week 35.5 in 2012 Week 3"
+        }
+      ]
+    },
+    {
+      "id": "bench-points-season",
+      "label": "Worst bench-warming season",
+      "description": "The most points anyone has left on the bench in a single season. One bad autumn of lineup decisions.",
+      "scope": "season",
+      "format": "points",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 164,
+      "entries": [
+        {
+          "value": 364.6,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2013 — 22.8 a week over 16 games",
+          "year": 2013
+        },
+        {
+          "value": 315.2,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "2014 — 19.7 a week over 16 games",
+          "year": 2014
+        },
+        {
+          "value": 311.4,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2016 — 20.8 a week over 15 games",
+          "year": 2016
+        },
+        {
+          "value": 306.8,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2020 — 19.2 a week over 16 games",
+          "year": 2020
+        },
+        {
+          "value": 300.7,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2013 — 18.8 a week over 16 games",
+          "year": 2013
+        },
+        {
+          "value": 297.3,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2012 — 18.6 a week over 16 games",
+          "year": 2012
+        },
+        {
+          "value": 295.3,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "2023 — 17.4 a week over 17 games",
+          "year": 2023
+        },
+        {
+          "value": 289.4,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2020 — 18.1 a week over 16 games",
+          "year": 2020
+        },
+        {
+          "value": 277.8,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2016 — 17.4 a week over 16 games",
+          "year": 2016
+        },
+        {
+          "value": 271.2,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2023 — 16 a week over 17 games",
+          "year": 2023
+        },
+        {
+          "value": 270,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "2012 — 16.9 a week over 16 games",
+          "year": 2012
+        },
+        {
+          "value": 264.4,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2023 — 15.6 a week over 17 games",
+          "year": 2023
+        },
+        {
+          "value": 262.7,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "2012 — 16.4 a week over 16 games",
+          "year": 2012
+        },
+        {
+          "value": 260.7,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2025 — 15.3 a week over 17 games",
+          "year": 2025
+        },
+        {
+          "value": 260.3,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2014 — 16.3 a week over 16 games",
+          "year": 2014
+        },
+        {
+          "value": 256.9,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "2020 — 16.1 a week over 16 games",
+          "year": 2020
+        },
+        {
+          "value": 255.7,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2014 — 17 a week over 15 games",
+          "year": 2014
+        },
+        {
+          "value": 255.6,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "2013 — 16 a week over 16 games",
+          "year": 2013
+        },
+        {
+          "value": 253.2,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2015 — 15.8 a week over 16 games",
+          "year": 2015
+        },
+        {
+          "value": 252.2,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "2024 — 14.8 a week over 17 games",
+          "year": 2024
+        },
+        {
+          "value": 251.6,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2017 — 16.8 a week over 15 games",
+          "year": 2017
+        },
+        {
+          "value": 250.2,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2025 — 14.7 a week over 17 games",
+          "year": 2025
+        },
+        {
+          "value": 248.8,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "2025 — 14.6 a week over 17 games",
+          "year": 2025
+        },
+        {
+          "value": 248.5,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "2015 — 16.6 a week over 15 games",
+          "year": 2015
+        },
+        {
+          "value": 247.9,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2018 — 16.5 a week over 15 games",
+          "year": 2018
+        }
+      ]
+    },
+    {
+      "id": "manager-efficiency",
+      "label": "Manager efficiency",
+      "description": "The share of your best possible score you actually started, over a whole career. Drafting well is one skill; picking the right nine every Sunday is another, and this is the one that measures the second.",
+      "scope": "manager",
+      "format": "percent",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 17,
+      "entries": [
+        {
+          "value": 89.7,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "20929.9 started of 23342.3 available across 209 games — 2412.4 left behind"
+        },
+        {
+          "value": 89.7,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "6313.7 started of 7036.7 available across 64 games — 723.1 left behind"
+        },
+        {
+          "value": 89.6,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "20345.4 started of 22712.4 available across 211 games — 2367 left behind"
+        },
+        {
+          "value": 89.5,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "18506.5 started of 20685.6 available across 196 games — 2179.2 left behind"
+        },
+        {
+          "value": 89,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "19902.8 started of 22354.2 available across 209 games — 2451.4 left behind"
+        },
+        {
+          "value": 88.7,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "9352.9 started of 10547.5 available across 102 games — 1194.6 left behind"
+        },
+        {
+          "value": 88.5,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "20616.1 started of 23292.1 available across 208 games — 2676 left behind"
+        },
+        {
+          "value": 88.1,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "20405.9 started of 23161.3 available across 210 games — 2755.4 left behind"
+        },
+        {
+          "value": 87.8,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "6610.8 started of 7530.7 available across 76 games — 919.9 left behind"
+        },
+        {
+          "value": 87.7,
+          "subject": "karsten",
+          "href": "/managers/karsten",
+          "detail": "1273.1 started of 1451.8 available across 14 games — 178.7 left behind"
+        },
+        {
+          "value": 87.7,
+          "subject": "jimmie",
+          "href": "/managers/jimmie",
+          "detail": "1560.4 started of 1779.8 available across 16 games — 219.5 left behind"
+        },
+        {
+          "value": 87.7,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "16194.1 started of 18464.2 available across 179 games — 2270.1 left behind"
+        },
+        {
+          "value": 87.4,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "19268.7 started of 22047.2 available across 210 games — 2778.5 left behind"
+        },
+        {
+          "value": 87.1,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "18023.2 started of 20686.3 available across 208 games — 2663 left behind"
+        },
+        {
+          "value": 86.7,
+          "subject": "phil",
+          "href": "/managers/phil",
+          "detail": "1367.9 started of 1577 available across 15 games — 209.1 left behind"
+        },
+        {
+          "value": 86.4,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "18748.3 started of 21697.6 available across 209 games — 2949.3 left behind"
+        },
+        {
+          "value": 85.3,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "10302.1 started of 12077.2 available across 116 games — 1775 left behind"
+        }
+      ]
+    },
+    {
+      "id": "worst-start-sit",
+      "label": "Worst start/sit call",
+      "description": "The single most expensive lineup decision ever made: the biggest gap between a player left on the bench and the starter he could have replaced.",
+      "scope": "league",
+      "format": "points",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 2187,
+      "entries": [
+        {
+          "value": 47.7,
+          "subject": "chris",
+          "href": "/seasons/2018/matchups/14/1",
+          "detail": "2018 Week 14, benched Derrick Henry (47.8) for LeSean McCoy (0.1)",
+          "year": 2018,
+          "week": 14
+        },
+        {
+          "value": 44.5,
+          "subject": "rich",
+          "href": "/seasons/2023/matchups/3/1",
+          "detail": "2023 Week 3, benched De'Von Achane (47.3) for DeVonta Smith (2.8)",
+          "year": 2023,
+          "week": 3
+        },
+        {
+          "value": 39.4,
+          "subject": "brock",
+          "href": "/seasons/2014/matchups/11/6",
+          "detail": "2014 Week 11, benched Jonas Gray (44.1) for Steven Jackson (4.7)",
+          "year": 2014,
+          "week": 11
+        },
+        {
+          "value": 34.84,
+          "subject": "nick",
+          "href": "/seasons/2021/matchups/17/-1",
+          "detail": "2021 Week 17, benched Joe Burrow (34.84) for Kirk Cousins (0)",
+          "year": 2021,
+          "week": 17
+        },
+        {
+          "value": 32.72,
+          "subject": "fin",
+          "href": "/seasons/2024/matchups/11/5",
+          "detail": "2024 Week 11, benched Taysom Hill (33.52) for Travis Kelce (0.8)",
+          "year": 2024,
+          "week": 11
+        },
+        {
+          "value": 32.6,
+          "subject": "thd",
+          "href": "/seasons/2018/matchups/3/2",
+          "detail": "2018 Week 3, benched Calvin Ridley (33.5) for Larry Fitzgerald (0.9)",
+          "year": 2018,
+          "week": 3
+        },
+        {
+          "value": 31.6,
+          "subject": "ryan",
+          "href": "/seasons/2024/matchups/3/2",
+          "detail": "2024 Week 3, benched Jauan Jennings (35.5) for Tee Higgins (3.9)",
+          "year": 2024,
+          "week": 3
+        },
+        {
+          "value": 29.7,
+          "subject": "htc",
+          "href": "/seasons/2023/matchups/7/4",
+          "detail": "2023 Week 7, benched D'Onta Foreman (30) for Bijan Robinson (0.3)",
+          "year": 2023,
+          "week": 7
+        },
+        {
+          "value": 29.5,
+          "subject": "htc",
+          "href": "/seasons/2024/matchups/13/2",
+          "detail": "2024 Week 13, benched Jerry Jeudy (31.5) for Darnell Mooney (2)",
+          "year": 2024,
+          "week": 13
+        },
+        {
+          "value": 29.1,
+          "subject": "kitch",
+          "href": "/seasons/2016/matchups/14/1",
+          "detail": "2016 Week 14, benched Bilal Powell (29.9) for Matt Forte (0.8)",
+          "year": 2016,
+          "week": 14
+        },
+        {
+          "value": 29,
+          "subject": "ryan",
+          "href": "/seasons/2024/matchups/14/2",
+          "detail": "2024 Week 14, benched Jordan Addison (31.3) for Tee Higgins (2.3)",
+          "year": 2024,
+          "week": 14
+        },
+        {
+          "value": 28.84,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/5/1",
+          "detail": "2013 Week 5, benched Tony Romo (40.94) for Michael Vick (12.1)",
+          "year": 2013,
+          "week": 5
+        },
+        {
+          "value": 28.6,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/16/2",
+          "detail": "2020 Week 16, benched Myles Gaskin (28.9) for Salvon Ahmed (0.3)",
+          "year": 2020,
+          "week": 16
+        },
+        {
+          "value": 28.4,
+          "subject": "sol",
+          "href": "/seasons/2025/matchups/11/3",
+          "detail": "2025 Week 11, benched Sean Tucker (32) for Wan'Dale Robinson (3.6)",
+          "year": 2025,
+          "week": 11
+        },
+        {
+          "value": 28.2,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/3/3",
+          "detail": "2013 Week 3, benched Antonio Brown (31.6) for Vincent Jackson (3.4)",
+          "year": 2013,
+          "week": 3
+        },
+        {
+          "value": 28.2,
+          "subject": "rich",
+          "href": "/seasons/2013/matchups/13/5",
+          "detail": "2013 Week 13, benched Eric Decker (41.4) for Larry Fitzgerald (13.2)",
+          "year": 2013,
+          "week": 13
+        },
+        {
+          "value": 28.1,
+          "subject": "fin",
+          "href": "/seasons/2018/matchups/5/5",
+          "detail": "2018 Week 5, benched Isaiah Crowell (29.1) for Amari Cooper (1)",
+          "year": 2018,
+          "week": 5
+        },
+        {
+          "value": 28.02,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/15/3",
+          "detail": "2015 Week 15, benched Tyrod Taylor (27.3) for Marcus Mariota (-0.72)",
+          "year": 2015,
+          "week": 15
+        },
+        {
+          "value": 27.3,
+          "subject": "rich",
+          "href": "/seasons/2015/matchups/12/3",
+          "detail": "2015 Week 12, benched C.J. Anderson (27.3) for Charcandrick West (0)",
+          "year": 2015,
+          "week": 12
+        },
+        {
+          "value": 27,
+          "subject": "fin",
+          "href": "/seasons/2013/matchups/4/2",
+          "detail": "2013 Week 4, benched Tony Gonzalez (26.9) for Steve Johnson (-0.1)",
+          "year": 2013,
+          "week": 4
+        },
+        {
+          "value": 26.8,
+          "subject": "thd",
+          "href": "/seasons/2022/matchups/14/2",
+          "detail": "2022 Week 14, benched Trevor Lawrence (33.42) for Tyler Huntley (6.62)",
+          "year": 2022,
+          "week": 14
+        },
+        {
+          "value": 26.7,
+          "subject": "kitch",
+          "href": "/seasons/2023/matchups/5/5",
+          "detail": "2023 Week 5, benched Zack Moss (31.5) for Gus Edwards (4.8)",
+          "year": 2023,
+          "week": 5
+        },
+        {
+          "value": 26.68,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/4/3",
+          "detail": "2018 Week 4, benched Andrew Luck (35.66) for Russell Wilson (8.98)",
+          "year": 2018,
+          "week": 4
+        },
+        {
+          "value": 26.2,
+          "subject": "htc",
+          "href": "/seasons/2014/matchups/8/1",
+          "detail": "2014 Week 8, benched Emmanuel Sanders (30.6) for Anthony Dixon (4.4)",
+          "year": 2014,
+          "week": 8
+        },
+        {
+          "value": 26.2,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/16/2",
+          "detail": "2023 Week 16, benched George Pickens (31.5) for Roschon Johnson (5.3)",
+          "year": 2023,
+          "week": 16
+        }
+      ]
+    },
+    {
+      "id": "bench-bandit",
+      "label": "The Bench Bandit",
+      "description": "The player who has scored the most points while sitting on somebody's bench. Largely a monument to the backup quarterback: nobody starts two, and the good ones pile up hundreds of points nobody ever collected.",
+      "scope": "player",
+      "format": "points",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 979,
+      "entries": [
+        {
+          "value": 662.9,
+          "subject": "Ben Roethlisberger",
+          "href": "/players/138",
+          "detail": "37 weeks on a bench, mostly by kitch (219); best 35.8 in 2018 Week 10"
+        },
+        {
+          "value": 614.2,
+          "subject": "Matthew Stafford",
+          "href": "/players/421",
+          "detail": "39 weeks on a bench, mostly by hadkiss (165.5); best 31.3 in 2012 Week 8"
+        },
+        {
+          "value": 574.8,
+          "subject": "Russell Wilson",
+          "href": "/players/1234",
+          "detail": "33 weeks on a bench, mostly by sol (174.1); best 33.6 in 2016 Week 16"
+        },
+        {
+          "value": 563.8,
+          "subject": "Andy Dalton",
+          "href": "/players/829",
+          "detail": "31 weeks on a bench, mostly by rich (185); best 31.5 in 2013 Week 16"
+        },
+        {
+          "value": 563.1,
+          "subject": "Philip Rivers",
+          "href": "/players/331",
+          "detail": "31 weeks on a bench, mostly by hadkiss (122.3); best 28.9 in 2015 Week 12"
+        },
+        {
+          "value": 556,
+          "subject": "Eli Manning",
+          "href": "/players/188",
+          "detail": "37 weeks on a bench, mostly by chris (267); best 28.8 in 2013 Week 1"
+        },
+        {
+          "value": 527.8,
+          "subject": "Jared Goff",
+          "href": "/players/3163",
+          "detail": "29 weeks on a bench, mostly by hadkiss (147); best 39.3 in 2018 Week 4"
+        },
+        {
+          "value": 518.3,
+          "subject": "Kirk Cousins",
+          "href": "/players/1166",
+          "detail": "30 weeks on a bench, mostly by thd (107.1); best 31.7 in 2018 Week 4"
+        },
+        {
+          "value": 459.9,
+          "subject": "Andrew Luck",
+          "href": "/players/1111",
+          "detail": "25 weeks on a bench, mostly by rich (203.9); best 35.7 in 2018 Week 4"
+        },
+        {
+          "value": 421.5,
+          "subject": "Cam Newton",
+          "href": "/players/954",
+          "detail": "23 weeks on a bench, mostly by rich (144.1); best 33 in 2017 Week 4"
+        },
+        {
+          "value": 385.7,
+          "subject": "Dak Prescott",
+          "href": "/players/3294",
+          "detail": "23 weeks on a bench, mostly by dix (97.6); best 27.4 in 2018 Week 12"
+        },
+        {
+          "value": 376.6,
+          "subject": "Matt Ryan",
+          "href": "/players/24",
+          "detail": "23 weeks on a bench, mostly by jay (221); best 31.6 in 2020 Week 6"
+        },
+        {
+          "value": 357.8,
+          "subject": "Baker Mayfield",
+          "href": "/players/4892",
+          "detail": "20 weeks on a bench, mostly by fin (118.8); best 29 in 2023 Week 15"
+        },
+        {
+          "value": 356.7,
+          "subject": "Brandin Cooks",
+          "href": "/players/2197",
+          "detail": "41 weeks on a bench, mostly by ant (140.3); best 22.2 in 2021 Week 15"
+        },
+        {
+          "value": 340.3,
+          "subject": "Courtland Sutton",
+          "href": "/players/5045",
+          "detail": "42 weeks on a bench, mostly by ryan (118.4); best 17.3 in 2025 Week 15"
+        },
+        {
+          "value": 338.4,
+          "subject": "Tyler Allgeier",
+          "href": "/players/8132",
+          "detail": "52 weeks on a bench, mostly by dix (104.1); best 21.6 in 2022 Week 15"
+        },
+        {
+          "value": 333.5,
+          "subject": "Jordan Love",
+          "href": "/players/6804",
+          "detail": "22 weeks on a bench, mostly by hadkiss (216.6); best 28.2 in 2024 Week 4"
+        },
+        {
+          "value": 323.8,
+          "subject": "Latavius Murray",
+          "href": "/players/1476",
+          "detail": "54 weeks on a bench, mostly by thd (93.5); best 24.6 in 2020 Week 12"
+        },
+        {
+          "value": 320.5,
+          "subject": "Devin Singletary",
+          "href": "/players/6130",
+          "detail": "42 weeks on a bench, mostly by brock (78); best 23 in 2021 Week 17"
+        },
+        {
+          "value": 316.4,
+          "subject": "Carson Palmer",
+          "href": "/players/91",
+          "detail": "18 weeks on a bench, mostly by fin (185.7); best 28.9 in 2012 Week 9"
+        },
+        {
+          "value": 308.5,
+          "subject": "Emmanuel Sanders",
+          "href": "/players/538",
+          "detail": "34 weeks on a bench, mostly by ant (92.9); best 30.6 in 2014 Week 8"
+        },
+        {
+          "value": 306.1,
+          "subject": "Michael Crabtree",
+          "href": "/players/455",
+          "detail": "38 weeks on a bench, mostly by dix (136.1); best 22.7 in 2012 Week 15"
+        },
+        {
+          "value": 303.2,
+          "subject": "Tony Romo",
+          "href": "/players/142",
+          "detail": "16 weeks on a bench, mostly by dix (160.5); best 40.9 in 2013 Week 5"
+        },
+        {
+          "value": 302.8,
+          "subject": "Darren Sproles",
+          "href": "/players/246",
+          "detail": "36 weeks on a bench, mostly by fin (64.7); best 23.8 in 2014 Week 2"
+        },
+        {
+          "value": 299,
+          "subject": "Adam Thielen",
+          "href": "/players/1689",
+          "detail": "37 weeks on a bench, mostly by fin (117.8); best 23 in 2024 Week 17"
+        }
+      ]
+    },
+    {
+      "id": "best-draft-picks",
+      "label": "Best draft picks",
+      "description": "The picks that returned most above what that slot usually returns. Two hundred points is a steal in round 12 and a catastrophe in round 1, so this ranks on the difference, not the total. Quarterbacks run the board: the going rate for a pick is blind to position, and a late quarterback outscores everyone taken around him.",
+      "scope": "league",
+      "format": "points",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [
+        2019
+      ],
+      "total": 2460,
+      "entries": [
+        {
+          "value": 368.8,
+          "subject": "Lamar Jackson",
+          "href": "/seasons/2019/draft",
+          "detail": "thd, 2019 round 10 (pick 109) — 415.7 pts against 46.9 for that slot",
+          "year": 2019,
+          "approximate": true
+        },
+        {
+          "value": 350.3,
+          "subject": "Patrick Mahomes",
+          "href": "/seasons/2018/draft",
+          "detail": "rich, 2018 round 11 (pick 130) — 399.7 pts against 49.4 for that slot",
+          "year": 2018
+        },
+        {
+          "value": 311.4,
+          "subject": "Patrick Mahomes",
+          "href": "/seasons/2022/draft",
+          "detail": "ryan, 2022 round 5 (pick 59) — 401.4 pts against 90.1 for that slot",
+          "year": 2022
+        },
+        {
+          "value": 310.7,
+          "subject": "Aaron Rodgers",
+          "href": "/seasons/2020/draft",
+          "detail": "ryan, 2020 round 11 (pick 121) — 356.3 pts against 45.5 for that slot",
+          "year": 2020
+        },
+        {
+          "value": 294.4,
+          "subject": "Joe Burrow",
+          "href": "/seasons/2024/draft",
+          "detail": "ant, 2024 round 9 (pick 102) — 343.0 pts against 48.6 for that slot",
+          "year": 2024
+        },
+        {
+          "value": 291.6,
+          "subject": "Tom Brady",
+          "href": "/seasons/2021/draft",
+          "detail": "jay, 2021 round 8 (pick 89) — 349.7 pts against 58.1 for that slot",
+          "year": 2021
+        },
+        {
+          "value": 281.7,
+          "subject": "Kyler Murray",
+          "href": "/seasons/2020/draft",
+          "detail": "rich, 2020 round 6 (pick 67) — 359.6 pts against 77.9 for that slot",
+          "year": 2020
+        },
+        {
+          "value": 272.5,
+          "subject": "Dak Prescott",
+          "href": "/seasons/2019/draft",
+          "detail": "fin, 2019 round 12 (pick 142) — 308.2 pts against 35.7 for that slot",
+          "year": 2019,
+          "approximate": true
+        },
+        {
+          "value": 266.4,
+          "subject": "Josh Allen",
+          "href": "/seasons/2022/draft",
+          "detail": "htc, 2022 round 3 (pick 29) — 376.5 pts against 110.1 for that slot",
+          "year": 2022
+        },
+        {
+          "value": 266.1,
+          "subject": "Dak Prescott",
+          "href": "/seasons/2023/draft",
+          "detail": "ryan, 2023 round 11 (pick 121) — 311.6 pts against 45.5 for that slot",
+          "year": 2023
+        },
+        {
+          "value": 264.7,
+          "subject": "Peyton Manning",
+          "href": "/seasons/2013/draft",
+          "detail": "jay, 2013 round 2 (pick 18) — 383.3 pts against 118.6 for that slot",
+          "year": 2013
+        },
+        {
+          "value": 264.4,
+          "subject": "Justin Herbert",
+          "href": "/seasons/2021/draft",
+          "detail": "ant, 2021 round 7 (pick 76) — 330.3 pts against 65.9 for that slot",
+          "year": 2021
+        },
+        {
+          "value": 264.1,
+          "subject": "Josh Allen",
+          "href": "/seasons/2021/draft",
+          "detail": "htc, 2021 round 4 (pick 38) — 357.8 pts against 93.7 for that slot",
+          "year": 2021
+        },
+        {
+          "value": 262.5,
+          "subject": "Joe Burrow",
+          "href": "/seasons/2022/draft",
+          "detail": "ant, 2022 round 8 (pick 89) — 320.6 pts against 58.1 for that slot",
+          "year": 2022
+        },
+        {
+          "value": 262.2,
+          "subject": "Jared Goff",
+          "href": "/seasons/2024/draft",
+          "detail": "fin, 2024 round 15 (pick 180) — 288.4 pts against 26.2 for that slot",
+          "year": 2024
+        },
+        {
+          "value": 260.4,
+          "subject": "Dak Prescott",
+          "href": "/seasons/2025/draft",
+          "detail": "ryan, 2025 round 12 (pick 137) — 301.1 pts against 40.7 for that slot",
+          "year": 2025
+        },
+        {
+          "value": 258.6,
+          "subject": "Jalen Hurts",
+          "href": "/seasons/2021/draft",
+          "detail": "hadkiss, 2021 round 11 (pick 127) — 312.2 pts against 53.6 for that slot",
+          "year": 2021
+        },
+        {
+          "value": 255.4,
+          "subject": "Russell Wilson",
+          "href": "/seasons/2020/draft",
+          "detail": "htc, 2020 round 6 (pick 64) — 341.6 pts against 86.2 for that slot",
+          "year": 2020
+        },
+        {
+          "value": 244,
+          "subject": "Josh Allen",
+          "href": "/seasons/2025/draft",
+          "detail": "htc, 2025 round 2 (pick 17) — 364.6 pts against 120.6 for that slot",
+          "year": 2025
+        },
+        {
+          "value": 243.6,
+          "subject": "Robert Griffin",
+          "href": "/seasons/2012/draft",
+          "detail": "ant, 2012 round 9 (pick 90) — 301.2 pts against 57.6 for that slot",
+          "year": 2012
+        },
+        {
+          "value": 241.5,
+          "subject": "Russell Wilson",
+          "href": "/seasons/2019/draft",
+          "detail": "sol, 2019 round 8 (pick 95) — 297.8 pts against 56.3 for that slot",
+          "year": 2019,
+          "approximate": true
+        },
+        {
+          "value": 238.3,
+          "subject": "Josh Allen",
+          "href": "/seasons/2023/draft",
+          "detail": "htc, 2023 round 3 (pick 29) — 348.4 pts against 110.1 for that slot",
+          "year": 2023
+        },
+        {
+          "value": 232.2,
+          "subject": "Tua Tagovailoa",
+          "href": "/seasons/2023/draft",
+          "detail": "ant, 2023 round 14 (pick 161) — 262.7 pts against 30.5 for that slot",
+          "year": 2023
+        },
+        {
+          "value": 228.7,
+          "subject": "Aaron Rodgers",
+          "href": "/seasons/2021/draft",
+          "detail": "rich, 2021 round 4 (pick 46) — 318.1 pts against 89.4 for that slot",
+          "year": 2021
+        },
+        {
+          "value": 228.1,
+          "subject": "Aaron Rodgers",
+          "href": "/seasons/2016/draft",
+          "detail": "phil, 2016 round 3 (pick 32) — 333.8 pts against 105.8 for that slot",
+          "year": 2016
+        }
+      ]
+    },
+    {
+      "id": "worst-draft-picks",
+      "label": "Worst draft picks",
+      "description": "The other end of the same list: picks that returned least for where they were taken. Almost all of them are early-round players who got hurt, which is the whole risk of a first-rounder.",
+      "scope": "league",
+      "format": "points",
+      "direction": "low",
+      "excluded": [],
+      "caveat": [
+        2019
+      ],
+      "total": 2460,
+      "entries": [
+        {
+          "value": -140.5,
+          "subject": "Le'Veon Bell",
+          "href": "/seasons/2018/draft",
+          "detail": "sol, 2018 round 1 (pick 3) — 0.0 pts against 140.5 for that slot",
+          "year": 2018
+        },
+        {
+          "value": -140,
+          "subject": "Alvin Kamara",
+          "href": "/seasons/2018/draft",
+          "detail": "chris, 2018 round 1 (pick 4) — 0.0 pts against 140.0 for that slot, then 256.9 elsewhere",
+          "year": 2018
+        },
+        {
+          "value": -136.8,
+          "subject": "Saquon Barkley",
+          "href": "/seasons/2018/draft",
+          "detail": "thd, 2018 round 1 (pick 6) — 0.0 pts against 136.8 for that slot, then 248.9 elsewhere",
+          "year": 2018
+        },
+        {
+          "value": -134.4,
+          "subject": "Odell Beckham",
+          "href": "/seasons/2016/draft",
+          "detail": "sol, 2016 round 1 (pick 2) — 7.3 pts against 141.7 for that slot, then 183.9 elsewhere",
+          "year": 2016
+        },
+        {
+          "value": -132.4,
+          "subject": "David Johnson",
+          "href": "/seasons/2017/draft",
+          "detail": "thd, 2017 round 1 (pick 1) — 7.0 pts against 139.4 for that slot",
+          "year": 2017
+        },
+        {
+          "value": -132.3,
+          "subject": "Saquon Barkley",
+          "href": "/seasons/2020/draft",
+          "detail": "sol, 2020 round 1 (pick 2) — 9.4 pts against 141.7 for that slot",
+          "year": 2020
+        },
+        {
+          "value": -132,
+          "subject": "Adrian Peterson",
+          "href": "/seasons/2014/draft",
+          "detail": "jay, 2014 round 1 (pick 5) — 9.3 pts against 141.3 for that slot",
+          "year": 2014
+        },
+        {
+          "value": -131.1,
+          "subject": "Adrian Peterson",
+          "href": "/seasons/2016/draft",
+          "detail": "phil, 2016 round 1 (pick 6) — 5.7 pts against 136.8 for that slot, then 0.3 elsewhere",
+          "year": 2016
+        },
+        {
+          "value": -128.1,
+          "subject": "Derrick Henry",
+          "href": "/seasons/2023/draft",
+          "detail": "brock, 2023 round 1 (pick 4) — 11.9 pts against 140.0 for that slot, then 181.3 elsewhere",
+          "year": 2023
+        },
+        {
+          "value": -128.1,
+          "subject": "Travis Kelce",
+          "href": "/seasons/2023/draft",
+          "detail": "sol, 2023 round 1 (pick 12) — 0.0 pts against 128.1 for that slot, then 126.4 elsewhere",
+          "year": 2023
+        },
+        {
+          "value": -127.1,
+          "subject": "Ja'Marr Chase",
+          "href": "/seasons/2023/draft",
+          "detail": "thd, 2023 round 1 (pick 9) — 7.2 pts against 134.3 for that slot, then 149.5 elsewhere",
+          "year": 2023
+        },
+        {
+          "value": -123.9,
+          "subject": "C.J. Anderson",
+          "href": "/seasons/2015/draft",
+          "detail": "thd, 2015 round 1 (pick 9) — 10.4 pts against 134.3 for that slot, then 90.9 elsewhere",
+          "year": 2015
+        },
+        {
+          "value": -122.8,
+          "subject": "Todd Gurley",
+          "href": "/seasons/2016/draft",
+          "detail": "phil, 2016 round 1 (pick 7) — 11.2 pts against 134.0 for that slot, then 122.0 elsewhere",
+          "year": 2016
+        },
+        {
+          "value": -122.3,
+          "subject": "Devonta Freeman",
+          "href": "/seasons/2016/draft",
+          "detail": "ant, 2016 round 2 (pick 13) — 4.0 pts against 126.3 for that slot, then 170.9 elsewhere",
+          "year": 2016
+        },
+        {
+          "value": -121.5,
+          "subject": "Dez Bryant",
+          "href": "/seasons/2015/draft",
+          "detail": "sol, 2015 round 2 (pick 13) — 4.8 pts against 126.3 for that slot, then 52.4 elsewhere",
+          "year": 2015
+        },
+        {
+          "value": -121.3,
+          "subject": "Rob Gronkowski",
+          "href": "/seasons/2015/draft",
+          "detail": "ant, 2015 round 2 (pick 16) — 0.0 pts against 121.3 for that slot, then 167.1 elsewhere",
+          "year": 2015
+        },
+        {
+          "value": -120.9,
+          "subject": "Allen Robinson",
+          "href": "/seasons/2016/draft",
+          "detail": "jay, 2016 round 1 (pick 12) — 7.2 pts against 128.1 for that slot, then 110.9 elsewhere",
+          "year": 2016
+        },
+        {
+          "value": -120.7,
+          "subject": "Joe Mixon",
+          "href": "/seasons/2018/draft",
+          "detail": "dix, 2018 round 2 (pick 23) — 0.0 pts against 120.7 for that slot, then 189.7 elsewhere",
+          "year": 2018
+        },
+        {
+          "value": -120.4,
+          "subject": "Marshawn Lynch",
+          "href": "/seasons/2015/draft",
+          "detail": "brock, 2015 round 1 (pick 5) — 20.9 pts against 141.3 for that slot, then 48.8 elsewhere",
+          "year": 2015
+        },
+        {
+          "value": -119.6,
+          "subject": "Demaryius Thomas",
+          "href": "/seasons/2015/draft",
+          "detail": "thd, 2015 round 2 (pick 21) — 0.0 pts against 119.6 for that slot, then 137.2 elsewhere",
+          "year": 2015
+        },
+        {
+          "value": -118.1,
+          "subject": "Austin Ekeler",
+          "href": "/seasons/2022/draft",
+          "detail": "thd, 2022 round 1 (pick 4) — 21.9 pts against 140.0 for that slot, then 225.8 elsewhere",
+          "year": 2022
+        },
+        {
+          "value": -116.4,
+          "subject": "David Wilson",
+          "href": "/seasons/2013/draft",
+          "detail": "ant, 2013 round 3 (pick 25) — -0.4 pts against 116.0 for that slot, then 17.8 elsewhere",
+          "year": 2013
+        },
+        {
+          "value": -116.3,
+          "subject": "Devonta Freeman",
+          "href": "/seasons/2018/draft",
+          "detail": "ant, 2018 round 2 (pick 16) — 5.0 pts against 121.3 for that slot, then 4.1 elsewhere",
+          "year": 2018
+        },
+        {
+          "value": -114.9,
+          "subject": "Nick Chubb",
+          "href": "/seasons/2023/draft",
+          "detail": "kitch, 2023 round 1 (pick 7) — 19.1 pts against 134.0 for that slot",
+          "year": 2023
+        },
+        {
+          "value": -112.9,
+          "subject": "Keenan Allen",
+          "href": "/seasons/2016/draft",
+          "detail": "kitch, 2016 round 2 (pick 19) — 6.3 pts against 119.2 for that slot",
+          "year": 2016
+        }
+      ]
+    },
+    {
+      "id": "draft-position-luck",
+      "label": "Is your draft slot worth anything?",
+      "description": "Every regular-season game the league has played, sorted by the slot the team drafted from. Slots 11 and 12 only exist from 2014, when the league went to twelve teams, and finishes from the ten-team years are scaled to a twelve-team field so the averages compare.",
+      "scope": "league",
+      "format": "percent",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 12,
+      "entries": [
+        {
+          "value": 54,
+          "subject": "Pick 1",
+          "href": "/seasons/2026/draft",
+          "detail": "102-87 over 14 drafts — average finish 5.8 of 12, best 1 of 12 in 2017"
+        },
+        {
+          "value": 53.4,
+          "subject": "Pick 6",
+          "href": "/seasons/2026/draft",
+          "detail": "101-88 over 14 drafts — average finish 5.7 of 12, best 1 of 10 in 2013"
+        },
+        {
+          "value": 52.9,
+          "subject": "Pick 7",
+          "href": "/seasons/2026/draft",
+          "detail": "100-89 over 14 drafts — average finish 5.8 of 12, best 1 of 10 in 2012"
+        },
+        {
+          "value": 51.9,
+          "subject": "Pick 5",
+          "href": "/seasons/2026/draft",
+          "detail": "98-91 over 14 drafts — average finish 5.6 of 12, best 1 of 12 in 2016"
+        },
+        {
+          "value": 51.9,
+          "subject": "Pick 9",
+          "href": "/seasons/2026/draft",
+          "detail": "98-91 over 14 drafts — average finish 6.6 of 12, best 1 of 12 in 2015"
+        },
+        {
+          "value": 51.6,
+          "subject": "Pick 4",
+          "href": "/seasons/2026/draft",
+          "detail": "97-91-1 over 14 drafts — average finish 5.7 of 12, best 1 of 12 in 2019"
+        },
+        {
+          "value": 50.8,
+          "subject": "Pick 8",
+          "href": "/seasons/2026/draft",
+          "detail": "96-93 over 14 drafts — average finish 6.5 of 12, best 1 of 12 in 2014"
+        },
+        {
+          "value": 49.5,
+          "subject": "Pick 2",
+          "href": "/seasons/2026/draft",
+          "detail": "93-95-1 over 14 drafts — average finish 7.0 of 12, best 1 of 12 in 2025"
+        },
+        {
+          "value": 48.7,
+          "subject": "Pick 3",
+          "href": "/seasons/2026/draft",
+          "detail": "92-97 over 14 drafts — average finish 6.7 of 12, best 1 of 12 in 2023"
+        },
+        {
+          "value": 48.1,
+          "subject": "Pick 10",
+          "href": "/seasons/2026/draft",
+          "detail": "91-98 over 14 drafts — average finish 7.1 of 12, best 2 of 10 in 2012"
+        },
+        {
+          "value": 47.2,
+          "subject": "Pick 11",
+          "href": "/seasons/2026/draft",
+          "detail": "76-85 over 12 drafts — average finish 7.0 of 12, best 2 of 12 in 2024"
+        },
+        {
+          "value": 37.9,
+          "subject": "Pick 12",
+          "href": "/seasons/2026/draft",
+          "detail": "61-100 over 12 drafts — average finish 9.0 of 12, best 3 of 12 in 2019"
+        }
+      ]
+    },
+    {
+      "id": "most-drafted-players",
+      "label": "Drafted again and again",
+      "description": "The players this league keeps going back to, across every draft from 2012 on. Counts picks, not seasons rostered — and includes the draft just gone.",
+      "scope": "player",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 536,
+      "entries": [
+        {
+          "value": 13,
+          "subject": "Aaron Rodgers",
+          "href": "/players/96",
+          "detail": "13 times, 2012-2025, by 11 different managers — brock took him 2x"
+        },
+        {
+          "value": 13,
+          "subject": "Mike Evans",
+          "href": "/players/2216",
+          "detail": "13 times, 2014-2026, by 8 different managers — hadkiss took him 3x"
+        },
+        {
+          "value": 12,
+          "subject": "Tom Brady",
+          "href": "/players/167",
+          "detail": "12 times, 2012-2025, by 6 different managers — jay took him 4x"
+        },
+        {
+          "value": 12,
+          "subject": "DeAndre Hopkins",
+          "href": "/players/1426",
+          "detail": "12 times, 2013-2024, by 8 different managers — htc took him 3x"
+        },
+        {
+          "value": 12,
+          "subject": "Justin Tucker",
+          "href": "/players/1264",
+          "detail": "12 times, 2013-2024, by 8 different managers — hadkiss took him 3x"
+        },
+        {
+          "value": 12,
+          "subject": "Travis Kelce",
+          "href": "/players/1466",
+          "detail": "12 times, 2015-2026, by 6 different managers — jay took him 3x"
+        },
+        {
+          "value": 11,
+          "subject": "Julio Jones",
+          "href": "/players/947",
+          "detail": "11 times, 2012-2022, by 8 different managers — fin took him 2x"
+        },
+        {
+          "value": 11,
+          "subject": "Russell Wilson",
+          "href": "/players/1234",
+          "detail": "11 times, 2012-2022, by 7 different managers — dix took him 2x"
+        },
+        {
+          "value": 11,
+          "subject": "Houston Texans",
+          "href": "/players/HOU",
+          "detail": "11 times, 2012-2026, by 9 different managers — brock took him 3x"
+        },
+        {
+          "value": 11,
+          "subject": "Denver Broncos",
+          "href": "/players/DEN",
+          "detail": "11 times, 2013-2026, by 7 different managers — htc took him 3x"
+        },
+        {
+          "value": 11,
+          "subject": "Keenan Allen",
+          "href": "/players/1479",
+          "detail": "11 times, 2014-2024, by 7 different managers — jay took him 3x"
+        },
+        {
+          "value": 11,
+          "subject": "Brandin Cooks",
+          "href": "/players/2197",
+          "detail": "11 times, 2014-2024, by 6 different managers — ant took him 5x"
+        },
+        {
+          "value": 11,
+          "subject": "Davante Adams",
+          "href": "/players/2133",
+          "detail": "11 times, 2015-2026, by 6 different managers — ant took him 4x"
+        },
+        {
+          "value": 11,
+          "subject": "Derrick Henry",
+          "href": "/players/3198",
+          "detail": "11 times, 2016-2026, by 7 different managers — fin took him 3x"
+        },
+        {
+          "value": 11,
+          "subject": "Stefon Diggs",
+          "href": "/players/2449",
+          "detail": "11 times, 2016-2026, by 9 different managers — ant took him 2x"
+        },
+        {
+          "value": 10,
+          "subject": "Drew Brees",
+          "href": "/players/289",
+          "detail": "10 times, 2012-2022, by 7 different managers — kitch took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Matthew Stafford",
+          "href": "/players/421",
+          "detail": "10 times, 2012-2026, by 6 different managers — rich took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Mark Ingram",
+          "href": "/players/956",
+          "detail": "10 times, 2012-2022, by 6 different managers — fin took him 4x"
+        },
+        {
+          "value": 10,
+          "subject": "Baltimore Ravens",
+          "href": "/players/BAL",
+          "detail": "10 times, 2012-2026, by 5 different managers — hadkiss took him 4x"
+        },
+        {
+          "value": 10,
+          "subject": "New England Patriots",
+          "href": "/players/NE",
+          "detail": "10 times, 2012-2026, by 8 different managers — ant took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Los Angeles Rams",
+          "href": "/players/LAR",
+          "detail": "10 times, 2013-2026, by 7 different managers — ant took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Odell Beckham",
+          "href": "/players/2078",
+          "detail": "10 times, 2014-2026, by 7 different managers — sol took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Amari Cooper",
+          "href": "/players/2309",
+          "detail": "10 times, 2015-2024, by 7 different managers — fin took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Christian McCaffrey",
+          "href": "/players/4034",
+          "detail": "10 times, 2017-2026, by 5 different managers — rich took him 3x"
+        },
+        {
+          "value": 10,
+          "subject": "Alvin Kamara",
+          "href": "/players/4035",
+          "detail": "10 times, 2017-2026, by 9 different managers — ant took him 2x"
+        }
+      ]
+    },
+    {
+      "id": "one-that-got-away",
+      "label": "The one that got away",
+      "description": "Players who were drafted by one manager and spent the season scoring for somebody else. Ranked by the points they put up after they left.",
+      "scope": "league",
+      "format": "points",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [
+        2019
+      ],
+      "total": 886,
+      "entries": [
+        {
+          "value": 407.4,
+          "subject": "Lamar Jackson",
+          "href": "/players/4881",
+          "detail": "thd drafted him in round 4 of 2024 and got 0.0 pts — hadkiss got 407.4",
+          "year": 2024
+        },
+        {
+          "value": 316.5,
+          "subject": "Cam Newton",
+          "href": "/players/954",
+          "detail": "kitch drafted him in round 8 of 2015 and got 39.9 pts — ant got 316.5",
+          "year": 2015
+        },
+        {
+          "value": 313.1,
+          "subject": "Josh Allen",
+          "href": "/players/4984",
+          "detail": "jay drafted him in round 10 of 2020 and got 62.7 pts — sol got 313.1",
+          "year": 2020
+        },
+        {
+          "value": 294.3,
+          "subject": "Bo Nix",
+          "href": "/players/11563",
+          "detail": "htc drafted him in round 7 of 2025 and got 0.0 pts — 294.3 went to 3 other teams, most of it sol's (157.6)",
+          "year": 2025
+        },
+        {
+          "value": 294.1,
+          "subject": "Drake Maye",
+          "href": "/players/11564",
+          "detail": "thd drafted him in round 13 of 2025 and got 14.8 pts — jay got 294.1",
+          "year": 2025
+        },
+        {
+          "value": 292.1,
+          "subject": "Tom Brady",
+          "href": "/players/167",
+          "detail": "sol drafted him in round 5 of 2015 and got 27.6 pts — 292.1 went to 4 other teams, most of it kitch's (100.2)",
+          "year": 2015
+        },
+        {
+          "value": 282.1,
+          "subject": "Jonathan Taylor",
+          "href": "/players/6813",
+          "detail": "thd drafted him in round 1 of 2021 and got 41.5 pts — jay got 282.1",
+          "year": 2021
+        },
+        {
+          "value": 281.4,
+          "subject": "Carson Palmer",
+          "href": "/players/91",
+          "detail": "hadkiss drafted him in round 13 of 2015 and got 0.0 pts — 281.4 went to 2 other teams, most of it thd's (255.7)",
+          "year": 2015
+        },
+        {
+          "value": 265.6,
+          "subject": "Matt Ryan",
+          "href": "/players/24",
+          "detail": "sol drafted him in round 13 of 2018 and got 8.8 pts — 265.6 went to 2 other teams, most of it jay's (154.3)",
+          "year": 2018
+        },
+        {
+          "value": 261.1,
+          "subject": "Philip Rivers",
+          "href": "/players/331",
+          "detail": "chris drafted him in round 11 of 2018 and got 0.0 pts — sol got 261.1",
+          "year": 2018
+        },
+        {
+          "value": 259.9,
+          "subject": "Philip Rivers",
+          "href": "/players/331",
+          "detail": "ant drafted him in round 11 of 2015 and got 0.0 pts — hadkiss got 259.9",
+          "year": 2015
+        },
+        {
+          "value": 256.9,
+          "subject": "Cam Newton",
+          "href": "/players/954",
+          "detail": "kitch drafted him in round 8 of 2017 and got 0.0 pts — 256.9 went to 3 other teams, most of it thd's (123.8)",
+          "year": 2017
+        },
+        {
+          "value": 256.9,
+          "subject": "Alvin Kamara",
+          "href": "/players/4035",
+          "detail": "chris drafted him in round 1 of 2018 and got 0.0 pts — thd got 256.9",
+          "year": 2018
+        },
+        {
+          "value": 255.3,
+          "subject": "Aaron Rodgers",
+          "href": "/players/96",
+          "detail": "dix drafted him in round 2 of 2015 and got 23.1 pts — 255.3 went to 2 other teams, most of it brock's (198.1)",
+          "year": 2015
+        },
+        {
+          "value": 248.9,
+          "subject": "Saquon Barkley",
+          "href": "/players/4866",
+          "detail": "thd drafted him in round 1 of 2018 and got 0.0 pts — 248.9 went to 2 other teams, most of it sol's (155.6)",
+          "year": 2018
+        },
+        {
+          "value": 243.5,
+          "subject": "Matthew Stafford",
+          "href": "/players/421",
+          "detail": "dix drafted him in round 14 of 2016 and got 0.0 pts — hadkiss got 243.5",
+          "year": 2016
+        },
+        {
+          "value": 242.8,
+          "subject": "Ezekiel Elliott",
+          "href": "/players/3164",
+          "detail": "fin drafted him in round 1 of 2016 and got 39.9 pts — jay got 242.8",
+          "year": 2016
+        },
+        {
+          "value": 232.9,
+          "subject": "Tom Brady",
+          "href": "/players/167",
+          "detail": "jay drafted him in round 8 of 2016 and got 0.0 pts — htc got 232.9",
+          "year": 2016
+        },
+        {
+          "value": 231.2,
+          "subject": "Russell Wilson",
+          "href": "/players/1234",
+          "detail": "thd drafted him in round 5 of 2017 and got 96.3 pts — nick got 231.2",
+          "year": 2017
+        },
+        {
+          "value": 229.9,
+          "subject": "Russell Wilson",
+          "href": "/players/1234",
+          "detail": "htc drafted him in round 4 of 2016 and got 23.5 pts — sol got 229.9",
+          "year": 2016
+        },
+        {
+          "value": 228.6,
+          "subject": "Lamar Jackson",
+          "href": "/players/4881",
+          "detail": "sol drafted him in round 3 of 2020 and got 45.1 pts — 228.6 went to 2 other teams, most of it thd's (132.8)",
+          "year": 2020
+        },
+        {
+          "value": 225.8,
+          "subject": "Austin Ekeler",
+          "href": "/players/4663",
+          "detail": "thd drafted him in round 1 of 2022 and got 21.9 pts — 225.8 went to 2 other teams, most of it dix's (196.9)",
+          "year": 2022
+        },
+        {
+          "value": 219.8,
+          "subject": "Christian McCaffrey",
+          "href": "/players/4034",
+          "detail": "jay drafted him in round 1 of 2025 and got 65.0 pts — dix got 219.8",
+          "year": 2025
+        },
+        {
+          "value": 219.6,
+          "subject": "Cam Newton",
+          "href": "/players/954",
+          "detail": "dix drafted him in round 5 of 2013 and got 58.9 pts — thd got 219.6",
+          "year": 2013
+        },
+        {
+          "value": 217.1,
+          "subject": "Bijan Robinson",
+          "href": "/players/9509",
+          "detail": "dix drafted him in round 1 of 2025 and got 70.4 pts — 217.1 went to 2 other teams, most of it htc's (150.9)",
+          "year": 2025
+        }
+      ]
+    },
+    {
+      "id": "trade-ledger",
+      "label": "Trade ledger",
+      "description": "Every trade, settled. Each side is worth the points its players went on to score from the week the trade took effect to the end of that season, so the two halves always cancel out: one manager's +200 is the other's -200. It scores the players, not the lineups — benching what you just traded for is a separate argument. Trades involving draft picks or FAAB are left out, because there is no honest points value for a future pick.",
+      "scope": "league",
+      "format": "points",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 763,
+      "entries": [
+        {
+          "value": 460.2,
+          "subject": "jay",
+          "href": "/seasons/2013/trades",
+          "detail": "2013 Week 7: got Josh Gordon (162.1) + Zac Stacy (136.4) + Keenan Allen (94.5) + Stevan Ridley (68.3); gave Arian Foster (1.1) to thd",
+          "year": 2013,
+          "week": 7
+        },
+        {
+          "value": 348.4,
+          "subject": "jay",
+          "href": "/seasons/2021/trades",
+          "detail": "2021 Week 5: got Jonathan Taylor (282.1) + Mike Evans (127.6); gave Saquon Barkley (53.1) + Henry Ruggs (8.2) to thd",
+          "year": 2021,
+          "week": 5
+        },
+        {
+          "value": 337.5,
+          "subject": "dix",
+          "href": "/seasons/2017/trades",
+          "detail": "2017 Week 1: got Cam Newton (256.9) + Tevin Coleman (133.8); gave Andy Dalton (53.4) + Darren McFadden (-0.2) to kitch",
+          "year": 2017,
+          "week": 1
+        },
+        {
+          "value": 315.7,
+          "subject": "thd",
+          "href": "/seasons/2021/trades",
+          "detail": "2021 Week 5: got Deebo Samuel (171.1) + Ja'Marr Chase (167.5) + Darrell Henderson (93.9); gave A.J. Green (63.7) + Saquon Barkley (53.1) to hadkiss",
+          "year": 2021,
+          "week": 5
+        },
+        {
+          "value": 256.9,
+          "subject": "thd",
+          "href": "/seasons/2018/trades",
+          "detail": "2018 Week 1: got Alvin Kamara (256.9); gave Le'Veon Bell (0.0) to chris",
+          "year": 2018,
+          "week": 1
+        },
+        {
+          "value": 247.5,
+          "subject": "dix",
+          "href": "/seasons/2022/trades",
+          "detail": "2022 Week 5: got Austin Ekeler (209.9) + Rhamondre Stevenson (139.1) + Khalil Herbert (47.4); gave Dameon Pierce (88.8) + Melvin Gordon (41.3) + Clyde Edwards-Helaire (18.8) to jay",
+          "year": 2022,
+          "week": 5
+        },
+        {
+          "value": 233.4,
+          "subject": "nick",
+          "href": "/seasons/2017/trades",
+          "detail": "2017 Week 7: got Russell Wilson (231.2) + Alshon Jeffery (81.5); gave A.J. Green (79.3) to thd",
+          "year": 2017,
+          "week": 7
+        },
+        {
+          "value": 232.44,
+          "subject": "sol",
+          "href": "/seasons/2025/trades",
+          "detail": "2025 Week 2: got Caleb Williams (275.4) + Keon Coleman (16.5); gave Kyler Murray (59.5) to thd",
+          "year": 2025,
+          "week": 2
+        },
+        {
+          "value": 222.72,
+          "subject": "ant",
+          "href": "/seasons/2020/trades",
+          "detail": "2020 Week 5: got James Robinson (138.8) + Melvin Gordon (94.8) + Jamison Crowder (82.0); gave Clyde Edwards-Helaire (90.7) + Darrel Williams (2.2) to thd",
+          "year": 2020,
+          "week": 5
+        },
+        {
+          "value": 221.2,
+          "subject": "ant",
+          "href": "/seasons/2016/trades",
+          "detail": "2016 Week 5: got Jordan Howard (162.1) + DeSean Jackson (74.6); gave Eddie Lacy (15.5) to thd",
+          "year": 2016,
+          "week": 5
+        },
+        {
+          "value": 220.8,
+          "subject": "sol",
+          "href": "/seasons/2018/trades",
+          "detail": "2018 Week 1: got Saquon Barkley (248.9) + JuJu Smith-Schuster (151.2); gave Adrian Peterson (161.9) + Jamison Crowder (17.4) + Le'Veon Bell (0.0) to thd",
+          "year": 2018,
+          "week": 1
+        },
+        {
+          "value": 220.6,
+          "subject": "dix",
+          "href": "/seasons/2018/trades",
+          "detail": "2018 Week 3: got Davante Adams (177.3) + Kenny Golladay (110.3); gave Rob Gronkowski (64.0) + Brandon Marshall (3.0) to hadkiss",
+          "year": 2018,
+          "week": 3
+        },
+        {
+          "value": 205.26,
+          "subject": "htc",
+          "href": "/seasons/2022/trades",
+          "detail": "2022 Week 4: got Derrick Henry (220.0); gave Dontrell Hilliard (14.7) to sol",
+          "year": 2022,
+          "week": 4
+        },
+        {
+          "value": 197.3,
+          "subject": "dix",
+          "href": "/seasons/2025/trades",
+          "detail": "2025 Week 5: got Christian McCaffrey (243.9) + Jameson Williams (120.1) + Tucker Kraft (50.4); gave Bijan Robinson (217.1) to jay",
+          "year": 2025,
+          "week": 5
+        },
+        {
+          "value": 195.02,
+          "subject": "dix",
+          "href": "/seasons/2024/trades",
+          "detail": "2024 Week 9: got Sam Darnold (142.6) + Kareem Hunt (73.6) + Breece Hall (72.3); gave Tank Dell (51.1) + Kenneth Walker (42.4) + Zack Moss (0.0) to jay",
+          "year": 2024,
+          "week": 9
+        },
+        {
+          "value": 192.32,
+          "subject": "ant",
+          "href": "/seasons/2018/trades",
+          "detail": "2018 Week 6: got Ben Roethlisberger (205.5); gave Ricky Seals-Jones (13.2) to thd",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 190.62,
+          "subject": "jay",
+          "href": "/seasons/2018/trades",
+          "detail": "2018 Week 5: got Deshaun Watson (201.6); gave Keelan Cole (11.0) to chris",
+          "year": 2018,
+          "week": 5
+        },
+        {
+          "value": 189.02,
+          "subject": "fin",
+          "href": "/seasons/2015/trades",
+          "detail": "2015 Week 3: got Marcus Mariota (147.5) + Karlos Williams (83.4); gave Kendall Wright (38.1) + Knile Davis (3.8) to thd",
+          "year": 2015,
+          "week": 3
+        },
+        {
+          "value": 187.2,
+          "subject": "jay",
+          "href": "/seasons/2016/trades",
+          "detail": "2016 Week 2: got Devonta Freeman (170.9) + Tevin Coleman (129.9) + Jarvis Landry (109.5); gave Mike Wallace (105.3) + Travis Benjamin (60.1) + Doug Martin (57.7) to ant",
+          "year": 2016,
+          "week": 2
+        },
+        {
+          "value": 185.8,
+          "subject": "jay",
+          "href": "/seasons/2022/trades",
+          "detail": "2022 Week 3: got Austin Ekeler (244.1) + Rhamondre Stevenson (164.1); gave Aaron Jones (148.2) + J.K. Dobbins (74.2) to thd",
+          "year": 2022,
+          "week": 3
+        },
+        {
+          "value": 183.36,
+          "subject": "sol",
+          "href": "/seasons/2015/trades",
+          "detail": "2015 Week 2: got Aaron Rodgers (255.3) + Donte Moncrief (74.9) + Phillip Dorsett (13.9); gave Andrew Luck (113.1) + Tevin Coleman (31.1) + Tyler Lockett (16.5) to dix",
+          "year": 2015,
+          "week": 2
+        },
+        {
+          "value": 180.76,
+          "subject": "dix",
+          "href": "/seasons/2013/trades",
+          "detail": "2013 Week 4: got Tony Romo (209.9) + Knowshon Moreno (190.5); gave Cam Newton (219.6) to thd",
+          "year": 2013,
+          "week": 4
+        },
+        {
+          "value": 177.34,
+          "subject": "sol",
+          "href": "/seasons/2023/trades",
+          "detail": "2023 Week 11: got Brock Purdy (133.7) + Jaylen Warren (62.2); gave Rhamondre Stevenson (18.6) to jay",
+          "year": 2023,
+          "week": 11
+        },
+        {
+          "value": 177.3,
+          "subject": "dix",
+          "href": "/seasons/2023/trades",
+          "detail": "2023 Week 2: got Kenneth Walker (155.6) + Cooper Kupp (105.4); gave Dameon Pierce (55.3) + Miles Sanders (28.4) to jay",
+          "year": 2023,
+          "week": 2
+        },
+        {
+          "value": 177.16,
+          "subject": "sol",
+          "href": "/seasons/2016/trades",
+          "detail": "2016 Week 3: got Russell Wilson (229.9) + Jeremy Hill (140.3) + Demaryius Thomas (106.7); gave Tyrell Williams (119.7) + Allen Robinson (105.5) + Chris Ivory (74.5) to htc",
+          "year": 2016,
+          "week": 3
+        }
+      ]
+    },
+    {
+      "id": "waiver-hit-rate",
+      "label": "Waiver wire hit rate",
+      "description": "Points started per pickup: everything a manager has claimed off waivers or free agency, scored on what it actually put in his starting lineup afterwards. Volume is not the same as value — the league's busiest wire worker is also its least productive per move. Covers 2020 onwards, seven of the fifteen seasons: 2012-2019 were re-entered by hand when the league left NFL.com and only the trades survived, so there is no add/drop record at all for those years. That is why this is a rate and not a total — a career count would just reward whoever arrived after the gap.",
+      "scope": "manager",
+      "format": "points",
+      "direction": "high",
+      "excluded": [
+        2019
+      ],
+      "caveat": [],
+      "total": 13,
+      "entries": [
+        {
+          "value": 20.61,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "103 pickups, 2122.3 points started (2965.8 rostered); best Ryan Tannehill (172.4 started, 2020)"
+        },
+        {
+          "value": 18.22,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "124 pickups, 2259.1 points started (3399.0 rostered); best Chris Boswell (141.0 started, 2024)"
+        },
+        {
+          "value": 16.26,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "109 pickups, 1772.7 points started (2565.9 rostered); best Justin Herbert (277.6 started, 2020)"
+        },
+        {
+          "value": 14.95,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "131 pickups, 1958.4 points started (3221.7 rostered); best Nick Folk (98.0 started, 2022)"
+        },
+        {
+          "value": 11.91,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "103 pickups, 1226.2 points started (2622.1 rostered); best Dustin Hopkins (88.1 started, 2021)"
+        },
+        {
+          "value": 11.67,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "300 pickups, 3502.0 points started (5731.6 rostered); best Matthew Stafford (287.9 started, 2021)"
+        },
+        {
+          "value": 10.56,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "201 pickups, 2122.3 points started (3146.7 rostered); best Dak Prescott (277.4 started, 2023)"
+        },
+        {
+          "value": 10,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "237 pickups, 2370.6 points started (3742.6 rostered); best Dak Prescott (145.6 started, 2022)"
+        },
+        {
+          "value": 9.67,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "224 pickups, 2166.6 points started (3390.9 rostered); best Jason Myers (122.0 started, 2025)"
+        },
+        {
+          "value": 8.75,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "98 pickups, 857.1 points started (1446.8 rostered); best Matt Gay (139.7 started, 2021)"
+        },
+        {
+          "value": 8.32,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "329 pickups, 2736.2 points started (4682.9 rostered); best Brock Purdy (171.4 started, 2024)"
+        },
+        {
+          "value": 7.39,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "290 pickups, 2142.0 points started (3735.0 rostered); best Drake Maye (282.0 started, 2025)"
+        },
+        {
+          "value": 5.27,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "450 pickups, 2372.6 points started (4577.6 rostered); best Chris Boswell (82.6 started, 2021)"
+        }
+      ]
+    },
+    {
+      "id": "roster-churn",
+      "label": "Most churned roster",
+      "description": "Completed moves by one manager in one season — every add, every drop, every trade he was part of. Commissioner corrections do not count. Only 2020 onwards appears, and deliberately so: churn is mostly waiver and free-agent activity, and the hand-entered 2012-2019 seasons kept their trades and nothing else. Listing those years would show eight quiet seasons where really there is no record.",
+      "scope": "season",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 81,
+      "entries": [
+        {
+          "value": 248,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2020: 139 adds, 159 drops, 7 trades",
+          "year": 2020
+        },
+        {
+          "value": 182,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2022: 98 adds, 101 drops, 18 trades",
+          "year": 2022
+        },
+        {
+          "value": 140,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2020: 91 adds, 96 drops, 21 trades",
+          "year": 2020
+        },
+        {
+          "value": 133,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2023: 74 adds, 79 drops, 13 trades",
+          "year": 2023
+        },
+        {
+          "value": 128,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2025: 73 adds, 82 drops, 9 trades",
+          "year": 2025
+        },
+        {
+          "value": 126,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2024: 84 adds, 85 drops, 31 trades",
+          "year": 2024
+        },
+        {
+          "value": 122,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2020: 83 adds, 81 drops, 22 trades",
+          "year": 2020
+        },
+        {
+          "value": 121,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2021: 78 adds, 85 drops, 2 trades",
+          "year": 2021
+        },
+        {
+          "value": 119,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2024: 69 adds, 73 drops, 12 trades",
+          "year": 2024
+        },
+        {
+          "value": 100,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2020: 80 adds, 79 drops, 9 trades",
+          "year": 2020
+        },
+        {
+          "value": 98,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2023: 57 adds, 59 drops, 30 trades",
+          "year": 2023
+        },
+        {
+          "value": 97,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2025: 68 adds, 66 drops, 16 trades",
+          "year": 2025
+        },
+        {
+          "value": 96,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2023: 72 adds, 76 drops, 10 trades",
+          "year": 2023
+        },
+        {
+          "value": 95,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "2020: 63 adds, 62 drops, 5 trades",
+          "year": 2020
+        },
+        {
+          "value": 93,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "2020: 62 adds, 62 drops, 17 trades",
+          "year": 2020
+        },
+        {
+          "value": 89,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2022: 61 adds, 63 drops, 22 trades",
+          "year": 2022
+        },
+        {
+          "value": 88,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2022: 60 adds, 60 drops, 18 trades",
+          "year": 2022
+        },
+        {
+          "value": 87,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2022: 72 adds, 71 drops, 12 trades",
+          "year": 2022
+        },
+        {
+          "value": 85,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2023: 59 adds, 53 drops, 20 trades",
+          "year": 2023
+        },
+        {
+          "value": 78,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2024: 49 adds, 49 drops, 26 trades",
+          "year": 2024
+        },
+        {
+          "value": 74,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2021: 47 adds, 49 drops, 17 trades",
+          "year": 2021
+        },
+        {
+          "value": 71,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "2021: 59 adds, 59 drops, 3 trades",
+          "year": 2021
+        },
+        {
+          "value": 71,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "2025: 41 adds, 43 drops, 16 trades",
+          "year": 2025
+        },
+        {
+          "value": 70,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2021: 53 adds, 53 drops, 10 trades",
+          "year": 2021
+        },
+        {
+          "value": 68,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2025: 63 adds, 63 drops, 2 trades",
+          "year": 2025
+        }
+      ]
+    },
+    {
+      "id": "on-this-day",
+      "label": "On this day in Chumbo history",
+      "description": "The same week of the season, in every year before this one. The week is read off the latest result in the data, so this moves on by itself as the season does.",
+      "scope": "league",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 82,
+      "entries": [
+        {
+          "value": 2025,
+          "subject": "ant",
+          "href": "/seasons/2025/matchups/1/4",
+          "detail": "2025 · ant beat fin, 114.58–101.62 — the highest-scoring game of the week, 216.20 between them",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 2025,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/1/1",
+          "detail": "2025 · htc beat kitch, 100.16–71.62",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 2025,
+          "subject": "rich",
+          "href": "/seasons/2025/matchups/1/2",
+          "detail": "2025 · rich beat dix, 86.02–76.24",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 2025,
+          "subject": "sol",
+          "href": "/seasons/2025/matchups/1/3",
+          "detail": "2025 · sol beat hadkiss, 83.92–68.48",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 2025,
+          "subject": "brock",
+          "href": "/seasons/2025/matchups/1/5",
+          "detail": "2025 · brock beat thd, 87.38–60.42",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 2025,
+          "subject": "jay",
+          "href": "/seasons/2025/matchups/1/6",
+          "detail": "2025 · jay beat ryan, 85.96–51.72",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 2024,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/1/6",
+          "detail": "2024 · rich beat kitch, 108.94–88.76 — the highest-scoring game of the week, 197.70 between them",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 2024,
+          "subject": "ryan",
+          "href": "/seasons/2024/matchups/1/2",
+          "detail": "2024 · ryan beat htc, 113.22–81.88",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 2024,
+          "subject": "hadkiss",
+          "href": "/seasons/2024/matchups/1/5",
+          "detail": "2024 · hadkiss beat sol, 115.62–79.46",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 2024,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/1/1",
+          "detail": "2024 · thd beat dix, 102.38–85.58",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 2024,
+          "subject": "brock",
+          "href": "/seasons/2024/matchups/1/3",
+          "detail": "2024 · brock beat jay, 92.58–90.82 — the closest game of the week, by 1.76",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 2024,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/1/4",
+          "detail": "2024 · ant beat fin, 101.96–64.48",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 2023,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/1/6",
+          "detail": "2023 · ryan beat brock, 121.56–92.58 — the highest-scoring game of the week, 214.14 between them",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 2023,
+          "subject": "jay",
+          "href": "/seasons/2023/matchups/1/3",
+          "detail": "2023 · jay beat fin, 107.44–90.54",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 2023,
+          "subject": "rich",
+          "href": "/seasons/2023/matchups/1/1",
+          "detail": "2023 · rich beat thd, 96.30–75.86",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 2023,
+          "subject": "dix",
+          "href": "/seasons/2023/matchups/1/2",
+          "detail": "2023 · dix beat htc, 85.76–77.54",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 2023,
+          "subject": "ant",
+          "href": "/seasons/2023/matchups/1/4",
+          "detail": "2023 · ant beat kitch, 85.74–74.92",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 2023,
+          "subject": "hadkiss",
+          "href": "/seasons/2023/matchups/1/5",
+          "detail": "2023 · hadkiss beat sol, 99.24–59.78",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 2022,
+          "subject": "htc",
+          "href": "/seasons/2022/matchups/1/1",
+          "detail": "2022 · htc beat thd, 126.08–90.16 — the highest-scoring game of the week, 216.24 between them",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 2022,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/1/2",
+          "detail": "2022 · hadkiss beat kitch, 111.96–79.78",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 2022,
+          "subject": "ryan",
+          "href": "/seasons/2022/matchups/1/3",
+          "detail": "2022 · ryan beat jay, 118.00–66.12",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 2022,
+          "subject": "fin",
+          "href": "/seasons/2022/matchups/1/5",
+          "detail": "2022 · fin beat sol, 96.02–86.50",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 2022,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/1/6",
+          "detail": "2022 · dix beat rich, 117.30–63.80 — the heaviest beating of the week, by 53.50",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 2022,
+          "subject": "brock",
+          "href": "/seasons/2022/matchups/1/4",
+          "detail": "2022 · brock beat ant, 81.32–75.12",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 2021,
+          "subject": "htc",
+          "href": "/seasons/2021/matchups/1/2",
+          "detail": "2021 · htc beat jay, 113.30–99.76 — the highest-scoring game of the week, 213.06 between them",
+          "year": 2021,
+          "week": 1
+        }
+      ]
+    },
+    {
+      "id": "manager-archetypes",
+      "label": "Manager archetypes",
+      "description": "What fifteen years of results say about each manager, in one phrase. Every label is the measure that manager is furthest from the league average on — narrow losses, how far their scores swing, how much the schedule has flattered them — and the number behind it is in the line. Managers with fewer than 40 games are left out.",
+      "scope": "manager",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 14,
+      "entries": [
+        {
+          "value": 2.55,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "The Cat Burglar — 25 wins by under five points, most in the league — wins nothing by a distance and everything by a whisker"
+        },
+        {
+          "value": 2.31,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "The Heartbreaker — 23 losses by under five points, most in the league"
+        },
+        {
+          "value": 2.22,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "The Punchbag — loses by 29.6 points on average, the largest in the league — which is not losing so much as being disposed of"
+        },
+        {
+          "value": 1.78,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "The Metronome — scores swing by only ±18.1 points week to week, the narrowest in the league — the same thing, every Sunday, forever"
+        },
+        {
+          "value": 1.68,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "The Trapdoor — 32 weeks spent in the bottom tenth of every score this league has ever posted, most in the league"
+        },
+        {
+          "value": 1.68,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "The Closer — 35% through Week 6, 53% from Week 9 — a surge of 18 percentage points, the steepest surge in the league"
+        },
+        {
+          "value": 1.58,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "The Machine — 100.6 points a week across a whole career, the highest average in the league"
+        },
+        {
+          "value": 1.57,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "The Rollercoaster — scores swing by ±23.1 points week to week, the widest in the league — nobody, himself included, knows which team turns up"
+        },
+        {
+          "value": 1.48,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "The Anchor — 87.0 points a week across a whole career, the lowest average in the league — a fixture everyone else pencils in as a win"
+        },
+        {
+          "value": 1.43,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "The Bully — wins by 28.2 points on average, 2nd of 14 in the league — does not so much win as make a point"
+        },
+        {
+          "value": 1.28,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "The Firework — a career-best 171.48 in 2015 Week 9, 2nd of 14 in the league — and has been telling everyone about it ever since"
+        },
+        {
+          "value": 1.11,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "The September Hero — 51% through Week 6, 40% from Week 9 — a fade of 11 percentage points, 3rd of 14 in the league"
+        },
+        {
+          "value": 1,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "The Fraud — wins 53% of his regular-season games on scores that beat only 51% of the league — 2.0 percentage points of pure fixture luck, 3rd of 14 in the league"
+        },
+        {
+          "value": 0.69,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "The Iron Man — 221 games played, 4th of 14 in the league — has outlasted managers, teams and at least one league format"
+        }
+      ]
+    },
+    {
+      "id": "championship-inevitability",
+      "label": "When the title was decided",
+      "description": "Looking back at each championship: the week after which the eventual champion never again fell out of the top half of the playoff places — the top three of six, or the top two of four in the early years. Ranked on the standings after every week, by record then points scored. The earlier the week, the less doubt there ever was; 'never' means they were still outside that group on the last day and won it regardless.",
+      "scope": "season",
+      "format": "count",
+      "direction": "low",
+      "excluded": [],
+      "caveat": [],
+      "total": 14,
+      "entries": [
+        {
+          "value": 1,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/16/4",
+          "detail": "2018 · Week 1 — jay never left the top 3 again, finished 1st at 12-1, and won the final by 12.50 against sol",
+          "year": 2018,
+          "week": 1
+        },
+        {
+          "value": 6,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/17/1",
+          "detail": "2024 · Week 6 — thd was 6th after Week 5, then never left the top 3 again, finished 3rd at 9-5, and won the final by 40.92 against rich",
+          "year": 2024,
+          "week": 6
+        },
+        {
+          "value": 7,
+          "subject": "ant",
+          "href": "/seasons/2021/matchups/17/1",
+          "detail": "2021 · Week 7 — ant was 4th after Week 6, then never left the top 3 again, finished 1st at 10-4, and won the final by 41.12 against dix",
+          "year": 2021,
+          "week": 7
+        },
+        {
+          "value": 8,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/16/4",
+          "detail": "2019 · Week 8 — jay was 5th after Week 7, then never left the top 3 again, finished 3rd at 8-5, and won the final by 46.92 against nick",
+          "year": 2019,
+          "week": 8
+        },
+        {
+          "value": 8,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/17/1",
+          "detail": "2022 · Week 8 — dix was 4th after Week 7, then never left the top 3 again, finished 1st at 11-3, and won the final by 34.46 against htc",
+          "year": 2022,
+          "week": 8
+        },
+        {
+          "value": 9,
+          "subject": "dix",
+          "href": "/seasons/2017/matchups/16/4",
+          "detail": "2017 · Week 9 — dix was 4th after Week 8, then never left the top 3 again, finished 2nd at 9-4, and won the final by 7.78 against nick",
+          "year": 2017,
+          "week": 9
+        },
+        {
+          "value": 9,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/17/1",
+          "detail": "2023 · Week 9 — ryan was 4th after Week 8, then never left the top 3 again, finished 2nd at 9-5, and won the final by 0.72 against rich",
+          "year": 2023,
+          "week": 9
+        },
+        {
+          "value": 10,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/16/1",
+          "detail": "2020 · Week 10 — nick was 5th after Week 9, then never left the top 3 again, finished 2nd at 9-4, and won the final by 5.10 against thd",
+          "year": 2020,
+          "week": 10
+        },
+        {
+          "value": 14,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/17/1",
+          "detail": "2025 · Week 14 — htc was 4th after Week 13, then never left the top 3 again, finished 3rd at 8-6, and won the final by 24.24 against hadkiss",
+          "year": 2025,
+          "week": 14
+        },
+        {
+          "value": 16,
+          "subject": "dix",
+          "href": "/seasons/2012/matchups/16/3",
+          "detail": "2012 · never — dix was outside the top 2 right to the end of Week 14, finished 4th at 8-6, and then won the final by 2.68 against thd anyway",
+          "year": 2012,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/16/3",
+          "detail": "2013 · never — hadkiss was outside the top 2 right to the end of Week 14, finished 4th at 7-7, and then won the final by 10.02 against jay anyway",
+          "year": 2013,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/16/4",
+          "detail": "2014 · never — sol was outside the top 3 right to the end of Week 13, finished 5th at 7-6, and then won the final by 9.44 against kitch anyway",
+          "year": 2014,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/16/4",
+          "detail": "2015 · never — ant was outside the top 3 right to the end of Week 13, finished 4th at 8-5, and then won the final by 4.38 against htc anyway",
+          "year": 2015,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "fin",
+          "href": "/seasons/2016/matchups/16/4",
+          "detail": "2016 · never — fin was outside the top 3 right to the end of Week 13, finished 4th at 7-6, and then won the final by 3.58 against hadkiss anyway",
+          "year": 2016,
+          "week": 16
+        }
+      ]
+    }
+  ]
+}
