@@ -357,7 +357,7 @@ hardcoded in `DraftBoard`), and result colours (win/loss/tie).
 **Acceptance:** `grep -r "bg-white rounded-lg shadow" src/presentation` returns
 only the Card component.
 
-- [ ] B2
+- [x] B2
 
 ### B3 · `<DataTable>` `L`
 **Blocks:** B4, E8 · **Blocked by:** B1
@@ -378,7 +378,7 @@ tables **in one place** rather than twelve.
 **Acceptance:** every table on the site scrolls with its team column pinned on a
 375 px viewport · one sort-indicator implementation remains.
 
-- [ ] B3
+- [x] B3
 
 ### B4 · Semantic column types `M`
 **Blocked by:** B3
@@ -393,7 +393,7 @@ free — every table that uses them becomes linked automatically.
 
 **Acceptance:** no table declares its own alignment or cell link markup.
 
-- [ ] B4
+- [x] B4
 
 ---
 
@@ -510,12 +510,12 @@ manager, not the H2H page for the pairing, not that season's standings.
 Mechanical work, highest delight-per-hour on the list. `B4` does a chunk of it
 for free.
 
-- [ ] E1a DraftBoard
-- [ ] E1b MatchupDetail
-- [ ] E1c Trades / TradeCard / AllTimeTrades
-- [ ] E1d Player detail tables (Ownership, PlayerStats, DraftStats)
-- [ ] E1e Breakdown, PlayoffOdds, ScenarioPlanner, ManagerStatsCard
-- [ ] E1f hallOfFame, stats, players
+- [x] E1a DraftBoard
+- [x] E1b MatchupDetail
+- [x] E1c Trades / TradeCard / AllTimeTrades
+- [x] E1d Player detail tables (Ownership, PlayerStats, DraftStats)
+- [x] E1e Breakdown, PlayoffOdds, ScenarioPlanner, ManagerStatsCard
+- [x] E1f hallOfFame, stats, players
 
 ### E2 · Contextual "see also" rails `M`
 **Blocked by:** E1, C1
@@ -541,7 +541,7 @@ navigation addition available.** The search infrastructure already exists in
 Manager detail currently offers "← Back to Managers" and nothing else.
 `Seasons › 2024 › Week 8 › thd vs jay` is orientation and navigation at once.
 
-- [ ] E4
+- [x] E4
 
 ### E5 · Random matchup button `S`
 **Blocked by:** E1
@@ -945,11 +945,11 @@ The milestone that most changes how the site *feels*.
 |---|---|---|
 | ☑ | `B1` Tokens | M |
 | ☑ | `F2` Manager accent colours | S |
-| ☐ | `B2` Card primitive | S |
-| ☐ | `B3` DataTable | L |
-| ☐ | `B4` Semantic column types | M |
-| ☐ | `E1a–f` Link everything | L |
-| ☐ | `E4` Breadcrumbs | S |
+| ☑ | `B2` Card primitive | S |
+| ☑ | `B3` DataTable | L |
+| ☑ | `B4` Semantic column types | M |
+| ☑ | `E1a–f` Link everything | L |
+| ☑ | `E4` Breadcrumbs | S |
 
 **Milestone test:** every table sticky-scrolls on a phone; no dead-end components
 remain; the Draft Board is fully navigable.
