@@ -49,11 +49,20 @@ const BUDGET_KB = {
   // budget; H4 enforces it in CI" -- but 1220 left 254 kB of headroom, so a
   // 200 kB charting library would have passed this check without a murmur. The
   // budget only enforces the decision if it is set where the decision is.
-  // Raised from 1006 by G1. M6 added the command palette, the random-matchup
-  // picker, "on this day" and table URL state, which took the figure to 1002 --
-  // 4 kB of headroom, and the share cards still to come. The +25 below is
-  // workstream G's allowance, the same deal workstream D got.
-  total: 1030,
+  // Every JS chunk together, including the lazily-loaded routes and the
+  // per-season matchup (305) and transaction (243) chunks. Currently 1030.
+  //
+  // Raised from 1030 by D4, which landed the workstream's last chart and took
+  // the figure to exactly the ceiling -- the next byte would have failed a
+  // build for no reason anyone would have understood at the time. Moved here,
+  // deliberately, while the cause is known.
+  //
+  // What this number is FOR: catching a dependency nobody meant to add. It is
+  // not a per-feature allowance -- that experiment is what dragged the charts
+  // onto the critical path (see vite.config.ts) -- and it is not the figure
+  // that matters to a visitor, which is `initial` above. A 200 kB charting
+  // library or a moment.js still cannot hide from it at 1080.
+  total: 1080,
 };
 
 // D0's +40 kB chart allowance and G1's +25 kB share allowance are enforced by
