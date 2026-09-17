@@ -104,6 +104,12 @@ export interface StatEntry {
   href?: string;
   /** The context that makes it a story: "2019 Week 6 vs htc". */
   detail?: string;
+  /**
+   * True when this entry's value rests on reconstructed per-player data — set
+   * by the registry for stats that declare `allowsApproximateLineups`. The UI
+   * should mark these rather than hide them.
+   */
+  approximate?: boolean;
   year?: number;
   week?: number;
 }
@@ -127,5 +133,19 @@ export interface StatDefinition {
    * an inferred score cannot win "worst start/sit in Chumbo history".
    */
   requiresLineups?: boolean;
+  /**
+   * Set when the stat reads lineup data but a reconstruction is good enough for
+   * what it measures. Those seasons are included, and every entry from one is
+   * marked `approximate` so the UI can caveat it.
+   *
+   * The distinction is what the stat ranks. "Worst start/sit" ranks a single
+   * lineup decision, so one inferred score decides the record and 2019 must sit
+   * out. The draft stats rank a player's whole season on a roster, where 2019
+   * is within the normal spread of every season around it, and excluding it
+   * loses a whole draft to protect a number it would not have changed.
+   *
+   * Mutually exclusive with `requiresLineups`.
+   */
+  allowsApproximateLineups?: boolean;
   compute: (context: StatContext) => StatEntry[];
 }

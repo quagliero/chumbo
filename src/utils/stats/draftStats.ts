@@ -141,9 +141,16 @@ const totalElsewhere = (pick: ScoredPick) =>
 
 /**
  * Every pick from every season complete enough to score, joined to what its
- * player went on to do. Seasons absent from `games` — 2019 for any stat that
- * declares `requiresLineups`, and anything not yet loaded — simply never
- * appear, rather than arriving as a draft where nobody scored.
+ * player went on to do. Seasons absent from `games` — anything not yet loaded
+ * — simply never appear, rather than arriving as a draft where nobody scored.
+ *
+ * 2019 is present. Its per-player data is a reconstruction, but it is a good
+ * one for this purpose: 96.8% of rostered players and 99.8% of starters carry
+ * a score, the average roster is the same size as every other season's (15.0),
+ * and the mean points-per-pick (67.7) sits above 2015-2018 rather than below
+ * anything. Excluding it lost a whole draft to protect a baseline it does not
+ * move. The three stats built on this declare `allowsApproximateLineups`, so
+ * their 2019 entries are marked rather than hidden.
  */
 const scorePicks = (games: Game[]): ScoredPick[] => {
   const index = indexSeasons(games);
@@ -256,7 +263,7 @@ export const bestDraftPicks = defineStat({
   scope: "league",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  allowsApproximateLineups: true,
   compute: valueEntries,
 });
 
@@ -268,7 +275,7 @@ export const worstDraftPicks = defineStat({
   scope: "league",
   format: "points",
   direction: "low",
-  requiresLineups: true,
+  allowsApproximateLineups: true,
   compute: valueEntries,
 });
 
@@ -496,7 +503,7 @@ export const oneThatGotAway = defineStat({
   scope: "league",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  allowsApproximateLineups: true,
   compute: ({ games }) =>
     scorePicks(games).flatMap((pick) => {
       const [topOwner] = pick.elsewhere;

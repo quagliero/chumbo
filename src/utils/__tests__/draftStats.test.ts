@@ -20,16 +20,50 @@ describe("draft value", () => {
   it("scores every pick from every completed season, and no others", () => {
     const entries = computeStat("best-draft-picks");
 
-    // 2019's per-player scoring is a reconstruction, so `requiresLineups`
-    // hides it; 2026 has a draft but no football yet. Everything else is in.
+    // 2026 has a draft but no football yet. Everything else is in, 2019
+    // included — its per-player scoring is a reconstruction, but a good enough
+    // one for a whole-season measure, so it is caveated rather than hidden.
     const scored = YEAR_NUMBERS.filter(
-      (year) => year !== 2019 && year !== 2026 && pickCount(year) > 0
+      (year) => year !== 2026 && pickCount(year) > 0
     );
     const expected = scored.reduce((total, year) => total + pickCount(year), 0);
 
     expect(entries.length).toBe(expected);
     const years = new Set(entries.map((e) => e.year));
     expect([...years].sort()).toEqual([...scored].sort());
+  });
+
+  /**
+   * The caveat is the whole basis on which 2019 is allowed in, so it has to
+   * actually reach the entries — and only those entries. A silent flag is
+   * worse than the exclusion it replaced, because the number then reads as a
+   * flat fact.
+   */
+  it("marks 2019's picks as approximate, and nothing else", () => {
+    for (const id of ["best-draft-picks", "worst-draft-picks", "one-that-got-away"]) {
+      const entries = computeStat(id);
+      const flagged = new Set(
+        entries.filter((e) => e.approximate).map((e) => e.year)
+      );
+      const from2019 = entries.filter((e) => e.year === 2019);
+
+      expect(from2019.length).toBeGreaterThan(0);
+      expect([...flagged]).toEqual([2019]);
+      expect(from2019.every((e) => e.approximate)).toBe(true);
+    }
+  });
+
+  it("does not let 2019 distort the baseline it is ranked against", () => {
+    // The value stats rank each pick against a moving average over every
+    // season. If 2019's reconstruction were systematically thin, adding it
+    // would drag that average down and flood the bottom of the list. It does
+    // not: 2019 should hold roughly its share of each end, not dominate one.
+    const worst = computeStat("worst-draft-picks");
+    const share = worst.filter((e) => e.year === 2019).length / worst.length;
+    const inWorst50 = worst.slice(0, 50).filter((e) => e.year === 2019).length;
+
+    expect(share).toBeGreaterThan(0);
+    expect(inWorst50).toBeLessThan(50 * share * 3);
   });
 
   it("is the same list read from both ends", () => {

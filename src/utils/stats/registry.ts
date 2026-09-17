@@ -19,6 +19,11 @@ export const defineStat = (definition: StatDefinition): StatDefinition => {
   if (definitions.has(definition.id)) {
     throw new Error(`Duplicate stat id: ${definition.id}`);
   }
+  if (definition.requiresLineups && definition.allowsApproximateLineups) {
+    throw new Error(
+      `${definition.id}: requiresLineups and allowsApproximateLineups are opposites`
+    );
+  }
   definitions.set(definition.id, definition);
   return definition;
 };
@@ -53,11 +58,23 @@ const runStat = (id: string, limit?: number): StatEntry[] => {
   const keep = (game: { lineupsApproximate: boolean }) =>
     !definition.requiresLineups || !game.lineupsApproximate;
 
-  const entries = definition.compute({
+  const computed = definition.compute({
     ...context,
     games: context.games.filter(keep),
     teamWeeks: context.teamWeeks.filter(keep),
   });
+
+  // A stat that tolerates a reconstruction still has to say which of its
+  // entries rest on one. Doing it here rather than in each stat means an entry
+  // cannot be presented as a flat fact just because its stat forgot to mark it.
+  const entries = definition.allowsApproximateLineups
+    ? computed.map((entry) =>
+        entry.year !== undefined && hasApproximateLineups(entry.year)
+          ? { ...entry, approximate: true }
+          : entry
+      )
+    : computed;
+
   const ranked = [...entries].sort((a, b) =>
     definition.direction === "high" ? b.value - a.value : a.value - b.value
   );
@@ -68,10 +85,19 @@ const runStat = (id: string, limit?: number): StatEntry[] => {
 /** Memoised: the records pages ask for the same stats on every render. */
 export const computeStat = memoiseOverSeasons("computeStat", runStat, 64);
 
+const approximateSeasons = (): number[] =>
+  getStatContext()
+    .years.filter(hasApproximateLineups)
+    .sort((a, b) => a - b);
+
 /** The seasons a `requiresLineups` stat cannot see, for showing as a caveat. */
 export const excludedSeasons = (definition: StatDefinition): number[] =>
-  definition.requiresLineups
-    ? getStatContext()
-        .years.filter(hasApproximateLineups)
-        .sort((a, b) => a - b)
-    : [];
+  definition.requiresLineups ? approximateSeasons() : [];
+
+/**
+ * The seasons a stat includes but whose per-player data is reconstructed, for
+ * showing as a caveat. The counterpart to `excludedSeasons`: one names what is
+ * missing, the other what is present but inferred.
+ */
+export const caveatSeasons = (definition: StatDefinition): number[] =>
+  definition.allowsApproximateLineups ? approximateSeasons() : [];

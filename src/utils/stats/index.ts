@@ -6,7 +6,14 @@ import "./draftStats";
 import "./transactionStats";
 import "./identityStats";
 
-export { defineStat, allStats, getStat, computeStat, excludedSeasons } from "./registry";
+export {
+  defineStat,
+  allStats,
+  getStat,
+  computeStat,
+  excludedSeasons,
+  caveatSeasons,
+} from "./registry";
 export { getStatContext } from "./traverse";
 export type {
   Game,
