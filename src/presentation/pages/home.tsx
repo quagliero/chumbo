@@ -1,5 +1,5 @@
 import { useParams, useLocation } from "react-router-dom";
-import { useMemo } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import AllTimeTable from "@/presentation/components/AllTimeTable";
 import AllTimeBreakdown from "@/presentation/components/AllTimeBreakdown";
@@ -8,8 +8,18 @@ import AllTimeScheduleComparison from "@/presentation/components/AllTimeSchedule
 import AllTimeTrades from "@/presentation/components/AllTimeTrades";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 
+// D2 lives in the `charts` chunk (see vite.config.ts). Lazy so that landing on
+// the standings tab -- which is most visits -- does not download the chart code
+// to render a table.
+const PowerRibbon = lazy(() =>
+  import("@/presentation/components/Chart/PowerRibbon/PowerRibbon").then((m) => ({
+    default: m.PowerRibbon,
+  }))
+);
+
 type HomeTabType =
   | "standings"
+  | "careers"
   | "breakdown"
   | "top-scores"
   | "schedule-comparison"
@@ -40,6 +50,7 @@ const Home = () => {
           <ScrollableTabs className="gap-8">
             {[
               "standings",
+              "careers",
               "breakdown",
               "top-scores",
               "schedule-comparison",
@@ -77,7 +88,9 @@ const Home = () => {
                   }`;
                 }}
               >
-                {tabName === "breakdown"
+                {tabName === "careers"
+                  ? "Careers"
+                  : tabName === "breakdown"
                   ? "Breakdown"
                   : tabName === "top-scores"
                   ? "Scores"
@@ -95,6 +108,17 @@ const Home = () => {
       {/* Content Area */}
       <div className="min-h-96">
         {activeTab === "standings" && <AllTimeTable />}
+        {activeTab === "careers" && (
+          <div className="container mx-auto">
+            <h2 className="mb-1 text-lg font-semibold">Every career, one picture</h2>
+            <p className="mb-4 text-sm text-ink-muted">
+              Where each manager finished, season by season.
+            </p>
+            <Suspense fallback={<div className="h-64" />}>
+              <PowerRibbon />
+            </Suspense>
+          </div>
+        )}
         {activeTab === "breakdown" && <AllTimeBreakdown />}
         {activeTab === "top-scores" && <TopScores />}
         {activeTab === "schedule-comparison" && (
