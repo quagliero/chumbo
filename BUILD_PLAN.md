@@ -183,6 +183,41 @@ all seasons, not just 2020+.
 
 - [ ] A1d
 
+### A1e · Trim `picks.json` `S`
+**Done.** Every pick carried a 13-field `metadata` block duplicating the player
+dictionary — 1.0 MB of the 1.7 MB still shipping eagerly, and never displayed,
+because `getPlayer()` resolves for all 2,640 picks and the metadata fallbacks in
+`DraftBoard` and `useDraftPicks` were unreachable. `draft_id`, `is_keeper` and
+`reactions` went too; nothing read them.
+
+```
+picks.json      0.94 MB -> 0.29 MB
+critical path    398 kB -> 347 kB gzipped
+```
+
+Salvaged before deleting: three positions that differed from the dictionary went
+into that season's `players.delta.json`. They were genuinely year-accurate —
+Devin Funchess and N'Keal Harry were WRs when drafted and Sleeper lists them TE
+today. This *lowered* the 2019/2020 optimal-lineup totals, correctly: a WR
+mislabelled TE had been letting the optimiser fill the TE slot with someone
+ineligible for it.
+
+Forty names also differed, but almost all are formatting (`O.J.` vs `OJ`, `Jr.`
+suffixes). Only three are real renames — Robby Anderson → Robbie Chosen,
+Washington Football Team → Commanders, Hollywood → Marquise Brown. The script
+reports them; they are not kept, because there is no per-season name overlay and
+building one for three players is not worth it.
+
+> **If the draft board should show period-accurate names**, that is the task to
+> write: a `name` field alongside `t`/`p` in the season overlay, populated from
+> the pick metadata before it was stripped (recoverable from git history, or
+> from `scripts/data/player-id-map.json`).
+
+**Chase:** Sleeper returns the fat pick objects on every fetch, so
+`yarn trim-picks` must be re-run after `fetch-data` / `fetch-season`.
+
+- [x] A1e
+
 ### A2 · Load season data on demand `XL`
 **Blocks:** A4 · **Blocked by:** A1
 
@@ -875,7 +910,8 @@ snapshot tests proving no stat changed.
 | | Task | Size |
 |---|---|---|
 | ☐ | `A2a` Un-eager the heavy files | M |
-| ☐ | `A2b` Move data to `public/`, add loader | L |
+| ☑ | `A1e` Trim picks.json | S |
+| ☐ | `A2b` Move data to `public/`, add loader | L | *(deferred — see risks)*
 | ☐ | `A3` + `H2` Memoise and split `managerStats` | L |
 | ☐ | `H3` Type the data loader | M |
 | ☐ | `A1d` Backfill historical teams from nflverse | M |
