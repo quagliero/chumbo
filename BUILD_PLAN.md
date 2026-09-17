@@ -378,7 +378,43 @@ tables **in one place** rather than twelve.
 **Acceptance:** every table on the site scrolls with its team column pinned on a
 375 px viewport · one sort-indicator implementation remains.
 
-- [ ] B3
+**Done.** The audit above undercounted: nine further components rendered their
+own markup on the legacy primitives in `Table/Table.tsx`, so neither the pinned
+column nor the single sort indicator reached them. All nine are migrated —
+`PlayoffOdds` (which carried a second, competing `getSortIcon`),
+`AllTimeScheduleComparison` (both views), `Breakdown`, `ScheduleComparison`,
+`PerformanceTable`, `H2HContent` (four table shapes), `DraftStatsCard`,
+`AllStarLineup`, and the season table on the manager page, which moved out to
+`ManagerDetail/SeasonBreakdown.tsx` alongside its siblings.
+
+`Table/Table.tsx` is deleted: `SortIcon`, `StandardTable` and the six primitives
+had no callers left. One sort indicator remains, in `DataTable`.
+
+Three additions to the column meta were needed to migrate the last sites without
+losing behaviour:
+- `linkTitle` — the per-row tooltip on the three link kinds, for cells whose
+  text and destination are not the same words (a team name linking to a
+  manager).
+- `rowCellClassName` / `rowCellStyle` — a background that is a row-AND-column
+  fact rather than a column one. Three sites need it: the two comparison
+  matrices shade their diagonal, and Breakdown's Schedule Luck toggle heat-maps
+  every week cell. The style variant exists only because that heat map's colour
+  is computed and Tailwind cannot emit a class it never saw in the source.
+
+One bug found and fixed in the process, in `PlayoffOdds`: tanstack gates
+`getCanSort()` on a column having an accessor function, so a `display` column
+ignores even an explicit `sortingFn`. The first migration left the table
+unsortable and stuck in the simulation's own order. Every sortable column is now
+an `accessor`, and the original comparison chain — the 0.0001 epsilon on the
+odds, then wins, then points, then name — is preserved as a `sortingFn`, along
+with the asc-first/desc-first direction each header had.
+
+Verified in the browser at 375 px: Breakdown scrolls 600 px sideways with the
+team name pinned and opaque, and the page itself has no horizontal overflow.
+171 tests pass unchanged; the gzipped bundle is unmoved at 347 kB on the
+critical path.
+
+- [x] B3
 
 ### B4 · Semantic column types `M`
 **Blocked by:** B3
@@ -946,7 +982,7 @@ The milestone that most changes how the site *feels*.
 | ☑ | `B1` Tokens | M |
 | ☑ | `F2` Manager accent colours | S |
 | ☐ | `B2` Card primitive | S |
-| ☐ | `B3` DataTable | L |
+| ☑ | `B3` DataTable | L |
 | ☐ | `B4` Semantic column types | M |
 | ☐ | `E1a–f` Link everything | L |
 | ☐ | `E4` Breadcrumbs | S |

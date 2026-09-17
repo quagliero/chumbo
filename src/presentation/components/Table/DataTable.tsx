@@ -33,6 +33,7 @@
  * standings table does not need one.
  */
 import {
+  CSSProperties,
   ReactNode,
   useCallback,
   useLayoutEffect,
@@ -94,6 +95,21 @@ declare module "@tanstack/react-table" {
     align?: ColumnAlign;
     /** Extra classes for this column's body cells. */
     cellClassName?: string;
+    /**
+     * Extra classes for this column's cell in one particular row, where what
+     * is being marked is a row-AND-column fact rather than a column one: the
+     * diagonal of a comparison matrix, where the row team and the column team
+     * are the same team.
+     */
+    rowCellClassName?: (row: TData) => string | undefined;
+    /**
+     * As `rowCellClassName`, but an inline style. This exists for one reason:
+     * a heat map's colour is computed per cell (Breakdown's schedule luck
+     * shades by how lucky the week was), and Tailwind can only emit classes it
+     * saw spelled out in the source, so a computed colour cannot be one.
+     * Reach for `rowCellClassName` for anything from a fixed set.
+     */
+    rowCellStyle?: (row: TData) => CSSProperties | undefined;
     /** Extra classes for this column's header cell. */
     headerClassName?: string;
     /** `kind: "manager"` — the Sleeper owner id for this row. */
@@ -106,6 +122,14 @@ declare module "@tanstack/react-table" {
     seasonTab?: string;
     /** `kind: "year"` — the year, when the cell renders something else. */
     year?: (row: TData) => number | string | null | undefined;
+    /**
+     * Tooltip for the three link kinds, per row — for the case where the cell
+     * text and the thing it navigates to are not the same words ("Bang Bang
+     * Niang" linking to a manager called Steve). Ignored by the other kinds:
+     * `components/Links` deliberately does not put a link's title on the
+     * plain-text fallback, and that guard lives there.
+     */
+    linkTitle?: (row: TData) => string | undefined;
   }
 }
 
@@ -369,10 +393,15 @@ const DataTable = <TData,>({
                   const kind = meta?.kind ?? "text";
                   const align = meta?.align ?? ALIGN_BY_KIND[kind];
 
+                  const pin = pinStyle(cellIndex);
+                  const rowStyle = meta?.rowCellStyle?.(row.original);
+
                   return (
                     <td
                       key={cell.id}
-                      style={pinStyle(cellIndex)}
+                      style={
+                        pin || rowStyle ? { ...pin, ...rowStyle } : undefined
+                      }
                       className={[
                         pad.cell,
                         ALIGN_CLASS[align],
@@ -393,6 +422,7 @@ const DataTable = <TData,>({
                           : "whitespace-nowrap",
                         pinnedCell(cellIndex),
                         meta?.cellClassName ?? "",
+                        meta?.rowCellClassName?.(row.original) ?? "",
                       ]
                         .filter(Boolean)
                         .join(" ")}
@@ -430,6 +460,7 @@ function renderCell<TData>(
       <ManagerLink
         ownerId={meta?.ownerId?.(rowData)}
         managerId={meta?.managerId?.(rowData)}
+        title={meta?.linkTitle?.(rowData)}
         isolate
       >
         {content}
@@ -439,7 +470,11 @@ function renderCell<TData>(
 
   if (kind === "player") {
     return (
-      <PlayerLink playerId={meta?.playerId?.(rowData)} isolate>
+      <PlayerLink
+        playerId={meta?.playerId?.(rowData)}
+        title={meta?.linkTitle?.(rowData)}
+        isolate
+      >
         {content}
       </PlayerLink>
     );
@@ -449,7 +484,12 @@ function renderCell<TData>(
     const year = meta?.year?.(rowData) ?? cell.getValue();
     if (year === null || year === undefined) return content;
     return (
-      <SeasonLink year={year} tab={meta?.seasonTab} isolate>
+      <SeasonLink
+        year={year}
+        tab={meta?.seasonTab}
+        title={meta?.linkTitle?.(rowData)}
+        isolate
+      >
         {content}
       </SeasonLink>
     );

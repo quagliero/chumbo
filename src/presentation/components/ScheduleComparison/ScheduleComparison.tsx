@@ -3,15 +3,19 @@ import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedLeague } from "@/types/league";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { getRosterPointsFor, roundToTwoDecimals } from "@/utils/recordUtils";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "../Table";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DataTable } from "../Table";
 import { ManagerLink } from "@/presentation/components/Links";
+
+const columnHelper = createColumnHelper<ExtendedRoster>();
+
+/** "9-4" / "9-4-1" — ties are only worth the space when there are some. */
+const formatRecord = (record: {
+  wins: number;
+  losses: number;
+  ties: number;
+}) =>
+  `${record.wins}-${record.losses}${record.ties > 0 ? `-${record.ties}` : ""}`;
 
 interface ScheduleComparisonProps {
   rosters: ExtendedRoster[];
@@ -156,6 +160,53 @@ const ScheduleComparison = ({
     return { wins, losses, ties, points: totalPoints };
   };
 
+  // One column per opponent's schedule, plus the row's own team. A matrix is
+  // read across and down rather than sorted, so every column is fixed.
+  const columns = [
+    columnHelper.display({
+      id: "team",
+      header: "Team",
+      cell: ({ row }) => getTeamName(row.original.owner_id),
+      meta: {
+        kind: "manager" as const,
+        ownerId: (roster: ExtendedRoster) => roster.owner_id,
+        cellClassName: "font-medium",
+      },
+    }),
+    columnHelper.group({
+      id: "vsSchedule",
+      header: "Vs Schedule",
+      meta: { headerClassName: "!bg-line font-bold", align: "center" as const },
+      columns: sortedRosters.map((opponentRoster) =>
+        columnHelper.display({
+          id: `vs-${opponentRoster.roster_id}`,
+          header: () => (
+            <ManagerLink ownerId={opponentRoster.owner_id}>
+              {getTeamName(opponentRoster.owner_id)}
+            </ManagerLink>
+          ),
+          cell: ({ row }) => (
+            <span className="text-xs font-medium">
+              {formatRecord(
+                calculateCrossScheduleRecord(row.original, opponentRoster)
+              )}
+            </span>
+          ),
+          meta: {
+            kind: "record" as const,
+            headerClassName: "min-w-24",
+            // The diagonal — a team against its own schedule, which is just
+            // its actual record.
+            rowCellClassName: (roster: ExtendedRoster) =>
+              roster.roster_id === opponentRoster.roster_id
+                ? "bg-surface-sunk"
+                : undefined,
+          },
+        })
+      ),
+    }),
+  ];
+
   return (
     <div className="container mx-auto">
       <div className="mb-6">
@@ -169,76 +220,9 @@ const ScheduleComparison = ({
         </p>
       </div>
 
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderCell className="text-left sticky left-0 z-10">
-                {" "}
-              </TableHeaderCell>
-              <TableHeaderCell
-                colSpan={sortedRosters.length}
-                className="text-center bg-gray-100 font-bold"
-              >
-                Vs Schedule
-              </TableHeaderCell>
-            </TableRow>
-            <TableRow>
-              <TableHeaderCell className="text-left bg-gray-100 sticky left-0 z-10">
-                Team
-              </TableHeaderCell>
-              {sortedRosters.map((roster) => (
-                <TableHeaderCell
-                  key={roster.roster_id}
-                  className="text-center bg-gray-50 min-w-24"
-                >
-                  <ManagerLink ownerId={roster.owner_id}>
-                    {getTeamName(roster.owner_id)}
-                  </ManagerLink>
-                </TableHeaderCell>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedRosters.map((teamRoster) => (
-              <TableRow
-                key={teamRoster.roster_id}
-                className="hover:bg-gray-50 transition-colors"
-              >
-                <TableCell className="text-left bg-gray-50 sticky left-0 z-10 font-medium hover:bg-gray-100 transition-colors">
-                  <ManagerLink ownerId={teamRoster.owner_id}>
-                    {getTeamName(teamRoster.owner_id)}
-                  </ManagerLink>
-                </TableCell>
-                {sortedRosters.map((opponentRoster) => {
-                  const crossRecord = calculateCrossScheduleRecord(
-                    teamRoster,
-                    opponentRoster
-                  );
-                  const isSameTeam =
-                    teamRoster.roster_id === opponentRoster.roster_id;
-
-                  return (
-                    <TableCell
-                      key={opponentRoster.roster_id}
-                      className={`text-center ${
-                        isSameTeam ? "bg-gray-100" : ""
-                      }`}
-                    >
-                      <div className="text-xs">
-                        <div className={`font-medium`}>
-                          {crossRecord.wins}-{crossRecord.losses}
-                          {crossRecord.ties > 0 && `-${crossRecord.ties}`}
-                        </div>
-                      </div>
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      {/* Zebra would fight the diagonal, which is the one thing the matrix
+          marks out. */}
+      <DataTable columns={columns} data={sortedRosters} zebra={false} />
     </div>
   );
 };

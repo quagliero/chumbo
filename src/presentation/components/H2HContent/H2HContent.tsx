@@ -14,14 +14,8 @@ import {
 } from "@/utils/playoffUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { getPlayerPositionComprehensive } from "@/utils/playerDataUtils";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "../Table/Table";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DataTable } from "../Table";
 import { ValidYear } from "@/domain/constants";
 import { Card } from "@/presentation/components/Card";
 
@@ -34,6 +28,69 @@ interface H2HMatchup {
   result: "W" | "L" | "T";
   isPlayoff: boolean;
 }
+
+/**
+ * Which playoff round a week was. The bracket shape changed when the league
+ * went from four playoff teams to six, so this has to be read off that
+ * season's settings rather than counted back from the end.
+ */
+const playoffRoundLabel = (year: number, week: number): string => {
+  const settings = seasons[year as ValidYear]?.league?.settings;
+  const playoffStartWeek = settings?.playoff_week_start || 15;
+  const playoffTeams = settings?.playoff_teams || 6;
+
+  if (playoffTeams === 4) {
+    if (week === playoffStartWeek + 1) return "Championship";
+    if (week === playoffStartWeek) return "Semi Finals";
+    return `Round ${week}`;
+  }
+
+  if (week === playoffStartWeek + 2) return "Championship";
+  if (week === playoffStartWeek + 1) return "Semi Finals";
+  if (week === playoffStartWeek) return "Wildcard";
+  return `Round ${week}`;
+};
+
+/** A player photo, or his initial where there is no photo to show. */
+const PlayerAvatar = ({
+  playerId,
+  playerName,
+  square = false,
+}: {
+  playerId: string;
+  playerName: string;
+  /** Team defences are crests, not headshots, and should not be circled. */
+  square?: boolean;
+}) => {
+  const imageUrl = getPlayerImageUrl(playerId);
+
+  return imageUrl ? (
+    <img
+      src={imageUrl}
+      alt={`${playerName} photo`}
+      className={`w-6 h-6 flex-none object-cover ${square ? "" : "rounded-full"}`}
+      onError={(e) => {
+        (e.target as HTMLImageElement).style.display = "none";
+      }}
+    />
+  ) : (
+    <div className="w-6 h-6 rounded-full bg-line flex items-center justify-center text-xs font-bold text-ink-muted">
+      {(playerName || "?").charAt(0).toUpperCase()}
+    </div>
+  );
+};
+
+const Pill = ({
+  className,
+  children,
+}: {
+  className: string;
+  children: React.ReactNode;
+}) => (
+  <span className={`px-2 py-1 rounded text-xs ${className}`}>{children}</span>
+);
+
+const matchupColumnHelper = createColumnHelper<H2HMatchup>();
 
 interface H2HContentProps {
   managerA: string;
@@ -623,6 +680,209 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
     stats,
   } = h2hData;
 
+  type H2HLineupSlot = (typeof managerALineup)[number];
+  type H2HBestPerformance = (typeof managerABestPerformances)[number];
+  const lineupColumnHelper = createColumnHelper<H2HLineupSlot>();
+  const performanceColumnHelper = createColumnHelper<H2HBestPerformance>();
+
+  /** Who won, named. "W" is from manager A's point of view throughout. */
+  const winnerPill = (result: H2HMatchup["result"]) => (
+    <Pill
+      className={
+        result === "W"
+          ? "bg-blue-100 text-blue-800"
+          : result === "L"
+          ? "bg-purple-100 text-purple-800"
+          : "bg-gray-100 text-gray-800"
+      }
+    >
+      {result === "W"
+        ? managerAData?.teamName
+        : result === "L"
+        ? managerBData?.teamName
+        : "Tie"}
+    </Pill>
+  );
+
+  const yearColumn = matchupColumnHelper.accessor("year", {
+    header: "Year",
+    cell: (info) => info.getValue(),
+    enableSorting: false,
+    // A year reads as this row's label, not as a quantity to compare down the
+    // column, so it keeps the left edge but takes tabular figures.
+    meta: {
+      kind: "numeric" as const,
+      align: "left" as const,
+      cellClassName: "font-medium",
+    },
+  });
+
+  const scoreColumn = matchupColumnHelper.display({
+    id: "score",
+    header: "Score",
+    cell: ({ row }) =>
+      `${number(row.original.managerAPoints, {
+        maximumFractionDigits: 2,
+      })} - ${number(row.original.managerBPoints, {
+        maximumFractionDigits: 2,
+      })}`,
+    meta: { kind: "record" as const, align: "left" as const },
+  });
+
+  const resultColumn = matchupColumnHelper.display({
+    id: "result",
+    header: "Result",
+    cell: ({ row }) => winnerPill(row.original.result),
+  });
+
+  // These tables are a chronology, and the regular-season one is cut to the
+  // last five unless expanded — a column sort would reorder that window rather
+  // than the record, so sorting stays off on both.
+  const regularSeasonColumns = [
+    yearColumn,
+    matchupColumnHelper.display({
+      id: "week",
+      header: "Week",
+      cell: ({ row }) =>
+        row.original.matchupId ? (
+          <Link
+            to={`/seasons/${row.original.year}/matchups/${row.original.week}/${row.original.matchupId}`}
+            className="text-blue-600 hover:text-blue-800 hover:underline"
+          >
+            Week {row.original.week}
+          </Link>
+        ) : (
+          `Week ${row.original.week}`
+        ),
+    }),
+    scoreColumn,
+    resultColumn,
+  ];
+
+  const playoffColumns = [
+    yearColumn,
+    matchupColumnHelper.display({
+      id: "round",
+      header: "Round",
+      cell: ({ row }) => playoffRoundLabel(row.original.year, row.original.week),
+    }),
+    scoreColumn,
+    resultColumn,
+  ];
+
+  // The rows ARE the lineup slots, in slot order; sorting them by points would
+  // destroy the only thing the table says.
+  const lineupColumns = [
+    lineupColumnHelper.accessor("position", {
+      header: "Pos",
+      cell: (info) => info.getValue(),
+      enableSorting: false,
+      meta: { cellClassName: "pr-0", headerClassName: "pr-0" },
+    }),
+    lineupColumnHelper.display({
+      id: "player",
+      header: "Player",
+      cell: ({ row }) => {
+        const { position, player } = row.original;
+        if (!player) return "—";
+
+        return (
+          <div className="flex items-center gap-2">
+            <PlayerAvatar
+              playerId={player.playerId}
+              playerName={player.playerName}
+              square={position === "DEF"}
+            />
+            {player.playerName}
+          </div>
+        );
+      },
+      meta: {
+        kind: "player" as const,
+        playerId: (row: H2HLineupSlot) => row.player?.playerId,
+        cellClassName: "font-medium",
+      },
+    }),
+    lineupColumnHelper.display({
+      id: "games",
+      header: "Games",
+      cell: ({ row }) => row.original.player?.gamesPlayed ?? "—",
+      meta: { kind: "numeric" as const },
+    }),
+    lineupColumnHelper.display({
+      id: "points",
+      header: "Points",
+      cell: ({ row }) =>
+        row.original.player
+          ? number(row.original.player.totalPoints, {
+              maximumFractionDigits: 2,
+            })
+          : "—",
+      meta: { kind: "points" as const },
+    }),
+    lineupColumnHelper.display({
+      id: "average",
+      header: "Average",
+      cell: ({ row }) =>
+        row.original.player
+          ? number(row.original.player.averagePoints, {
+              maximumFractionDigits: 2,
+            })
+          : "—",
+      meta: { kind: "points" as const },
+    }),
+  ];
+
+  // Already the top five by score; sorting the five would misrepresent them.
+  const bestPerformanceColumns = [
+    performanceColumnHelper.accessor("playerName", {
+      header: "Player",
+      cell: (info) => (
+        <div className="flex items-center gap-2">
+          <PlayerAvatar
+            playerId={info.row.original.playerId}
+            playerName={info.getValue()}
+          />
+          {info.getValue()}
+        </div>
+      ),
+      enableSorting: false,
+      meta: {
+        kind: "player" as const,
+        playerId: (row: H2HBestPerformance) => row.playerId,
+        cellClassName: "font-medium",
+      },
+    }),
+    performanceColumnHelper.display({
+      id: "yearWeek",
+      header: "Year/Week",
+      cell: ({ row }) => `${row.original.year} W${row.original.week}`,
+    }),
+    performanceColumnHelper.accessor("score", {
+      header: "Points",
+      cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
+      enableSorting: false,
+      meta: { kind: "points" as const },
+    }),
+    performanceColumnHelper.display({
+      id: "result",
+      header: "Result",
+      cell: ({ row }) => (
+        <Pill
+          className={
+            row.original.result === "W"
+              ? "bg-green-100 text-green-800"
+              : row.original.result === "L"
+              ? "bg-red-100 text-red-800"
+              : "bg-gray-100 text-gray-800"
+          }
+        >
+          {row.original.result}
+        </Pill>
+      ),
+    }),
+  ];
+
   return (
     <div>
       {/* Header */}
@@ -771,66 +1031,15 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             )}
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderCell className="text-left">Year</TableHeaderCell>
-                <TableHeaderCell className="text-left">Week</TableHeaderCell>
-                <TableHeaderCell className="text-left">Score</TableHeaderCell>
-                <TableHeaderCell className="text-left">Result</TableHeaderCell>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {(showAllRegularSeason
-                ? regularSeasonMatchups
-                : regularSeasonMatchups.slice(0, 5)
-              ).map((matchup, index) => (
-                <TableRow key={`${matchup.year}-${matchup.week}-${index}`}>
-                  <TableCell className="font-medium">{matchup.year}</TableCell>
-                  <TableCell>
-                    {matchup.matchupId ? (
-                      <Link
-                        to={`/seasons/${matchup.year}/matchups/${matchup.week}/${matchup.matchupId}`}
-                        className="text-blue-600 hover:text-blue-800 hover:underline"
-                      >
-                        Week {matchup.week}
-                      </Link>
-                    ) : (
-                      `Week ${matchup.week}`
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {number(matchup.managerAPoints, {
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    -{" "}
-                    {number(matchup.managerBPoints, {
-                      maximumFractionDigits: 2,
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${
-                        matchup.result === "W"
-                          ? "bg-blue-100 text-blue-800"
-                          : matchup.result === "L"
-                          ? "bg-purple-100 text-purple-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {matchup.result === "W"
-                        ? managerAData?.teamName
-                        : matchup.result === "L"
-                        ? managerBData?.teamName
-                        : "Tie"}
-                    </span>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <DataTable
+          columns={regularSeasonColumns}
+          data={
+            showAllRegularSeason
+              ? regularSeasonMatchups
+              : regularSeasonMatchups.slice(0, 5)
+          }
+          emptyMessage="These two have never met in the regular season."
+        />
       </Card>
 
       {/* Playoff Matchups */}
@@ -844,104 +1053,13 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
               These games are not included in the overall statistics above.
             </p>
           </div>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHeaderCell className="text-left">Year</TableHeaderCell>
-                  <TableHeaderCell className="text-left">Round</TableHeaderCell>
-                  <TableHeaderCell className="text-left">Score</TableHeaderCell>
-                  <TableHeaderCell className="text-left">
-                    Result
-                  </TableHeaderCell>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {playoffMatchups
-                  .sort((a, b) => {
-                    // Sort by year (newest first), then by week (round 1 = championship first)
-                    if (a.year !== b.year) {
-                      return b.year - a.year;
-                    }
-                    return a.week - b.week;
-                  })
-                  .map((matchup, index) => (
-                    <TableRow
-                      key={`playoff-${matchup.year}-${matchup.week}-${index}`}
-                    >
-                      <TableCell className="font-medium">
-                        {matchup.year}
-                      </TableCell>
-                      <TableCell>
-                        {(() => {
-                          const playoffStartWeek =
-                            seasons[matchup.year as ValidYear]?.league?.settings
-                              ?.playoff_week_start || 15;
-                          const playoffTeams =
-                            seasons[matchup.year as ValidYear]?.league?.settings
-                              ?.playoff_teams || 6;
-
-                          if (playoffTeams === 4) {
-                            // 4-team playoff: no wildcard round
-                            const championshipWeek = playoffStartWeek + 1;
-                            const semiFinalsWeek = playoffStartWeek;
-
-                            if (matchup.week === championshipWeek) {
-                              return "Championship";
-                            } else if (matchup.week === semiFinalsWeek) {
-                              return "Semi Finals";
-                            } else {
-                              return `Round ${matchup.week}`;
-                            }
-                          } else {
-                            // 6+ team playoff: has wildcard round
-                            const championshipWeek = playoffStartWeek + 2;
-                            const semiFinalsWeek = playoffStartWeek + 1;
-                            const wildcardWeek = playoffStartWeek;
-
-                            if (matchup.week === championshipWeek) {
-                              return "Championship";
-                            } else if (matchup.week === semiFinalsWeek) {
-                              return "Semi Finals";
-                            } else if (matchup.week === wildcardWeek) {
-                              return "Wildcard";
-                            } else {
-                              return `Round ${matchup.week}`;
-                            }
-                          }
-                        })()}
-                      </TableCell>
-                      <TableCell>
-                        {number(matchup.managerAPoints, {
-                          maximumFractionDigits: 2,
-                        })}{" "}
-                        -{" "}
-                        {number(matchup.managerBPoints, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded text-xs ${
-                            matchup.result === "W"
-                              ? "bg-blue-100 text-blue-800"
-                              : matchup.result === "L"
-                              ? "bg-purple-100 text-purple-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {matchup.result === "W"
-                            ? managerAData?.teamName
-                            : matchup.result === "L"
-                            ? managerBData?.teamName
-                            : "Tie"}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </div>
+          <DataTable
+            columns={playoffColumns}
+            data={[...playoffMatchups].sort((a, b) =>
+              // Newest season first; within a season, the earliest round first.
+              a.year !== b.year ? b.year - a.year : a.week - b.week
+            )}
+          />
         </Card>
       )}
 
@@ -968,86 +1086,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                 Top performers against {opponentName}
               </p>
             </div>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHeaderCell className="text-left pr-0">
-                      Pos
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Player
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Games
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Points
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Average
-                    </TableHeaderCell>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {lineup.map((slot, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="pr-0">{slot.position}</TableCell>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          {slot.player &&
-                            (() => {
-                              const imageUrl = getPlayerImageUrl(
-                                slot.player.playerId
-                              );
-                              return imageUrl ? (
-                                <img
-                                  src={imageUrl}
-                                  alt={`${slot.player.playerName} photo`}
-                                  className={`w-6 h-6 object-cover ${
-                                    slot.position === "DEF"
-                                      ? ""
-                                      : "rounded-full"
-                                  }`}
-                                  onError={(e) => {
-                                    (
-                                      e.target as HTMLImageElement
-                                    ).style.display = "none";
-                                  }}
-                                />
-                              ) : (
-                                <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
-                                  {(slot.player.playerName || "?")
-                                    .charAt(0)
-                                    .toUpperCase()}
-                                </div>
-                              );
-                            })()}
-                          {slot.player ? slot.player.playerName : "—"}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {slot.player ? slot.player.gamesPlayed : "—"}
-                      </TableCell>
-                      <TableCell>
-                        {slot.player
-                          ? number(slot.player.totalPoints, {
-                              maximumFractionDigits: 2,
-                            })
-                          : "—"}
-                      </TableCell>
-                      <TableCell>
-                        {slot.player
-                          ? number(slot.player.averagePoints, {
-                              maximumFractionDigits: 2,
-                            })
-                          : "—"}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+            <DataTable columns={lineupColumns} data={lineup} />
           </Card>
         ))}
       </div>
@@ -1075,79 +1114,11 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                 Top 5 individual game scores against {opponentName}
               </p>
             </div>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHeaderCell className="text-left">
-                      Player
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Year/Week
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Points
-                    </TableHeaderCell>
-                    <TableHeaderCell className="text-left">
-                      Result
-                    </TableHeaderCell>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {performances.map((performance, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          {(() => {
-                            const imageUrl = getPlayerImageUrl(
-                              performance.playerId
-                            );
-                            return imageUrl ? (
-                              <img
-                                src={imageUrl}
-                                alt={performance.playerName}
-                                className="w-6 h-6 rounded-full flex-none object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = "none";
-                                }}
-                              />
-                            ) : (
-                              <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">
-                                {(performance.playerName || "?")
-                                  .charAt(0)
-                                  .toUpperCase()}
-                              </div>
-                            );
-                          })()}
-                          {performance.playerName}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {performance.year} W{performance.week}
-                      </TableCell>
-                      <TableCell>
-                        {number(performance.score, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded text-xs ${
-                            performance.result === "W"
-                              ? "bg-green-100 text-green-800"
-                              : performance.result === "L"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
-                        >
-                          {performance.result}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+            <DataTable
+              columns={bestPerformanceColumns}
+              data={performances}
+              emptyMessage="No games between these two yet."
+            />
           </Card>
         ))}
       </div>
