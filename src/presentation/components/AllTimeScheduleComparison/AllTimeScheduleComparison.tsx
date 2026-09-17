@@ -611,7 +611,9 @@ const AllTimeScheduleComparison = () => {
           <DataTable
             columns={matrixColumns}
             data={allTimeStats}
-            zebra={false}
+            // Same as the season view: a shaded diagonal and coloured cells.
+        // Striping a matrix implies the row is the unit, and it is not.
+        zebra={false}
           />
         </Card>
       )}

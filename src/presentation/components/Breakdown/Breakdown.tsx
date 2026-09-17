@@ -285,6 +285,8 @@ const Breakdown = ({
 
       {/* Zebra would shift the luck shading row by row, and the shading is the
           whole point of the toggle. */}
+      {/* No zebra: the Schedule Luck toggle heat-maps every week cell, so
+          striping underneath fights the colour that carries the meaning. */}
       <DataTable columns={columns} data={sortedRosters} zebra={false} />
 
       {showLuck && (

@@ -724,11 +724,25 @@ const TopScores = () => {
     );
 
     return (
-      <Link
+      // Same nesting as TopPerformances: the card goes to the matchup, the
+      // player name goes to the player. A link inside a link is invalid HTML,
+      // so this is a div with a stretched overlay anchor and the inner link
+      // rises above it.
+      <div
         key={`${player.year}-${player.week}-${player.player_id}-${index}`}
-        to={getMatchupUrl(player)}
-        className={cardClassName({ padding: "sm", interactive: true, className: "block" })}
+        className={
+          cardClassName({
+            padding: "sm",
+            interactive: true,
+            className: "block",
+          }) + " relative"
+        }
       >
+        <Link
+          to={getMatchupUrl(player)}
+          className="absolute inset-0"
+          aria-label={`View this ${player.year} week ${player.week} matchup`}
+        />
         {/* Rank Badge */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center">
@@ -763,7 +777,7 @@ const TopScores = () => {
             )}
             <Link
               to={`/players/${player.player_id}`}
-              className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
+              className="relative z-10 font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
             >
               {player.player_name}
             </Link>
@@ -822,7 +836,7 @@ const TopScores = () => {
         <div className="mt-3 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
           Click to view matchup →
         </div>
-      </Link>
+      </div>
     );
   };
 

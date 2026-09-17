@@ -188,6 +188,8 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
         // so a column sort here would reorder that slice rather than the
         // season — which reads as a lie. Sorting stays off.
         // Playoff and championship rows carry their own colour.
+        // Championship games are tinted, and a highlight reads far more
+        // strongly against a uniform ground than against stripes.
         zebra={false}
         getRowBackground={(row) =>
           row.original.isChampionshipGame

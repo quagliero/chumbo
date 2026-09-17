@@ -222,6 +222,8 @@ const ScheduleComparison = ({
 
       {/* Zebra would fight the diagonal, which is the one thing the matrix
           marks out. */}
+      {/* No zebra: a comparison matrix shades its diagonal and colours each
+          cell by result, so the row is not the unit being read. */}
       <DataTable columns={columns} data={sortedRosters} zebra={false} />
     </div>
   );

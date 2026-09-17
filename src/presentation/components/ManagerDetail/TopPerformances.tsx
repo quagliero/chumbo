@@ -63,11 +63,26 @@ const TopPerformances = ({ performances }: TopPerformancesProps) => {
         {filteredPerformances
           .slice(0, displayCount)
           .map((performance, index) => (
-            <Link
+            // The card navigates to the matchup, but the player name needs
+            // its own destination. A link inside a link is invalid HTML and
+            // breaks keyboard navigation, so this is a div with a stretched
+            // overlay anchor and the inner link rises above it. The nesting
+            // pre-dated M3; a React validateDOMNesting warning surfaced it.
+            <div
               key={index}
-              to={`/seasons/${performance.year}/matchups/${performance.week}/${performance.matchup_id}`}
-              className={cardClassName({ padding: "sm", interactive: true, className: "block" })}
+              className={
+                cardClassName({
+                  padding: "sm",
+                  interactive: true,
+                  className: "block",
+                }) + " relative"
+              }
             >
+              <Link
+                to={`/seasons/${performance.year}/matchups/${performance.week}/${performance.matchup_id}`}
+                className="absolute inset-0"
+                aria-label={`View ${performance.playerName}'s ${performance.year} week ${performance.week} matchup`}
+              />
               {/* Rank Badge */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
@@ -107,7 +122,7 @@ const TopPerformances = ({ performances }: TopPerformancesProps) => {
                   })()}
                   <Link
                     to={`/players/${performance.playerId}`}
-                    className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
+                    className="relative z-10 font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm"
                   >
                     {performance.playerName}
                   </Link>
@@ -157,7 +172,7 @@ const TopPerformances = ({ performances }: TopPerformancesProps) => {
               <div className="mt-3 text-xs text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
                 Click to view matchup →
               </div>
-            </Link>
+            </div>
           ))}
       </div>
 
