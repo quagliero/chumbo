@@ -558,7 +558,7 @@ player. A chart that's a dead end is worth much less here — see Workstream E.
 - [ ] **D4** Score distribution — violin or histogram per manager. Separates the boom/bust managers from the metronomes, which W-L records hide entirely. *(needs F2)*
 - [ ] **D5** Weekly score heatmap — season × week grid for one manager, coloured by score. A whole career in one image.
 - [ ] **D6** Draft value scatter — pick number vs points scored that season, across all drafts. Every steal and every bust, using your league's real history rather than generic ADP.
-- [ ] **D7** Luck chart — actual wins vs expected wins (from the all-play record you already compute in `calculateWeeklyLeagueRecord`), scatter against the diagonal. Distance from the line is a luck score. Managers will argue about this for years.
+- [x] **D7** Luck chart — actual wins vs expected wins (from the all-play record you already compute in `calculateWeeklyLeagueRecord`), scatter against the diagonal. Distance from the line is a luck score. Managers will argue about this for years.
 
 ---
 
@@ -662,10 +662,10 @@ Currently 14 identical white cards, each a stack of `Label: value` rows in the
 same grey — no avatars, no colour, no hierarchy — and the cards don't align,
 because "Zaragoza's Zooting Zorro" wraps to two lines and shoves its stats down.
 
-- [ ] **F1a** Use the avatars. `userAvatar.ts` exists and matchup cards already show them; the one page that is literally about people doesn't.
-- [ ] **F1b** Trophy case as the hero, not a footnote row of emoji at the bottom. Championships are the point.
-- [ ] **F1c** Finishing-position sparkline per card — instant career shape, makes the grid scannable.
-- [ ] **F1d** Fix alignment — `grid-rows-subgrid` or a fixed-height name block, so the eye can compare across cards.
+- [x] **F1a** Use the avatars. `userAvatar.ts` exists and matchup cards already show them; the one page that is literally about people doesn't.
+- [x] **F1b** Trophy case as the hero, not a footnote row of emoji at the bottom. Championships are the point.
+- [x] **F1c** Finishing-position sparkline per card — instant career shape, makes the grid scannable.
+- [x] **F1d** Fix alignment — `grid-rows-subgrid` or a fixed-height name block, so the eye can compare across cards.
 - [ ] **F1e** Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
 
 ### F2 · Manager accent colours `S`
@@ -714,10 +714,10 @@ carrying trophy markers, plus the weekly heatmap from `D5`.
 inductees read "This will be replaced with the actual blurb" — and it links to no
 player pages.
 
-- [ ] **F4a** Real blurbs (content task — needs you, not the code)
-- [ ] **F4b** Link every inductee to their player page
-- [ ] **F4c** A manager wing — inductees are currently all players
-- [ ] **F4d** A Ring of Shame, because obviously
+- [ ] **F4a** Real blurbs (content task — needs you, not the code) — **still outstanding, and now the only thing holding the Players wing back.** One line each: add `blurb: "..."` to that year's entry in `hofInductees` in `src/presentation/pages/hallOfFame.tsx`. Also wanted: portraits at `public/images/hof/<year>-icon.jpg` — that directory does not exist, so all 26 images the old page asked for were 404ing and every tile rendered a broken-image glyph. The page now degrades to an initials medallion, and dropping the files in will just work.
+- [x] **F4b** Link every inductee to their player page
+- [x] **F4c** A manager wing — inductees are currently all players
+- [x] **F4d** A Ring of Shame, because obviously
 
 ---
 
@@ -1059,17 +1059,17 @@ use) and `H14` (the Chargers' Mike Williams split across two ids from 2019).
 ### M5 — Visualisation & pages `~6 days`
 | | Task | Size |
 |---|---|---|
-| ☐ | `D0` Chart approach + budget | S |
-| ☐ | `D3` H2H matrix | M |
-| ☐ | `D2` All-time power ribbon | L |
+| ☑ | `D0` Chart approach + budget | S |
+| ☑ | `D3` H2H matrix | M |
+| ☑ | `D2` All-time power ribbon | L |
 | ☐ | `D1` Season arc | M |
-| ☐ | `D7` Luck chart | M |
+| ☑ | `D7` Luck chart | M |
 | ☐ | `D5` Weekly heatmap | M |
 | ☐ | `D4` Score distribution | M |
 | ☐ | `D6` Draft value scatter | M |
-| ☐ | `F1a–e` Managers page rebuild | L |
+| ◐ | `F1a–e` Managers page rebuild | L | *(a–d done; F1e needs E7/M6)*
 | ☐ | `F3` Manager detail rebuild | M |
-| ☐ | `F4a–d` Hall of Fame | M |
+| ◐ | `F4a–d` Hall of Fame | M | *(b–d done; F4a is the commissioner's to write)*
 
 ### M6 — Discovery & sharing `~6 days`
 The "get lost in it" payoff, once there's something worth getting lost in.
