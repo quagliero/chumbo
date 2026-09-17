@@ -14,8 +14,14 @@ interface AxisProps {
  * Axes (D0).
  *
  * Tick text is `currentColor` at reduced opacity rather than a hard-coded grey,
- * so the axes follow the B1 tokens into dark mode without either of them having
- * to know about the other.
+ * so the axes take their colour from the surrounding type instead of each
+ * needing to know about the other.
+ *
+ * An earlier version of this comment said that made the axes follow the tokens
+ * "into dark mode". There is no dark mode: the B1 palette is literal hex with
+ * no dark variants, and `index.css` now declares `color-scheme: light` because
+ * leaving it unset rendered dark text on the browser's dark ground. Raised by
+ * D4.
  */
 
 export const YAxis = ({

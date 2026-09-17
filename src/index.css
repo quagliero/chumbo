@@ -2,7 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * This site is light, and now says so.
+ *
+ * Nothing here declared `color-scheme` and nothing painted a background on
+ * `html` or `body`, so under OS dark mode the browser supplied a near-black
+ * ground while every text colour stayed a literal light-mode value
+ * (`text-gray-900`, the B1 `ink` tokens). The result was a page title in dark
+ * navy on black, and the narrative notes invisible — found on the H2H page,
+ * but it was every page.
+ *
+ * `color-scheme: light` is the honest fix rather than a stopgap: the B1 palette
+ * in `tailwind.config.js` is literal hex with no dark variants, `Axis.tsx`'s
+ * claim that its ticks "follow the B1 tokens into dark mode" has never been
+ * true, and the share cards are deliberately opaque light. Declaring light
+ * states the design that exists. A real dark mode means a second palette and a
+ * pass over every hardcoded colour; until somebody does that, the browser
+ * should not be left to guess.
+ */
 :root {
+  color-scheme: light;
+  background-color: #f5f6f9; /* surface-sunk — the page ground */
+  color: #151922; /* ink */
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -15,4 +37,10 @@
 
 html {
   overflow-y: scroll;
+}
+
+/* Inherit the root ground rather than leaving the UA to pick one. */
+body {
+  background-color: inherit;
+  color: inherit;
 }
