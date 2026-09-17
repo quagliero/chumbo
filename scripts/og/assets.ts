@@ -8,7 +8,9 @@
  * card has initials, and the faces are most of what makes these cards
  * recognisable at thumbnail size. So this is the Node-side equivalent: read the
  * crest off disk, pull the avatars over HTTP once per build, hand back data
- * URIs in exactly the shape `CardPerson.avatar` wants.
+ * URIs in exactly the shape `CardPerson.avatar` wants. Sleeper avatars come
+ * over HTTP; the recovered 2012-2018 NFL.com ones are root-relative paths and
+ * are read out of `public/`.
  *
  * ## Sniff the bytes, do not trust the header
  *
@@ -82,6 +84,16 @@ export const embedLocalImage = (file: string): string | null => {
 const TIMEOUT_MS = 6000;
 
 const fetchOne = async (url: string): Promise<string | null> => {
+  // The 2012-2018 avatars are no longer remote: NFL.com's fantasy platform shut
+  // down and the recovered images are served out of `public/`. In the browser
+  // `/avatars/nfl/x.jpg` is just a URL, but here there is no origin to resolve
+  // it against, so a root-relative path is read off disk instead. Same failure
+  // contract as the network branch: anything unreadable returns null and the
+  // card falls back to initials.
+  if (url.startsWith("/")) {
+    return embedLocalImage(path.join("public", url));
+  }
+
   try {
     const response = await fetch(url, {
       signal: AbortSignal.timeout(TIMEOUT_MS),

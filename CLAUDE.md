@@ -238,6 +238,19 @@ budget, because it is still trusted.
   from a raw Sleeper dump. It was 17.3MB across three files before A1.
 - `scripts/data/player-id-map.json` keeps the external ids (gsis, espn, pfr…)
   that the slim dictionary drops — needed by A1d to join historical roster data.
+- **The 2012-2018 avatars are local files, not URLs.** NFL.com's fantasy
+  platform shut down and took the team logos with it, and the site had only ever
+  built the URL and hotlinked it. 27 of the 32 were recovered out of a Chrome
+  disk cache and live in `public/avatars/nfl/`, so those seasons' `users.json`
+  carry a root-relative `/avatars/nfl/<hash>.jpg` instead. The five that could
+  not be recovered carry `""`, which is deliberate: that is what makes the UI
+  take its monogram branch rather than paint a broken image, as the dead URL
+  did. `scripts/data/nfl-avatar-sources.json` records the original URL behind
+  every one of them. Two consequences — `getUserAvatarUrl` accepts a leading `/`
+  as well as `http`, and `scripts/og/assets.ts` reads a root-relative path off
+  disk, because the prerender runs in Node with no origin to resolve it against.
+  The 240x240 NFL default avatars (`DEF.png`, `PIT_1.png`…) are in there too;
+  those URLs still resolved, but they are one shutdown away from not doing.
 - **After any `fetch-data` / `fetch-season` run, re-run `yarn trim-picks`** —
   Sleeper returns the fat pick objects every time.
 - **Two players can share a name.** Sleeper gives them separate ids and the

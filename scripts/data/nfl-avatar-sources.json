@@ -1,0 +1,569 @@
+[
+  {
+    "season": "2012",
+    "original": "https://fantasy.nfl.com/image/23404919a7d9aaa89795804ed5167241.jpg?x=40&y=40&sig=1715e8f2adfc189c711d2a7fb13649b6",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/23404919a7d9aaa89795804ed5167241.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://fantasy.nfl.com/image/a9249ffbf15737a97ad2854522828b37.jpg?x=40&y=40&sig=fac97b9b2830aa7b65281187d970cb58",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/a9249ffbf15737a97ad2854522828b37.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://fantasy.nfl.com/image/b2ee0d2c07888bbac21514e1ccc906b6.jpg?x=40&y=40&sig=d5079696c091eaa0efd9902d2f99f622",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/b2ee0d2c07888bbac21514e1ccc906b6.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DET_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DET_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/KC_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/KC_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2012",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/PIT_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/PIT_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://fantasy.nfl.com/image/23404919a7d9aaa89795804ed5167241.jpg?x=40&y=40&sig=1715e8f2adfc189c711d2a7fb13649b6",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/23404919a7d9aaa89795804ed5167241.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://fantasy.nfl.com/image/3fd0ac2b60ef64bf623814756c892803.jpg?x=40&y=40&sig=f0a31536f6e403dfe8c0be0f4c301057",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/3fd0ac2b60ef64bf623814756c892803.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://fantasy.nfl.com/image/8a886d47f5571f3db513d1c94ef9e6bb.jpg?x=40&y=40&sig=f2f5c0f65326de7a64e575d30cedf653",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/8a886d47f5571f3db513d1c94ef9e6bb.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://fantasy.nfl.com/image/b2ee0d2c07888bbac21514e1ccc906b6.jpg?x=40&y=40&sig=d5079696c091eaa0efd9902d2f99f622",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/b2ee0d2c07888bbac21514e1ccc906b6.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://fantasy.nfl.com/image/e207d1eab548460fa1a128a0119b65b1.jpg?x=40&y=40&sig=46f2a2a4592833dbf97d0c678c9b3d8e",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/e207d1eab548460fa1a128a0119b65b1.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DET_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DET_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2013",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/KC_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/KC_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/1b45c8b45ba4d79fadf18adc5c289e79.jpg?x=40&y=40&sig=a1e8406baff1de2eb12283e1c24b127e",
+    "kind": "team-logo",
+    "local": null,
+    "recovered": false
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/23404919a7d9aaa89795804ed5167241.jpg?x=40&y=40&sig=1715e8f2adfc189c711d2a7fb13649b6",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/23404919a7d9aaa89795804ed5167241.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/2c0ce5e84c0cb10472a673dc5ce7a937.jpg?x=40&y=40&sig=41a782af5a3ef3aa2c961b595eebb6e3",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/2c0ce5e84c0cb10472a673dc5ce7a937.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/8a886d47f5571f3db513d1c94ef9e6bb.jpg?x=40&y=40&sig=f2f5c0f65326de7a64e575d30cedf653",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/8a886d47f5571f3db513d1c94ef9e6bb.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/952139ff9b1e0fc3ab941c6f855e92bd.jpg?x=40&y=40&sig=c565452157e0d1b95ba56b1cd45880c4",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/952139ff9b1e0fc3ab941c6f855e92bd.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/b2ee0d2c07888bbac21514e1ccc906b6.jpg?x=40&y=40&sig=d5079696c091eaa0efd9902d2f99f622",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/b2ee0d2c07888bbac21514e1ccc906b6.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/c237b24b2fd6ccb75371698e8e21a862.jpg?x=40&y=40&sig=4cfdb732f99235048afbb8d3c432f9ea",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/c237b24b2fd6ccb75371698e8e21a862.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://fantasy.nfl.com/image/ec64bd365f79577c8a0fb53574869a05.jpg?x=40&y=40&sig=108bedc61b26efc16bb84d28182c1e51",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/ec64bd365f79577c8a0fb53574869a05.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DET_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DET_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2014",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/PIT_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/PIT_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/0ed61f056ced604190700959e0252814.jpg?x=40&y=40&sig=1c8cb7f9864b1e7def882e4633ef96fc",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/0ed61f056ced604190700959e0252814.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/23404919a7d9aaa89795804ed5167241.jpg?x=40&y=40&sig=1715e8f2adfc189c711d2a7fb13649b6",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/23404919a7d9aaa89795804ed5167241.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/6539dfd18cd8f1bc85ed302df85cea39.jpg?x=40&y=40&sig=8218d597559cc8e91bc70364bcbfde51",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/6539dfd18cd8f1bc85ed302df85cea39.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/79fbc6d84a4e46b911e1c8e367948d31.jpg?x=40&y=40&sig=fe2ece89fc3c4587bd14a7607cb64bd1",
+    "kind": "team-logo",
+    "local": null,
+    "recovered": false
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/952139ff9b1e0fc3ab941c6f855e92bd.jpg?x=40&y=40&sig=c565452157e0d1b95ba56b1cd45880c4",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/952139ff9b1e0fc3ab941c6f855e92bd.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/a9271a02be0c9d42113ae4da883c7c80.jpg?x=40&y=40&sig=ea61f5bf8e29f376f9aa3bd792283ba5",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/a9271a02be0c9d42113ae4da883c7c80.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/ce3a3dde2d73b904df5a7e95f569eccf.jpg?x=40&y=40&sig=37b2011f9752286107402054e5c813ab",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/ce3a3dde2d73b904df5a7e95f569eccf.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/e52f616765070bb6ecbd0d26d88dc4f0.jpg?x=40&y=40&sig=ce088ce722e33d26cdfd4461a6b3d19b",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/e52f616765070bb6ecbd0d26d88dc4f0.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://fantasy.nfl.com/image/e80f78f002bbb6c108ea5568d4a0b506.jpg?x=40&y=40&sig=aa8234e529042933f8a81e5ae8187b66",
+    "kind": "team-logo",
+    "local": null,
+    "recovered": false
+  },
+  {
+    "season": "2015",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DEF.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DEF.png",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/DET_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/DET_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2015",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/KC_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/KC_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/0ed61f056ced604190700959e0252814.jpg?x=40&y=40&sig=1c8cb7f9864b1e7def882e4633ef96fc",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/0ed61f056ced604190700959e0252814.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/23404919a7d9aaa89795804ed5167241.jpg?x=40&y=40&sig=1715e8f2adfc189c711d2a7fb13649b6",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/23404919a7d9aaa89795804ed5167241.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/2dadc677b94be90e49e92c5fda714ece.jpg?x=40&y=40&sig=164b8944752c44b846a3e164a2e0b4f7",
+    "kind": "team-logo",
+    "local": null,
+    "recovered": false
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/3dadf1de21dda3f257c60a147e962a5a.jpg?x=40&y=40&sig=3cef212a640a88d1e2dcb13db312a642",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/3dadf1de21dda3f257c60a147e962a5a.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/6539dfd18cd8f1bc85ed302df85cea39.jpg?x=40&y=40&sig=8218d597559cc8e91bc70364bcbfde51",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/6539dfd18cd8f1bc85ed302df85cea39.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/6aeaacd962827648f04e71a6177ee2ed.jpg?x=40&y=40&sig=6d2aa415368000356f996446fccc61da",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/6aeaacd962827648f04e71a6177ee2ed.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/81ad07e1d108ac2a0438f0ffc9700879.jpg?x=40&y=40&sig=102fae199703b8df54321e3202fe3bbd",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/81ad07e1d108ac2a0438f0ffc9700879.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/a9271a02be0c9d42113ae4da883c7c80.jpg?x=40&y=40&sig=ea61f5bf8e29f376f9aa3bd792283ba5",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/a9271a02be0c9d42113ae4da883c7c80.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/c143a9646c77da1a10fa963eb5179422.jpg?x=40&y=40&sig=879e90954a31a1490e9d24a97fc988b1",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/c143a9646c77da1a10fa963eb5179422.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/ce3a3dde2d73b904df5a7e95f569eccf.jpg?x=40&y=40&sig=37b2011f9752286107402054e5c813ab",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/ce3a3dde2d73b904df5a7e95f569eccf.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/d20b32ac7ae2548a55691464eeb82fd5.jpg?x=40&y=40&sig=62c0ac731e7bc0f6a77d345784cb874b",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/d20b32ac7ae2548a55691464eeb82fd5.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://fantasy.nfl.com/image/e52f616765070bb6ecbd0d26d88dc4f0.jpg?&x=40&y=40",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/e52f616765070bb6ecbd0d26d88dc4f0.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2016",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/KC_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/KC_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/0ed61f056ced604190700959e0252814.jpg?x=40&y=40&sig=1c8cb7f9864b1e7def882e4633ef96fc",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/0ed61f056ced604190700959e0252814.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/23404919a7d9aaa89795804ed5167241.jpg?x=40&y=40&sig=1715e8f2adfc189c711d2a7fb13649b6",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/23404919a7d9aaa89795804ed5167241.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/30a6946af7982893c6c6acc2e9b9a2d3.jpg?x=40&y=40&sig=68b31a8cac3dd88f195ea1a797da0311",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/30a6946af7982893c6c6acc2e9b9a2d3.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/3dadf1de21dda3f257c60a147e962a5a.jpg?x=40&y=40&sig=3cef212a640a88d1e2dcb13db312a642",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/3dadf1de21dda3f257c60a147e962a5a.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/6539dfd18cd8f1bc85ed302df85cea39.jpg?x=40&y=40&sig=8218d597559cc8e91bc70364bcbfde51",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/6539dfd18cd8f1bc85ed302df85cea39.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/a9271a02be0c9d42113ae4da883c7c80.jpg?x=40&y=40&sig=ea61f5bf8e29f376f9aa3bd792283ba5",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/a9271a02be0c9d42113ae4da883c7c80.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/c143a9646c77da1a10fa963eb5179422.jpg?x=40&y=40&sig=879e90954a31a1490e9d24a97fc988b1",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/c143a9646c77da1a10fa963eb5179422.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/ce3a3dde2d73b904df5a7e95f569eccf.jpg?x=40&y=40&sig=37b2011f9752286107402054e5c813ab",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/ce3a3dde2d73b904df5a7e95f569eccf.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/d20b32ac7ae2548a55691464eeb82fd5.jpg?x=40&y=40&sig=62c0ac731e7bc0f6a77d345784cb874b",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/d20b32ac7ae2548a55691464eeb82fd5.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://fantasy.nfl.com/image/dc40111151352ab519053f80f117049f.jpg?x=40&y=40&sig=08ca126b9dd172f20e40b6420ea3014a",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/dc40111151352ab519053f80f117049f.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/GB_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/GB_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2017",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/KC_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/KC_1.png",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/090a13d6fe9065421790861c0e102a02.jpg?x=40&y=40&sig=30941e9b9b6eb0da3dbe97eb8122e600",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/090a13d6fe9065421790861c0e102a02.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/0ed61f056ced604190700959e0252814.jpg?x=40&y=40&sig=1c8cb7f9864b1e7def882e4633ef96fc",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/0ed61f056ced604190700959e0252814.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/4952a83f417295e1d861277faa4a4057.jpg?x=40&y=40&sig=f0844a67743db97a7a024804e111b1be",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/4952a83f417295e1d861277faa4a4057.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/6539dfd18cd8f1bc85ed302df85cea39.jpg?x=40&y=40&sig=8218d597559cc8e91bc70364bcbfde51",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/6539dfd18cd8f1bc85ed302df85cea39.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/95b49303b65d3da442dc187cb6ea50e1.jpg?x=40&y=40&sig=10980f4a0520223aaed31306026ba6b9",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/95b49303b65d3da442dc187cb6ea50e1.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/a192e1c452ef23864c2026caee5dfe32.jpg?x=40&y=40&sig=825422cc8c9aa92afa33e80566d10b96",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/a192e1c452ef23864c2026caee5dfe32.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/b9d4c017e2a49c29bb07553f6fb6e28c.jpg?x=40&y=40&sig=c353bc4d51c0d34cb0acc4aa69eac079",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/b9d4c017e2a49c29bb07553f6fb6e28c.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/c143a9646c77da1a10fa963eb5179422.jpg?x=40&y=40&sig=879e90954a31a1490e9d24a97fc988b1",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/c143a9646c77da1a10fa963eb5179422.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/ce3a3dde2d73b904df5a7e95f569eccf.jpg?x=40&y=40&sig=37b2011f9752286107402054e5c813ab",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/ce3a3dde2d73b904df5a7e95f569eccf.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/d20b32ac7ae2548a55691464eeb82fd5.jpg?x=40&y=40&sig=62c0ac731e7bc0f6a77d345784cb874b",
+    "kind": "team-logo",
+    "local": "/avatars/nfl/d20b32ac7ae2548a55691464eeb82fd5.jpg",
+    "recovered": true
+  },
+  {
+    "season": "2018",
+    "original": "https://fantasy.nfl.com/image/d76c07912ded8c89ad3c817551aee98f.jpg?x=40&y=40&sig=8f86f143fce65cd9fb56637350b270ea",
+    "kind": "team-logo",
+    "local": null,
+    "recovered": false
+  },
+  {
+    "season": "2018",
+    "original": "https://static.www.nfl.com/league/apps/fantasy/logos/avatar/240x240/KC_1.png",
+    "kind": "nfl-default",
+    "local": "/avatars/nfl/KC_1.png",
+    "recovered": true
+  }
+]

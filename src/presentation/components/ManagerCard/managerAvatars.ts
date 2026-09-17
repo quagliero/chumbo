@@ -13,8 +13,9 @@ import type { ExtendedUser } from "@/types/user";
  * So: newest season wins. A manager's current picture is the one they would
  * recognise as theirs, and it is also the only one the departed managers have a
  * choice about — five of them last played between 2012 and 2018, and their
- * entry there is an NFL.com URL carried through the Sleeper import rather than
- * a Sleeper avatar hash. `getUserAvatarUrl` already handles both.
+ * entry there is a picture in metadata rather than a Sleeper avatar hash. Those
+ * were NFL.com URLs until the platform shut down; they are now local
+ * `/avatars/nfl/...` paths. `getUserAvatarUrl` already handles both.
  *
  * Returns `null` rather than omitting a manager, so a card can tell "no picture
  * on file" from "manager not found" and fall back to a monogram either way.
