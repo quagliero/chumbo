@@ -1,10 +1,30 @@
-import { useState } from "react";
-import { PlayerLink, SeasonLink } from "@/presentation/components/Links";
+import { useState, type ReactNode } from "react";
+import { Link } from "react-router-dom";
+import { getPlayer } from "@/data";
+import { getManagerAccent } from "@/domain/managerColors";
+import { usePrecomputedStats } from "@/hooks/usePrecomputedStats";
+import {
+  LINK_CLASS,
+  ManagerLink,
+  PlayerLink,
+  SeasonLink,
+} from "@/presentation/components/Links";
 import { Card } from "@/presentation/components/Card";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
+import {
+  getManagersWing,
+  getRingOfShame,
+  listYears,
+  type ShameEntry,
+  type WingEntry,
+} from "@/utils/hallOfFame";
+
+/* ------------------------------------------------------------------ *
+ * The players' wing
+ * ------------------------------------------------------------------ */
 
 interface HOFInductee {
   name: string;
-  blurb: string;
   /**
    * Sleeper id, where the inductee is a player the dictionary still carries.
    * Four inductees have none — Jacob Hester, Braxton Hoyett and Damar Hamlin
@@ -13,199 +33,388 @@ interface HOFInductee {
    * rather than linking into a Player Not Found.
    */
   playerId?: string;
+  /**
+   * The induction citation.
+   *
+   * **This is the commissioner's to write (F4a), and it is deliberately absent
+   * rather than stubbed.** Every inductee used to carry the sentence
+   * "Placeholder text for X's Hall of Fame induction in YYYY. This will be
+   * replaced with the actual blurb.", which reads on the page as if it were
+   * league lore that nobody bothered to finish. An absent field renders as a
+   * plainly-marked "citation pending" instead, and the wing's header counts how
+   * many are still missing.
+   *
+   * To fill one in: add `blurb: "..."` to that year below. Newlines are kept,
+   * so it can be several paragraphs. Nothing else needs changing.
+   */
+  blurb?: string;
 }
 
 const hofInductees: Record<number, HOFInductee> = {
-  2012: {
-    name: "Jacob Hester",
-    blurb:
-      "Placeholder text for Jacob Hester's Hall of Fame induction in 2012. This will be replaced with the actual blurb.",
-  },
-  2013: {
-    name: "Jamaal Charles",
-    blurb:
-      "Placeholder text for Jamaal Charles's Hall of Fame induction in 2013. This will be replaced with the actual blurb.",
-    playerId: "323",
-  },
-  2014: {
-    name: "Mark Sanchez",
-    blurb:
-      "Placeholder text for Mark Sanchez's Hall of Fame induction in 2014. This will be replaced with the actual blurb.",
-    playerId: "350",
-  },
-  2015: {
-    name: "Eddie Lacy",
-    blurb:
-      "Placeholder text for Eddie Lacy's Hall of Fame induction in 2015. This will be replaced with the actual blurb.",
-    playerId: "1527",
-  },
-  2016: {
-    name: "LeGarrette Blount",
-    blurb:
-      "Placeholder text for LeGarrette Blount's Hall of Fame induction in 2016. This will be replaced with the actual blurb.",
-    playerId: "730",
-  },
-  2017: {
-    name: "Todd Gurley",
-    blurb:
-      "Placeholder text for Todd Gurley's Hall of Fame induction in 2017. This will be replaced with the actual blurb.",
-    playerId: "2315",
-  },
-  2018: {
-    name: "Robbie Chosen",
-    blurb:
-      "Placeholder text for Robbie Chosen's Hall of Fame induction in 2018. This will be replaced with the actual blurb.",
-    playerId: "3423",
-  },
-  2019: {
-    name: "Travis Kelce",
-    blurb:
-      "Placeholder text for Travis Kelce's Hall of Fame induction in 2019. This will be replaced with the actual blurb.",
-    playerId: "1466",
-  },
-  2020: {
-    name: "Darren Waller",
-    blurb:
-      "Placeholder text for Darren Waller's Hall of Fame induction in 2020. This will be replaced with the actual blurb.",
-    playerId: "2505",
-  },
-  2021: {
-    name: "Braxton Hoyett",
-    blurb:
-      "Placeholder text for Braxton Hoyett's Hall of Fame induction in 2021. This will be replaced with the actual blurb.",
-  },
-  2022: {
-    name: "Damar Hamlin",
-    blurb:
-      "Placeholder text for Damar Hamlin's Hall of Fame induction in 2022. This will be replaced with the actual blurb.",
-  },
-  2023: {
-    name: "Christian McCaffrey",
-    blurb:
-      "Placeholder text for Christian McCaffrey's Hall of Fame induction in 2023. This will be replaced with the actual blurb.",
-    playerId: "4034",
-  },
-  2024: {
-    name: "Commissioner HD",
-    blurb:
-      "Placeholder text for Commissioner HD's Hall of Fame induction in 2024. This will be replaced with the actual blurb.",
-  },
+  2012: { name: "Jacob Hester" },
+  2013: { name: "Jamaal Charles", playerId: "323" },
+  2014: { name: "Mark Sanchez", playerId: "350" },
+  2015: { name: "Eddie Lacy", playerId: "1527" },
+  2016: { name: "LeGarrette Blount", playerId: "730" },
+  2017: { name: "Todd Gurley", playerId: "2315" },
+  2018: { name: "Robbie Chosen", playerId: "3423" },
+  2019: { name: "Travis Kelce", playerId: "1466" },
+  2020: { name: "Darren Waller", playerId: "2505" },
+  2021: { name: "Braxton Hoyett" },
+  2022: { name: "Damar Hamlin" },
+  2023: { name: "Christian McCaffrey", playerId: "4034" },
+  2024: { name: "Commissioner HD" },
 };
 
-const HallOfFame = () => {
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+const initialsOf = (name: string): string =>
+  name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0] ?? "")
+    .join("")
+    .toUpperCase();
+
+/**
+ * The inductee portrait.
+ *
+ * `public/images/hof/` does not exist — all 26 files the page asked for (an
+ * icon and a large version per year) are missing, so every tile rendered a
+ * broken-image glyph. The `<img>` is kept so that dropping the files in makes
+ * them appear with no further change; it simply hides itself on error and lets
+ * the initials medallion underneath show through.
+ */
+const Portrait = ({ year, name }: { year: number; name: string }) => {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div className="relative w-24 h-24 rounded-full overflow-hidden bg-surface-sunk border border-line flex items-center justify-center">
+      <span className="text-xl font-semibold text-ink-faint">
+        {initialsOf(name)}
+      </span>
+      {!failed && (
+        <img
+          src={`/images/hof/${year}-icon.jpg`}
+          alt=""
+          onError={() => setFailed(true)}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+    </div>
+  );
+};
+
+const PlayersWing = () => {
   const years = Object.keys(hofInductees)
     .map(Number)
     .sort((a, b) => a - b);
-
-  const handleMemberClick = (year: number) => {
-    setSelectedYear(year);
-    // Scroll to detail section after a brief delay to ensure state updates
-    setTimeout(() => {
-      document.getElementById("detail-section")?.scrollIntoView({
-        behavior: "smooth",
-      });
-    }, 100);
-  };
-
-  const handleCloseDetail = () => {
-    setSelectedYear(null);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const selectedMember = selectedYear ? hofInductees[selectedYear] : null;
+  const written = years.filter((year) => hofInductees[year].blurb).length;
 
   return (
-    <div className="container mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Hall of Fame</h1>
-        <p className="text-gray-600">Inductees into the Chumbo Hall of Fame</p>
-      </div>
+    <section className="space-y-4">
+      <Card>
+        <h2 className="text-xl font-bold text-ink">The Players' Wing</h2>
+        <p className="mt-1 text-sm text-ink-muted">
+          One inductee a season, chosen by the commissioner. The citations are
+          his to write, and{" "}
+          <strong className="font-semibold text-ink">
+            {written} of {years.length}
+          </strong>{" "}
+          have been written so far.
+        </p>
+      </Card>
 
-      {/* Grid Section */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
         {years.map((year) => {
           const inductee = hofInductees[year];
-          const isSelected = selectedYear === year;
+          const player = inductee.playerId
+            ? getPlayer(inductee.playerId)
+            : undefined;
 
           return (
-            <div
-              key={year}
-              className="flex flex-col items-center cursor-pointer group"
-              onClick={() => handleMemberClick(year)}
-            >
-              <div
-                className={`relative w-32 h-32 rounded-full overflow-hidden mb-2 transition-all duration-300 ${
-                  isSelected
-                    ? "ring-4 ring-blue-600 ring-offset-2"
-                    : "group-hover:scale-105 group-hover:brightness-110"
-                }`}
-              >
-                <img
-                  src={`/images/hof/${year}-icon.jpg`}
-                  alt={inductee.name}
-                  className="w-full h-full object-cover"
-                />
+            <Card key={year} className="h-full">
+              <div className="flex items-start gap-4">
+                <Portrait year={year} name={inductee.name} />
+                <div className="min-w-0">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                    <SeasonLink year={year} title={`The ${year} season`}>
+                      Class of {year}
+                    </SeasonLink>
+                  </div>
+                  <h3 className="mt-1 text-lg font-bold leading-tight break-words">
+                    <PlayerLink
+                      playerId={inductee.playerId}
+                      fallbackClassName="text-ink"
+                      title={`${inductee.name} — player page`}
+                      fallbackTitle="No player page: not in the fantasy player dictionary"
+                    >
+                      {inductee.name}
+                    </PlayerLink>
+                  </h3>
+                  {player && (
+                    <p className="text-sm text-ink-muted">
+                      {player.position}
+                      {player.team ? ` · ${player.team}` : ""}
+                    </p>
+                  )}
+                </div>
               </div>
-              <span className="text-sm font-medium text-gray-700">{year}</span>
-            </div>
+
+              <div className="mt-4 border-t border-line pt-3">
+                {inductee.blurb ? (
+                  <p className="text-sm text-ink leading-relaxed whitespace-pre-line">
+                    {inductee.blurb}
+                  </p>
+                ) : (
+                  <div className="rounded border border-dashed border-line-strong bg-surface-sunk px-3 py-2">
+                    <p className="text-sm font-semibold text-ink-muted">
+                      Citation not yet written
+                    </p>
+                    <p className="mt-0.5 text-xs text-ink-faint">
+                      The plaque is blank. Nobody has recorded why {inductee.name}{" "}
+                      went in.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Card>
           );
         })}
       </div>
+    </section>
+  );
+};
 
-      {/* Detail Section */}
-      {selectedMember && selectedYear && (
-        <div id="detail-section" className="min-h-screen relative">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <img
-              src={`/images/hof/${selectedYear}-large.jpg`}
-              alt={selectedMember.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
+/* ------------------------------------------------------------------ *
+ * The managers' wing
+ * ------------------------------------------------------------------ */
 
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/70"></div>
+const Honour = ({ label, years }: { label: string; years: number[] }) => {
+  if (years.length === 0) return null;
+  return (
+    <p className="text-sm text-ink-muted">
+      <span className="font-semibold text-ink">
+        {years.length} {label}
+      </span>{" "}
+      —{" "}
+      {years.map((year, index) => (
+        <span key={year}>
+          {index > 0 && ", "}
+          <SeasonLink year={year}>{year}</SeasonLink>
+        </span>
+      ))}
+    </p>
+  );
+};
 
-          {/* Content */}
-          <div className="relative z-10 min-h-screen flex items-center justify-center p-8">
-            <Card padding="lg" className="max-w-2xl mx-auto">
-              {/* Close Button */}
-              <button
-                onClick={handleCloseDetail}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
-                aria-label="Close"
-              >
-                ×
-              </button>
+const ManagerCard = ({ entry }: { entry: WingEntry }) => (
+  <Card padding="none" className="h-full">
+    {/* F2: one manager per card, so the accent is decoration next to a name
+        that already carries the identity. Inline style, not a generated class
+        — a template-string class name is purged out of the build. */}
+    <div className="h-1" style={{ backgroundColor: getManagerAccent(entry.managerId) }} />
+    <div className="p-6">
+      <h3 className="text-lg font-bold leading-tight break-words">
+        <ManagerLink managerId={entry.managerId} title={`${entry.name} — manager page`}>
+          {entry.name}
+        </ManagerLink>
+      </h3>
+      <p className="text-sm text-ink-muted break-words">{entry.teamName}</p>
 
-              {/* Name */}
-              <h2 className="text-3xl font-bold mb-4">
-                <PlayerLink
-                  playerId={selectedMember.playerId}
-                  className="text-blue-600 hover:text-blue-800 hover:underline"
-                  fallbackClassName="text-gray-800"
-                  title={`${selectedMember.name} — player page`}
-                >
-                  {selectedMember.name}
-                </PlayerLink>
-              </h2>
-
-              {/* Year */}
-              <p className="text-lg mb-6">
-                <SeasonLink year={selectedYear}>{selectedYear}</SeasonLink>
-              </p>
-
-              {/* Blurb */}
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {selectedMember.blurb}
-              </p>
-            </Card>
-          </div>
-        </div>
+      {entry.archetype && (
+        <p className="mt-3 text-sm">
+          <span className="font-semibold text-ink">{entry.archetype}</span>
+          {entry.archetypeReason && (
+            <span className="text-ink-muted"> — {entry.archetypeReason}</span>
+          )}
+        </p>
       )}
+
+      <div className="mt-3 space-y-1">
+        <Honour label={entry.titles.length === 1 ? "title" : "titles"} years={entry.titles} />
+        <Honour
+          label={entry.runnerUps.length === 1 ? "runner-up" : "runner-up finishes"}
+          years={entry.runnerUps}
+        />
+        <Honour
+          label={entry.spoons.length === 1 ? "wooden spoon" : "wooden spoons"}
+          years={entry.spoons}
+        />
+        <p className="text-sm text-ink-faint">
+          {entry.finishes.length} completed{" "}
+          {entry.finishes.length === 1 ? "season" : "seasons"}
+        </p>
+      </div>
+    </div>
+  </Card>
+);
+
+const ManagersWing = ({ entries }: { entries: WingEntry[] }) => (
+  <section className="space-y-4">
+    <Card>
+      <h2 className="text-xl font-bold text-ink">The Managers' Wing</h2>
+      <p className="mt-1 text-sm text-ink-muted">
+        One rule, and no committee:{" "}
+        <strong className="font-semibold text-ink">
+          you are in if you have won the Chumbo.
+        </strong>{" "}
+        Finishing positions come from the playoff brackets, not the regular-season
+        table, so a 12-1 team that lost in the semi-final is not a champion here
+        either. The character notes are the league's own{" "}
+        <span className="italic">manager archetypes</span> — each one is the
+        measure that manager is furthest from the league average on.
+      </p>
+    </Card>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+      {entries.map((entry) => (
+        <ManagerCard key={entry.managerId} entry={entry} />
+      ))}
+    </div>
+  </section>
+);
+
+/* ------------------------------------------------------------------ *
+ * The Ring of Shame
+ * ------------------------------------------------------------------ */
+
+const ShameCard = ({ entry }: { entry: ShameEntry }) => (
+  <Card padding="none" className="h-full">
+    <div className="h-1 bg-result-loss" />
+    <div className="p-6">
+      <h3 className="text-lg font-bold leading-tight text-ink break-words">
+        {entry.title}
+      </h3>
+
+      <p className="mt-3 text-2xl font-bold font-numeric tabular-nums text-result-loss break-words">
+        {entry.value}
+      </p>
+      <p className="text-sm font-semibold">
+        <ManagerLink
+          managerId={entry.managerId}
+          title={`${entry.name} — manager page`}
+        >
+          {entry.name}
+        </ManagerLink>
+        <span className="font-normal text-ink-faint"> · {entry.teamName}</span>
+      </p>
+
+      {entry.detail && (
+        <p className="mt-3 text-sm text-ink break-words">{entry.detail}</p>
+      )}
+
+      <p className="mt-3 border-t border-line pt-3 text-xs text-ink-faint">
+        {entry.basis}
+        {entry.excluded.length > 0 && (
+          <>
+            {" "}
+            Excludes {listYears(entry.excluded)}, whose per-player data is a
+            reconstruction rather than a record.
+          </>
+        )}
+        {entry.approximate && " This entry rests on reconstructed lineup data."}
+      </p>
+
+      {entry.href && (
+        <p className="mt-2 text-sm">
+          <Link to={entry.href} className={LINK_CLASS}>
+            See it →
+          </Link>
+        </p>
+      )}
+    </div>
+  </Card>
+);
+
+const RingOfShame = ({ entries }: { entries: ShameEntry[] }) => (
+  <section className="space-y-4">
+    <Card>
+      <h2 className="text-xl font-bold text-ink">The Ring of Shame</h2>
+      <p className="mt-1 text-sm text-ink-muted">
+        Not a wing. A ring, so everyone can stand round it and point. Every
+        number below is the real, current record holder, taken straight from the
+        league's own statistics — the criterion is printed under each one, so
+        nobody has to take it on trust. It ranks records rather than people,
+        which is why one or two managers manage to turn up twice.
+      </p>
+    </Card>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+      {entries.map((entry) => (
+        <ShameCard key={entry.id} entry={entry} />
+      ))}
+    </div>
+  </section>
+);
+
+/* ------------------------------------------------------------------ *
+ * The page
+ * ------------------------------------------------------------------ */
+
+type WingId = "players" | "managers" | "shame";
+
+const TABS: { id: WingId; label: string }[] = [
+  { id: "players", label: "Players" },
+  { id: "managers", label: "Managers" },
+  { id: "shame", label: "Ring of Shame" },
+];
+
+const TabButton = ({
+  active,
+  children,
+  onClick,
+}: {
+  active: boolean;
+  children: ReactNode;
+  onClick: () => void;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-current={active ? "page" : undefined}
+    className={
+      active
+        ? "px-4 py-2 text-sm font-semibold border-b-2 border-blue-600 text-blue-700"
+        : "px-4 py-2 text-sm font-medium border-b-2 border-transparent text-ink-muted hover:text-ink"
+    }
+  >
+    {children}
+  </button>
+);
+
+const HallOfFame = () => {
+  // A4: the build-time answers, not fifteen seasons of matchups. Suspends on
+  // the `<Suspense>` boundary in App.tsx until the file is in.
+  const stats = usePrecomputedStats();
+  const [wing, setWing] = useState<WingId>("players");
+
+  const managersWing = getManagersWing(stats);
+  const ring = getRingOfShame(stats);
+
+  return (
+    <div className="container mx-auto space-y-6 py-6">
+      <div>
+        <h1 className="text-3xl sm:text-4xl font-bold text-ink">Hall of Fame</h1>
+        <p className="mt-1 text-ink-muted">
+          Three rooms. One for the players, one for the managers who actually won
+          something, and one nobody asked to be in.
+        </p>
+      </div>
+
+      <ScrollableTabs className="border-b border-line">
+        {TABS.map((tab) => (
+          <TabButton
+            key={tab.id}
+            active={wing === tab.id}
+            onClick={() => setWing(tab.id)}
+          >
+            {tab.label}
+          </TabButton>
+        ))}
+      </ScrollableTabs>
+
+      {wing === "players" && <PlayersWing />}
+      {wing === "managers" && <ManagersWing entries={managersWing} />}
+      {wing === "shame" && <RingOfShame entries={ring} />}
     </div>
   );
 };
