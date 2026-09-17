@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import {
   usePlayerData,
@@ -12,12 +12,13 @@ import {
   PerformanceTable,
 } from "@/presentation/components/PlayerDetail";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { Card } from "@/presentation/components/Card";
+import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 
 const PlayerDetail = () => {
   // A2a: every one of these hooks reads the matchups, a lazy chunk now.
   useAllSeasons();
   const { playerId } = useParams<{ playerId: string }>();
-  const navigate = useNavigate();
 
   // Use custom hooks for data
   const { player, allNicknames } = usePlayerData(playerId);
@@ -47,15 +48,17 @@ const PlayerDetail = () => {
 
   return (
     <div className="container mx-auto space-y-6">
-      {/* Back Button */}
-      <div className="mb-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-blue-600 hover:text-blue-800 text-sm"
-        >
-          ← Back
-        </button>
-      </div>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Players", to: "/players" },
+          {
+            label:
+              player.full_name ||
+              `${player.first_name ?? ""} ${player.last_name ?? ""}`.trim() ||
+              String(playerId),
+          },
+        ]}
+      />
 
       {/* Player Header */}
       <div className="bg-white mb-8">
@@ -129,12 +132,12 @@ const PlayerDetail = () => {
 
       {/* Ownership Table */}
       {playerStats.ownerStats.length > 1 && (
-        <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
+        <Card padding="none" className="mb-8">
           <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
             Ownership Breakdown
           </h2>
           <OwnershipTable data={playerStats.ownerStats} />
-        </div>
+        </Card>
       )}
 
       {/* Draft Breakdown */}

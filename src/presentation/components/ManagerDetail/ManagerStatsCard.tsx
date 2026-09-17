@@ -1,4 +1,6 @@
 import { useFormatter } from "use-intl";
+import { SeasonLink } from "@/presentation/components/Links";
+import { Card } from "@/presentation/components/Card";
 
 export interface ManagerStats {
   managerName: string;
@@ -61,7 +63,7 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
     <>
       {/* Overall Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Overall Record
           </h3>
@@ -72,9 +74,9 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
           <div className="text-sm text-gray-500">
             {number(winPercentage, { maximumFractionDigits: 1 })}% win rate
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             League Performance
           </h3>
@@ -86,9 +88,9 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
             {number(leagueWinPercentage, { maximumFractionDigits: 1 })}% league
             win rate
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Points For
           </h3>
@@ -106,9 +108,9 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
             )}{" "}
             avg per season
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Points Against
           </h3>
@@ -126,40 +128,40 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
             )}{" "}
             avg per season
           </div>
-        </div>
+        </Card>
       </div>
 
       {/* Achievements */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Championships
           </h3>
           <div className="text-3xl font-bold">{managerStats.championships}</div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">Finals</h3>
           <div className="text-3xl font-bold">
             {managerStats.runnerUps + managerStats.championships}
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Scoring Crowns
           </h3>
           <div className="text-3xl font-bold">{managerStats.scoringCrowns}</div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-600 mb-2">Playoffs</h3>
           <div className="text-3xl font-bold">{managerStats.playoffs}</div>
-        </div>
+        </Card>
       </div>
 
       {/* Best Seasons */}
-      <div className="bg-white p-6 rounded-lg shadow overflow-hidden">
+      <Card>
         <h2 className="text-2xl font-bold mb-4">Best Seasons</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -167,8 +169,10 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
             <div className="text-2xl font-bold">
               {managerStats.bestWinsSeason.wins} wins
             </div>
-            <div className="text-gray-600">
-              {managerStats.bestWinsSeason.year}
+            <div>
+              <SeasonLink year={managerStats.bestWinsSeason.year}>
+                {managerStats.bestWinsSeason.year}
+              </SeasonLink>
             </div>
           </div>
           <div>
@@ -179,12 +183,14 @@ const ManagerStatsCard = ({ managerStats }: ManagerStatsCardProps) => {
               })}{" "}
               points
             </div>
-            <div className="text-gray-600">
-              {managerStats.bestPointsSeason.year}
+            <div>
+              <SeasonLink year={managerStats.bestPointsSeason.year}>
+                {managerStats.bestPointsSeason.year}
+              </SeasonLink>
             </div>
           </div>
         </div>
-      </div>
+      </Card>
     </>
   );
 };

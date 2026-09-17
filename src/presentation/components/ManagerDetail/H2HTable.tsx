@@ -1,22 +1,8 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-  SortIcon,
-} from "@/presentation/components/Table";
-import {
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-  ColumnDef,
-} from "@tanstack/react-table";
+import { DataTable } from "@/presentation/components/Table";
+import type { AnyColumnDef } from "@/presentation/components/Table";
 import { getTeamName } from "@/utils";
 
 export interface H2HRecordWithOpponent {
@@ -51,7 +37,7 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
   const navigate = useNavigate();
   const { number } = useFormatter();
 
-  const columns: ColumnDef<H2HRecordWithOpponent>[] = [
+  const columns: AnyColumnDef<H2HRecordWithOpponent>[] = [
     {
       accessorKey: "opponentName",
       header: "Manager",
@@ -62,18 +48,22 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
 
         const opponentManagerName = getTeamName(row.original.opponentId);
         return (
+          // Not a ManagerLink: this goes to the pairwise H2H page, not to the
+          // opponent's manager page.
           <Link
             to={`/h2h/${managerId}/${opponentManagerId}`}
             className="text-blue-600 hover:text-blue-800 hover:underline"
+            onClick={(event) => event.stopPropagation()}
           >
             {opponentManagerName}
             <br />
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-ink-muted">
               {getValue() as string}
             </span>
           </Link>
         );
       },
+      meta: { cellClassName: "font-medium" },
     },
     {
       accessorKey: "record",
@@ -89,6 +79,7 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
         const b = rowB.original.record.wins;
         return a - b;
       },
+      meta: { kind: "record" },
     },
     {
       accessorKey: "record",
@@ -99,12 +90,12 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
         if (!record.currentStreak) return null;
         return (
           <span
-            className={`px-2 py-1 rounded text-xs font-medium ${
+            className={`px-2 py-1 rounded text-xs font-medium text-white ${
               record.currentStreak.type === "W"
-                ? "bg-green-100 text-green-800"
+                ? "bg-result-win"
                 : record.currentStreak.type === "L"
-                ? "bg-red-100 text-red-800"
-                : "bg-gray-100 text-gray-800"
+                ? "bg-result-loss"
+                : "bg-result-tie"
             }`}
           >
             {record.currentStreak.type}
@@ -112,6 +103,7 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
           </span>
         );
       },
+      meta: { align: "center" },
     },
     {
       accessorKey: "record",
@@ -125,7 +117,7 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
             <div className="font-medium">
               {record.mostRecent.year}, Week {record.mostRecent.week}
             </div>
-            <div className="text-gray-500">
+            <div className="text-ink-muted tabular-nums">
               {record.mostRecent.result === "W"
                 ? "W"
                 : record.mostRecent.result === "L"
@@ -158,6 +150,7 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
         const b = rowB.original.record.avgPointsFor;
         return a - b;
       },
+      meta: { kind: "points" },
     },
     {
       accessorKey: "record",
@@ -174,81 +167,22 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
         const b = rowB.original.record.avgPointsAgainst;
         return a - b;
       },
+      meta: { kind: "points" },
     },
   ];
-
-  const table = useReactTable({
-    data: h2hRecords,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    initialState: {
-      sorting: [{ id: "record", desc: true }],
-    },
-  });
 
   return (
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <h3 className="text-lg font-semibold text-gray-900 py-4 px-6">
         Head-to-Head Records
       </h3>
-      <Table className="border-t border-neutral-200">
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHeaderCell
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className={`${
-                    header.column.getCanSort()
-                      ? "cursor-pointer hover:bg-gray-100"
-                      : ""
-                  }`}
-                  isSorted={!!header.column.getIsSorted()}
-                >
-                  <div className="flex items-center justify-between">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {header.column.getCanSort() && (
-                      <SortIcon
-                        sortDirection={
-                          header.column.getIsSorted() === "asc"
-                            ? "asc"
-                            : header.column.getIsSorted() === "desc"
-                            ? "desc"
-                            : false
-                        }
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              onClick={() =>
-                navigate(`/h2h/${managerId}/${row.original.opponentId}`)
-              }
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={h2hRecords}
+        initialSorting={[{ id: "record", desc: true }]}
+        onRowClick={(row) => navigate(`/h2h/${managerId}/${row.opponentId}`)}
+        emptyMessage="No head-to-head games yet."
+      />
     </div>
   );
 };

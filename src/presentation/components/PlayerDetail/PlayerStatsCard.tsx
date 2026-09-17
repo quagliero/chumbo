@@ -1,6 +1,28 @@
+import { Fragment } from "react";
+import { Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import type { OwnerStats } from "./OwnershipTable";
 import type { PlayerPerformance } from "./PerformanceTable";
+import { Card } from "@/presentation/components/Card";
+import {
+  LINK_CLASS,
+  ManagerLink,
+  SeasonLink,
+} from "@/presentation/components/Links";
+
+/** Render a list of seasons as links to the playoff bracket for each. */
+const SeasonList = ({ years }: { years: number[] }) => (
+  <>
+    {years.map((year, index) => (
+      <Fragment key={year}>
+        {index > 0 && ", "}
+        <SeasonLink year={year} tab="playoffs" className={LINK_CLASS}>
+          {year}
+        </SeasonLink>
+      </Fragment>
+    ))}
+  </>
+);
 
 export interface PlayerStats {
   seasonsPlayed: number;
@@ -35,71 +57,83 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
   const ownershipStats = {
     mostGames: playerStats.ownerStats.reduce(
       (max, owner) => (owner.gamesPlayed > max.gamesPlayed ? owner : max),
-      playerStats.ownerStats[0] || { gamesPlayed: 0, teamName: "N/A" }
+      playerStats.ownerStats[0] || {
+        gamesPlayed: 0,
+        teamName: "N/A",
+        ownerId: "",
+      }
     ),
     mostPoints: playerStats.ownerStats.reduce(
       (max, owner) => (owner.totalPoints > max.totalPoints ? owner : max),
-      playerStats.ownerStats[0] || { totalPoints: 0, teamName: "N/A" }
+      playerStats.ownerStats[0] || {
+        totalPoints: 0,
+        teamName: "N/A",
+        ownerId: "",
+      }
     ),
     bestAverage: playerStats.ownerStats.reduce(
       (max, owner) => (owner.averagePoints > max.averagePoints ? owner : max),
-      playerStats.ownerStats[0] || { averagePoints: 0, teamName: "N/A" }
+      playerStats.ownerStats[0] || {
+        averagePoints: 0,
+        teamName: "N/A",
+        ownerId: "",
+      }
     ),
   };
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
+    <Card padding="none">
       <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
         Player Statistics
       </h2>
 
       {/* Main Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 py-6">
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Seasons Played
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.seasonsPlayed}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Total Games
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalGames}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">Starts</h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalStarts}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">Bench</h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalBench}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Total Points
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {number(playerStats.totalPoints, { maximumFractionDigits: 1 })}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Average Points
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {number(playerStats.averagePoints, { maximumFractionDigits: 2 })}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Highest Score
           </h3>
@@ -110,8 +144,15 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
             <div className="mt-1">
               <p className="text-sm text-gray-600">
                 vs {playerStats.highestScoreGame.opponent} (
-                {playerStats.highestScoreGame.year}, Week{" "}
-                {playerStats.highestScoreGame.week})
+                <Link
+                  to={`/seasons/${playerStats.highestScoreGame.year}/matchups/${playerStats.highestScoreGame.week}/${playerStats.highestScoreGame.matchupId}`}
+                  className={LINK_CLASS}
+                  title="Open this matchup"
+                >
+                  {playerStats.highestScoreGame.year}, Week{" "}
+                  {playerStats.highestScoreGame.week}
+                </Link>
+                )
               </p>
               {!playerStats.highestScoreGame.wasStarted && (
                 <span className="inline-block mt-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
@@ -120,8 +161,8 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
               )}
             </div>
           )}
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">Start Rate</h3>
           <p className="text-3xl font-bold text-gray-900">
             {(() => {
@@ -134,7 +175,7 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
                 : "0%";
             })()}
           </p>
-        </div>
+        </Card>
       </div>
 
       {/* Achievement Stats */}
@@ -153,7 +194,11 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
             {playerStats.achievements.finalsAppearances}
             {playerStats.achievements.finalsAppearancesYears.length > 0 && (
               <span className="text-sm font-normal text-gray-600 ml-1">
-                ({playerStats.achievements.finalsAppearancesYears.join(", ")})
+                (
+                <SeasonList
+                  years={playerStats.achievements.finalsAppearancesYears}
+                />
+                )
               </span>
             )}
           </p>
@@ -164,7 +209,8 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
             {playerStats.achievements.finalsWins}
             {playerStats.achievements.finalsWinsYears.length > 0 && (
               <span className="text-sm font-normal text-gray-600 ml-1">
-                ({playerStats.achievements.finalsWinsYears.join(", ")})
+                (
+                <SeasonList years={playerStats.achievements.finalsWinsYears} />)
               </span>
             )}
           </p>
@@ -183,7 +229,11 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
               <p className="text-lg font-bold text-gray-900">
                 {ownershipStats.mostGames.gamesPlayed}
                 <span className="text-sm font-normal text-gray-600 ml-1">
-                  ({ownershipStats.mostGames.teamName})
+                  (
+                  <ManagerLink ownerId={ownershipStats.mostGames.ownerId}>
+                    {ownershipStats.mostGames.teamName}
+                  </ManagerLink>
+                  )
                 </span>
               </p>
             </div>
@@ -194,7 +244,11 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
                   maximumFractionDigits: 2,
                 })}
                 <span className="text-sm font-normal text-gray-600 ml-1">
-                  ({ownershipStats.mostPoints.teamName})
+                  (
+                  <ManagerLink ownerId={ownershipStats.mostPoints.ownerId}>
+                    {ownershipStats.mostPoints.teamName}
+                  </ManagerLink>
+                  )
                 </span>
               </p>
             </div>
@@ -207,14 +261,18 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
                   maximumFractionDigits: 2,
                 })}
                 <span className="text-sm font-normal text-gray-600 ml-1">
-                  ({ownershipStats.bestAverage.teamName})
+                  (
+                  <ManagerLink ownerId={ownershipStats.bestAverage.ownerId}>
+                    {ownershipStats.bestAverage.teamName}
+                  </ManagerLink>
+                  )
                 </span>
               </p>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

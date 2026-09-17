@@ -1,26 +1,11 @@
 import { useFormatter } from "use-intl";
-import { Link } from "react-router-dom";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "@/data";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getCumulativeStandings, TeamStats } from "@/utils/standings";
-import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-  SortIcon,
-} from "../Table";
+import { DataTable } from "../Table";
+import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -73,45 +58,41 @@ const AllTimeTable = () => {
 
   const columns = [
     columnHelper.accessor("team_name", {
-      cell: (info) => {
-        const row = info.row.original;
-        const managerId = getManagerIdBySleeperOwnerId(row.owner_id);
-
-        return (
-          <div className="text-left">
-            {managerId ? (
-              <Link
-                to={`/managers/${managerId}`}
-                className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
-              >
-                {info.getValue()}
-              </Link>
-            ) : (
-              <span>{info.getValue()}</span>
-            )}
-          </div>
-        );
-      },
-      header: () => <span className="mr-auto">Team</span>,
+      cell: (info) => (
+          <ManagerIdentity
+            ownerId={info.row.original.owner_id}
+            teamName={String(info.getValue())}
+            showAvatar={false}
+          />
+        ),
+      header: () => "Team",
       enableSorting: false,
+      meta: {
+        kind: "manager" as const,
+        ownerId: (row: TeamStats) => row.owner_id,
+        cellClassName: "font-medium",
+      },
     }),
     columnHelper.accessor("wins", {
       header: () => "Wins",
       cell: (info) => number(info.getValue()),
       sortingFn: "alphanumeric",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("losses", {
       header: () => "Losses",
       cell: (info) => number(info.getValue()),
       sortingFn: "alphanumeric",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("ties", {
       header: () => "Ties",
       cell: (info) => number(info.getValue()),
       sortingFn: "alphanumeric",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("winPerc", {
       header: () => "Win %",
@@ -126,6 +107,7 @@ const AllTimeTable = () => {
       },
       sortingFn: (rowA, rowB) => rowA.original.winPerc - rowB.original.winPerc,
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("points_for", {
       header: () => "For",
@@ -133,6 +115,7 @@ const AllTimeTable = () => {
       sortingFn: (rowA, rowB) =>
         rowA.original.points_for - rowB.original.points_for,
       enableSorting: true,
+      meta: { kind: "points" as const },
     }),
     columnHelper.accessor("points_for_avg", {
       header: () => "Avg.",
@@ -144,6 +127,7 @@ const AllTimeTable = () => {
       sortingFn: (rowA, rowB) =>
         rowA.original.points_for_avg - rowB.original.points_for_avg,
       enableSorting: true,
+      meta: { kind: "points" as const },
     }),
     columnHelper.accessor("points_against", {
       header: () => "Against",
@@ -151,6 +135,7 @@ const AllTimeTable = () => {
       sortingFn: (rowA, rowB) =>
         rowA.original.points_against - rowB.original.points_against,
       enableSorting: true,
+      meta: { kind: "points" as const },
     }),
     columnHelper.accessor("points_against_avg", {
       header: () => "Avg.",
@@ -162,6 +147,7 @@ const AllTimeTable = () => {
       sortingFn: (rowA, rowB) =>
         rowA.original.points_against_avg - rowB.original.points_against_avg,
       enableSorting: true,
+      meta: { kind: "points" as const },
     }),
     columnHelper.accessor("champion", {
       header: () => "Trophies",
@@ -179,15 +165,9 @@ const AllTimeTable = () => {
         return accolades.flat().join("");
       },
       enableSorting: false,
+      meta: { align: "center" as const },
     }),
   ];
-
-  const table = useReactTable({
-    data: filteredData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
 
   return (
     <div className="container mx-auto space-y-6">
@@ -268,76 +248,23 @@ const AllTimeTable = () => {
           </p>
         </div>
 
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHeaderCell
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={`text-right ${
-                      header.column.getCanSort()
-                        ? "cursor-pointer hover:bg-gray-100"
-                        : ""
-                    }`}
-                    isSorted={!!header.column.getIsSorted()}
-                  >
-                    <div className="flex items-center justify-end">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      {header.column.getCanSort() && (
-                        <SortIcon
-                          sortDirection={
-                            header.column.getIsSorted() === "asc"
-                              ? "asc"
-                              : header.column.getIsSorted() === "desc"
-                              ? "desc"
-                              : false
-                          }
-                          className="ml-1"
-                        />
-                      )}
-                    </div>
-                  </TableHeaderCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row, index) => {
-              let tierClass = "";
-              if (showTiers) {
-                if (index < 3) {
-                  tierClass = "bg-green-50"; // Top 3 - pale green
-                } else if (index < 6) {
-                  tierClass = "bg-blue-50"; // Second 3 - pale blue
-                } else if (index < 9) {
-                  tierClass = "bg-yellow-50"; // Next 3 - pale yellow
-                } else {
-                  tierClass = "bg-red-50"; // Bottom 3 - pale red
-                }
-              }
-
-              return (
-                <TableRow key={row.id} className={tierClass}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-right">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <DataTable
+          columns={columns}
+          data={filteredData}
+          // Tiers colour the rows by rank, and zebra striping fights that.
+          zebra={!showTiers}
+          // Legacy Tailwind palette, deliberately: the token set has no ordinal
+          // band scale, and `series-*` at low alpha would composite twice under
+          // the pinned column. Keeping the old values means no visual change.
+          getRowBackground={(_row, index) => {
+            if (!showTiers) return undefined;
+            if (index < 3) return "bg-green-50";
+            if (index < 6) return "bg-blue-50";
+            if (index < 9) return "bg-yellow-50";
+            return "bg-red-50";
+          }}
+          emptyMessage="No seasons selected."
+        />
       </div>
     </div>
   );

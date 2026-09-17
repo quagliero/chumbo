@@ -1,22 +1,12 @@
-import { useFormatter } from "use-intl";
 import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import {
   getManagerStats,
   DataMode,
   TopPerformance,
-  SeasonStats,
   ManagerStats,
   ManagerH2HRecord,
 } from "@/utils/managerStats";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "../components/Table";
 import {
   ManagerStatsCard,
   H2HTable,
@@ -24,10 +14,13 @@ import {
   MostDraftedPlayers,
   MostCappedPlayers,
   TopPerformances,
+  SeasonBreakdown,
 } from "@/presentation/components/ManagerDetail";
 import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDetail";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { Card } from "@/presentation/components/Card";
+import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 
 const ManagerDetail = () => {
   // A2a: getManagerStats walks every season's matchups, which are a lazy
@@ -39,7 +32,6 @@ const ManagerDetail = () => {
     section?: string;
   }>();
   const navigate = useNavigate();
-  const { number } = useFormatter();
   const [dataMode, setDataMode] = useState<DataMode>("regular");
 
   // Get current tab from URL params, default to 'summary'
@@ -116,17 +108,17 @@ const ManagerDetail = () => {
 
   return (
     <div className="container mx-auto space-y-6">
+      <Breadcrumbs
+        crumbs={[
+          { label: "Managers", to: "/managers" },
+          { label: managerStats.managerName },
+        ]}
+      />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">{managerStats.managerName}</h1>
           <p className="text-xl text-gray-600">{managerStats.teamName}</p>
-          <button
-            onClick={() => navigate("/managers")}
-            className="text-blue-600 hover:text-blue-800"
-          >
-            ← Back to Managers
-          </button>
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
@@ -245,123 +237,8 @@ const ManagerDetail = () => {
         <ManagerStatsCard managerStats={managerStats} />
       )}
 
-      {currentTab === "seasons" && (
-        <>
-          {/* Season Breakdown */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <h2 className="text-2xl font-bold p-6">Season Breakdown</h2>
-            <Table className="border-t border-neutral-200">
-              <TableHeader>
-                <TableRow>
-                  <TableHeaderCell>Year</TableHeaderCell>
-                  <TableHeaderCell>Record</TableHeaderCell>
-                  <TableHeaderCell>Standing / Points</TableHeaderCell>
-                  <TableHeaderCell>Points For</TableHeaderCell>
-                  <TableHeaderCell>Points Against</TableHeaderCell>
-                  <TableHeaderCell>Result</TableHeaderCell>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {managerStats.seasonStats.map((season) => {
-                  const winPercentage =
-                    (season.wins /
-                      (season.wins + season.losses + season.ties)) *
-                    100;
-                  return (
-                    <TableRow
-                      key={season.year}
-                      onClick={() =>
-                        navigate(`/seasons/${season.year}/standings`)
-                      }
-                    >
-                      <TableCell className="font-medium">
-                        {season.year}
-                      </TableCell>
-                      <TableCell>
-                        {season.wins}-{season.losses}
-                        {season.ties > 0 && `-${season.ties}`}
-                        <div className="text-sm text-gray-500">
-                          {number(winPercentage, {
-                            maximumFractionDigits: 1,
-                          })}
-                          %
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              season.finalStanding === 1
-                                ? "bg-yellow-100 text-yellow-800"
-                                : season.finalStanding <= 4
-                                ? "bg-green-100 text-green-800"
-                                : season.finalStanding <= 8
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-gray-100 text-gray-800"
-                            }`}
-                            title="Regular season finish"
-                          >
-                            #{season.finalStanding}
-                          </span>
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              (season as SeasonStats).pointsStanding === 1
-                                ? "bg-yellow-100 text-yellow-800"
-                                : (season as SeasonStats).pointsStanding <= 4
-                                ? "bg-green-100 text-green-800"
-                                : (season as SeasonStats).pointsStanding <= 8
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-gray-100 text-gray-800"
-                            }`}
-                            title="Points scored rank"
-                          >
-                            #{(season as SeasonStats).pointsStanding || "?"}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {number(season.pointsFor, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </TableCell>
-                      <TableCell>
-                        {number(season.pointsAgainst, {
-                          maximumFractionDigits: 2,
-                        })}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-1">
-                          {(season as SeasonStats).madePlayoffs && (
-                            <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                              Playoffs
-                            </span>
-                          )}
-                          {(season as SeasonStats).championshipResult ===
-                            "champion" && (
-                            <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-                              🏆 Champion
-                            </span>
-                          )}
-                          {(season as SeasonStats).championshipResult ===
-                            "runner-up" && (
-                            <span className="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-xs font-medium">
-                              Finals
-                            </span>
-                          )}
-                          {season.scoringCrown && (
-                            <span className="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">
-                              👑 Scoring Crown
-                            </span>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
-        </>
+      {currentTab === "seasons" && managerStats && (
+        <SeasonBreakdown seasonStats={managerStats.seasonStats} />
       )}
 
       {currentTab === "h2h" && managerStats && (
@@ -372,7 +249,7 @@ const ManagerDetail = () => {
       )}
 
       {currentTab === "players" && managerStats && (
-        <div className="bg-white rounded-lg shadow overflow-hidden py-4">
+        <Card padding="none" className="py-4">
           {/* All-Star Lineup */}
           {selectedPlayerSection === "allstars" && (
             <AllStarLineup
@@ -402,7 +279,7 @@ const ManagerDetail = () => {
           {selectedPlayerSection === "performances" && (
             <TopPerformances performances={filteredPerformances} />
           )}
-        </div>
+        </Card>
       )}
     </div>
   );

@@ -4,6 +4,12 @@ import { TradeSummary, TradeAssets } from "@/utils/transactionUtils";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import { Player } from "@/types/player";
+import {
+  LINK_CLASS,
+  ManagerLink,
+  PlayerLink,
+  SeasonLink,
+} from "@/presentation/components/Links";
 
 interface TradeCardProps {
   trade: TradeSummary;
@@ -59,9 +65,13 @@ const TradeCard = ({ trade, rosters, users, getTeamName }: TradeCardProps) => {
                           (e.target as HTMLImageElement).style.display = "none";
                         }}
                       />
-                      <span className="font-medium">
+                      <PlayerLink
+                        playerId={playerId}
+                        className={`font-medium ${LINK_CLASS}`}
+                        fallbackClassName="font-medium"
+                      >
                         {player.full_name || player.first_name}
-                      </span>
+                      </PlayerLink>
                       <span className="text-gray-500 text-xs">
                         {player.position}
                       </span>
@@ -102,16 +112,22 @@ const TradeCard = ({ trade, rosters, users, getTeamName }: TradeCardProps) => {
                     round: number;
                     pickNumber: number;
                     overallPickNumber: number;
+                    season: string;
                   },
                   index: number
                 ) => (
                   <div key={index} className="text-sm">
-                    <span className="font-medium">
+                    <SeasonLink
+                      year={pick.season}
+                      tab="draft"
+                      className={`font-medium ${LINK_CLASS}`}
+                      title={`${pick.season} draft board`}
+                    >
                       Pick {pick.round}.{pick.pickNumber}
-                      <span className="text-gray-500 text-xs ml-1">
+                      <span className="text-xs ml-1">
                         #{pick.overallPickNumber}
                       </span>
-                    </span>
+                    </SeasonLink>
                   </div>
                 )
               )}
@@ -175,7 +191,13 @@ const TradeCard = ({ trade, rosters, users, getTeamName }: TradeCardProps) => {
                   {team.name.charAt(0).toUpperCase()}
                 </div>
               )}
-              <div className="font-medium text-sm">{team.name}</div>
+              <ManagerLink
+                ownerId={team.roster?.owner_id}
+                className={`font-medium text-sm ${LINK_CLASS}`}
+                fallbackClassName="font-medium text-sm"
+              >
+                {team.name}
+              </ManagerLink>
             </div>
           ))}
         </div>
@@ -185,8 +207,13 @@ const TradeCard = ({ trade, rosters, users, getTeamName }: TradeCardProps) => {
       <div className="space-y-4 mb-4">
         {teamData.map((team) => (
           <div key={team.rosterId} className="border-l-2 border-gray-200 pl-3">
-            <div className="text-xs font-medium text-gray-500 mb-2">
-              {team.name}
+            <div className="text-xs font-medium mb-2">
+              <ManagerLink
+                ownerId={team.roster?.owner_id}
+                fallbackClassName="text-gray-500"
+              >
+                {team.name}
+              </ManagerLink>
             </div>
 
             {/* Gives */}

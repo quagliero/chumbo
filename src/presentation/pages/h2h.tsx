@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { managers } from "@/data";
+import { Card } from "@/presentation/components/Card";
 
 export default function H2H() {
   const [selectedManagerA, setSelectedManagerA] = useState<string>("");
@@ -34,7 +35,7 @@ export default function H2H() {
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <Card padding="none">
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">
             Select Managers
@@ -143,7 +144,7 @@ export default function H2H() {
             </div>
           )}
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

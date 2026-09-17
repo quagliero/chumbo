@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import { MostDraftedPlayer } from "@/utils/managerStats";
+import { cardClassName } from "@/presentation/components/Card";
 
 interface MostDraftedPlayersProps {
   mostDraftedPlayers: MostDraftedPlayer[];
@@ -22,7 +23,7 @@ const MostDraftedPlayers = ({
           <Link
             key={index}
             to={`/players/${player.playerId}`}
-            className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-all overflow-hidden cursor-pointer group block"
+            className={cardClassName({ padding: "sm", interactive: true, className: "block" })}
           >
             {/* Player Info */}
             <div className="flex items-center mb-3">

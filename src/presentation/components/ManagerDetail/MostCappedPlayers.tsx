@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import { getPlayerImageUrl } from "@/utils/playerImage";
+import { cardClassName } from "@/presentation/components/Card";
 
 export interface MostCappedPlayer {
   playerId: string;
@@ -29,7 +30,7 @@ const MostCappedPlayers = ({ mostCappedPlayers }: MostCappedPlayersProps) => {
           <Link
             key={index}
             to={`/players/${player.playerId}`}
-            className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-all overflow-hidden cursor-pointer group block"
+            className={cardClassName({ padding: "sm", interactive: true, className: "block" })}
           >
             {/* Player Info */}
             <div className="flex items-center mb-3">

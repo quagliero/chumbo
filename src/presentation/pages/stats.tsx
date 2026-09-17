@@ -9,6 +9,7 @@ import {
   PositionalFilter,
 } from "@/utils/statsExplorer";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { Card } from "@/presentation/components/Card";
 
 const Stats: React.FC = () => {
   // A2a: the explorer walks every season's matchups, a lazy chunk now.
@@ -61,7 +62,7 @@ const Stats: React.FC = () => {
   return (
     <div className="container mx-auto space-y-6 py-6">
       {/* Header */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <Card>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Stats Explorer
         </h1>
@@ -69,10 +70,10 @@ const Stats: React.FC = () => {
           Explore correlations between positional scoring and win rates. Add
           filters to analyze specific scenarios.
         </p>
-      </div>
+      </Card>
 
       {/* Year Selection */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <Card>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-gray-900">Season Selection</h2>
           <div className="flex gap-2">
@@ -122,7 +123,7 @@ const Stats: React.FC = () => {
             {selectedYears.length} of {availableYears.length} seasons selected
           </span>
         </div>
-      </div>
+      </Card>
 
       {/* Filter Builder */}
       <FilterBuilder
@@ -137,7 +138,7 @@ const Stats: React.FC = () => {
       <StatsResults results={results} isLoading={false} />
 
       {/* Help Section */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <Card>
         <h3 className="text-lg font-bold text-gray-900 mb-4">How to Use</h3>
         <div className="space-y-3 text-sm text-gray-600">
           <p>
@@ -214,7 +215,7 @@ const Stats: React.FC = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

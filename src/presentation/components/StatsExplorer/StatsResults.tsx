@@ -1,6 +1,43 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { StatsResult } from "@/utils/statsExplorer";
+import { DataTable } from "../Table";
+import type { AnyColumnDef } from "../Table";
+
+type PositionRow = {
+  position: string;
+  avg: number;
+  min: number;
+  max: number;
+};
+
+const positionColumns: AnyColumnDef<PositionRow>[] = [
+  {
+    accessorKey: "position",
+    header: "Position",
+    meta: { cellClassName: "font-medium" },
+  },
+  {
+    accessorKey: "avg",
+    header: "Average Points",
+    cell: ({ getValue }) => (getValue() as number).toFixed(1),
+    meta: { kind: "points" },
+  },
+  {
+    accessorKey: "min",
+    header: "Min Points",
+    cell: ({ getValue }) => (getValue() as number).toFixed(1),
+    meta: { kind: "points" },
+  },
+  {
+    accessorKey: "max",
+    header: "Max Points",
+    cell: ({ getValue }) => (getValue() as number).toFixed(1),
+    meta: { kind: "points" },
+  },
+];
+
+type MatchupRow = StatsResult["sampleMatchups"][number];
 
 interface StatsResultsProps {
   results: StatsResult | null;
@@ -10,6 +47,79 @@ interface StatsResultsProps {
 const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
   const navigate = useNavigate();
   const [showAllMatchups, setShowAllMatchups] = useState(false);
+
+  const positionRows = useMemo<PositionRow[]>(
+    () =>
+      Object.entries(results?.positionalBreakdown ?? {}).map(
+        ([position, stats]) => ({ position, ...stats })
+      ),
+    [results?.positionalBreakdown]
+  );
+
+  const matchupColumns = useMemo<AnyColumnDef<MatchupRow>[]>(
+    () => [
+      {
+        accessorKey: "year",
+        header: "Year",
+        meta: { kind: "year", seasonTab: "matchups" },
+      },
+      { accessorKey: "week", header: "Week", meta: { kind: "numeric" } },
+      {
+        accessorKey: "points",
+        header: "Points",
+        cell: ({ getValue }) => (getValue() as number).toFixed(1),
+        meta: { kind: "points" },
+      },
+      {
+        accessorKey: "opponentPoints",
+        header: "Opponent",
+        cell: ({ getValue }) => (getValue() as number).toFixed(1),
+        meta: { kind: "points" },
+      },
+      {
+        accessorKey: "result",
+        header: "Result",
+        cell: ({ getValue }) => {
+          const result = getValue() as string;
+          return (
+            <span
+              className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full text-white ${
+                result === "W"
+                  ? "bg-result-win"
+                  : result === "L"
+                  ? "bg-result-loss"
+                  : "bg-result-tie"
+              }`}
+            >
+              {result}
+            </span>
+          );
+        },
+        meta: { align: "center" },
+      },
+      {
+        id: "positionalScores",
+        header: "Positional Scores",
+        enableSorting: false,
+        cell: ({ row }) => (
+          <div className="flex flex-wrap gap-1">
+            {Object.entries(row.original.positionalScores)
+              .filter(([, score]) => score > 0)
+              .map(([pos, score]) => (
+                <span
+                  key={pos}
+                  className="inline-flex px-2 py-1 text-xs bg-surface-sunk rounded"
+                >
+                  {pos}: {score.toFixed(1)}
+                </span>
+              ))}
+          </div>
+        ),
+        meta: { cellClassName: "text-ink-muted" },
+      },
+    ],
+    []
+  );
 
   const displayedMatchups = useMemo(() => {
     if (!results?.sampleMatchups) return [];
@@ -106,45 +216,12 @@ const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
         <h3 className="text-lg font-bold text-gray-900 mb-4 px-6">
           Positional Breakdown
         </h3>
-        <div className="overflow-x-auto border-t border-gray-200">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Position
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Average Points
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Min Points
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Max Points
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {Object.entries(results.positionalBreakdown).map(
-                ([position, stats]) => (
-                  <tr key={position}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {position}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {stats.avg.toFixed(1)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {stats.min.toFixed(1)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {stats.max.toFixed(1)}
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
+        <div className="border-t border-line">
+          <DataTable
+            columns={positionColumns}
+            data={positionRows}
+            emptyMessage="No positional data for these filters."
+          />
         </div>
       </div>
 
@@ -168,86 +245,15 @@ const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
               </button>
             )}
           </div>
-          <div className="overflow-x-auto border-t border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Year
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Week
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Points
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Opponent
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Result
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Positional Scores
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {displayedMatchups.map((matchup) => (
-                  <tr
-                    key={`${matchup.year}-${matchup.week}-${matchup.matchupId}-${matchup.rosterId}`}
-                    className="cursor-pointer hover:bg-gray-50 transition-colors"
-                    onClick={() =>
-                      handleMatchupClick(
-                        matchup.year,
-                        matchup.week,
-                        matchup.matchupId
-                      )
-                    }
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {matchup.year}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {matchup.week}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {matchup.points.toFixed(1)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {matchup.opponentPoints.toFixed(1)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          matchup.result === "W"
-                            ? "bg-green-100 text-green-800"
-                            : matchup.result === "L"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {matchup.result}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
-                      <div className="flex flex-wrap gap-1">
-                        {Object.entries(matchup.positionalScores)
-                          .filter(([, score]) => score > 0)
-                          .map(([pos, score]) => (
-                            <span
-                              key={pos}
-                              className="inline-flex px-2 py-1 text-xs bg-gray-100 rounded"
-                            >
-                              {pos}: {score.toFixed(1)}
-                            </span>
-                          ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="border-t border-line">
+            <DataTable
+              columns={matchupColumns}
+              data={displayedMatchups}
+              onRowClick={(row) =>
+                handleMatchupClick(row.year, row.week, row.matchupId)
+              }
+              emptyMessage="No matchups match these filters."
+            />
           </div>
         </div>
       )}

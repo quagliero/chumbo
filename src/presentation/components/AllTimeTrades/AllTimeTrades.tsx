@@ -1,26 +1,38 @@
 import { useState, useMemo } from "react";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { seasons, managers } from "@/data";
 import { useAllSeasons, useAllTransactions } from "@/hooks/useSeasonData";
 import { getSeasonTrades, TradeSummary } from "@/utils/transactionUtils";
 import { getTeamName } from "@/utils/teamName";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-  SortIcon,
-} from "../Table";
+import { DataTable } from "../Table";
 import { getPlayerName } from "@/utils/playerDataUtils";
+import { SeasonLink } from "@/presentation/components/Links";
+
+/**
+ * The years columns are pre-formatted strings ("2019 (2x), 2018 (1x)"), so the
+ * year is pulled back out for the link rather than reshaping the stats.
+ */
+const renderYearList = (years: string) => {
+  if (!years) return "—";
+
+  return years.split(", ").map((entry, index) => {
+    const year = entry.match(/^(\d{4})/)?.[1];
+
+    return (
+      <span key={entry}>
+        {index > 0 && ", "}
+        {year ? (
+          <SeasonLink year={year} tab="trades" title={`${year} trades`}>
+            {entry}
+          </SeasonLink>
+        ) : (
+          entry
+        )}
+      </span>
+    );
+  });
+};
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -314,18 +326,26 @@ const AllTimeTrades = () => {
       columnHelper.accessor("team_name", {
         header: "Team",
         cell: (info) => info.getValue(),
+        meta: {
+          kind: "manager" as const,
+          ownerId: (row: TeamTradeStats) => row.owner_id,
+          cellClassName: "font-medium",
+        },
       }),
       columnHelper.accessor("totalTrades", {
         header: "Total Trades",
         cell: (info) => info.getValue(),
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("playerTrades", {
         header: "Player Trades",
         cell: (info) => info.getValue(),
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("draftTrades", {
         header: "Draft Trades",
         cell: (info) => info.getValue(),
+        meta: { kind: "numeric" as const },
       }),
     ];
   }, []);
@@ -337,14 +357,20 @@ const AllTimeTrades = () => {
       columnHelper.accessor("playerName", {
         header: "Player",
         cell: (info) => info.getValue(),
+        meta: {
+          kind: "player" as const,
+          playerId: (row: PlayerTradeStats) => row.playerId,
+          cellClassName: "font-medium",
+        },
       }),
       columnHelper.accessor("tradeCount", {
         header: "Times Traded",
         cell: (info) => info.getValue(),
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("yearsTraded", {
         header: "Years",
-        cell: (info) => info.getValue(),
+        cell: (info) => renderYearList(info.getValue()),
       }),
     ];
   }, []);
@@ -356,18 +382,28 @@ const AllTimeTrades = () => {
       columnHelper.accessor("manager1TeamName", {
         header: "Team 1",
         cell: (info) => info.getValue(),
+        meta: {
+          kind: "manager" as const,
+          managerId: (row: ManagerTradePair) => row.manager1Id,
+          cellClassName: "font-medium",
+        },
       }),
       columnHelper.accessor("manager2TeamName", {
         header: "Team 2",
         cell: (info) => info.getValue(),
+        meta: {
+          kind: "manager" as const,
+          managerId: (row: ManagerTradePair) => row.manager2Id,
+        },
       }),
       columnHelper.accessor("tradeCount", {
         header: "Trades",
         cell: (info) => info.getValue(),
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("years", {
         header: "Years",
-        cell: (info) => info.getValue(),
+        cell: (info) => renderYearList(info.getValue()),
       }),
     ];
   }, []);
@@ -377,27 +413,6 @@ const AllTimeTrades = () => {
     () => playerStats.slice(0, 100),
     [playerStats]
   );
-
-  const teamTable = useReactTable({
-    data: teamStats,
-    columns: teamColumns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
-
-  const playerTable = useReactTable({
-    data: displayedPlayerStats,
-    columns: playerColumns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
-
-  const managerTable = useReactTable({
-    data: managerPairs,
-    columns: managerColumns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
 
   return (
     <div className="space-y-6 container mx-auto">
@@ -503,153 +518,35 @@ const AllTimeTrades = () => {
 
       {/* Tables */}
       {view === "teams" && (
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              {teamTable.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHeaderCell key={header.id}>
-                      <div
-                        className="flex items-center gap-2 cursor-pointer select-none"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        <SortIcon
-                          sortDirection={
-                            header.column.getIsSorted() === "asc"
-                              ? "asc"
-                              : header.column.getIsSorted() === "desc"
-                              ? "desc"
-                              : false
-                          }
-                        />
-                      </div>
-                    </TableHeaderCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {teamTable.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <DataTable
+          columns={teamColumns}
+          data={teamStats}
+          emptyMessage="No trades in the selected seasons."
+        />
       )}
 
       {view === "players" && (
-        <div className="overflow-x-auto">
-          <div className="mb-2 text-sm text-gray-600">
+        <div>
+          <div className="mb-2 text-sm text-ink-muted">
             Showing top 100 most traded players
           </div>
-          <Table>
-            <TableHeader>
-              {playerTable.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHeaderCell key={header.id}>
-                      <div
-                        className="flex items-center gap-2 cursor-pointer select-none"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        <SortIcon
-                          sortDirection={
-                            header.column.getIsSorted() === "asc"
-                              ? "asc"
-                              : header.column.getIsSorted() === "desc"
-                              ? "desc"
-                              : false
-                          }
-                        />
-                      </div>
-                    </TableHeaderCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {playerTable.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <DataTable
+            columns={playerColumns}
+            data={displayedPlayerStats}
+            // Long enough that the header is worth pinning, which needs the
+            // table to own its own vertical scroll. See DataTable's note.
+            maxHeight="max-h-[70vh]"
+            emptyMessage="No players traded in the selected seasons."
+          />
         </div>
       )}
 
       {view === "managers" && (
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              {managerTable.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHeaderCell key={header.id}>
-                      <div
-                        className="flex items-center gap-2 cursor-pointer select-none"
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                        <SortIcon
-                          sortDirection={
-                            header.column.getIsSorted() === "asc"
-                              ? "asc"
-                              : header.column.getIsSorted() === "desc"
-                              ? "desc"
-                              : false
-                          }
-                        />
-                      </div>
-                    </TableHeaderCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {managerTable.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <DataTable
+          columns={managerColumns}
+          data={managerPairs}
+          emptyMessage="No trades between these managers."
+        />
       )}
     </div>
   );

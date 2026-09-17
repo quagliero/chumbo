@@ -346,7 +346,7 @@ hardcoded in `DraftBoard`), and result colours (win/loss/tie).
 
 **Acceptance:** no new component hardcodes a hex or an ad-hoc shadow.
 
-- [ ] B1
+- [x] B1
 
 ### B2 · `<Card>` primitive `S`
 **Blocked by:** B1
@@ -357,7 +357,7 @@ hardcoded in `DraftBoard`), and result colours (win/loss/tie).
 **Acceptance:** `grep -r "bg-white rounded-lg shadow" src/presentation` returns
 only the Card component.
 
-- [ ] B2
+- [x] B2
 
 ### B3 · `<DataTable>` `L`
 **Blocks:** B4, E8 · **Blocked by:** B1
@@ -378,7 +378,43 @@ tables **in one place** rather than twelve.
 **Acceptance:** every table on the site scrolls with its team column pinned on a
 375 px viewport · one sort-indicator implementation remains.
 
-- [ ] B3
+**Done.** The audit above undercounted: nine further components rendered their
+own markup on the legacy primitives in `Table/Table.tsx`, so neither the pinned
+column nor the single sort indicator reached them. All nine are migrated —
+`PlayoffOdds` (which carried a second, competing `getSortIcon`),
+`AllTimeScheduleComparison` (both views), `Breakdown`, `ScheduleComparison`,
+`PerformanceTable`, `H2HContent` (four table shapes), `DraftStatsCard`,
+`AllStarLineup`, and the season table on the manager page, which moved out to
+`ManagerDetail/SeasonBreakdown.tsx` alongside its siblings.
+
+`Table/Table.tsx` is deleted: `SortIcon`, `StandardTable` and the six primitives
+had no callers left. One sort indicator remains, in `DataTable`.
+
+Three additions to the column meta were needed to migrate the last sites without
+losing behaviour:
+- `linkTitle` — the per-row tooltip on the three link kinds, for cells whose
+  text and destination are not the same words (a team name linking to a
+  manager).
+- `rowCellClassName` / `rowCellStyle` — a background that is a row-AND-column
+  fact rather than a column one. Three sites need it: the two comparison
+  matrices shade their diagonal, and Breakdown's Schedule Luck toggle heat-maps
+  every week cell. The style variant exists only because that heat map's colour
+  is computed and Tailwind cannot emit a class it never saw in the source.
+
+One bug found and fixed in the process, in `PlayoffOdds`: tanstack gates
+`getCanSort()` on a column having an accessor function, so a `display` column
+ignores even an explicit `sortingFn`. The first migration left the table
+unsortable and stuck in the simulation's own order. Every sortable column is now
+an `accessor`, and the original comparison chain — the 0.0001 epsilon on the
+odds, then wins, then points, then name — is preserved as a `sortingFn`, along
+with the asc-first/desc-first direction each header had.
+
+Verified in the browser at 375 px: Breakdown scrolls 600 px sideways with the
+team name pinned and opaque, and the page itself has no horizontal overflow.
+171 tests pass unchanged; the gzipped bundle is unmoved at 347 kB on the
+critical path.
+
+- [x] B3
 
 ### B4 · Semantic column types `M`
 **Blocked by:** B3
@@ -393,7 +429,7 @@ free — every table that uses them becomes linked automatically.
 
 **Acceptance:** no table declares its own alignment or cell link markup.
 
-- [ ] B4
+- [x] B4
 
 ---
 
@@ -510,12 +546,12 @@ manager, not the H2H page for the pairing, not that season's standings.
 Mechanical work, highest delight-per-hour on the list. `B4` does a chunk of it
 for free.
 
-- [ ] E1a DraftBoard
-- [ ] E1b MatchupDetail
-- [ ] E1c Trades / TradeCard / AllTimeTrades
-- [ ] E1d Player detail tables (Ownership, PlayerStats, DraftStats)
-- [ ] E1e Breakdown, PlayoffOdds, ScenarioPlanner, ManagerStatsCard
-- [ ] E1f hallOfFame, stats, players
+- [x] E1a DraftBoard
+- [x] E1b MatchupDetail
+- [x] E1c Trades / TradeCard / AllTimeTrades
+- [x] E1d Player detail tables (Ownership, PlayerStats, DraftStats)
+- [x] E1e Breakdown, PlayoffOdds, ScenarioPlanner, ManagerStatsCard
+- [x] E1f hallOfFame, stats, players
 
 ### E2 · Contextual "see also" rails `M`
 **Blocked by:** E1, C1
@@ -541,7 +577,7 @@ navigation addition available.** The search infrastructure already exists in
 Manager detail currently offers "← Back to Managers" and nothing else.
 `Seasons › 2024 › Week 8 › thd vs jay` is orientation and navigation at once.
 
-- [ ] E4
+- [x] E4
 
 ### E5 · Random matchup button `S`
 **Blocked by:** E1
@@ -592,15 +628,35 @@ because "Zaragoza's Zooting Zorro" wraps to two lines and shoves its stats down.
 - [ ] **F1d** Fix alignment — `grid-rows-subgrid` or a fixed-height name block, so the eye can compare across cards.
 - [ ] **F1e** Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
 
-### F2 · Manager identity colours `S`
+### F2 · Manager accent colours `S`
 **Blocks:** D1, D2, D4, F1, F3, G2 · **Blocked by:** B1
 
-Derive a stable colour per manager once, then use it **everywhere** — their line
-in every chart, their cell in the H2H matrix, their accent on matchup cards and
-share images. This is the cheapest change that makes a data site feel like a place
-rather than a spreadsheet, and half of Workstream D depends on it.
+**Revised during B1 — the original brief cannot work, and the difference matters
+for every chart in Workstream D.**
 
-- [ ] F2
+The plan asked for an identity colour per manager, used everywhere including as
+each manager's line in every chart. There are 17 managers, 12 active. A
+categorical palette tops out at **eight** hues; the data-viz validator is
+explicit that only the first **three** clear all-pairs separation for scatter and
+small-multiple forms. Seventeen distinguishable hues do not exist at accessible
+contrast — generating more by rotating hue yields colours that look distinct to
+the author and identical to a reader with deuteranopia.
+
+So the two uses are split (`src/domain/managerColors.ts`):
+
+- **Accent** — a stable hue per manager for places where ONE manager is on
+  screen: page header, card rule, avatar ring. Collisions are forced (12 active
+  into 8 hues, so `thd` and `ryan` share blue) and acceptable, because the
+  avatar and name carry identity and the colour is decoration.
+- **Series** — `series-1..8`, the validated categorical palette, fixed order,
+  for charts with at most eight things in them.
+
+**Hard constraint on D1, D2 and D4:** a chart showing all twelve active managers
+must not colour them twelve ways. Use highlight-one-and-dim-the-rest (the bump
+chart, the season arc), small multiples, or fold all but the top few into
+"Other". This is a correctness requirement, not a stylistic preference.
+
+- [x] F2
 
 ### F3 · Manager detail rebuild `M`
 **Blocked by:** F2, D5
@@ -923,13 +979,13 @@ The milestone that most changes how the site *feels*.
 
 | | Task | Size |
 |---|---|---|
-| ☐ | `B1` Tokens | M |
-| ☐ | `F2` Manager identity colours | S |
-| ☐ | `B2` Card primitive | S |
-| ☐ | `B3` DataTable | L |
-| ☐ | `B4` Semantic column types | M |
-| ☐ | `E1a–f` Link everything | L |
-| ☐ | `E4` Breadcrumbs | S |
+| ☑ | `B1` Tokens | M |
+| ☑ | `F2` Manager accent colours | S |
+| ☑ | `B2` Card primitive | S |
+| ☑ | `B3` DataTable | L |
+| ☑ | `B4` Semantic column types | M |
+| ☑ | `E1a–f` Link everything | L |
+| ☑ | `E4` Breadcrumbs | S |
 
 **Milestone test:** every table sticky-scrolls on a phone; no dead-end components
 remain; the Draft Board is fully navigable.

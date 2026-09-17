@@ -1,19 +1,11 @@
 import { useFormatter } from "use-intl";
-import { Link } from "react-router-dom";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "@/data";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
 import { getTeamName } from "@/utils/teamName";
-import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
   calculateWinPercentage,
   getRosterPointsFor,
@@ -22,15 +14,8 @@ import {
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-  SortIcon,
-} from "../Table";
+import { DataTable } from "../Table";
+import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
 // Get the most recent season's active teams
 const mostRecentSeason = Object.entries(seasons).sort(
@@ -156,45 +141,41 @@ const AllTimeBreakdown = () => {
 
   const columns = [
     columnHelper.accessor("team_name", {
-      cell: (info) => {
-        const row = info.row.original;
-        const managerId = getManagerIdBySleeperOwnerId(row.owner_id);
-
-        return (
-          <div className="text-left">
-            {managerId ? (
-              <Link
-                to={`/managers/${managerId}`}
-                className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
-              >
-                {info.getValue()}
-              </Link>
-            ) : (
-              <span>{info.getValue()}</span>
-            )}
-          </div>
-        );
-      },
-      header: () => <span className="mr-auto">Team</span>,
+      cell: (info) => (
+          <ManagerIdentity
+            ownerId={info.row.original.owner_id}
+            teamName={String(info.getValue())}
+            showAvatar={false}
+          />
+        ),
+      header: () => "Team",
       enableSorting: false,
+      meta: {
+        kind: "manager" as const,
+        ownerId: (row: AllTimeBreakdownStats) => row.owner_id,
+        cellClassName: "font-medium",
+      },
     }),
     columnHelper.accessor("totalWins", {
       header: () => "Wins",
       cell: (info) => number(info.getValue()),
       sortingFn: "basic",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("totalLosses", {
       header: () => "Losses",
       cell: (info) => number(info.getValue()),
       sortingFn: "basic",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("totalTies", {
       header: () => "Ties",
       cell: (info) => number(info.getValue()),
       sortingFn: "basic",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("winPercentage", {
       header: () => "Win %",
@@ -209,6 +190,7 @@ const AllTimeBreakdown = () => {
       },
       sortingFn: "basic",
       enableSorting: true,
+      meta: { kind: "numeric" as const },
     }),
     columnHelper.accessor("totalPoints", {
       header: () => "Total Points",
@@ -219,18 +201,9 @@ const AllTimeBreakdown = () => {
         }),
       sortingFn: "basic",
       enableSorting: true,
+      meta: { kind: "points" as const },
     }),
   ];
-
-  const table = useReactTable({
-    data: filteredData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    initialState: {
-      sorting: [{ id: "winPercentage", desc: true }],
-    },
-  });
 
   return (
     <div className="container mx-auto space-y-6">
@@ -293,58 +266,12 @@ const AllTimeBreakdown = () => {
           </p>
         </div>
 
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHeaderCell
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={`text-right ${
-                      header.column.getCanSort()
-                        ? "cursor-pointer hover:bg-gray-100"
-                        : ""
-                    }`}
-                    isSorted={!!header.column.getIsSorted()}
-                  >
-                    <div className="flex items-center justify-end">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      {header.column.getCanSort() && (
-                        <SortIcon
-                          sortDirection={
-                            header.column.getIsSorted() === "asc"
-                              ? "asc"
-                              : header.column.getIsSorted() === "desc"
-                              ? "desc"
-                              : false
-                          }
-                          className="ml-1"
-                        />
-                      )}
-                    </div>
-                  </TableHeaderCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-right">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <DataTable
+          columns={columns}
+          data={filteredData}
+          initialSorting={[{ id: "winPercentage", desc: true }]}
+          emptyMessage="No seasons selected."
+        />
       </div>
     </div>
   );

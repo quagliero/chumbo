@@ -1,14 +1,7 @@
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
 import { useMemo, useCallback } from "react";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  useReactTable,
-  ColumnDef,
-} from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
 import { League, ExtendedLeague } from "@/types/league";
@@ -23,18 +16,13 @@ import {
 } from "@/utils/recordUtils";
 import { calculateStrengthOfSchedule } from "@/utils/strengthOfSchedule";
 import { seasons } from "@/data";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-  SortIcon,
-} from "../Table";
+import { DataTable } from "../Table";
+import type { AnyColumnDef } from "../Table";
 import { YEARS } from "@/domain/constants";
+import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
-// Separate component for each division table to avoid hook issues
+// One table per division. Kept as its own component because each needs its own
+// table instance.
 const DivisionTable = ({
   division,
   data,
@@ -44,128 +32,64 @@ const DivisionTable = ({
 }: {
   division: number;
   data: TeamStandingData[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  columns: ColumnDef<TeamStandingData, any>[];
+  columns: AnyColumnDef<TeamStandingData>[];
   hasDivisions: boolean;
   getDivisionInfo: (division: number) => {
     name: string;
     avatar: string | null;
   };
-}) => {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-  });
-
-  return (
-    <div className={hasDivisions ? "mb-8" : ""}>
-      {hasDivisions && (
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 mb-2 flex items-center">
-            {(() => {
-              const divisionInfo = getDivisionInfo(division);
-              return (
-                <>
-                  {divisionInfo.avatar && (
-                    <img
-                      src={divisionInfo.avatar}
-                      alt={`${divisionInfo.name} avatar`}
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                  )}
-                  {divisionInfo.name}
-                </>
-              );
-            })()}
-          </h2>
-          <div className="border-b-2 border-gray-300"></div>
-        </div>
-      )}
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHeaderCell
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className={`${
-                    header.column.getCanSort()
-                      ? "cursor-pointer hover:bg-gray-100"
-                      : ""
-                  } ${
-                    header.id === "rank" || header.id === "teamName"
-                      ? "text-left"
-                      : "text-right"
-                  }`}
-                  isSorted={!!header.column.getIsSorted()}
-                >
-                  <div
-                    className={`flex items-center ${
-                      header.id === "rank" || header.id === "teamName"
-                        ? "justify-start"
-                        : "justify-end"
-                    }`}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {header.column.getCanSort() && (
-                      <SortIcon
-                        sortDirection={
-                          header.column.getIsSorted() === "asc"
-                            ? "asc"
-                            : header.column.getIsSorted() === "desc"
-                            ? "desc"
-                            : false
-                        }
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => {
-            const playoffHighlight = row.original.playoffHighlight;
-            const rowClassName = `hover:bg-gray-50 ${
-              playoffHighlight === "bye"
-                ? "bg-green-50 border-l-4 border-green-500"
-                : playoffHighlight === "playoff"
-                ? "bg-yellow-50 border-l-4 border-yellow-500"
-                : ""
-            }`;
-
+}) => (
+  <div className={hasDivisions ? "mb-8" : ""}>
+    {hasDivisions && (
+      <div>
+        <h2 className="text-xl font-bold text-ink mb-2 flex items-center">
+          {(() => {
+            const divisionInfo = getDivisionInfo(division);
             return (
-              <TableRow key={row.id} className={rowClassName}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={`${
-                      cell.column.id === "rank" || cell.column.id === "teamName"
-                        ? "text-left"
-                        : "text-right"
-                    }`}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
+              <>
+                {divisionInfo.avatar && (
+                  <img
+                    src={divisionInfo.avatar}
+                    alt={`${divisionInfo.name} avatar`}
+                    className="w-6 h-6 rounded-full object-cover"
+                  />
+                )}
+                {divisionInfo.name}
+              </>
             );
-          })}
-        </TableBody>
-      </Table>
-    </div>
-  );
-};
+          })()}
+        </h2>
+        <div className="border-b-2 border-line-strong"></div>
+      </div>
+    )}
+    <DataTable
+      columns={columns}
+      data={data}
+      // Rank and team together are the row's identity; pinning the rank alone
+      // would leave a phone scrolling numbers with no name against them.
+      stickyColumns={2}
+      // Playoff seeding already colours rows; zebra on top of it reads as noise.
+      zebra={false}
+      // Legacy Tailwind palette, deliberately — see the note in AllTimeTable.
+      // These are the exact colours the table had before.
+      getRowBackground={(row) =>
+        row.original.playoffHighlight === "bye"
+          ? "bg-green-50"
+          : row.original.playoffHighlight === "playoff"
+          ? "bg-yellow-50"
+          : undefined
+      }
+      getRowClassName={(row) =>
+        row.original.playoffHighlight === "bye"
+          ? "border-l-4 border-green-500"
+          : row.original.playoffHighlight === "playoff"
+          ? "border-l-4 border-yellow-500"
+          : ""
+      }
+      emptyMessage="No standings for this season yet."
+    />
+  </div>
+);
 
 interface StandingsProps {
   standings: ExtendedRoster[];
@@ -499,6 +423,7 @@ const Standings = ({
           return <span className="font-medium">{rankText}</span>;
         },
         enableSorting: false,
+        meta: { cellClassName: "whitespace-nowrap w-12" },
       }),
       columnHelper.accessor("teamName", {
         header: () => "Team",
@@ -506,57 +431,42 @@ const Standings = ({
           const row = info.row.original;
           const user = getUserByOwnerId(row.roster.owner_id, users);
           const avatarUrl = getUserAvatarUrl(user);
-          const managerId = getManagerIdBySleeperOwnerId(row.roster.owner_id);
           const teamName = info.getValue();
 
           return (
-            <div className="flex items-center space-x-3">
-              {avatarUrl ? (
-                <img
-                  src={avatarUrl}
-                  alt={`${teamName} avatar`}
-                  className="w-8 h-8 rounded-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              ) : (
-                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-500">
-                  {teamName.charAt(0).toUpperCase()}
-                </div>
-              )}
-              {managerId ? (
-                <Link
-                  to={`/managers/${managerId}`}
-                  className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
-                >
-                  {teamName}
-                </Link>
-              ) : (
-                <span>{teamName}</span>
-              )}
-            </div>
+            <ManagerIdentity
+              ownerId={row.roster.owner_id}
+              teamName={teamName}
+              avatarUrl={avatarUrl}
+            />
           );
         },
         enableSorting: false,
+        meta: {
+          kind: "manager" as const,
+          ownerId: (row: TeamStandingData) => row.roster.owner_id,
+        },
       }),
       columnHelper.accessor("wins", {
         header: () => "W",
-        cell: (info) => <span className="text-center">{info.getValue()}</span>,
+        cell: (info) => info.getValue(),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("losses", {
         header: () => "L",
-        cell: (info) => <span className="text-center">{info.getValue()}</span>,
+        cell: (info) => info.getValue(),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("ties", {
         header: () => "T",
-        cell: (info) => <span className="text-center">{info.getValue()}</span>,
+        cell: (info) => info.getValue(),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("winPerc", {
         header: () => "Win %",
@@ -565,14 +475,11 @@ const Standings = ({
             maximumFractionDigits: 3,
             minimumFractionDigits: 3,
           });
-          return (
-            <span className="text-center">
-              {formatted.startsWith("0.") ? formatted.substring(1) : formatted}
-            </span>
-          );
+          return formatted.startsWith("0.") ? formatted.substring(1) : formatted;
         },
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "numeric" as const },
       }),
       ...(hasDivisions
         ? [
@@ -580,58 +487,43 @@ const Standings = ({
               header: () => "Div Record",
               cell: (info) => {
                 const record = info.getValue();
-                if (!record)
-                  return <span className="text-center text-xs">-</span>;
-                return (
-                  <span className="text-center text-xs">
-                    {record.wins}-{record.losses}
-                    {record.ties > 0 && `-${record.ties}`}
-                  </span>
-                );
+                if (!record) return "-";
+                return `${record.wins}-${record.losses}${
+                  record.ties > 0 ? `-${record.ties}` : ""
+                }`;
               },
               enableSorting: false,
+              meta: { kind: "record" as const, cellClassName: "text-xs" },
             }),
           ]
         : []),
       columnHelper.accessor("pointsFor", {
         header: () => "Points For",
-        cell: (info) => (
-          <span className="text-right">
-            {number(info.getValue(), { maximumFractionDigits: 2 })}
-          </span>
-        ),
+        cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "points" as const },
       }),
       columnHelper.accessor("avgPointsFor", {
         header: () => "Avg For",
-        cell: (info) => (
-          <span className="text-right">
-            {number(info.getValue(), { maximumFractionDigits: 2 })}
-          </span>
-        ),
+        cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "points" as const },
       }),
       columnHelper.accessor("pointsAgainst", {
         header: () => "Points Against",
-        cell: (info) => (
-          <span className="text-right">
-            {number(info.getValue(), { maximumFractionDigits: 2 })}
-          </span>
-        ),
+        cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "points" as const },
       }),
       columnHelper.accessor("avgPointsAgainst", {
         header: () => "Avg Against",
-        cell: (info) => (
-          <span className="text-right">
-            {number(info.getValue(), { maximumFractionDigits: 2 })}
-          </span>
-        ),
+        cell: (info) => number(info.getValue(), { maximumFractionDigits: 2 }),
         sortingFn: "alphanumeric",
         enableSorting: true,
+        meta: { kind: "points" as const },
       }),
       ...(hasStrengthOfSchedule
         ? [
@@ -639,7 +531,7 @@ const Standings = ({
               header: () => "SOS",
               cell: (info) => {
                 const sosRank = info.getValue();
-                if (!sosRank) return <span className="text-center">-</span>;
+                if (!sosRank) return "-";
 
                 const normalized = (sosRank - 1) / 11;
                 const red = Math.round(255 * (1 - normalized));
@@ -658,6 +550,7 @@ const Standings = ({
               },
               sortingFn: "alphanumeric",
               enableSorting: true,
+              meta: { align: "center" as const },
             }),
           ]
         : []),
@@ -834,7 +727,7 @@ const Standings = ({
   }, [sortedDivisions, createTableData]);
 
   return (
-    <div className="overflow-x-auto container mx-auto">
+    <div className="container mx-auto">
       {divisionTableData.map(({ division, data }) => (
         <DivisionTable
           key={division}

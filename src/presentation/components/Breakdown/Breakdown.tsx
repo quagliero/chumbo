@@ -10,14 +10,18 @@ import {
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "../Table";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DataTable } from "../Table";
+
+const columnHelper = createColumnHelper<ExtendedRoster>();
+
+/** "9-4" / "9-4-1" — ties are only worth the space when there are some. */
+const formatRecord = (record: {
+  wins: number;
+  losses: number;
+  ties: number;
+}) =>
+  `${record.wins}-${record.losses}${record.ties > 0 ? `-${record.ties}` : ""}`;
 
 interface BreakdownProps {
   rosters: ExtendedRoster[];
@@ -173,6 +177,76 @@ const Breakdown = ({
     return bSeasonTotals.totalPoints - aSeasonTotals.totalPoints;
   });
 
+  // One column per completed regular-season week, plus the season total. The
+  // rows are pre-sorted by season record, and a week column holds a record
+  // rather than a number, so nothing here sorts.
+  const columns = [
+    columnHelper.display({
+      id: "team",
+      header: "Team",
+      cell: ({ row }) => getTeamName(row.original.owner_id),
+      meta: {
+        kind: "manager" as const,
+        ownerId: (roster: ExtendedRoster) => roster.owner_id,
+        cellClassName: "font-medium",
+      },
+    }),
+    ...regularSeasonWeeks.map((week) =>
+      columnHelper.display({
+        id: `week-${week}`,
+        header: `W${week}`,
+        cell: ({ row }) => {
+          const weekRecord = getWeeklyRecord(row.original, week);
+          return (
+            <div className="text-xs">
+              <div className="font-medium">{formatRecord(weekRecord)}</div>
+              <div className="text-ink-muted">
+                {number(weekRecord.points, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </div>
+            </div>
+          );
+        },
+        meta: {
+          kind: "record" as const,
+          headerClassName: "min-w-20",
+          // The luck shade is computed from how far the week's result diverged
+          // from the record against the league, so it cannot be a class.
+          rowCellStyle: (roster: ExtendedRoster) =>
+            showLuck ? getLuckStyle(getLuckValue(roster, week)) : undefined,
+        },
+      })
+    ),
+    columnHelper.display({
+      id: "seasonTotal",
+      header: "Season Total",
+      cell: ({ row }) => {
+        const seasonTotals = getSeasonTotals(row.original);
+        return (
+          <div className="text-xs">
+            <div>
+              {seasonTotals.totalWins}-{seasonTotals.totalLosses}
+              {seasonTotals.totalTies > 0 && `-${seasonTotals.totalTies}`}
+            </div>
+            <div className="text-ink-muted">
+              {number(seasonTotals.totalPoints, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </div>
+          </div>
+        );
+      },
+      meta: {
+        kind: "record" as const,
+        headerClassName: "min-w-24 font-bold",
+        cellClassName: "bg-surface-sunk font-bold",
+      },
+    }),
+  ];
+
   return (
     <div className="container mx-auto">
       <div className="mb-6">
@@ -209,82 +283,11 @@ const Breakdown = ({
         </p>
       </div>
 
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderCell className="text-left bg-gray-50 sticky left-0 z-10">
-                Team
-              </TableHeaderCell>
-              {regularSeasonWeeks.map((week) => (
-                <TableHeaderCell
-                  key={week}
-                  className="text-center bg-gray-50 min-w-20"
-                >
-                  W{week}
-                </TableHeaderCell>
-              ))}
-              <TableHeaderCell className="text-center bg-gray-50 min-w-24 font-bold">
-                Season Total
-              </TableHeaderCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedRosters.map((roster) => {
-              const seasonTotals = getSeasonTotals(roster);
-
-              return (
-                <TableRow key={roster.roster_id}>
-                  <TableCell className="text-left bg-gray-50 sticky left-0 z-10 font-medium">
-                    {getTeamName(roster.owner_id)}
-                  </TableCell>
-                  {regularSeasonWeeks.map((week) => {
-                    const weekRecord = getWeeklyRecord(roster, week);
-                    const luckValue = showLuck ? getLuckValue(roster, week) : 0;
-                    const luckStyle = showLuck ? getLuckStyle(luckValue) : {};
-
-                    return (
-                      <TableCell
-                        key={week}
-                        className="text-center"
-                        style={luckStyle}
-                      >
-                        <div className="text-xs">
-                          <div className="font-medium">
-                            {weekRecord.wins}-{weekRecord.losses}
-                            {weekRecord.ties > 0 && `-${weekRecord.ties}`}
-                          </div>
-                          <div className="text-gray-500">
-                            {number(weekRecord.points, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </div>
-                        </div>
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell className="text-center bg-gray-100 font-bold">
-                    <div className="text-xs">
-                      <div>
-                        {seasonTotals.totalWins}-{seasonTotals.totalLosses}
-                        {seasonTotals.totalTies > 0 &&
-                          `-${seasonTotals.totalTies}`}
-                      </div>
-                      <div className="text-gray-600">
-                        {number(seasonTotals.totalPoints, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </div>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+      {/* Zebra would shift the luck shading row by row, and the shading is the
+          whole point of the toggle. */}
+      {/* No zebra: the Schedule Luck toggle heat-maps every week cell, so
+          striping underneath fights the colour that carries the meaning. */}
+      <DataTable columns={columns} data={sortedRosters} zebra={false} />
 
       {showLuck && (
         <div className="mt-4 p-3 bg-gray-50 rounded-lg border">

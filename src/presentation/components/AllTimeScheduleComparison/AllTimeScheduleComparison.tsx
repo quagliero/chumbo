@@ -1,28 +1,142 @@
 import { useMemo, useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { createColumnHelper } from "@tanstack/react-table";
 import { seasons } from "@/data";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getTeamName } from "@/utils/teamName";
-import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
   calculateWinPercentage,
   roundToTwoDecimals,
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { ExtendedMatchup } from "@/types/matchup";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-  SortIcon,
-} from "../Table";
+import { Card } from "@/presentation/components/Card";
+import { DataTable } from "../Table";
 
-type SortField = "team" | "wins" | "losses" | "ties" | "winPercentage";
-type SortDirection = "asc" | "desc";
 type ViewMode = "byTeam" | "grid";
+
+interface CrossScheduleRecord {
+  wins: number;
+  losses: number;
+  ties: number;
+  winPercentage: number;
+}
+
+/**
+ * One row of the by-team table: a team whose schedule the selected team could
+ * have played, and the record they would have had playing it.
+ *
+ * The record is resolved into the row rather than looked up at render time so
+ * that sorting can just read the column, which is what the hand-rolled sort
+ * this replaced had to reimplement for each of its five fields.
+ */
+interface ComparisonRow {
+  ownerId: string;
+  teamName: string;
+  /** The selected team's own row, which shows their actual record. */
+  isSelectedTeam: boolean;
+  record: CrossScheduleRecord;
+  /** Win-percentage points better or worse than the selected team's actual. */
+  recordDifference: number;
+}
+
+/** ".500", not "0.500" — the convention every fantasy site uses. */
+const formatWinPercentage = (winPercentage: number) => {
+  const formatted = winPercentage.toFixed(3);
+  return formatted.startsWith("0.") ? formatted.substring(1) : formatted;
+};
+
+/** A team with no games against a schedule has no comparison to show. */
+const isEmptyRecord = (record: CrossScheduleRecord) =>
+  record.wins === 0 && record.losses === 0 && record.ties === 0;
+
+const differenceClass = (difference: number) =>
+  difference > 0
+    ? "text-green-600"
+    : difference < 0
+    ? "text-red-600"
+    : "text-ink-muted";
+
+const comparisonColumnHelper = createColumnHelper<ComparisonRow>();
+const matrixColumnHelper =
+  createColumnHelper<AllTimeScheduleComparisonStats>();
+
+const comparisonColumns = [
+  comparisonColumnHelper.accessor("teamName", {
+    header: "Team",
+    cell: (info) => info.getValue(),
+    sortDescFirst: true,
+    meta: {
+      kind: "manager" as const,
+      // The selected team's own row is the baseline being compared against,
+      // and links to the page you are already on.
+      ownerId: (row: ComparisonRow) =>
+        row.isSelectedTeam ? undefined : row.ownerId,
+      cellClassName: "font-medium",
+    },
+  }),
+  comparisonColumnHelper.display({
+    id: "actual",
+    header: "",
+    cell: ({ row }) =>
+      row.original.isSelectedTeam ? (
+        <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
+          Actual
+        </span>
+      ) : null,
+    meta: { headerClassName: "w-0" },
+  }),
+  comparisonColumnHelper.accessor((row) => row.record.wins, {
+    id: "wins",
+    header: "W",
+    cell: (info) => info.getValue(),
+    sortingFn: "basic",
+    sortDescFirst: true,
+    meta: { kind: "numeric" as const },
+  }),
+  comparisonColumnHelper.accessor((row) => row.record.losses, {
+    id: "losses",
+    header: "L",
+    cell: (info) => info.getValue(),
+    sortingFn: "basic",
+    sortDescFirst: true,
+    meta: { kind: "numeric" as const },
+  }),
+  comparisonColumnHelper.accessor((row) => row.record.ties, {
+    id: "ties",
+    header: "T",
+    cell: (info) => info.getValue(),
+    sortingFn: "basic",
+    sortDescFirst: true,
+    meta: { kind: "numeric" as const },
+  }),
+  comparisonColumnHelper.accessor((row) => row.record.winPercentage, {
+    id: "winPercentage",
+    header: "Win %",
+    cell: (info) => formatWinPercentage(info.getValue()),
+    sortingFn: "basic",
+    sortDescFirst: true,
+    meta: { kind: "numeric" as const },
+  }),
+  comparisonColumnHelper.display({
+    id: "vsSchedule",
+    header: "Vs Schedule",
+    cell: ({ row }) => {
+      const { isSelectedTeam, record, recordDifference } = row.original;
+      if (isSelectedTeam || isEmptyRecord(record)) {
+        return <span className="text-ink-muted">—</span>;
+      }
+
+      return (
+        <span className={`font-medium ${differenceClass(recordDifference)}`}>
+          {recordDifference > 0 && "+"}
+          {recordDifference.toFixed(2)}%
+        </span>
+      );
+    },
+    meta: { kind: "numeric" as const },
+  }),
+];
 
 interface AllTimeScheduleComparisonStats {
   ownerId: string;
@@ -49,8 +163,6 @@ const AllTimeScheduleComparison = () => {
   const { view } = useParams<{ view?: string }>();
   const navigate = useNavigate();
   const [selectedTeam, setSelectedTeam] = useState<string>("");
-  const [sortField, setSortField] = useState<SortField>("winPercentage");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [activeTeamsOnly, setActiveTeamsOnly] = useState<boolean>(false);
 
   // Determine view mode from URL params, default to "grid" (league)
@@ -283,77 +395,108 @@ const AllTimeScheduleComparison = () => {
     (team) => team.ownerId === selectedTeam
   );
 
-  // Sort the teams based on selected criteria
-  const sortedTeams = useMemo(() => {
-    if (!selectedTeamStats) return allTimeStats;
+  // Resolve each team's row once, so the table sorts by reading a column
+  // rather than by reimplementing the lookup per sort field.
+  const comparisonRows = useMemo((): ComparisonRow[] => {
+    if (!selectedTeamStats) return [];
 
-    return [...allTimeStats].sort((a, b) => {
-      const isSelectedA = a.ownerId === selectedTeam;
-      const isSelectedB = b.ownerId === selectedTeam;
+    return allTimeStats.flatMap((team) => {
+      const isSelectedTeam = team.ownerId === selectedTeam;
+      const record = isSelectedTeam
+        ? team.actualRecord
+        : selectedTeamStats.crossScheduleRecords[team.ownerId];
 
-      // Sort all teams by the selected field (including selected team)
-      const recordA = isSelectedA
-        ? a.actualRecord
-        : selectedTeamStats.crossScheduleRecords[a.ownerId];
-      const recordB = isSelectedB
-        ? b.actualRecord
-        : selectedTeamStats.crossScheduleRecords[b.ownerId];
+      if (!record) return [];
 
-      if (!recordA || !recordB) return 0;
-
-      let valueA: number | string;
-      let valueB: number | string;
-
-      switch (sortField) {
-        case "team":
-          valueA = a.teamName;
-          valueB = b.teamName;
-          break;
-        case "wins":
-          valueA = recordA.wins;
-          valueB = recordB.wins;
-          break;
-        case "losses":
-          valueA = recordA.losses;
-          valueB = recordB.losses;
-          break;
-        case "ties":
-          valueA = recordA.ties;
-          valueB = recordB.ties;
-          break;
-        case "winPercentage":
-          valueA = recordA.winPercentage;
-          valueB = recordB.winPercentage;
-          break;
-        default:
-          return 0;
-      }
-
-      if (typeof valueA === "string" && typeof valueB === "string") {
-        return sortDirection === "asc"
-          ? valueA.localeCompare(valueB)
-          : valueB.localeCompare(valueA);
-      } else {
-        return sortDirection === "asc"
-          ? (valueA as number) - (valueB as number)
-          : (valueB as number) - (valueA as number);
-      }
+      return [
+        {
+          ownerId: team.ownerId,
+          teamName: team.teamName,
+          isSelectedTeam,
+          record,
+          // Win percentage difference in percentage points, to 2 decimal places
+          recordDifference: roundToTwoDecimals(
+            (record.winPercentage -
+              selectedTeamStats.actualRecord.winPercentage) *
+              100
+          ),
+        },
+      ];
     });
-  }, [allTimeStats, selectedTeamStats, sortField, sortDirection, selectedTeam]);
+  }, [allTimeStats, selectedTeamStats, selectedTeam]);
 
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("desc");
-    }
-  };
+  // One column per team's schedule. A matrix is read across and down rather
+  // than sorted, so every column is fixed.
+  const matrixColumns = [
+    matrixColumnHelper.accessor("teamName", {
+      header: "Team",
+      cell: (info) => info.getValue(),
+      enableSorting: false,
+      meta: {
+        kind: "manager" as const,
+        ownerId: (row: AllTimeScheduleComparisonStats) => row.ownerId,
+        cellClassName: "font-medium",
+      },
+    }),
+    ...allTimeStats.map((colTeam) =>
+      matrixColumnHelper.display({
+        id: `vs-${colTeam.ownerId}`,
+        header: () => (
+          <span className="break-words leading-tight">{colTeam.teamName}</span>
+        ),
+        cell: ({ row }) => {
+          const rowTeam = row.original;
+          const isSameTeam = rowTeam.ownerId === colTeam.ownerId;
+          const record = isSameTeam
+            ? rowTeam.actualRecord
+            : rowTeam.crossScheduleRecords[colTeam.ownerId];
+
+          if (!record) return null;
+
+          const recordDifference = isSameTeam
+            ? 0
+            : roundToTwoDecimals(
+                (record.winPercentage - rowTeam.actualRecord.winPercentage) *
+                  100
+              );
+
+          return (
+            <div className="space-y-1 text-xs">
+              <div className="font-medium">
+                {record.wins}-{record.losses}-{record.ties}
+              </div>
+              <div className="text-ink-muted">
+                {formatWinPercentage(record.winPercentage)}
+              </div>
+              {isSameTeam ? (
+                <div className="text-blue-600 font-medium">Actual</div>
+              ) : isEmptyRecord(record) ? (
+                <div className="text-ink-muted">—</div>
+              ) : (
+                <div className={`font-medium ${differenceClass(recordDifference)}`}>
+                  {recordDifference > 0 && "+"}
+                  {recordDifference.toFixed(2)}%
+                </div>
+              )}
+            </div>
+          );
+        },
+        meta: {
+          kind: "record" as const,
+          headerClassName: "min-w-24 max-w-32",
+          // The diagonal — a team against its own schedule, which is just its
+          // actual record.
+          rowCellClassName: (row: AllTimeScheduleComparisonStats) =>
+            row.ownerId === colTeam.ownerId ? "bg-surface-sunk" : undefined,
+        },
+      })
+    ),
+  ];
 
   return (
     <div className="container mx-auto space-y-6">
       {/* View Toggle */}
-      <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+      <Card>
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
             {viewMode === "byTeam"
@@ -402,11 +545,11 @@ const AllTimeScheduleComparison = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Team Selection - Only for By Team View */}
       {viewMode === "byTeam" && (
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Select Team
           </h3>
@@ -422,12 +565,12 @@ const AllTimeScheduleComparison = () => {
               </option>
             ))}
           </select>
-        </div>
+        </Card>
       )}
 
       {/* Schedule Comparison Table */}
       {selectedTeamStats && viewMode === "byTeam" && (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <Card padding="none">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-900">
               {selectedTeamStats.teamName} - Schedule Comparison
@@ -438,187 +581,21 @@ const AllTimeScheduleComparison = () => {
             </p>
           </div>
 
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderCell
-                  className="text-left cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("team")}
-                  isSorted={sortField === "team"}
-                >
-                  <div className="flex items-center">
-                    Team
-                    {sortField === "team" && (
-                      <SortIcon
-                        sortDirection={sortDirection}
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-right cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("wins")}
-                  isSorted={sortField === "wins"}
-                >
-                  <div className="flex items-center justify-end">
-                    W
-                    {sortField === "wins" && (
-                      <SortIcon
-                        sortDirection={sortDirection}
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-right cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("losses")}
-                  isSorted={sortField === "losses"}
-                >
-                  <div className="flex items-center justify-end">
-                    L
-                    {sortField === "losses" && (
-                      <SortIcon
-                        sortDirection={sortDirection}
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-right cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("ties")}
-                  isSorted={sortField === "ties"}
-                >
-                  <div className="flex items-center justify-end">
-                    T
-                    {sortField === "ties" && (
-                      <SortIcon
-                        sortDirection={sortDirection}
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell
-                  className="text-right cursor-pointer hover:bg-gray-100"
-                  onClick={() => handleSort("winPercentage")}
-                  isSorted={sortField === "winPercentage"}
-                >
-                  <div className="flex items-center justify-end">
-                    Win %
-                    {sortField === "winPercentage" && (
-                      <SortIcon
-                        sortDirection={sortDirection}
-                        className="ml-1"
-                      />
-                    )}
-                  </div>
-                </TableHeaderCell>
-                <TableHeaderCell className="text-right">
-                  Vs Schedule
-                </TableHeaderCell>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sortedTeams.map((team) => {
-                const isSelectedTeam = team.ownerId === selectedTeam;
-                const record = isSelectedTeam
-                  ? team.actualRecord
-                  : selectedTeamStats.crossScheduleRecords[team.ownerId];
-
-                if (!record) return null;
-
-                // Win percentage difference in percentage points, to 2 decimal places
-                const recordDifference = roundToTwoDecimals(
-                  (record.winPercentage -
-                    selectedTeamStats.actualRecord.winPercentage) *
-                    100
-                );
-                const isBetter = recordDifference > 0;
-                const isWorse = recordDifference < 0;
-
-                return (
-                  <TableRow
-                    key={team.ownerId}
-                    className={isSelectedTeam ? "bg-blue-50" : ""}
-                  >
-                    <TableCell>
-                      <div className="flex items-center">
-                        <div className="text-sm font-medium text-gray-900">
-                          {isSelectedTeam
-                            ? team.teamName
-                            : (() => {
-                                const managerId = getManagerIdBySleeperOwnerId(
-                                  team.ownerId
-                                );
-                                return managerId ? (
-                                  <Link
-                                    to={`/managers/${managerId}`}
-                                    className="text-blue-600 hover:text-blue-800"
-                                  >
-                                    {team.teamName}
-                                  </Link>
-                                ) : (
-                                  <span>{team.teamName}</span>
-                                );
-                              })()}
-                        </div>
-                        {isSelectedTeam && (
-                          <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
-                            Actual
-                          </span>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">{record.wins}</TableCell>
-                    <TableCell className="text-right">
-                      {record.losses}
-                    </TableCell>
-                    <TableCell className="text-right">{record.ties}</TableCell>
-                    <TableCell className="text-right">
-                      {(() => {
-                        const formatted = record.winPercentage.toFixed(3);
-                        // Remove leading zero if present (e.g., "0.500" -> ".500")
-                        return formatted.startsWith("0.")
-                          ? formatted.substring(1)
-                          : formatted;
-                      })()}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {isSelectedTeam ? (
-                        <span className="text-gray-500">—</span>
-                      ) : record.wins === 0 &&
-                        record.losses === 0 &&
-                        record.ties === 0 ? (
-                        <span className="text-gray-500">—</span>
-                      ) : (
-                        <span
-                          className={`font-medium ${
-                            isBetter
-                              ? "text-green-600"
-                              : isWorse
-                              ? "text-red-600"
-                              : "text-gray-600"
-                          }`}
-                        >
-                          {isBetter && "+"}
-                          {recordDifference.toFixed(2)}%
-                        </span>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
+          <DataTable
+            columns={comparisonColumns}
+            data={comparisonRows}
+            initialSorting={[{ id: "winPercentage", desc: true }]}
+            getRowBackground={(row) =>
+              row.original.isSelectedTeam ? "bg-blue-50" : undefined
+            }
+            emptyMessage="No schedules to compare against."
+          />
+        </Card>
       )}
 
       {/* Matrix Table View */}
       {viewMode === "grid" && allTimeStats.length > 0 && (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <Card padding="none">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-900">
               All-Time Schedule Comparison Matrix
@@ -629,123 +606,21 @@ const AllTimeScheduleComparison = () => {
             </p>
           </div>
 
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderCell className="sticky left-0 bg-gray-50 z-10">
-                  Team
-                </TableHeaderCell>
-                {allTimeStats.map((team) => (
-                  <TableHeaderCell
-                    key={team.ownerId}
-                    className="text-center min-w-24 max-w-32"
-                  >
-                    <div className="break-words leading-tight">
-                      {team.teamName}
-                    </div>
-                  </TableHeaderCell>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {allTimeStats.map((rowTeam) => (
-                <TableRow key={rowTeam.ownerId}>
-                  <TableCell className="sticky left-0 bg-white z-10 font-medium">
-                    {(() => {
-                      const managerId = getManagerIdBySleeperOwnerId(
-                        rowTeam.ownerId
-                      );
-                      return managerId ? (
-                        <Link
-                          to={`/managers/${managerId}`}
-                          className="text-blue-600 hover:text-blue-800"
-                        >
-                          {rowTeam.teamName}
-                        </Link>
-                      ) : (
-                        <span>{rowTeam.teamName}</span>
-                      );
-                    })()}
-                  </TableCell>
-                  {allTimeStats.map((colTeam) => {
-                    const isSameTeam = rowTeam.ownerId === colTeam.ownerId;
-                    const record = isSameTeam
-                      ? rowTeam.actualRecord
-                      : rowTeam.crossScheduleRecords[colTeam.ownerId];
-
-                    if (!record) return null;
-
-                    // Win percentage difference in percentage points, to 2 decimal places
-                    const recordDifference = isSameTeam
-                      ? 0
-                      : roundToTwoDecimals(
-                          (record.winPercentage -
-                            rowTeam.actualRecord.winPercentage) *
-                            100
-                        );
-                    const isBetter = recordDifference > 0;
-                    const isWorse = recordDifference < 0;
-
-                    return (
-                      <TableCell
-                        key={colTeam.ownerId}
-                        className={`text-center text-xs ${
-                          isSameTeam ? "bg-gray-100" : ""
-                        }`}
-                      >
-                        <div className="space-y-1">
-                          <div className="font-medium">
-                            {record.wins}-{record.losses}-{record.ties}
-                          </div>
-                          <div className="text-gray-500">
-                            {(() => {
-                              const formatted = record.winPercentage.toFixed(3);
-                              // Remove leading zero if present (e.g., "0.500" -> ".500")
-                              return formatted.startsWith("0.")
-                                ? formatted.substring(1)
-                                : formatted;
-                            })()}
-                          </div>
-                          {!isSameTeam &&
-                          record.wins === 0 &&
-                          record.losses === 0 &&
-                          record.ties === 0 ? (
-                            <div className="text-xs text-gray-500">—</div>
-                          ) : (
-                            !isSameTeam && (
-                              <div
-                                className={`text-xs font-medium ${
-                                  isBetter
-                                    ? "text-green-600"
-                                    : isWorse
-                                    ? "text-red-600"
-                                    : "text-gray-600"
-                                }`}
-                              >
-                                {isBetter && "+"}
-                                {recordDifference.toFixed(2)}%
-                              </div>
-                            )
-                          )}
-                          {isSameTeam && (
-                            <div className="text-xs text-blue-600 font-medium">
-                              Actual
-                            </div>
-                          )}
-                        </div>
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+          {/* Zebra would fight the diagonal, which is the one thing the
+              matrix marks out. */}
+          <DataTable
+            columns={matrixColumns}
+            data={allTimeStats}
+            // Same as the season view: a shaded diagonal and coloured cells.
+        // Striping a matrix implies the row is the unit, and it is not.
+        zebra={false}
+          />
+        </Card>
       )}
 
       {/* Instructions */}
       {viewMode === "byTeam" && !selectedTeam && (
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             How it works
           </h3>
@@ -767,7 +642,7 @@ const AllTimeScheduleComparison = () => {
               currently in the league (2025 participants).
             </p>
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );
