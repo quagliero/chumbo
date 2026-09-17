@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import "./App.css";
 import Header from "@/presentation/components/Header/Header";
 import ScrollToTop from "@/presentation/components/ScrollToTop/ScrollToTop";
+import { CommandPaletteProvider } from "@/presentation/components/CommandPalette";
 
 // Lazy load heavy components
 const Home = lazy(() => import("@/presentation/pages/home"));
@@ -31,9 +32,14 @@ function App() {
   return (
     <IntlProvider locale="en">
       <Router>
-        <ScrollToTop />
-        <Header />
-        <div className="px-4">
+        {/* E3 lives inside the router because opening a result is a
+            navigation, and above the header because the header's search
+            button is one of the things that opens it. What ships on every page
+            is the key listener; the dialog is a lazy chunk. */}
+        <CommandPaletteProvider>
+          <ScrollToTop />
+          <Header />
+          <div className="px-4">
           <main className="mx-auto my-4">
             <Suspense
               fallback={
@@ -84,8 +90,9 @@ function App() {
                 <Route path="/hof" element={<HallOfFame />} />
               </Routes>
             </Suspense>
-          </main>
-        </div>
+            </main>
+          </div>
+        </CommandPaletteProvider>
       </Router>
     </IntlProvider>
   );
