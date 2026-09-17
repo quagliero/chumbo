@@ -1,16 +1,20 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { getPlayer } from "@/data";
+import { getPlayer, managers, seasons } from "@/data";
 import {
   LINK_CLASS,
   ManagerLink,
   hasPlayerPage,
 } from "@/presentation/components/Links";
+import { ShareButton } from "@/presentation/components/ShareButton";
 import { ExtendedDraft } from "@/types/draft";
 import { ExtendedPick } from "@/types/pick";
 import { ExtendedRoster } from "@/types/roster";
+import { ValidYear } from "@/domain/constants";
+import { getManagerAccent } from "@/domain/managerColors";
 import { getManagerAbbr } from "@/utils/managerUtils";
 import { getPlayerImageUrl } from "@/utils/playerImage";
+import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { POSITION_COLORS } from "@/constants/fantasy";
 
 interface DraftBoardProps {
@@ -21,6 +25,13 @@ interface DraftBoardProps {
   year: number;
 }
 
+/** The pick a share card is being built for — the coordinate as displayed. */
+interface SelectedPick {
+  pickNo: number;
+  round: number;
+  pickInRound: number;
+}
+
 const DraftBoard = ({
   draft,
   picks,
@@ -29,6 +40,34 @@ const DraftBoard = ({
   year,
 }: DraftBoardProps) => {
   const [selectedRosterId, setSelectedRosterId] = useState<number | null>(null);
+  /**
+   * The pick to share (G2's `draftPickCard`).
+   *
+   * ## Why this is two clicks and not a button in every cell
+   *
+   * A draft is 180 cells. A share control in each of them would be 180 lazy
+   * import closures, 180 live regions and 180 extra tab stops through a grid
+   * that already has 180 player links — for an affordance that is only ever
+   * used on one cell. So the board reuses the selection it already has: click
+   * a team's name (which already filters the board and already fades everyone
+   * else), and the fifteen picks left standing get their coordinate promoted
+   * from dead text to a selector. One share button exists, in the banner that
+   * already appears for that mode.
+   *
+   * That is also the honest answer to "what does somebody share from a draft
+   * board": not an arbitrary pick, but a pick out of a draft they went looking
+   * at — which is one manager's.
+   *
+   * The coordinate is stored rather than re-derived so the card cannot
+   * disagree with the cell that was clicked.
+   */
+  const [selectedPick, setSelectedPick] = useState<SelectedPick | null>(null);
+
+  /** Changing whose draft is on screen invalidates the pick chosen from it. */
+  const selectTeam = (rosterId: number | null) => {
+    setSelectedRosterId(rosterId);
+    setSelectedPick(null);
+  };
 
   // Build the snake draft grid
   const draftGrid = useMemo(() => {
@@ -68,6 +107,49 @@ const DraftBoard = ({
     return { grid, slotToRoster, numSlots };
   }, [draft, picks]);
 
+  /**
+   * What the selected pick's card says. Flat primitives only — assembling
+   * them here rather than in the click handler keeps the banner's summary and
+   * the card itself reading off one object.
+   */
+  const shareable = useMemo(() => {
+    if (!selectedPick) return null;
+    const pick = picks.find((p) => p.pick_no === selectedPick.pickNo);
+    if (!pick) return null;
+
+    const player = getPlayer(pick.player_id, year);
+    const playerName = player
+      ? `${player.first_name || ""} ${player.last_name || ""}`.trim()
+      : String(pick.player_id);
+    const ownerId = rosters.find((r) => r.roster_id === pick.roster_id)
+      ?.owner_id;
+    const manager = managers.find((m) => m.sleeper.id === ownerId);
+    // `users.json` is eager for every season (only matchups and transactions
+    // are lazy — A2a), so the avatar costs nothing to look up here; the fetch
+    // that turns it into a data URI still happens on click.
+    const avatarUrl = ownerId
+      ? getUserAvatarUrl(
+          getUserByOwnerId(ownerId, seasons[year as ValidYear]?.users)
+        )
+      : null;
+
+    return {
+      ...selectedPick,
+      label: `${selectedPick.round}.${String(selectedPick.pickInRound).padStart(
+        2,
+        "0"
+      )}`,
+      player: {
+        name: playerName,
+        position: pick.position || player?.position || undefined,
+        team: player?.team || undefined,
+      },
+      drafter: manager?.name ?? getTeamName(ownerId || ""),
+      accent: manager ? getManagerAccent(manager.id) : undefined,
+      avatarUrl,
+    };
+  }, [selectedPick, picks, rosters, getTeamName, year]);
+
   if (!draftGrid) {
     return <div>Draft data not available</div>;
   }
@@ -98,9 +180,7 @@ const DraftBoard = ({
                   return (
                     <th
                       key={slot}
-                      onClick={() =>
-                        setSelectedRosterId(isSelected ? null : rosterId)
-                      }
+                      onClick={() => selectTeam(isSelected ? null : rosterId)}
                       className={`p-2 text-xs font-semibold min-w-32 max-w-32 cursor-pointer transition-colors rounded-md ${
                         isSelected ? "bg-blue-600 text-white" : ""
                       }`}
@@ -199,17 +279,33 @@ const DraftBoard = ({
                     // The cell is one link target (the grid is tight, and a
                     // 128px cell is a better target than the name alone). The
                     // traded-pick badge is a second, separate link and so has
-                    // to sit outside it — anchors cannot nest.
+                    // to sit outside it — anchors cannot nest, and neither can
+                    // the coordinate's selector below.
+                    //
+                    // The coordinate the cell shows, and the one the share
+                    // card gets. Snake order: even rounds count from the other
+                    // end.
+                    const pickInRound =
+                      pick.round % 2 === 0
+                        ? numSlots - pick.draft_slot + 1
+                        : pick.draft_slot;
+                    const coordinate = `${roundIndex + 1}.${pickInRound}`;
+
+                    // Only the shown team's picks are selectable — null never
+                    // equals a roster id, so a full board has none. See the
+                    // `selectedPick` note.
+                    const isSelectable = pick.roster_id === selectedRosterId;
+                    const isPickSelected =
+                      selectedPick?.pickNo === pick.pick_no;
+
                     const cellBody = (
                       <>
-                          {/* Pick number and position badge */}
-                          <div className="flex justify-between items-start mb-1">
-                            <span className="text-xs text-gray-500 font-medium">
-                              {roundIndex + 1}.
-                              {pick.round % 2 === 0
-                                ? numSlots - pick.draft_slot + 1
-                                : pick.draft_slot}
-                            </span>
+                          {/* Position badge. The coordinate that used to share
+                              this row is hoisted out of the link below — it
+                              becomes a button when this team's picks are
+                              showing, and a button cannot sit inside an
+                              anchor. */}
+                          <div className="flex justify-end items-start mb-1">
                             <span className="text-xs font-bold text-gray-700 bg-white/50 px-1 rounded">
                               {position}
                             </span>
@@ -281,6 +377,45 @@ const DraftBoard = ({
                           isFaded ? "opacity-20" : "opacity-100"
                         }`}
                       >
+                        {/* The pick's coordinate. Dead text on a full board;
+                            the selector once a team's picks are showing. */}
+                        {isSelectable ? (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setSelectedPick(
+                                isPickSelected
+                                  ? null
+                                  : {
+                                      pickNo: pick.pick_no,
+                                      round: roundIndex + 1,
+                                      pickInRound,
+                                    }
+                              )
+                            }
+                            aria-pressed={isPickSelected}
+                            title={`${coordinate} ${playerName} — choose this pick to share`}
+                            className={`absolute left-1 top-1 z-10 rounded px-1 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 ${
+                              isPickSelected
+                                ? "bg-blue-600 text-white"
+                                : "bg-white/70 text-gray-600 hover:bg-white hover:text-blue-700"
+                            }`}
+                          >
+                            {coordinate}
+                          </button>
+                        ) : (
+                          // `pointer-events-none` because this span sits on
+                          // top of the cell's player link rather than inside
+                          // it (it cannot be inside: its selectable form is a
+                          // button). Without it, the top-left corner of every
+                          // cell on a full board would stop navigating to the
+                          // player, which is the one thing the cell has always
+                          // done.
+                          <span className="pointer-events-none absolute left-2 top-2 text-xs font-medium text-gray-500">
+                            {coordinate}
+                          </span>
+                        )}
+
                         {isLinkable ? (
                           <Link
                             to={`/players/${pick.player_id}`}
@@ -324,22 +459,65 @@ const DraftBoard = ({
         {/* Legend and Instructions */}
         <div className="mt-4 space-y-2">
           {selectedRosterId !== null && (
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
-              Showing picks for{" "}
-              <ManagerLink
-                ownerId={
-                  rosters.find((r) => r.roster_id === selectedRosterId)
-                    ?.owner_id
-                }
-                className={`font-bold ${LINK_CLASS}`}
-                fallbackClassName="font-bold"
-              >
-                {getTeamName(
-                  rosters.find((r) => r.roster_id === selectedRosterId)
-                    ?.owner_id || ""
-                )}
-              </ManagerLink>
-              . Click the team name again to show all picks.
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800 space-y-2">
+              <div>
+                Showing picks for{" "}
+                <ManagerLink
+                  ownerId={
+                    rosters.find((r) => r.roster_id === selectedRosterId)
+                      ?.owner_id
+                  }
+                  className={`font-bold ${LINK_CLASS}`}
+                  fallbackClassName="font-bold"
+                >
+                  {getTeamName(
+                    rosters.find((r) => r.roster_id === selectedRosterId)
+                      ?.owner_id || ""
+                  )}
+                </ManagerLink>
+                . Click the team name again to show all picks, or a pick's
+                number to share it.
+              </div>
+
+              {/* G2's `draftPickCard`. One button for the whole board — see
+                  the `selectedPick` note. The card is built on click: the
+                  drafter's avatar and the crest are both fetches. */}
+              {shareable && (
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                  <span className="font-semibold">
+                    {shareable.label} {shareable.player.name}
+                  </span>
+                  <ShareButton
+                    card={async () => {
+                      const [{ draftPickCard }, { embedImage }] =
+                        await Promise.all([
+                          import(
+                            "@/presentation/components/ShareCard/templates"
+                          ),
+                          import("@/presentation/components/ShareCard"),
+                        ]);
+                      const [crest, avatar] = await Promise.all([
+                        embedImage("/images/logo.png"),
+                        shareable.avatarUrl
+                          ? embedImage(shareable.avatarUrl)
+                          : null,
+                      ]);
+                      return draftPickCard({
+                        year,
+                        round: shareable.round,
+                        pickInRound: shareable.pickInRound,
+                        overall: shareable.pickNo,
+                        player: shareable.player,
+                        manager: { name: shareable.drafter, avatar },
+                        // The drafter's accent: one manager, and the card is
+                        // about what they did.
+                        accent: shareable.accent,
+                        crest,
+                      });
+                    }}
+                  />
+                </div>
+              )}
             </div>
           )}
           <div className="p-3 bg-gray-50 rounded-lg">
@@ -362,6 +540,9 @@ const DraftBoard = ({
               <div className="ml-4 text-gray-600">
                 • Click a pick for the player, or the initials under a team for
                 the manager
+              </div>
+              <div className="ml-4 text-gray-600">
+                • With a team's picks showing, click a pick's number to share it
               </div>
             </div>
           </div>
