@@ -600,7 +600,7 @@ On a matchup: *"These two have met 23 times → H2H"*, *"Other games this week"*
 *"Both managers' seasons"*. On a player: *"Drafted 7 times by 4 managers"*,
 *"Best week: 41.2 for thd, 2019 W8"*.
 
-- [ ] E2
+- [x] E2
 
 ### E3 · Command palette (⌘K) `L`
 **Blocked by:** A5
@@ -1077,7 +1077,7 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 | | Task | Size |
 |---|---|---|
 | ☑ | `E7` Narrative engine | L |
-| ☐ | `E2` See-also rails | M |
+| ☑ | `E2` See-also rails | M |
 | ☑ | `E3` Command palette (⌘K) | L |
 | ☑ | `E5` Random matchup button | S |
 | ☑ | `E6` On this day | M |
