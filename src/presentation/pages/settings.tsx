@@ -6,6 +6,7 @@ import {
   getManualHistoricalChanges,
   getScoringChanges,
 } from "../../utils/leagueRules";
+import { Card } from "@/presentation/components/Card";
 
 const Settings = () => {
   const rules = getLeagueRules();
@@ -159,7 +160,7 @@ const Settings = () => {
       {/* Current League Settings */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-6">Current League Settings</h2>
-        <div className="bg-white rounded-lg shadow-md p-6 border border-neutral-50 overflow-hidden">
+        <Card>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-medium mb-4">League Structure</h3>
@@ -266,7 +267,7 @@ const Settings = () => {
               </div>
             </div>
           )}
-        </div>
+        </Card>
       </section>
 
       {/* Scoring Settings */}
@@ -274,7 +275,7 @@ const Settings = () => {
         <h2 className="text-2xl font-semibold mb-6">Scoring Settings</h2>
 
         {/* Common Settings Across All Years */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6 overflow-hidden">
+        <Card>
           <h3 className="text-lg font-medium mb-4">Consistent Settings</h3>
           <p className="text-gray-600 mb-6">
             These scoring settings have been consistent across all years of the
@@ -292,10 +293,10 @@ const Settings = () => {
                 </div>
               ))}
           </div>
-        </div>
+        </Card>
 
         {/* Current Year's Unique Settings */}
-        <div className="bg-white rounded-lg shadow-md p-6 overflow-hidden">
+        <Card>
           <h3 className="text-lg font-medium mb-4">Current Season Settings</h3>
           <p className="text-gray-600 mb-6">
             These scoring settings are specific to the current season and may
@@ -322,7 +323,7 @@ const Settings = () => {
                 </div>
               ))}
           </div>
-        </div>
+        </Card>
       </section>
 
       {/* Historical Changes */}
@@ -340,10 +341,7 @@ const Settings = () => {
             }
 
             return (
-              <div
-                key={rule.year}
-                className="bg-white rounded-lg shadow-md p-6 overflow-hidden"
-              >
+              <Card key={rule.year}>
                 <h3 className="text-xl font-semibold mb-4">{rule.year}</h3>
 
                 <div className="space-y-4">
@@ -379,7 +377,7 @@ const Settings = () => {
                       );
                     })}
                 </div>
-              </div>
+              </Card>
             );
           })}
         </div>

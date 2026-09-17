@@ -28,6 +28,7 @@ import {
 import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDetail";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { Card } from "@/presentation/components/Card";
 
 const ManagerDetail = () => {
   // A2a: getManagerStats walks every season's matchups, which are a lazy
@@ -248,7 +249,7 @@ const ManagerDetail = () => {
       {currentTab === "seasons" && (
         <>
           {/* Season Breakdown */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <Card padding="none">
             <h2 className="text-2xl font-bold p-6">Season Breakdown</h2>
             <Table className="border-t border-neutral-200">
               <TableHeader>
@@ -360,7 +361,7 @@ const ManagerDetail = () => {
                 })}
               </TableBody>
             </Table>
-          </div>
+          </Card>
         </>
       )}
 
@@ -372,7 +373,7 @@ const ManagerDetail = () => {
       )}
 
       {currentTab === "players" && managerStats && (
-        <div className="bg-white rounded-lg shadow overflow-hidden py-4">
+        <Card padding="none" className="py-4">
           {/* All-Star Lineup */}
           {selectedPlayerSection === "allstars" && (
             <AllStarLineup
@@ -402,7 +403,7 @@ const ManagerDetail = () => {
           {selectedPlayerSection === "performances" && (
             <TopPerformances performances={filteredPerformances} />
           )}
-        </div>
+        </Card>
       )}
     </div>
   );

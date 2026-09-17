@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PositionalFilter } from "@/utils/statsExplorer";
 import managers from "@/data/managers.json";
 import { LINK_CLASS, ManagerLink } from "@/presentation/components/Links";
+import { Card } from "@/presentation/components/Card";
 
 interface FilterBuilderProps {
   filters: PositionalFilter[];
@@ -180,7 +181,7 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-4 md:p-6">
+    <Card className="md:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <h2 className="text-xl font-bold text-gray-900">Filter Conditions</h2>
         <div className="flex flex-wrap gap-2">
@@ -545,7 +546,7 @@ const FilterBuilder: React.FC<FilterBuilderProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

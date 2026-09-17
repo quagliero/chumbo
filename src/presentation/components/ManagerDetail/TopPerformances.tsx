@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import { getPlayerImageUrl } from "@/utils/playerImage";
+import { cardClassName } from "@/presentation/components/Card";
 
 export interface TopPerformance {
   playerId: string;
@@ -65,7 +66,7 @@ const TopPerformances = ({ performances }: TopPerformancesProps) => {
             <Link
               key={index}
               to={`/seasons/${performance.year}/matchups/${performance.week}/${performance.matchup_id}`}
-              className="bg-white rounded-lg shadow-md border border-gray-200 p-4 hover:shadow-lg transition-all cursor-pointer group block overflow-hidden"
+              className={cardClassName({ padding: "sm", interactive: true, className: "block" })}
             >
               {/* Rank Badge */}
               <div className="flex items-center justify-between mb-3">

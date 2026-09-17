@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PlayerLink, SeasonLink } from "@/presentation/components/Links";
+import { Card } from "@/presentation/components/Card";
 
 interface HOFInductee {
   name: string;
@@ -170,7 +171,7 @@ const HallOfFame = () => {
 
           {/* Content */}
           <div className="relative z-10 min-h-screen flex items-center justify-center p-8">
-            <div className="max-w-2xl mx-auto bg-white rounded-lg p-8 shadow-2xl">
+            <Card padding="lg" className="max-w-2xl mx-auto">
               {/* Close Button */}
               <button
                 onClick={handleCloseDetail}
@@ -201,7 +202,7 @@ const HallOfFame = () => {
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                 {selectedMember.blurb}
               </p>
-            </div>
+            </Card>
           </div>
         </div>
       )}

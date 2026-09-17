@@ -4,6 +4,7 @@ import { useFormatter } from "use-intl";
 import { getManagerStats, DataMode } from "@/utils/managerStats";
 import managers from "@/data/managers.json";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { cardClassName } from "@/presentation/components/Card";
 
 type SortOption =
   | "wins"
@@ -163,7 +164,7 @@ const Managers = () => {
           return (
             <div
               key={manager!.managerId}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
+              className={cardClassName({ interactive: true })}
               onClick={() => navigate(`/managers/${manager!.managerId}`)}
             >
               <div className="flex items-center justify-between mb-4">

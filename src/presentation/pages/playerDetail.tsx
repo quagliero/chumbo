@@ -12,6 +12,7 @@ import {
   PerformanceTable,
 } from "@/presentation/components/PlayerDetail";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { Card } from "@/presentation/components/Card";
 
 const PlayerDetail = () => {
   // A2a: every one of these hooks reads the matchups, a lazy chunk now.
@@ -129,12 +130,12 @@ const PlayerDetail = () => {
 
       {/* Ownership Table */}
       {playerStats.ownerStats.length > 1 && (
-        <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
+        <Card padding="none" className="mb-8">
           <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
             Ownership Breakdown
           </h2>
           <OwnershipTable data={playerStats.ownerStats} />
-        </div>
+        </Card>
       )}
 
       {/* Draft Breakdown */}

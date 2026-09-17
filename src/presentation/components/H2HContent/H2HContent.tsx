@@ -23,6 +23,7 @@ import {
   TableCell,
 } from "../Table/Table";
 import { ValidYear } from "@/domain/constants";
+import { Card } from "@/presentation/components/Card";
 
 interface H2HMatchup {
   year: number;
@@ -639,7 +640,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
       </div>
 
       {/* Overall Stats */}
-      <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
+      <Card padding="none" className="mb-8">
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">
             Overall Statistics
@@ -751,10 +752,10 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Regular Season Matchups */}
-      <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
+      <Card padding="none" className="mb-8">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-gray-900">
@@ -830,11 +831,11 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             </TableBody>
           </Table>
         </div>
-      </div>
+      </Card>
 
       {/* Playoff Matchups */}
       {playoffMatchups.length > 0 && (
-        <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
+        <Card padding="none" className="mb-8">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900">
               Playoff Matchups
@@ -941,7 +942,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
               </TableBody>
             </Table>
           </div>
-        </div>
+        </Card>
       )}
 
       {/* All-Star Lineups */}
@@ -958,10 +959,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             opponentName: managerAData?.teamName,
           },
         ].map(({ teamName, lineup, opponentName }) => (
-          <div
-            key={teamName}
-            className="bg-white rounded-lg shadow overflow-hidden"
-          >
+          <Card key={teamName} padding="none">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
                 {teamName} All-Stars
@@ -1050,7 +1048,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                 </TableBody>
               </Table>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
 
@@ -1068,10 +1066,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
             opponentName: managerAData?.teamName,
           },
         ].map(({ teamName, performances, opponentName }) => (
-          <div
-            key={teamName}
-            className="bg-white rounded-lg shadow overflow-hidden"
-          >
+          <Card key={teamName} padding="none">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
                 {teamName} Best Performances
@@ -1153,7 +1148,7 @@ export default function H2HContent({ managerA, managerB }: H2HContentProps) {
                 </TableBody>
               </Table>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

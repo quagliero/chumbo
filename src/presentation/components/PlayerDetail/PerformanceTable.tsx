@@ -9,6 +9,7 @@ import {
   TableCell,
 } from "../Table";
 import { useNavigate } from "react-router-dom";
+import { Card } from "@/presentation/components/Card";
 
 export interface PlayerPerformance {
   year: number;
@@ -65,7 +66,7 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
     : filteredPerformances.slice(0, 10);
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
+    <Card padding="none">
       <div className="px-6 py-4 border-b border-gray-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-900">Game Performances</h2>
@@ -191,7 +192,7 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
           </p>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { StandardTable } from "../Table";
 import { ManagerLink, SeasonLink } from "@/presentation/components/Links";
+import { Card } from "@/presentation/components/Card";
 
 export interface DraftPick {
   year: number;
@@ -41,7 +42,7 @@ const DraftStatsCard = ({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
+    <Card padding="none">
       <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
         Draft Breakdown
       </h2>
@@ -148,7 +149,7 @@ const DraftStatsCard = ({
           </p>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

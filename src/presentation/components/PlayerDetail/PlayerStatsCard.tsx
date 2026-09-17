@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import type { OwnerStats } from "./OwnershipTable";
 import type { PlayerPerformance } from "./PerformanceTable";
+import { Card } from "@/presentation/components/Card";
 import {
   LINK_CLASS,
   ManagerLink,
@@ -81,58 +82,58 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
+    <Card padding="none">
       <h2 className="text-xl font-bold text-gray-900 px-6 py-4 border-b border-gray-200">
         Player Statistics
       </h2>
 
       {/* Main Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 py-6">
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Seasons Played
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.seasonsPlayed}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Total Games
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalGames}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">Starts</h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalStarts}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">Bench</h3>
           <p className="text-3xl font-bold text-gray-900">
             {playerStats.totalBench}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Total Points
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {number(playerStats.totalPoints, { maximumFractionDigits: 1 })}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Average Points
           </h3>
           <p className="text-3xl font-bold text-gray-900">
             {number(playerStats.averagePoints, { maximumFractionDigits: 2 })}
           </p>
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">
             Highest Score
           </h3>
@@ -160,8 +161,8 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
               )}
             </div>
           )}
-        </div>
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        </Card>
+        <Card>
           <h3 className="text-sm font-medium text-gray-500 mb-2">Start Rate</h3>
           <p className="text-3xl font-bold text-gray-900">
             {(() => {
@@ -174,7 +175,7 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
                 : "0%";
             })()}
           </p>
-        </div>
+        </Card>
       </div>
 
       {/* Achievement Stats */}
@@ -271,7 +272,7 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

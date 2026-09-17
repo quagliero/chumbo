@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { getPlayerImageUrl } from "@/utils/playerImage";
+import { Card } from "@/presentation/components/Card";
 
 export interface PlayerSearchResult {
   player_id: string;
@@ -25,7 +26,7 @@ const PlayerResults = ({ searchResults, searchTerm }: PlayerResultsProps) => {
         to={`/players/${player.player_id}`}
         className="block"
       >
-        <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-4 cursor-pointer group overflow-hidden">
+        <Card padding="sm" interactive>
           <div className="flex items-center gap-3">
             <div className="flex-shrink-0">
               {playerImageUrl ? (
@@ -69,7 +70,7 @@ const PlayerResults = ({ searchResults, searchTerm }: PlayerResultsProps) => {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       </Link>
     );
   };

@@ -10,6 +10,7 @@ import {
 } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { ExtendedMatchup } from "@/types/matchup";
+import { Card } from "@/presentation/components/Card";
 import {
   Table,
   TableHeader,
@@ -353,7 +354,7 @@ const AllTimeScheduleComparison = () => {
   return (
     <div className="container mx-auto space-y-6">
       {/* View Toggle */}
-      <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+      <Card>
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">
             {viewMode === "byTeam"
@@ -402,11 +403,11 @@ const AllTimeScheduleComparison = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Team Selection - Only for By Team View */}
       {viewMode === "byTeam" && (
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Select Team
           </h3>
@@ -422,12 +423,12 @@ const AllTimeScheduleComparison = () => {
               </option>
             ))}
           </select>
-        </div>
+        </Card>
       )}
 
       {/* Schedule Comparison Table */}
       {selectedTeamStats && viewMode === "byTeam" && (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <Card padding="none">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-900">
               {selectedTeamStats.teamName} - Schedule Comparison
@@ -613,12 +614,12 @@ const AllTimeScheduleComparison = () => {
               })}
             </TableBody>
           </Table>
-        </div>
+        </Card>
       )}
 
       {/* Matrix Table View */}
       {viewMode === "grid" && allTimeStats.length > 0 && (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <Card padding="none">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-bold text-gray-900">
               All-Time Schedule Comparison Matrix
@@ -740,12 +741,12 @@ const AllTimeScheduleComparison = () => {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </Card>
       )}
 
       {/* Instructions */}
       {viewMode === "byTeam" && !selectedTeam && (
-        <div className="bg-white rounded-lg shadow overflow-hidden p-6">
+        <Card>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             How it works
           </h3>
@@ -767,7 +768,7 @@ const AllTimeScheduleComparison = () => {
               currently in the league (2025 participants).
             </p>
           </div>
-        </div>
+        </Card>
       )}
     </div>
   );
