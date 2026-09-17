@@ -10039,7 +10039,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 191,
-    "digest": "5e4b-101c34838082fd-16cc1394fc0a62",
+    "digest": "5e4c-edbc200016c37-19409b276f5c64",
     "head": [
       {
         "bestPick": {
@@ -23283,7 +23283,7 @@ exports[`getManagerStats > dataMode: playoffs > kitch 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 191,
-    "digest": "5e4b-101c34838082fd-16cc1394fc0a62",
+    "digest": "5e4c-edbc200016c37-19409b276f5c64",
     "head": [
       {
         "bestPick": {
@@ -38031,7 +38031,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 191,
-    "digest": "5e4b-101c34838082fd-16cc1394fc0a62",
+    "digest": "5e4c-edbc200016c37-19409b276f5c64",
     "head": [
       {
         "bestPick": {

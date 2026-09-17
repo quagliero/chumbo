@@ -26,6 +26,7 @@ yarn test           # vitest (watch)
 yarn test:run       # vitest (single run)
 yarn build-players  # rebuild players.json + per-season overlays
 yarn trim-picks     # strip duplicated player metadata from picks.json
+yarn fix-player-ids # apply the committed player-id corrections (idempotent)
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -154,6 +155,13 @@ The fetch script reads `league_id` and `draft_id` from an existing
   that the slim dictionary drops — needed by A1d to join historical roster data.
 - **After any `fetch-data` / `fetch-season` run, re-run `yarn trim-picks`** —
   Sleeper returns the fat pick objects every time.
+- **Two players can share a name.** Sleeper gives them separate ids and the
+  NFL.com-era scrapes did not always pick the right one, which splits one
+  career across two ids — his player page, his draft picks and every stat that
+  joins on an id then see two people. `scripts/fix-player-ids.js` holds the
+  corrections and the evidence for each; add to that table rather than editing
+  season data by hand. It is idempotent, and it edits the raw text after
+  checking the parse agrees, so it never reflows a file.
 - **2019 is a rebuild**, not a fetch: `scripts/rebuild-2019.js` regenerates it
   from the NFL.com archive in `../chumbo-api/data/2019-old`, grafting per-player
   points from the Sleeper import. It rewrites `picks.json` in full, so re-run

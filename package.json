@@ -18,7 +18,8 @@
     "fetch-week": "node scripts/fetch-sleeper-data.js",
     "fetch-brackets": "node scripts/fetch-sleeper-data.js --brackets",
     "fetch-season": "node scripts/fetch-sleeper-data.js --end-of-season",
-    "fetch-matchup": "node scripts/fetch-matchup.js"
+    "fetch-matchup": "node scripts/fetch-matchup.js",
+    "fix-player-ids": "node scripts/fix-player-ids.js"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.20.6",
