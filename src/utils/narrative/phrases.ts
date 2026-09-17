@@ -43,6 +43,26 @@ export const PHRASES: Record<string, string> = {
   "championship-inevitability": "most inevitable championship",
 };
 
+/**
+ * A scope the phrase itself cannot carry, appended in brackets.
+ *
+ * `rivalry-intensity` is the reason this exists. It averages the margin over
+ * EVERY meeting, playoffs included (`oneSidePerGame(games)` — no
+ * `isRegularSeason` filter), while the H2H page's record and the H2H card's
+ * number are regular season only. "The closest rivalry in Chumbo history",
+ * printed under "sol 14–6 fin", reads as a statement about that 14–6. It is
+ * not, so it says so — the same qualifier E2's rail already uses on the same
+ * stat, in the same words, because somebody will have both open.
+ *
+ * Bracketed and after "in Chumbo history" rather than folded into the phrase:
+ * "The closest rivalry, playoffs included, in Chumbo history" puts the tail in
+ * the wrong place, and an ordinal in front of it ("The 3rd-closest rivalry,
+ * playoffs included, …") is worse.
+ */
+export const QUALIFIERS: Record<string, string> = {
+  "rivalry-intensity": "playoffs included",
+};
+
 /** "1st", "2nd", "23rd". */
 export const ordinal = (n: number): string => {
   const rest = n % 100;

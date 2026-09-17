@@ -1,11 +1,63 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  getPrecomputedStats,
-  loadPrecomputedStats,
-  type PrecomputedStats,
-} from "@/utils/stats/precomputed";
-import { narrate, type NarrativeSubject } from "@/utils/narrative/narrate";
+import { narrate, type NarrativeSubject, type Note } from "@/utils/narrative/narrate";
+import { getManagerAccent } from "@/domain/managerColors";
+import { ShareButton } from "@/presentation/components/ShareButton";
+import { useNarrativeStats } from "./useNarrativeStats";
+
+/**
+ * The band across the top of a shared record card.
+ *
+ * NOT the template's default, which is "🚨 NEW LEAGUE RECORD". A rank-1 note
+ * says the entry tops the all-time list — it does not say it happened this
+ * week, and most of these records are years old. "NEW" on a 2013 record is the
+ * template's own warning about not making a weak fact shout, pointed the other
+ * way: it would make a true fact shout something false.
+ */
+const RECORD_KICKER = "\u{1F3C6} CHUMBO RECORD";
+
+/**
+ * The share control next to a league record.
+ *
+ * Only ever rendered for `rank === 1` with a number the stat can stand behind
+ * (`Note.recordValue`), which is the whole editorial rule: `recordBrokenCard`
+ * is the loudest of the five templates, and a siren next to "the 4th-narrowest
+ * win" is how a card ends up claiming more than the site does.
+ *
+ * The card is a factory, so the rasteriser and the crest are only fetched when
+ * somebody clicks — a matchup page that happens to hold a record must not pay
+ * 25 kB for the privilege.
+ */
+const RecordShare = ({ note }: { note: Note }) => (
+  <ShareButton
+    iconOnly
+    className="ml-auto flex-none self-center"
+    card={async () => {
+      const [{ recordBrokenCard, seasonMeta }, { embedImage }] =
+        await Promise.all([
+          import("@/presentation/components/ShareCard/templates"),
+          import("@/presentation/components/ShareCard"),
+        ]);
+      return recordBrokenCard({
+        value: note.recordValue as string,
+        holder: note.holder,
+        when:
+          note.year === undefined
+            ? undefined
+            : seasonMeta(note.year, note.week),
+        kicker: RECORD_KICKER,
+        // One accent, and only when the record belongs to exactly one
+        // manager. A pairing or a player gets the template's neutral ink
+        // rather than somebody else's colour.
+        accent: note.managerId ? getManagerAccent(note.managerId) : undefined,
+        crest: await embedImage("/images/logo.png"),
+        // The sentence and its caveat, both from E7. The template renders the
+        // 2019 flag as its own line with a warning sign, which is why this
+        // card in particular must never be handed a stripped note.
+        note: { text: note.text, approximate: note.approximate },
+      });
+    }}
+  />
+);
 
 /**
  * The sentences a page has earned (E7).
@@ -15,46 +67,14 @@ import { narrate, type NarrativeSubject } from "@/utils/narrative/narrate";
  * it, and the point of this is that when it speaks, it is worth pasting into
  * the group chat.
  *
- * Reads the precomputed file synchronously and does NOT suspend. A note is a
- * garnish — a matchup page must not wait on it, and a page that has not loaded
- * the file simply has no notes yet.
- */
-/**
- * The precomputed file, fetched WITHOUT suspending.
+ * Reads the precomputed file without suspending. A note is a garnish — a
+ * matchup page must not wait on it, and a page that has not loaded the file
+ * simply has no notes yet.
  *
- * `usePrecomputedStats` throws the promise so a page waits for it, which is
- * right for a page built out of those stats and wrong for a note: a matchup
- * must not hold its own render on a garnish. So this kicks the same (deduped,
- * cached) fetch off and re-renders when it lands.
- *
- * Reading the cache alone was the first version, and it meant the notes never
- * appeared anywhere that had not already loaded the file for another reason —
- * absent rather than late, and silent either way. That is the same shape of bug
- * the crowns hit on the Hall of Fame page.
+ * A note that is rank 1 of its list is a league record, and gets a share
+ * button: that is where `recordBrokenCard` lives, because the rail is already
+ * the site's own judgement about what is worth saying out loud.
  */
-const useNarrativeStats = (): PrecomputedStats | null => {
-  const [stats, setStats] = useState(getPrecomputedStats);
-
-  useEffect(() => {
-    if (stats) return;
-    let live = true;
-    loadPrecomputedStats()
-      .then((loaded) => {
-        if (live) setStats(loaded);
-      })
-      .catch((error) => {
-        // A missing file means no notes, not a broken page — but say so, or a
-        // bad deploy looks like a league with nothing notable in it.
-        console.warn("Narrative notes unavailable:", error);
-      });
-    return () => {
-      live = false;
-    };
-  }, [stats]);
-
-  return stats;
-};
-
 export const NarrativeNotes = ({
   subject,
   limit = 3,
@@ -71,7 +91,10 @@ export const NarrativeNotes = ({
   return (
     <ul className={`space-y-1.5 ${className ?? ""}`}>
       {notes.map((note) => (
-        <li key={note.statId} className="flex items-baseline gap-2 text-sm text-ink">
+        <li
+          key={note.statId}
+          className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-ink"
+        >
           <span aria-hidden="true" className="text-ink-faint">★</span>
           <span>
             {note.href ? (
@@ -102,6 +125,8 @@ export const NarrativeNotes = ({
               </span>
             )}
           </span>
+          {/* The record itself, and only the record. */}
+          {note.rank === 1 && note.recordValue && <RecordShare note={note} />}
         </li>
       ))}
     </ul>
