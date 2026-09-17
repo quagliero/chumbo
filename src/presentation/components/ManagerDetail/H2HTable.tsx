@@ -180,6 +180,9 @@ const H2HTable = ({ h2hRecords, managerId }: H2HTableProps) => {
         columns={columns}
         data={h2hRecords}
         initialSorting={[{ id: "record", desc: true }]}
+        // E8. `/managers/:id/h2h` names this table exactly — no local filter
+        // above it to go missing — so the link restores the whole view.
+        urlState
         onRowClick={(row) => navigate(`/h2h/${managerId}/${row.opponentId}`)}
         emptyMessage="No head-to-head games yet."
       />

@@ -270,6 +270,8 @@ const AllTimeBreakdown = () => {
           columns={columns}
           data={filteredData}
           initialSorting={[{ id: "winPercentage", desc: true }]}
+          // E8: `/breakdown` is one table, so the bare `?sort=` is free.
+          urlState
           emptyMessage="No seasons selected."
         />
       </div>

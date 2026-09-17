@@ -36,17 +36,21 @@ import {
   CSSProperties,
   ReactNode,
   useCallback,
+  useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import {
   ColumnDef,
+  OnChangeFn,
   Row,
   RowData,
   SortingState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -55,6 +59,8 @@ import {
   PlayerLink,
   SeasonLink,
 } from "@/presentation/components/Links";
+import { columnIdsOf } from "./tableUrlState";
+import { useTableUrlState } from "./useTableUrlState";
 
 /**
  * What a column *is*, which decides how it is aligned and — for the three link
@@ -215,12 +221,53 @@ interface DataTableProps<TData> {
    */
   zebra?: boolean;
   className?: string;
+  /**
+   * E8 — put this table's view state in the query string, so a sorted table
+   * can be pasted into the group chat and arrive sorted.
+   *
+   * OPT-IN, and off by default: a table that does not ask for it keeps exactly
+   * today's behaviour, local `useState` and no URL writes at all. `true` uses
+   * the bare parameters (`?sort=wins.desc`); pass a string to namespace them
+   * (`?owners.sort=…`) on a page that shows more than one opted-in table.
+   *
+   * Must be CONSTANT for the life of the table: it selects between two
+   * implementations, so flipping it would remount and drop the state.
+   *
+   * @see ./tableUrlState.ts for the wire format and the junk-input rules.
+   */
+  urlState?: boolean | string;
+  /**
+   * Adds a free-text box above the table that filters the rows. With
+   * `urlState` on, what is typed is part of the shareable link.
+   *
+   * Matches against every column's value, so a caller who does not want a
+   * numeric column answering to "12" sets `enableGlobalFilter: false` on it.
+   */
+  filterable?: boolean;
+  filterPlaceholder?: string;
+  /** The filter box's accessible name. Visually hidden. */
+  filterLabel?: string;
 }
 
-const DataTable = <TData,>({
+/**
+ * The table itself, with its view state handed to it.
+ *
+ * Split out so that the URL-backed and the local-state versions differ only in
+ * where `sorting` comes from — hooks cannot be called conditionally, and the
+ * alternative (calling `useSearchParams` in every table on the site, opted in
+ * or not) would subscribe thirty tables to every navigation for the benefit of
+ * the six that asked.
+ */
+interface ViewProps<TData> extends DataTableProps<TData> {
+  sorting: SortingState;
+  onSortingChange: OnChangeFn<SortingState>;
+  filter: string;
+  onFilterChange: (value: string) => void;
+}
+
+const DataTableView = <TData,>({
   columns,
   data,
-  initialSorting,
   density = "comfortable",
   stickyColumns = 1,
   maxHeight,
@@ -230,16 +277,29 @@ const DataTable = <TData,>({
   onRowClick,
   zebra = true,
   className = "",
-}: DataTableProps<TData>) => {
-  const [sorting, setSorting] = useState<SortingState>(initialSorting ?? []);
+  filterable = false,
+  filterPlaceholder = "Filter…",
+  filterLabel = "Filter this table",
+  sorting,
+  onSortingChange,
+  filter,
+  onFilterChange,
+}: ViewProps<TData>) => {
+  const filterId = useId();
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting },
-    onSortingChange: setSorting,
+    state: filterable ? { sorting, globalFilter: filter } : { sorting },
+    onSortingChange,
+    onGlobalFilterChange: (updater) =>
+      onFilterChange(
+        typeof updater === "function" ? String(updater(filter) ?? "") : String(updater ?? "")
+      ),
+    globalFilterFn: "includesString",
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    ...(filterable ? { getFilteredRowModel: getFilteredRowModel() } : {}),
   });
 
   const pad = DENSITY[density];
@@ -304,7 +364,7 @@ const DataTable = <TData,>({
 
   const rowBackground = zebra ? "bg-surface even:bg-surface-sunk" : "bg-surface";
 
-  return (
+  const scroller = (
     <div
       className={`overflow-x-auto ${maxHeight ?? ""} ${className}`}
       // A pinned column is only discoverable if the region is focusable, and a
@@ -388,7 +448,9 @@ const DataTable = <TData,>({
                 colSpan={columnCount}
                 className={`${pad.cell} text-center text-ink-muted`}
               >
-                {emptyMessage}
+                {filter && data.length > 0
+                  ? `Nothing here matches “${filter}”.`
+                  : emptyMessage}
               </td>
             </tr>
           ) : (
@@ -456,6 +518,29 @@ const DataTable = <TData,>({
           )}
         </tbody>
       </table>
+    </div>
+  );
+
+  if (!filterable) return scroller;
+
+  return (
+    <div className="space-y-2">
+      <div className="px-3 pt-3">
+        <label className="sr-only" htmlFor={filterId}>
+          {filterLabel}
+        </label>
+        <input
+          id={filterId}
+          type="search"
+          value={filter}
+          onChange={(event) => onFilterChange(event.target.value)}
+          placeholder={filterPlaceholder}
+          // Full width at 375 px, and capped so it does not become a banner on
+          // a desktop table.
+          className="w-full max-w-sm rounded border border-line bg-surface px-3 py-1.5 text-sm text-ink placeholder:text-ink-faint focus:border-line-strong focus:outline-none"
+        />
+      </div>
+      {scroller}
     </div>
   );
 };
@@ -531,5 +616,56 @@ const SortIndicator = ({
     {direction === "asc" ? "↑" : direction === "desc" ? "↓" : "↕"}
   </span>
 );
+
+/**
+ * The behaviour every table had before E8: the view state is the component's
+ * own, and the URL never hears about it.
+ */
+const LocalStateDataTable = <TData,>(props: DataTableProps<TData>) => {
+  const [sorting, setSorting] = useState<SortingState>(
+    props.initialSorting ?? []
+  );
+  const [filter, setFilter] = useState("");
+
+  return (
+    <DataTableView
+      {...props}
+      sorting={sorting}
+      onSortingChange={setSorting}
+      filter={filter}
+      onFilterChange={setFilter}
+    />
+  );
+};
+
+/** The same table, reading and writing its view state through the URL (E8). */
+const UrlStateDataTable = <TData,>(props: DataTableProps<TData>) => {
+  const { columns, initialSorting, urlState } = props;
+  const key = typeof urlState === "string" ? urlState : undefined;
+
+  const columnIds = useMemo(() => columnIdsOf(columns), [columns]);
+  const { sorting, onSortingChange, filter, setFilter } = useTableUrlState({
+    key,
+    columnIds,
+    defaultSorting: initialSorting ?? [],
+  });
+
+  return (
+    <DataTableView
+      {...props}
+      sorting={sorting}
+      onSortingChange={onSortingChange}
+      filter={filter}
+      onFilterChange={setFilter}
+    />
+  );
+};
+
+const DataTable = <TData,>(props: DataTableProps<TData>) =>
+  props.urlState ? (
+    <UrlStateDataTable {...props} />
+  ) : (
+    <LocalStateDataTable {...props} />
+  );
 
 export default DataTable;

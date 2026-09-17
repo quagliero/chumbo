@@ -141,6 +141,8 @@ const SeasonBreakdown = ({ seasonStats }: SeasonBreakdownProps) => {
         columns={columns}
         data={seasonStats}
         className="border-t border-line"
+        // E8. As H2HTable: `/managers/:id/seasons` is the whole state.
+        urlState
         onRowClick={(season) => navigate(`/seasons/${season.year}/standings`)}
         emptyMessage="No seasons to show."
       />
