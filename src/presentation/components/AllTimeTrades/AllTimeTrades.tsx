@@ -21,9 +21,7 @@ import {
   SortIcon,
 } from "../Table";
 import { getPlayerName } from "@/utils/playerDataUtils";
-import { Link } from "react-router-dom";
 import {
-  LINK_CLASS,
   ManagerLink,
   PlayerLink,
   SeasonLink,
@@ -416,18 +414,6 @@ const AllTimeTrades = () => {
       columnHelper.accessor("years", {
         header: "Years",
         cell: (info) => renderYearList(info.getValue()),
-      }),
-      columnHelper.display({
-        id: "h2h",
-        header: "H2H",
-        cell: (info) => (
-          <Link
-            to={`/h2h/${info.row.original.manager1Id}/${info.row.original.manager2Id}`}
-            className={LINK_CLASS}
-          >
-            Head to head
-          </Link>
-        ),
       }),
     ];
   }, []);
