@@ -1,13 +1,7 @@
 import { useState, useMemo } from "react";
 import { useFormatter } from "use-intl";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "../Table";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DataTable } from "../Table";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/presentation/components/Card";
 
@@ -26,6 +20,8 @@ export interface PlayerPerformance {
   /** The player's NFL team as at this row's season, not his current one. */
   nflTeam?: string | null;
 }
+
+const columnHelper = createColumnHelper<PlayerPerformance>();
 
 interface PerformanceTableProps {
   performances: PlayerPerformance[];
@@ -64,6 +60,78 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
   const displayedPerformances = showAllPerformances
     ? filteredPerformances
     : filteredPerformances.slice(0, 10);
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("year", {
+        header: "Year",
+        cell: (info) => info.getValue(),
+        enableSorting: false,
+        // A year is a number and should have its digits line up, but it reads
+        // as a label at the left edge of the row, not as a quantity.
+        meta: { kind: "numeric" as const, align: "left" as const },
+      }),
+      columnHelper.accessor("week", {
+        header: "Week",
+        cell: (info) => info.getValue(),
+        enableSorting: false,
+        meta: { kind: "numeric" as const, align: "left" as const },
+      }),
+      columnHelper.accessor("nflTeam", {
+        header: "NFL",
+        // As at this row's season, not the player's current team (A1b).
+        cell: (info) => info.getValue() ?? "—",
+        enableSorting: false,
+        meta: { cellClassName: "text-ink-muted" },
+      }),
+      columnHelper.accessor("teamName", {
+        header: "Team",
+        cell: (info) => info.getValue(),
+        enableSorting: false,
+        meta: {
+          kind: "manager" as const,
+          ownerId: (row: PlayerPerformance) => row.ownerId,
+          cellClassName: "font-medium",
+        },
+      }),
+      columnHelper.accessor("opponent", {
+        header: "Opponent",
+        cell: (info) => info.getValue(),
+        enableSorting: false,
+      }),
+      columnHelper.accessor("points", {
+        header: "Points",
+        cell: (info) =>
+          info.row.original.isByeWeek
+            ? "—"
+            : number(info.getValue(), { maximumFractionDigits: 2 }),
+        enableSorting: false,
+        meta: { kind: "points" as const, cellClassName: "font-semibold" },
+      }),
+      columnHelper.display({
+        id: "started",
+        header: "Started",
+        cell: ({ row }) => {
+          const { isByeWeek, wasStarted } = row.original;
+          return (
+            <span
+              className={`px-2 py-1 rounded text-xs ${
+                isByeWeek
+                  ? "bg-blue-100 text-blue-800"
+                  : wasStarted
+                  ? "bg-green-100 text-green-800"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              {isByeWeek ? "Bye" : wasStarted ? "Yes" : "No"}
+            </span>
+          );
+        },
+        meta: { align: "center" as const },
+      }),
+    ],
+    [number]
+  );
 
   return (
     <Card padding="none">
@@ -113,72 +181,28 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
         )}
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHeaderCell className="text-left">Year</TableHeaderCell>
-            <TableHeaderCell className="text-left">Week</TableHeaderCell>
-            <TableHeaderCell className="text-left">NFL</TableHeaderCell>
-            <TableHeaderCell className="text-left">Team</TableHeaderCell>
-            <TableHeaderCell className="text-left">Opponent</TableHeaderCell>
-            <TableHeaderCell className="text-right">Points</TableHeaderCell>
-            <TableHeaderCell className="text-center">Started</TableHeaderCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {displayedPerformances.map((performance) => (
-            <TableRow
-              key={`${performance.year}-${performance.week}-${performance.ownerId}`}
-              className={`${
-                performance.isChampionshipGame
-                  ? "bg-green-50"
-                  : performance.isPlayoffGame
-                  ? "bg-yellow-50"
-                  : ""
-              } cursor-pointer`}
-              onClick={() => {
-                navigate(
-                  `/seasons/${performance.year}/matchups/${performance.week}/${performance.matchupId}`
-                );
-              }}
-            >
-              <TableCell>{performance.year}</TableCell>
-              <TableCell>{performance.week}</TableCell>
-              <TableCell className="text-gray-500">
-                {performance.nflTeam ?? "—"}
-              </TableCell>
-              <TableCell className="font-medium">
-                {performance.teamName}
-              </TableCell>
-              <TableCell>{performance.opponent}</TableCell>
-              <TableCell className="text-right font-semibold">
-                {performance.isByeWeek
-                  ? "—"
-                  : number(performance.points, {
-                      maximumFractionDigits: 2,
-                    })}
-              </TableCell>
-              <TableCell className="text-center">
-                <span
-                  className={`px-2 py-1 rounded text-xs ${
-                    performance.isByeWeek
-                      ? "bg-blue-100 text-blue-800"
-                      : performance.wasStarted
-                      ? "bg-green-100 text-green-800"
-                      : "bg-gray-100 text-gray-800"
-                  }`}
-                >
-                  {performance.isByeWeek
-                    ? "Bye"
-                    : performance.wasStarted
-                    ? "Yes"
-                    : "No"}
-                </span>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <DataTable
+        columns={columns}
+        data={displayedPerformances}
+        // The rows are already the top N by points and are then sliced to ten,
+        // so a column sort here would reorder that slice rather than the
+        // season — which reads as a lie. Sorting stays off.
+        // Playoff and championship rows carry their own colour.
+        zebra={false}
+        getRowBackground={(row) =>
+          row.original.isChampionshipGame
+            ? "bg-green-50"
+            : row.original.isPlayoffGame
+            ? "bg-yellow-50"
+            : undefined
+        }
+        onRowClick={(performance) =>
+          navigate(
+            `/seasons/${performance.year}/matchups/${performance.week}/${performance.matchupId}`
+          )
+        }
+        emptyMessage="No games for this filter."
+      />
 
       {!showAllPerformances && filteredPerformances.length > 10 && (
         <div className="text-center pt-4 pb-6 border-t border-gray-200">

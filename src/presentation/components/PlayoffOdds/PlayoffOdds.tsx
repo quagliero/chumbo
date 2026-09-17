@@ -4,14 +4,8 @@ import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { ExtendedLeague } from "@/types/league";
 import { calculatePlayoffOdds } from "@/utils/playoffOdds";
 import ScenarioPlanner from "./ScenarioPlanner";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHeaderCell,
-  TableCell,
-} from "../Table";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DataTable } from "../Table";
 import { mergeScheduledMatchups } from "@/utils/scheduleUtils";
 import { ManagerLink } from "@/presentation/components/Links";
 
@@ -35,8 +29,54 @@ interface PlayoffOddsProps {
   getTeamName: (ownerId: string) => string;
 }
 
-type SortField = "team" | "record" | "playoffs" | number; // number represents position 1-12
-type SortDirection = "asc" | "desc";
+/** A row of the simulation. `calculatePlayoffOdds` does not export its type. */
+type PlayoffOddsRow = ReturnType<typeof calculatePlayoffOdds>[number];
+
+const POSITIONS = Array.from({ length: 12 }, (_, i) => i + 1);
+
+/** Positions 1-6 make the playoffs, so those columns are marked out. */
+const IS_PLAYOFF_POSITION = (position: number) => position <= 6;
+
+const columnHelper = createColumnHelper<PlayoffOddsRow>();
+
+const compareRecords = (
+  teamA: { wins: number; losses: number; ties: number },
+  teamB: { wins: number; losses: number; ties: number }
+) => {
+  if (teamA.wins !== teamB.wins) {
+    return teamA.wins - teamB.wins;
+  }
+  if (teamA.losses !== teamB.losses) {
+    return teamB.losses - teamA.losses;
+  }
+  if (teamA.ties !== teamB.ties) {
+    return teamA.ties - teamB.ties;
+  }
+  return 0;
+};
+
+const getPlayoffColor = (percentage: number) => {
+  if (percentage >= 80) return "text-green-600 font-semibold";
+  if (percentage >= 60) return "text-green-500";
+  if (percentage >= 40) return "text-yellow-600";
+  if (percentage >= 20) return "text-orange-500";
+  return "text-red-500";
+};
+
+/** Solid bands by playoff odds. Opaque, because the pinned column inherits it. */
+const getRowColor = (playoffOdds: number) => {
+  if (playoffOdds >= 50) return "bg-green-100";
+  if (playoffOdds >= 20) return "bg-yellow-100";
+  return "bg-white";
+};
+
+const getRowBorder = (index: number) => {
+  // Thick border above 7th team (playoff cutoff)
+  if (index === 6) return "!border-t-4 !border-gray-600";
+  // Thin border above 3rd team (bye week cutoff)
+  if (index === 2) return "!border-t-2 !border-gray-400";
+  return "";
+};
 
 const PlayoffOdds = ({
   rosters,
@@ -45,8 +85,6 @@ const PlayoffOdds = ({
   league,
   getTeamName,
 }: PlayoffOddsProps) => {
-  const [sortField, setSortField] = useState<SortField>("playoffs");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [userScenario, setUserScenario] = useState<UserScenario | undefined>(
     undefined
   );
@@ -72,89 +110,6 @@ const PlayoffOdds = ({
     return calculatePlayoffOdds(seasonData, userScenario);
   }, [matchupsWithSchedule, league, rosters, userScenario]);
 
-  const compareRecords = (
-    teamA: { wins: number; losses: number; ties: number },
-    teamB: { wins: number; losses: number; ties: number }
-  ) => {
-    if (teamA.wins !== teamB.wins) {
-      return teamA.wins - teamB.wins;
-    }
-    if (teamA.losses !== teamB.losses) {
-      return teamB.losses - teamA.losses;
-    }
-    if (teamA.ties !== teamB.ties) {
-      return teamA.ties - teamB.ties;
-    }
-    return 0;
-  };
-
-  // Handle sorting
-  const handleSort = (field: SortField) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection(field === "team" ? "asc" : "desc");
-    }
-  };
-
-  // Sort the data
-  const sortedData = useMemo(() => {
-    return [...playoffOddsData].sort((a, b) => {
-      let comparison = 0;
-
-      if (sortField === "team") {
-        const teamA = rosters.find((r) => r.roster_id === a.rosterId);
-        const teamB = rosters.find((r) => r.roster_id === b.rosterId);
-        if (teamA && teamB) {
-          comparison = getTeamName(teamA.owner_id).localeCompare(
-            getTeamName(teamB.owner_id)
-          );
-        }
-      } else if (sortField === "record") {
-        comparison = compareRecords(a, b);
-
-        if (comparison === 0) {
-          comparison = a.pointsFor - b.pointsFor;
-        }
-      } else if (sortField === "playoffs") {
-        // Primary sort: Playoff odds (descending - higher is better)
-        // Using ascending comparison, will be negated for descending order
-        // Use small epsilon to handle floating point precision issues
-        const playoffOddsDiff = a.playoffOdds - b.playoffOdds;
-        const epsilon = 0.0001; // Consider values within 0.0001% as equal
-        comparison = Math.abs(playoffOddsDiff) < epsilon ? 0 : playoffOddsDiff;
-
-        // Secondary sort: Wins (descending - more wins is better)
-        // Only applies when playoff odds are effectively equal
-        if (comparison === 0) {
-          comparison = a.wins - b.wins;
-
-          // Tertiary sort: Points for (descending - more points is better)
-          // Only applies when playoff odds AND wins are exactly equal
-          if (comparison === 0) {
-            comparison = a.pointsFor - b.pointsFor;
-
-            // Final fallback: alphabetical team name (for complete determinism)
-            if (comparison === 0) {
-              const teamA = rosters.find((r) => r.roster_id === a.rosterId);
-              const teamB = rosters.find((r) => r.roster_id === b.rosterId);
-              if (teamA && teamB) {
-                comparison = getTeamName(teamA.owner_id).localeCompare(
-                  getTeamName(teamB.owner_id)
-                );
-              }
-            }
-          }
-        }
-      } else if (typeof sortField === "number") {
-        comparison = a.positionOdds[sortField] - b.positionOdds[sortField];
-      }
-
-      return sortDirection === "asc" ? comparison : -comparison;
-    });
-  }, [playoffOddsData, sortField, sortDirection, rosters, getTeamName]);
-
   // Show loading or no data states
   if (!matchups || !league) {
     return (
@@ -172,37 +127,134 @@ const PlayoffOdds = ({
     );
   }
 
-  const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return "↕";
-    return sortDirection === "asc" ? "↑" : "↓";
+  /**
+   * The team name lives on the roster, not on the simulation row, so name
+   * comparisons have to go back through `rosters` — including as the final
+   * tie-break, which is what keeps the order stable between renders when the
+   * Monte Carlo produces identical odds.
+   */
+  const compareTeamNames = (a: PlayoffOddsRow, b: PlayoffOddsRow) => {
+    const teamA = rosters.find((r) => r.roster_id === a.rosterId);
+    const teamB = rosters.find((r) => r.roster_id === b.rosterId);
+    if (!teamA || !teamB) return 0;
+    return getTeamName(teamA.owner_id).localeCompare(
+      getTeamName(teamB.owner_id)
+    );
   };
 
-  const getPlayoffColor = (percentage: number) => {
-    if (percentage >= 80) return "text-green-600 font-semibold";
-    if (percentage >= 60) return "text-green-500";
-    if (percentage >= 40) return "text-yellow-600";
-    if (percentage >= 20) return "text-orange-500";
-    return "text-red-500";
-  };
+  const columns = [
+    // Every sortable column is an `accessor`, not a `display`: tanstack gates
+    // `getCanSort()` on a column having an accessor function, so a `display`
+    // column silently ignores even an explicit `sortingFn`. The accessors here
+    // exist to unlock sorting; the comparison itself is the `sortingFn`.
+    columnHelper.accessor(
+      (row) => {
+        const team = rosters.find((r) => r.roster_id === row.rosterId);
+        return team ? getTeamName(team.owner_id) : "";
+      },
+      {
+        id: "team",
+        header: "Team",
+        // Not `kind: "manager"`: the link is the name only. Wrapping the whole
+        // cell would turn the points line under it blue too.
+        cell: ({ row }) => {
+          const team = rosters.find(
+            (r) => r.roster_id === row.original.rosterId
+          );
+          if (!team) return null;
 
-  const getRowColor = (playoffOdds: number) => {
-    // Solid colors based on playoff odds, white for everyone else
-    if (playoffOdds >= 50) {
-      return "bg-green-100";
-    } else if (playoffOdds >= 20) {
-      return "bg-yellow-100";
-    } else {
-      return "bg-white";
-    }
-  };
-
-  const getRowBorder = (index: number) => {
-    // Thick border above 7th team (playoff cutoff)
-    if (index === 6) return "!border-t-4 !border-gray-600";
-    // Thin border above 3rd team (bye week cutoff)
-    if (index === 2) return "!border-t-2 !border-gray-400";
-    return "";
-  };
+          return (
+            <>
+              <div className="font-medium">
+                <ManagerLink
+                  ownerId={team.owner_id}
+                  fallbackClassName="text-ink"
+                >
+                  {getTeamName(team.owner_id)}
+                </ManagerLink>
+              </div>
+              <div className="text-xs text-ink-muted">
+                PF: {row.original.pointsFor.toFixed(1)} | PA:{" "}
+                {row.original.pointsAgainst.toFixed(1)}
+              </div>
+            </>
+          );
+        },
+        enableSorting: true,
+        sortDescFirst: false,
+        sortingFn: (rowA, rowB) =>
+          compareTeamNames(rowA.original, rowB.original),
+      }
+    ),
+    columnHelper.accessor((row) => row.wins, {
+      id: "record",
+      header: "Record",
+      cell: ({ row }) =>
+        `${row.original.wins}-${row.original.losses}${
+          row.original.ties > 0 ? `-${row.original.ties}` : ""
+        }`,
+      enableSorting: true,
+      sortDescFirst: true,
+      sortingFn: (rowA, rowB) => {
+        const comparison = compareRecords(rowA.original, rowB.original);
+        return comparison !== 0
+          ? comparison
+          : rowA.original.pointsFor - rowB.original.pointsFor;
+      },
+      meta: {
+        kind: "record" as const,
+        headerClassName: "min-w-20 border-r border-line",
+        cellClassName: "border-r border-line",
+      },
+    }),
+    ...POSITIONS.map((position) =>
+      columnHelper.accessor((row) => row.positionOdds[position], {
+        id: `position-${position}`,
+        header: String(position),
+        cell: ({ row }) => `${row.original.positionOdds[position].toFixed(1)}%`,
+        enableSorting: true,
+        sortDescFirst: true,
+        sortingFn: (rowA, rowB) =>
+          rowA.original.positionOdds[position] -
+          rowB.original.positionOdds[position],
+        meta: {
+          kind: "numeric" as const,
+          align: "center" as const,
+          headerClassName: IS_PLAYOFF_POSITION(position)
+            ? "min-w-16 !bg-blue-50 font-semibold"
+            : "min-w-16",
+        },
+      })
+    ),
+    columnHelper.accessor((row) => row.playoffOdds, {
+      id: "playoffs",
+      header: "Playoffs",
+      cell: ({ row }) => `${row.original.playoffOdds.toFixed(2)}%`,
+      enableSorting: true,
+      sortDescFirst: true,
+      sortingFn: (rowA, rowB) => {
+        const a = rowA.original;
+        const b = rowB.original;
+        // Two runs of the same simulation differ in the last decimal place, so
+        // odds within a ten-thousandth of a point count as a draw and fall
+        // through to wins, then points, then the name.
+        const playoffOddsDiff = a.playoffOdds - b.playoffOdds;
+        if (Math.abs(playoffOddsDiff) >= 0.0001) return playoffOddsDiff;
+        if (a.wins !== b.wins) return a.wins - b.wins;
+        if (a.pointsFor !== b.pointsFor) return a.pointsFor - b.pointsFor;
+        return compareTeamNames(a, b);
+      },
+      meta: {
+        kind: "numeric" as const,
+        align: "center" as const,
+        headerClassName:
+          "min-w-20 !bg-green-50 font-semibold border-l border-line",
+        cellClassName: "font-semibold border-l border-line",
+        rowCellClassName: (row: PlayoffOddsRow) =>
+          getPlayoffColor(row.playoffOdds),
+      },
+    }),
+  ];
 
   return (
     <div className="container mx-auto">
@@ -229,93 +281,15 @@ const PlayoffOdds = ({
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderCell
-                className="text-left sticky left-0 z-10 bg-gray-50 cursor-pointer hover:bg-gray-100 border-r border-gray-200"
-                onClick={() => handleSort("team")}
-              >
-                Team {getSortIcon("team")}
-              </TableHeaderCell>
-              <TableHeaderCell
-                className="text-center bg-gray-50 min-w-20 cursor-pointer hover:bg-gray-100 border-r border-gray-200"
-                onClick={() => handleSort("record")}
-              >
-                Record {getSortIcon("record")}
-              </TableHeaderCell>
-              {Array.from({ length: 12 }, (_, i) => i + 1).map((position) => (
-                <TableHeaderCell
-                  key={position}
-                  className={`text-center min-w-16 cursor-pointer hover:bg-gray-100 ${
-                    position <= 6 ? "bg-blue-50 font-semibold" : "bg-gray-50"
-                  }`}
-                  onClick={() => handleSort(position)}
-                >
-                  {position} {getSortIcon(position)}
-                </TableHeaderCell>
-              ))}
-              <TableHeaderCell
-                className="border-l border-gray-200 text-center bg-green-50 min-w-20 cursor-pointer hover:bg-green-100 font-semibold whitespace-nowrap"
-                onClick={() => handleSort("playoffs")}
-              >
-                Playoffs {getSortIcon("playoffs")}
-              </TableHeaderCell>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedData.map((teamData, index) => {
-              const team = rosters.find(
-                (r) => r.roster_id === teamData.rosterId
-              );
-              if (!team) return null;
-
-              return (
-                <TableRow
-                  key={teamData.rosterId}
-                  className={`transition-colors ${getRowColor(
-                    teamData.playoffOdds
-                  )} ${getRowBorder(index)}`}
-                >
-                  <TableCell className="text-left sticky left-0 z-10 font-medium transition-colors border-r border-gray-200">
-                    <div className="font-medium">
-                      <ManagerLink
-                        ownerId={team.owner_id}
-                        fallbackClassName="text-gray-900"
-                      >
-                        {getTeamName(team.owner_id)}
-                      </ManagerLink>
-                    </div>
-                    <div className="text-xs text-gray-600">
-                      PF: {teamData.pointsFor.toFixed(1)} | PA:{" "}
-                      {teamData.pointsAgainst.toFixed(1)}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-center text-sm border-r border-gray-200">
-                    {teamData.wins}-{teamData.losses}
-                    {teamData.ties > 0 && `-${teamData.ties}`}
-                  </TableCell>
-                  {Array.from({ length: 12 }, (_, i) => i + 1).map(
-                    (position) => (
-                      <TableCell key={position} className="text-center text-sm">
-                        {teamData.positionOdds[position].toFixed(1)}%
-                      </TableCell>
-                    )
-                  )}
-                  <TableCell
-                    className={`border-l border-gray-200 text-center font-semibold ${getPlayoffColor(
-                      teamData.playoffOdds
-                    )}`}
-                  >
-                    {teamData.playoffOdds.toFixed(2)}%
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
+      <DataTable
+        columns={columns}
+        data={playoffOddsData}
+        initialSorting={[{ id: "playoffs", desc: true }]}
+        // The odds bands already colour every row; zebra on top reads as noise.
+        zebra={false}
+        getRowBackground={(row) => getRowColor(row.original.playoffOdds)}
+        getRowClassName={(_row, index) => getRowBorder(index)}
+      />
 
       {/* Interactive Scenario Planner */}
       <ScenarioPlanner

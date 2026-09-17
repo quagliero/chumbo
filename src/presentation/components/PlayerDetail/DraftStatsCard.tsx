@@ -1,6 +1,7 @@
 import { Fragment } from "react";
-import { StandardTable } from "../Table";
-import { ManagerLink, SeasonLink } from "@/presentation/components/Links";
+import { createColumnHelper } from "@tanstack/react-table";
+import { DataTable } from "../Table";
+import { ManagerLink } from "@/presentation/components/Links";
 import { Card } from "@/presentation/components/Card";
 
 export interface DraftPick {
@@ -26,6 +27,49 @@ export interface MostDraftedBy {
   count: number;
 }
 
+const columnHelper = createColumnHelper<DraftPick>();
+
+const columns = [
+  columnHelper.accessor("year", {
+    header: "Year",
+    cell: (info) => info.getValue(),
+    meta: {
+      kind: "year" as const,
+      seasonTab: "draft",
+      linkTitle: (row: DraftPick) => `${row.year} draft board`,
+      cellClassName: "font-medium",
+    },
+  }),
+  columnHelper.accessor("round", {
+    header: "Round",
+    cell: (info) => info.getValue(),
+    sortingFn: "basic",
+    meta: { kind: "numeric" as const },
+  }),
+  columnHelper.accessor("draftSlot", {
+    header: "Pick",
+    cell: (info) => info.getValue(),
+    sortingFn: "basic",
+    meta: { kind: "numeric" as const },
+  }),
+  columnHelper.accessor("pickNo", {
+    header: "Overall",
+    cell: (info) => `#${info.getValue()}`,
+    sortingFn: "basic",
+    meta: { kind: "numeric" as const },
+  }),
+  columnHelper.accessor("teamName", {
+    header: "Team",
+    cell: (info) => info.getValue(),
+    meta: {
+      kind: "manager" as const,
+      ownerId: (row: DraftPick) => row.ownerId,
+      // The cell shows the team name; the tooltip says whose team it was.
+      linkTitle: (row: DraftPick) => row.managerName,
+    },
+  }),
+];
+
 interface DraftStatsCardProps {
   draftPicks: DraftPick[];
   mostDraftedBy: MostDraftedBy | null;
@@ -47,42 +91,7 @@ const DraftStatsCard = ({
         Draft Breakdown
       </h2>
 
-      <StandardTable
-        headers={[
-          { key: "year", label: "Year" },
-          { key: "round", label: "Round" },
-          { key: "slot", label: "Pick" },
-          { key: "pick", label: "Overall" },
-          { key: "team", label: "Team" },
-        ]}
-        rows={draftPicks.map((pick) => ({
-          key: `${pick.year}-${pick.pickNo}`,
-          cells: [
-            {
-              content: (
-                <SeasonLink
-                  year={pick.year}
-                  tab="draft"
-                  title={`${pick.year} draft board`}
-                >
-                  {pick.year}
-                </SeasonLink>
-              ),
-              className: "font-medium",
-            },
-            { content: pick.round },
-            { content: pick.draftSlot },
-            { content: `#${pick.pickNo}` },
-            {
-              content: (
-                <ManagerLink ownerId={pick.ownerId} title={pick.managerName}>
-                  {pick.teamName}
-                </ManagerLink>
-              ),
-            },
-          ],
-        }))}
-      />
+      <DataTable columns={columns} data={draftPicks} />
 
       {/* Draft Statistics */}
       <div className="border-t border-gray-200 grid grid-cols-1 md:grid-cols-4 gap-4 px-6 py-6">
