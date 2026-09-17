@@ -10,6 +10,7 @@ import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { getRecordUpToWeek, getCurrentStreak } from "@/utils/matchupStats";
 import { getPlayerRows, getOptimalLineup } from "@/utils/lineupAnalysis";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
+import { NarrativeNotes } from "@/presentation/components/Narrative";
 
 interface MatchupDetailProps {
   matchup: [ExtendedMatchup, ExtendedMatchup];
@@ -103,6 +104,19 @@ const MatchupDetail = ({
           { label: `Week ${week}` },
           { label: `${teams[0].name} vs ${teams[1].name}` },
         ]}
+      />
+
+      {/* E7: what this game was, if it was anything. Renders nothing at all on
+          an ordinary week — the rail is only worth reading because it stays
+          quiet the rest of the time. */}
+      <NarrativeNotes
+        subject={{
+          year,
+          week,
+          managerIds: teams
+            .map((team) => team.manager?.id)
+            .filter((id): id is string => Boolean(id)),
+        }}
       />
 
       {/* Header with team info */}

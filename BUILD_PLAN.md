@@ -640,7 +640,7 @@ A small rules engine turning records into sentences on the page they belong to:
 last 8 against fin."* **Facts get shared; tables don't.** This is also what makes
 `G4`'s share cards write themselves.
 
-- [ ] E7
+- [x] E7
 
 ### E8 · Deep links for table state `M`
 **Blocked by:** B3
@@ -1076,7 +1076,7 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 
 | | Task | Size |
 |---|---|---|
-| ☐ | `E7` Narrative engine | L |
+| ☑ | `E7` Narrative engine | L |
 | ☐ | `E2` See-also rails | M |
 | ☐ | `E3` Command palette (⌘K) | L |
 | ☐ | `E5` Random matchup button | S |
