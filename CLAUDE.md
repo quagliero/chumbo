@@ -154,4 +154,10 @@ The fetch script reads `league_id` and `draft_id` from an existing
   that the slim dictionary drops — needed by A1d to join historical roster data.
 - **After any `fetch-data` / `fetch-season` run, re-run `yarn trim-picks`** —
   Sleeper returns the fat pick objects every time.
+- **2019 is a rebuild**, not a fetch: `scripts/rebuild-2019.js` regenerates it
+  from the NFL.com archive in `../chumbo-api/data/2019-old`, grafting per-player
+  points from the Sleeper import. It rewrites `picks.json` in full, so re-run
+  `yarn trim-picks` after it. Its two roster numberings (NFL.com vs Sleeper) are
+  a permutation of 1..12, so a missed remap looks like valid data — the
+  `picked_by` invariant in `invariants.test.ts` is what catches it.
 - `dist/` and `node_modules/` are gitignored.
