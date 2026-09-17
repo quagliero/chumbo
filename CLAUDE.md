@@ -27,6 +27,8 @@ yarn test:run       # vitest (single run)
 yarn build-players  # rebuild players.json + per-season overlays
 yarn trim-picks     # strip duplicated player metadata from picks.json
 yarn fix-player-ids # apply the committed player-id corrections (idempotent)
+yarn build-aggregates  # regenerate public/data/all-time.json (runs in `yarn build`)
+yarn check-aggregates  # fail if that file is stale, without rewriting it
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -168,4 +170,12 @@ The fetch script reads `league_id` and `draft_id` from an existing
   `yarn trim-picks` after it. Its two roster numberings (NFL.com vs Sleeper) are
   a permutation of 1..12, so a missed remap looks like valid data — the
   `picked_by` invariant in `invariants.test.ts` is what catches it.
+- **`public/data/all-time.json` is generated and committed.** It holds the stat
+  registry's answers, computed at build time, so a records page renders from
+  19 kB gzip instead of downloading every matchup and transaction (~550 kB) to
+  work them out in the browser. `yarn build` and the fetch scripts regenerate
+  it; `precomputed.test.ts` fails if it no longer matches the registry, because
+  a stale file is invisible — the page renders fine, with last month's records.
+  The generator runs through `vite-node` so it uses the real registry rather
+  than a second implementation.
 - `dist/` and `node_modules/` are gitignored.

@@ -284,7 +284,28 @@ week data lands.
 **Acceptance:** `/` renders all-time standings from the prebuilt file with no
 client-side aggregation · the file regenerates on `yarn fetch-latest`.
 
-- [ ] A4
+**Landed, with the first acceptance criterion deliberately not met.** Measured
+before building: `getCumulativeStandings` over all fifteen seasons is **0.9 ms**
+cold and 0.0 ms warm (it reads `rosters[].settings`, not the matchups), all-time
+H2H across every manager pair is 6.3 ms, and every other home tab is under a
+millisecond. Serving `/` standings from a file would save about one millisecond,
+add a network round trip and a staleness failure mode, and break the year filter
+— the table takes an arbitrary subset of seasons, so there is no single
+"all-time" answer to precompute.
+
+The real cost is the stat registry: **147 ms** for all 25 stats, and more
+importantly ~550 kB gzip of matchups and transactions that have to be downloaded
+before any of them can be answered. So the precompute covers the registry
+instead. `scripts/build-aggregates.ts` runs it through `vite-node` (the real
+registry, not a second implementation) and writes the top 25 of each stat, with
+each stat's true `total` and its data-quality flags, to
+`public/data/all-time.json` — 131 kB, **19.2 kB gzip**. Wired into `yarn build`
+and into `fetch-sleeper-data.js`. `src/utils/stats/precomputed.ts` is the shared
+contract, `usePrecomputedStats` the reader.
+
+Nothing consumes it yet; the pages that will are M5.
+
+- [x] A4
 
 ### A5 · Fix `usePlayerSearch` `S`
 **Blocked by:** H1
@@ -999,7 +1020,7 @@ remain; the Draft Board is fully navigable.
 | ☐ | `C4` Draft stats (a–d) | M |
 | ☐ | `C5` Transaction stats (a–c) | L |
 | ☐ | `C6` Identity & fun stats (a–c) | M |
-| ☐ | `A4` Build-time aggregates | L |
+| ☑ | `A4` Build-time aggregates | L |
 
 **Milestone test:** ~20 new statistics live; all-time pages render from a
 prebuilt file.

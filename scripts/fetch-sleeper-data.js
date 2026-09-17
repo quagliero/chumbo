@@ -3,6 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { execFileSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -495,6 +496,15 @@ async function main() {
       await fetchYearData(year, options);
     }
     
+    // The precomputed stats are derived from exactly this data, so they are
+    // stale the moment it changes. Regenerate rather than leave the site
+    // serving last week's answers (A4).
+    console.log('\n📊 Refreshing precomputed aggregates...');
+    execFileSync('npx', ['vite-node', 'scripts/build-aggregates.ts'], {
+      stdio: 'inherit',
+      cwd: path.resolve(__dirname, '..')
+    });
+
     console.log('\n🎉 All data fetching completed successfully!');
     
   } catch (error) {
