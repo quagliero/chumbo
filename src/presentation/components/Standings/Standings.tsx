@@ -4,6 +4,7 @@ import { useMemo, useCallback } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
+import { getSeasonBreakdown } from "@/utils/seasonBreakdown";
 import { League, ExtendedLeague } from "@/types/league";
 import { ExtendedUser } from "@/types/user";
 import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
@@ -12,7 +13,6 @@ import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
   calculateH2HRecord,
   calculateDivisionRecord,
-  calculateLeagueRecord,
 } from "@/utils/recordUtils";
 import { calculateStrengthOfSchedule } from "@/utils/strengthOfSchedule";
 import { seasons } from "@/data";
@@ -595,46 +595,28 @@ const Standings = ({
     return rPoints < minPoints ? r : min;
   });
 
-  // Calculate league records for Scumbo (worst league record)
-  const leagueRecords = standings.map((roster) => {
-    let leagueWins = 0;
-    let leagueLosses = 0;
-    let leagueTies = 0;
-
-    // Calculate league-wide performance (vs everyone each week)
-    Object.keys(matchups || {}).forEach((weekKey) => {
-      const weekMatchups = matchups?.[weekKey];
-      if (!weekMatchups) return;
-
-      const teamMatchup = weekMatchups.find(
-        (m) => m.roster_id === roster.roster_id
-      );
-      if (!teamMatchup) return;
-
-      const leagueRecord = calculateLeagueRecord(teamMatchup, weekMatchups);
-      leagueWins += leagueRecord.leagueWins;
-      leagueLosses += leagueRecord.leagueLosses;
-      leagueTies += leagueRecord.leagueTies;
-    });
-
-    return {
-      roster,
-      leagueWins,
-      leagueLosses,
-      leagueTies,
-      leagueWinPct: leagueWins / (leagueWins + leagueLosses + leagueTies) || 0,
-    };
-  });
-
-  // Get Scumbo (worst league record)
-  const scumbo = leagueRecords.reduce((worst, current) => {
-    if (current.leagueWinPct < worst.leagueWinPct) return current;
-    if (current.leagueWinPct === worst.leagueWinPct) {
-      // Tiebreaker: more losses
-      return current.leagueLosses > worst.leagueLosses ? current : worst;
-    }
-    return worst;
-  });
+  // The Scumbo: the worst BREAKDOWN of the season.
+  //
+  // Comes from the shared `getSeasonBreakdown` rather than a local sum, so this
+  // card and the Hall of Fame's Ring of Shame cannot name different people —
+  // which they did. The local version counted EVERY week in `matchups`,
+  // playoffs included, and that is not an all-play record: in a playoff week the
+  // consolation bracket is being compared against the championship bracket and
+  // the league is no longer playing a common schedule. It changed the holder in
+  // two of fourteen seasons (2013 and 2023, htc rather than kitch).
+  //
+  // Regular season only is also what the Breakdown tab shows, and "breakdown"
+  // is the word the league uses for this award.
+  const breakdown = currentYear ? getSeasonBreakdown(currentYear) : [];
+  const worstBreakdown = breakdown[breakdown.length - 1];
+  const scumbo = worstBreakdown
+    ? {
+        roster: standings.find((r) => r.roster_id === worstBreakdown.rosterId),
+        leagueWins: worstBreakdown.wins,
+        leagueLosses: worstBreakdown.losses,
+        leagueTies: worstBreakdown.ties,
+      }
+    : null;
 
   // Create table data for each division
   const createTableData = useCallback(
@@ -884,6 +866,7 @@ const Standings = ({
               <div className="text-4xl mb-2">💩</div>
               <h3 className="text-lg font-bold text-red-800 mb-2">Scumbo</h3>
               {(() => {
+                if (!scumbo?.roster) return <span className="font-semibold">—</span>;
                 const scumboManagerId = getManagerIdBySleeperOwnerId(
                   scumbo.roster.owner_id
                 );
@@ -901,8 +884,12 @@ const Standings = ({
                 );
               })()}
               <div className="text-sm text-red-600 mt-1">
-                {scumbo.leagueWins}-{scumbo.leagueLosses}
-                {scumbo.leagueTies > 0 && `-${scumbo.leagueTies}`} league record
+                {scumbo ? (
+                  <>
+                    {scumbo.leagueWins}-{scumbo.leagueLosses}
+                    {scumbo.leagueTies > 0 && `-${scumbo.leagueTies}`} league record
+                  </>
+                ) : null}
               </div>
             </div>
           </div>

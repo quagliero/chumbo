@@ -415,22 +415,6 @@ const History = () => {
         {/* Standings Tab */}
         {activeTab === "standings" && (
           <div className="space-y-6">
-            {/* D1 sits ABOVE the standings rather than behind a tab of its
-                own. The table says who finished where; the arc says when it
-                happened, and the two are only worth much read together — a
-                flat November is interesting next to the row it produced.
-                Standings is also the tab the page lands on, so a tab of its
-                own would have hidden the chart from most visits. (It would
-                also mean a new member of `TabType` in constants/fantasy.ts,
-                which this change does not own.) */}
-            <div className="container mx-auto">
-              <h2 className="mb-3 text-lg font-semibold text-gray-900">
-                Season arc
-              </h2>
-              <Suspense fallback={<div className="h-64" aria-hidden="true" />}>
-                <SeasonArc year={selectedYear} />
-              </Suspense>
-            </div>
             <Standings
               standings={standings}
               getTeamName={getTeamName}
@@ -440,6 +424,21 @@ const History = () => {
               matchups={seasonData?.matchups}
               currentYear={selectedYear}
             />
+            {/* D1 sits BELOW the standings, on the tab the page lands on
+                rather than behind a tab of its own. The table is what people
+                come for and it should be the first thing under the heading;
+                the arc is what you read once you have a row you want to
+                explain — a flat November next to the finish it produced. (A
+                tab of its own would also mean a new member of `TabType` in
+                constants/fantasy.ts.) */}
+            <div className="container mx-auto">
+              <h2 className="mb-3 text-lg font-semibold text-gray-900">
+                Season arc
+              </h2>
+              <Suspense fallback={<div className="h-64" aria-hidden="true" />}>
+                <SeasonArc year={selectedYear} />
+              </Suspense>
+            </div>
           </div>
         )}
 

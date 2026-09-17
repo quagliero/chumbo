@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { YAxis } from "../Axis";
 import { bandScale, linePath, linearScale, niceTicks } from "../scale";
-import { getManagerAccent } from "@/domain/managerColors";
+import { useSeriesSelection } from "../useSeriesSelection";
 import { useSeasonArc, type ArcManagerSeries } from "./useSeasonArc";
 
 /**
@@ -53,9 +53,10 @@ export const SeasonArc = ({
 }) => {
   const { series, weeks, regularSeasonWeeks, inProgress } = useSeasonArc(year);
   const [metric, setMetric] = useState<Metric>("wins");
-  const [pinned, setPinned] = useState<string | null>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
-  const active = hovered ?? pinned;
+  // Shared with the power ribbon (D2) so the two behave identically: click
+  // pins, hover previews, several at once, and colours come from the validated
+  // palette rather than the colliding per-manager accents.
+  const selection = useSeriesSelection();
 
   /** Which of the two running totals this mode plots. */
   const metricValue = (point: { wins: number; points: number }) =>
@@ -92,7 +93,7 @@ export const SeasonArc = ({
     );
   }
 
-  const chosen = series.find((row) => seriesKey(row) === active);
+  const chosen = series.filter((row) => selection.isOn(seriesKey(row)));
   const metricLabel = metric === "wins" ? "Cumulative wins" : "Points for";
 
   return (
@@ -132,23 +133,22 @@ export const SeasonArc = ({
             <button
               key={row.rosterId}
               type="button"
-              onClick={() => setPinned((current) => (current === key ? null : key))}
-              onMouseEnter={() => setHovered(key)}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered(key)}
-              onBlur={() => setHovered(null)}
-              aria-pressed={pinned === key}
+              onClick={() => selection.toggle(key)}
+              onMouseEnter={() => selection.setHovered(key)}
+              onMouseLeave={() => selection.setHovered(null)}
+              onFocus={() => selection.setHovered(key)}
+              onBlur={() => selection.setHovered(null)}
+              aria-pressed={selection.pinned.has(key)}
+              disabled={selection.isFull(key)}
               title={row.teamName}
               className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
-                active === key
+                selection.isOn(key)
                   ? "border-transparent text-white"
-                  : pinned === key
-                  ? "border-line-strong text-ink"
-                  : "border-line text-ink-muted hover:border-line-strong"
+                  : "border-line text-ink-muted hover:border-line-strong disabled:opacity-40 disabled:hover:border-line"
               }`}
               style={
-                active === key
-                  ? { backgroundColor: accentFor(row) }
+                selection.isOn(key)
+                  ? { backgroundColor: selection.colourOf(key) }
                   : undefined
               }
             >
@@ -187,8 +187,8 @@ export const SeasonArc = ({
                   />
 
                   {series.map((row) => {
-                    const highlighted = active === seriesKey(row);
-                    const dimmed = active !== null && !highlighted;
+                    const isOn = selection.isOn(seriesKey(row));
+                    const dimmed = selection.anyHighlighted && !isOn;
                     return (
                       <path
                         key={row.rosterId}
@@ -198,9 +198,11 @@ export const SeasonArc = ({
                           )
                         )}
                         fill="none"
-                        stroke={highlighted ? accentFor(row) : "currentColor"}
-                        strokeOpacity={highlighted ? 1 : dimmed ? 0.08 : 0.3}
-                        strokeWidth={highlighted ? 2.5 : 1.5}
+                        stroke={
+                          isOn ? selection.colourOf(seriesKey(row)) : "currentColor"
+                        }
+                        strokeOpacity={isOn ? 1 : dimmed ? 0.08 : 0.3}
+                        strokeWidth={isOn ? 2.5 : 1.5}
                         strokeLinejoin="round"
                         strokeLinecap="round"
                         className="text-ink-muted transition-[stroke-opacity]"
@@ -215,8 +217,8 @@ export const SeasonArc = ({
                       with no neighbour to join to gets a dot instead. The
                       chosen line is skipped because it already has one. */}
                   {series.map((row) => {
-                    if (seriesKey(row) === active) return null;
-                    const dimmed = active !== null;
+                    if (selection.isOn(seriesKey(row))) return null;
+                    const dimmed = selection.anyHighlighted;
                     return row.points.map((point, i) =>
                       point && !row.points[i - 1] && !row.points[i + 1] ? (
                         <circle
@@ -235,23 +237,25 @@ export const SeasonArc = ({
                   {/* Markers only on the chosen line: a dot per manager per week
                       is 168 of them, which is noise and 168 overlapping click
                       targets. These are the links out to the matchups. */}
-                  {chosen?.points.map((point, i) =>
-                    point ? (
-                      <Link
-                        key={point.week}
-                        to={matchupHref(year, point.week, point.matchupId)}
-                        aria-label={describe(chosen, point, metric)}
-                      >
-                        <circle
-                          cx={x.at(i)}
-                          cy={y(metricValue(point))}
-                          r={3.5}
-                          fill={accentFor(chosen)}
+                  {chosen.flatMap((row) =>
+                    row.points.map((point, i) =>
+                      point ? (
+                        <Link
+                          key={`${row.rosterId}-${point.week}`}
+                          to={matchupHref(year, point.week, point.matchupId)}
+                          aria-label={describe(row, point, metric)}
                         >
-                          <title>{describe(chosen, point, metric)}</title>
-                        </circle>
-                      </Link>
-                    ) : null
+                          <circle
+                            cx={x.at(i)}
+                            cy={y(metricValue(point))}
+                            r={3.5}
+                            fill={selection.colourOf(seriesKey(row))}
+                          >
+                            <title>{describe(row, point, metric)}</title>
+                          </circle>
+                        </Link>
+                      ) : null
+                    )
                   )}
 
                   {/* The week labels are links in their own right, so a week is
@@ -293,16 +297,22 @@ export const SeasonArc = ({
       </div>
 
       <p className="mt-2 max-w-prose text-xs text-ink-faint">
-        {chosen ? (
+        {chosen.length > 0 ? (
           <>
-            <strong className="font-medium text-ink-muted">
-              {chosen.teamName}
-            </strong>{" "}
-            finished {record(chosen)} on {chosen.totalPoints.toFixed(2)} points.
-            Pick a week to open the matchup.{" "}
+            {chosen.map((row, index) => (
+              <span key={row.rosterId}>
+                {index > 0 && (index === chosen.length - 1 ? " and " : ", ")}
+                <strong className="font-medium text-ink-muted">
+                  {row.teamName}
+                </strong>{" "}
+                finished {record(row)} on {row.totalPoints.toFixed(2)}
+              </span>
+            ))}
+            {chosen.length === 1 ? " points." : " points respectively."} Pick a
+            week to open the matchup.{" "}
           </>
         ) : (
-          <>Pick a manager to trace their season. </>
+          <>Pick up to {selection.max} managers to compare their seasons. </>
         )}
         Regular season only, weeks {weeks[0]}–{weeks[weeks.length - 1]}
         {inProgress
@@ -313,14 +323,6 @@ export const SeasonArc = ({
     </div>
   );
 };
-
-/**
- * A manager with no `managers.json` entry — a legacy Sleeper account on an
- * old roster — still gets a line; it just falls back to the muted ink the
- * accent helper already returns for an unknown id.
- */
-const accentFor = (row: ArcManagerSeries) =>
-  getManagerAccent(row.managerId ?? "");
 
 /** What highlighting is keyed on. Falls back to the team name for a roster
  *  whose owner is not in `managers.json`. */
