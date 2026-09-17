@@ -552,12 +552,12 @@ line in the check. Verified the check fails rather than only that it passes.
 Every chart must be clickable through to the underlying matchup, season or
 player. A chart that's a dead end is worth much less here — see Workstream E.
 
-- [ ] **D1** Season arc — cumulative wins or points-for by week, one line per manager, on the Seasons page. Shows instantly who collapsed in November. *(needs F2)*
+- [x] **D1** Season arc — cumulative wins or points-for by week, one line per manager, on the Seasons page. Shows instantly who collapsed in November. *(needs F2)*
 - [x] **D2** All-time power ribbon — every manager's finishing position 2012→2026 as a bump chart. **The single highest-value visual on this list**: the whole league's story in one image. *(needs F2)* — on `/careers`. Colour carries no identity: every line is neutral until a manager is chosen, then theirs takes their accent and the rest fade, which is the F2 constraint met rather than worked around. Click pins, hover previews, so the choice survives the mouse leaving and a phone can make one at all. Needed a real finishing position first (`utils/finalStandings.ts`) — the brackets, not regular-season order.
 - [x] **D3** H2H matrix — replace the two scroll-lists on `h2h.tsx` with a 14×14 colour-coded grid (green = winning record, red = losing, cell = record, click = detail). Today you must pick two managers from lists to learn anything; a matrix shows all 91 rivalries at once, including who owns whom. — **17×17 and 136 rivalries, not 14×14 and 91.** All seventeen managers in `managers.json` have real games (`karsten` 14 team-weeks, `phil` 15, `jimmie` 16); the four legacy accounts carry 2012-2019, and dropping them would cut the archive the page exists to show. Shading is win rate *tempered by sample size* — `phil`'s 2-0 pairings would otherwise be the most dominant cells in the grid. Rows sort by record against the field, so the pecking order reads off the diagonal.
 - [ ] **D4** Score distribution — violin or histogram per manager. Separates the boom/bust managers from the metronomes, which W-L records hide entirely. *(needs F2)*
-- [ ] **D5** Weekly score heatmap — season × week grid for one manager, coloured by score. A whole career in one image.
-- [ ] **D6** Draft value scatter — pick number vs points scored that season, across all drafts. Every steal and every bust, using your league's real history rather than generic ADP.
+- [x] **D5** Weekly score heatmap — season × week grid for one manager, coloured by score. A whole career in one image.
+- [x] **D6** Draft value scatter — pick number vs points scored that season, across all drafts. Every steal and every bust, using your league's real history rather than generic ADP.
 - [x] **D7** Luck chart — actual wins vs expected wins (from the all-play record you already compute in `calculateWeeklyLeagueRecord`), scatter against the diagonal. Distance from the line is a luck score. Managers will argue about this for years.
 
 ---
@@ -705,7 +705,7 @@ The stat tiles wrap awkwardly — "Scoring Crowns" is taller than its neighbours
 because the label breaks. Replace eight tiles with a season-by-season timeline
 carrying trophy markers, plus the weekly heatmap from `D5`.
 
-- [ ] F3
+- [x] F3
 
 ### F4 · Hall of Fame `M`
 **Blocked by:** E1f
@@ -1062,13 +1062,13 @@ use) and `H14` (the Chargers' Mike Williams split across two ids from 2019).
 | ☑ | `D0` Chart approach + budget | S |
 | ☑ | `D3` H2H matrix | M |
 | ☑ | `D2` All-time power ribbon | L |
-| ☐ | `D1` Season arc | M |
+| ☑ | `D1` Season arc | M |
 | ☑ | `D7` Luck chart | M |
-| ☐ | `D5` Weekly heatmap | M |
+| ☑ | `D5` Weekly heatmap | M |
 | ☐ | `D4` Score distribution | M |
-| ☐ | `D6` Draft value scatter | M |
+| ☑ | `D6` Draft value scatter | M |
 | ◐ | `F1a–e` Managers page rebuild | L | *(a–d done; F1e needs E7/M6)*
-| ☐ | `F3` Manager detail rebuild | M |
+| ☑ | `F3` Manager detail rebuild | M |
 | ◐ | `F4a–d` Hall of Fame | M | *(b–d done; F4a is the commissioner's to write)*
 
 ### M6 — Discovery & sharing `~6 days`

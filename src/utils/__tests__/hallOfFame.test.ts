@@ -7,6 +7,8 @@ import { loadAllSeasons, managers, seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { computeStat } from "@/utils/stats";
 import type { PrecomputedStats } from "@/utils/stats/precomputed";
+import { getScumboCrown, getScumboHolders } from "@/utils/crowns";
+import { getSeasonBreakdown } from "@/utils/seasonBreakdown";
 import {
   MIN_SEASONS_FOR_CAREER_RECORD,
   completedSeasons,
@@ -97,17 +99,34 @@ describe("manager finishing records", () => {
     }
   });
 
-  it("agrees with itself: a title is a first place, a spoon is a last place", () => {
+  it("agrees with itself: a title is a first place, a Scumbo is the worst breakdown", () => {
     for (const h of honours) {
       for (const year of h.titles) {
         expect(h.finishes.find((f) => f.year === year)?.position).toBe(1);
       }
+      // Deliberately NOT `position === teams`. The Scumbo goes to the worst
+      // all-play record, which is last place in only nine of the fourteen
+      // completed seasons — the other five are where a kind schedule saved
+      // somebody, or a brutal one buried them.
       for (const year of h.spoons) {
-        const finish = h.finishes.find((f) => f.year === year);
-        expect(finish?.position).toBe(finish?.teams);
+        const breakdown = getSeasonBreakdown(year);
+        const worst = breakdown[breakdown.length - 1];
+        const holders = getScumboHolders(year).map((c) => c.managerId);
+        expect(holders).toContain(h.managerId);
+        expect(worst.winPercentage).toBeLessThanOrEqual(
+          breakdown[0].winPercentage
+        );
       }
       expect(h.bestFinish).toBe(Math.min(...h.finishes.map((f) => f.position)));
     }
+  });
+
+  it("awards exactly one Scumbo per completed season", () => {
+    const awarded = honours.flatMap((h) => h.spoons);
+    // Ties would legitimately give two managers the same year; there are none
+    // today, and if one appears this will say so rather than hiding it.
+    expect(awarded.length).toBe(completedSeasons().length);
+    expect([...new Set(awarded)].sort()).toEqual([...completedSeasons()].sort());
   });
 });
 
@@ -193,37 +212,38 @@ describe("the ring of shame", () => {
 
   /* ---------------- the criteria, re-derived ---------------- */
 
-  it("shames the manager with the MOST wooden spoons", () => {
-    const entry = byId.get("wooden-spoons")!;
-    const honours = getManagerHonours();
-    const most = Math.max(...honours.map((h) => h.spoons.length));
-
-    const holder = honours.find((h) => h.managerId === entry.managerId)!;
-    expect(holder.spoons.length).toBe(most);
-    expect(entry.value).toBe(`${most} wooden spoons`);
-    // The tie-break is the most recent spoon; nobody tied on count may hold a
-    // more recent one.
-    const tied = honours.filter((h) => h.spoons.length === most);
-    const latestOf = (years: number[]) => Math.max(...years);
-    expect(latestOf(holder.spoons)).toBe(
-      Math.max(...tied.map((h) => latestOf(h.spoons)))
-    );
+  it("shames the manager with the most full Scumbos", () => {
+    const entry = byId.get("most-scumbos")!;
+    const counts = new Map<string, number>();
+    for (const year of completedSeasons()) {
+      for (const crown of getScumboCrown(year)) {
+        counts.set(crown.managerId, (counts.get(crown.managerId) ?? 0) + 1);
+      }
+    }
+    const most = Math.max(...counts.values());
+    expect(counts.get(entry.managerId)).toBe(most);
+    expect(entry.value).toBe(`${most} full Scumbo${most === 1 ? "" : "s"}`);
   });
 
-  it("shames whoever finished last in the most recent completed season", () => {
-    const entry = byId.get("reigning-spoon")!;
+  /**
+   * The correction this replaced. The Scumbo goes to the worst BREAKDOWN —
+   * the all-play record — not to last place in the standings. The two disagree
+   * in five of the fourteen completed seasons, so the old entry named the
+   * wrong manager in five of them; asserting only "it is someone bad" would
+   * not have caught that.
+   */
+  it("gives the reigning Scumbo to the worst breakdown, not to last place", () => {
+    const entry = byId.get("reigning-scumbo")!;
     const latest = completedSeasons()[completedSeasons().length - 1];
-    const holder = getManagerHonours().find(
-      (h) => h.managerId === entry.managerId
-    )!;
 
-    expect(holder.spoons).toContain(latest);
-    const finish = holder.finishes.find((f) => f.year === latest)!;
-    expect(finish.position).toBe(finish.teams);
-    expect(entry.value).toBe(
-      `${finish.position} of ${finish.teams} in ${latest}`
-    );
+    const breakdown = getSeasonBreakdown(latest);
+    const worst = breakdown[breakdown.length - 1];
+    const holder = getScumboHolders(latest)[0];
+
+    expect(entry.managerId).toBe(holder.managerId);
+    expect(holder.rosterId).toBe(worst.rosterId);
     expect(entry.basis).toContain(String(latest));
+    expect(entry.value).toContain("all-play");
   });
 
   /**
@@ -324,8 +344,8 @@ describe("the ring of shame", () => {
     expect(
       Object.fromEntries(ring.map((e) => [e.id, `${e.managerId} · ${e.value}`]))
     ).toEqual({
-      "wooden-spoons": "rich · 3 wooden spoons",
-      "reigning-spoon": "dix · 12 of 12 in 2025",
+      "most-scumbos": "fin · 3 full Scumbos",
+      "reigning-scumbo": "rich · 47-107 all-play (30.5%)",
       "bench-points": "kitch · 2949.3 points benched",
       "manager-efficiency": "brock · 85.3% efficient",
       "worst-start-sit": "chris · 47.7 points thrown away",

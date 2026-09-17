@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { XAxis, YAxis } from "../Axis";
@@ -36,11 +36,118 @@ const UNLUCKY = "#eb6834";
 
 const MARGIN = { top: 12, right: 18, bottom: 40, left: 44 };
 
-/** The plot is square so the diagonal sits at 45° and the gap reads honestly. */
+/**
+ * The plot is square so the diagonal sits at 45° and the gap reads honestly —
+ * the whole chart is "how far from the line", and that distance only means
+ * anything if both axes are the same scale on screen as well as in the data.
+ *
+ * Square and "fill the width" therefore fight each other on a wide screen: a
+ * square that filled a 1024px column came out 772px tall in a 712px window, so
+ * you could not see the diagonal and the points at the same time.
+ *
+ * So it takes the width it is given, bounded by the height it has to fit in.
+ * A fixed cap cannot do that — 420 left two thirds of a desktop column empty,
+ * and 720 was taller than a laptop window.
+ */
 const MIN_PLOT = 200;
-const MAX_PLOT = 420;
+const MAX_PLOT = 820;
+/** Share of the window the plot may take, leaving the controls and caption visible. */
+const MAX_VIEWPORT_SHARE = 0.72;
 
 type Mode = "careers" | "seasons";
+
+/**
+ * The window height, so a square plot can be bounded by the space it has to
+ * fit in rather than by a guess. Falls back to a laptop-ish height where there
+ * is no window (tests, SSR).
+ */
+const useViewportHeight = () => {
+  const [height, setHeight] = useState(() =>
+    typeof window === "undefined" ? 800 : window.innerHeight
+  );
+  useEffect(() => {
+    const onResize = () => setHeight(window.innerHeight);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  return height;
+};
+
+/**
+ * The ranked list beside the plot.
+ *
+ * The scatter answers "what is the shape of this"; the table answers "by how
+ * much, exactly" — and the second question is the one that gets argued about,
+ * so it should not be buried in the screen-reader fallback. Sharing the
+ * highlight state means pointing at a row lights up its point and vice versa.
+ */
+const LuckLeaderboard = ({
+  rows,
+  mode,
+  highlighted,
+  onHighlight,
+}: {
+  rows: readonly LuckPoint[];
+  mode: Mode;
+  highlighted: string | null;
+  onHighlight: (managerId: string | null) => void;
+}) => {
+  // Luckiest first: the top of a list is where the eye goes, and "who got away
+  // with it" is the more entertaining half of the question.
+  const ranked = [...rows].sort((a, b) => b.luck - a.luck).slice(0, 17);
+
+  return (
+    <div className="mt-4 lg:mt-0 lg:w-80 lg:flex-none">
+      <table className="w-full text-sm">
+        <caption className="sr-only">
+          {mode === "careers" ? "Careers" : "Seasons"} ranked by luck
+        </caption>
+        <thead>
+          <tr className="border-b border-line text-xs text-ink-faint">
+            <th scope="col" className="py-1 text-left font-medium">
+              {mode === "careers" ? "Manager" : "Season"}
+            </th>
+            <th scope="col" className="py-1 text-right font-medium">Won</th>
+            <th scope="col" className="py-1 text-right font-medium">Deserved</th>
+            <th scope="col" className="py-1 text-right font-medium">Luck</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ranked.map((row) => {
+            const on = highlighted === row.managerId;
+            return (
+              <tr
+                key={`${row.managerId}-${row.year ?? "all"}`}
+                onMouseEnter={() => onHighlight(row.managerId)}
+                onMouseLeave={() => onHighlight(null)}
+                className={`border-b border-line/60 ${on ? "bg-hover" : ""}`}
+              >
+                <th scope="row" className="py-1 text-left font-normal">
+                  <Link to={`/managers/${row.managerId}`} className="underline decoration-dotted underline-offset-2 hover:text-ink">
+                    {row.managerId}
+                  </Link>
+                  {row.year ? <span className="text-ink-faint"> {row.year}</span> : null}
+                </th>
+                <td className="py-1 text-right tabular-nums">
+                  {row.actualWins.toFixed(1)}
+                </td>
+                <td className="py-1 text-right tabular-nums text-ink-muted">
+                  {row.expectedWins.toFixed(1)}
+                </td>
+                <td
+                  className="py-1 text-right font-medium tabular-nums"
+                  style={{ color: colourFor(row.luck) }}
+                >
+                  {signed(row.luck)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 const colourFor = (luck: number) =>
   luck > LEVEL ? LUCKY : luck < -LEVEL ? UNLUCKY : "currentColor";
@@ -70,12 +177,19 @@ export const LuckChart = ({ className }: { className?: string }) => {
   // Measured here as well as inside `Chart` so the height can be derived from
   // the width. Both observe the same element, so they agree.
   const { ref, width } = useChartWidth<HTMLDivElement>();
+  const viewportHeight = useViewportHeight();
   const plot =
     width === null
       ? MIN_PLOT
       : Math.min(
           MAX_PLOT,
-          Math.max(MIN_PLOT, width - MARGIN.left - MARGIN.right)
+          Math.max(
+            MIN_PLOT,
+            Math.min(
+              width - MARGIN.left - MARGIN.right,
+              viewportHeight * MAX_VIEWPORT_SHARE - MARGIN.top - MARGIN.bottom
+            )
+          )
         );
 
   // One domain for both axes, or the diagonal would not be the line where
@@ -147,7 +261,13 @@ export const LuckChart = ({ className }: { className?: string }) => {
         </div>
       )}
 
-      <div ref={ref}>
+      {/* The plot has to stay square, so on a wide column it cannot fill the
+          width by growing — it would just get taller than the window. The spare
+          width goes to the table instead, which is the thing people actually
+          argue over: the chart shows the shape, the table gives the number.
+          Below `lg` they stack and the table reads as a caption. */}
+      <div className="lg:flex lg:items-start lg:gap-6">
+        <div ref={ref} className="min-w-0 lg:flex-1">
         <Chart
           height={plot}
           margin={MARGIN}
@@ -295,6 +415,14 @@ export const LuckChart = ({ className }: { className?: string }) => {
             );
           }}
         </Chart>
+        </div>
+
+        <LuckLeaderboard
+          rows={points}
+          mode={mode}
+          highlighted={highlighted}
+          onHighlight={setHighlighted}
+        />
       </div>
 
       <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">

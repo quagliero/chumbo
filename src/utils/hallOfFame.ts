@@ -3,6 +3,13 @@ import { YEAR_NUMBERS } from "@/domain/constants";
 import { getFinalStandings } from "@/utils/finalStandings";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import type { PrecomputedStats } from "@/utils/stats/precomputed";
+import {
+  getScumboCrown,
+  getScumboHolders,
+  getSeasonCrowns,
+  getTripleCrown,
+} from "@/utils/crowns";
+import { getSeasonBreakdown } from "@/utils/seasonBreakdown";
 import type { StatEntry } from "@/utils/stats/types";
 
 /**
@@ -58,7 +65,15 @@ export interface ManagerHonours {
   titles: number[];
   /** Years finished second, ascending. */
   runnerUps: number[];
-  /** Years finished dead last, ascending. */
+  /**
+   * Years they took the Scumbo, ascending.
+   *
+   * The Scumbo is the worst BREAKDOWN — the all-play record — not last place
+   * in the standings. The two disagree in five of the fourteen completed
+   * seasons, and having both on the site would put a "wooden spoon" on one
+   * manager's card while the Ring of Shame awarded that year's Scumbo to
+   * somebody else.
+   */
   spoons: number[];
   /** Best finish ever, or `null` for a manager with no completed season. */
   bestFinish: number | null;
@@ -125,11 +140,17 @@ export const getManagerHonours = (): ManagerHonours[] => {
       honours.finishes.push({ year, position: standing.position, teams });
       if (standing.position === 1) honours.titles.push(year);
       if (standing.position === 2) honours.runnerUps.push(year);
-      if (standing.position === teams) honours.spoons.push(year);
+      // Last place is recorded through `finishes`; the Scumbo is awarded
+      // separately below, off the breakdown.
       honours.bestFinish =
         honours.bestFinish === null
           ? standing.position
           : Math.min(honours.bestFinish, standing.position);
+    }
+
+    for (const crown of getScumboHolders(year)) {
+      if (crown.provisional) continue;
+      byManager.get(crown.managerId)?.spoons.push(year);
     }
   }
 
@@ -151,6 +172,14 @@ export interface WingEntry extends ManagerHonours {
   archetype?: string;
   /** The rest of that stat's sentence — the measurement behind the label. */
   archetypeReason?: string;
+  /**
+   * Seasons where they took most wins, most points AND the title.
+   *
+   * The league's Triple Crown, and the rarest thing on this page: two of them
+   * in fifteen seasons. Topping the table and the scoring charts still leaves
+   * you one playoff upset from missing it, which is exactly why it counts.
+   */
+  tripleCrowns: number[];
 }
 
 /**
@@ -187,11 +216,21 @@ export const getManagersWing = (stats: PrecomputedStats): WingEntry[] => {
       .map((entry) => [entry.subject, entry.detail] as const)
   );
 
+  const tripleCrowns = new Map<string, number[]>();
+  for (const year of completedSeasons()) {
+    const crown = getTripleCrown(year);
+    if (!crown) continue;
+    const years = tripleCrowns.get(crown.managerId) ?? [];
+    years.push(year);
+    tripleCrowns.set(crown.managerId, years);
+  }
+
   return getManagerHonours()
     .filter((honours) => honours.titles.length > 0)
     .map((honours) => ({
       ...honours,
       ...splitArchetype(archetypes.get(honours.managerId)),
+      tripleCrowns: tripleCrowns.get(honours.managerId) ?? [],
     }));
 };
 
@@ -281,55 +320,93 @@ export const getRingOfShame = (stats: PrecomputedStats): ShameEntry[] => {
   const honours = getManagerHonours();
   const completed = completedSeasons();
 
-  /* 1. Most wooden spoons. Ties are broken by the most recent one — the man
-   *    who did it last is the man everyone remembers. */
-  const mostSpoons = [...honours]
-    .filter((h) => h.spoons.length > 0)
-    .sort(
-      (a, b) =>
-        b.spoons.length - a.spoons.length ||
-        (b.spoons[b.spoons.length - 1] ?? 0) - (a.spoons[a.spoons.length - 1] ?? 0)
-    )[0];
-  if (mostSpoons) {
+  /* 1. Most full Scumbos.
+   *
+   *    The Scumbo is the league's wooden spoon, and it is NOT last place: it
+   *    goes to the worst BREAKDOWN — the all-play record, how you did against
+   *    the whole league every week rather than against the one opponent the
+   *    schedule handed you. The two disagree in five of the fourteen completed
+   *    seasons, so this used to name the wrong people.
+   *
+   *    It also has three levels, and the full set is the one worth a trophy:
+   *    worst all-play, fewest wins, fewest points. */
+  const scumboYears = new Map<string, number[]>();
+  const scumboLegYears = new Map<string, number[]>();
+  for (const year of completed) {
+    for (const crown of getScumboCrown(year)) {
+      const years = scumboYears.get(crown.managerId) ?? [];
+      years.push(year);
+      scumboYears.set(crown.managerId, years);
+    }
+    for (const crown of getSeasonCrowns(year)) {
+      if (crown.scumboLegs === 0 || crown.provisional) continue;
+      const years = scumboLegYears.get(crown.managerId) ?? [];
+      years.push(year);
+      scumboLegYears.set(crown.managerId, years);
+    }
+  }
+
+  const mostScumbos = [...scumboYears.entries()].sort(
+    (a, b) => b[1].length - a[1].length || (b[1][b[1].length - 1] ?? 0) - (a[1][a[1].length - 1] ?? 0)
+  )[0];
+  if (mostScumbos) {
+    const [managerId, years] = mostScumbos;
+    const honour = honours.find((h) => h.managerId === managerId);
     entries.push({
-      id: "wooden-spoons",
-      title: "The Wooden Spoon Cabinet",
-      basis: "Most last-place finishes, decided by the playoff brackets.",
-      managerId: mostSpoons.managerId,
-      name: mostSpoons.name,
-      teamName: mostSpoons.teamName,
-      value: `${mostSpoons.spoons.length} wooden spoons`,
-      detail: `Last in ${listYears(mostSpoons.spoons)}${
-        mostSpoons.titles.length === 0
-          ? ` — and ${mostSpoons.finishes.length} seasons without a single title to set against them`
+      id: "most-scumbos",
+      title: "The Scumbo Cabinet",
+      basis:
+        "Most full Scumbos — worst all-play record, fewest wins and fewest " +
+        "points, all three in the same season.",
+      managerId,
+      name: honour?.name ?? managerId,
+      teamName: honour?.teamName ?? "",
+      value: `${years.length} full Scumbo${years.length === 1 ? "" : "s"}`,
+      detail: `The complete set in ${listYears(years)}${
+        honour && honour.titles.length === 0
+          ? ` — and ${honour.finishes.length} seasons without a title to set against them`
           : ""
       }.`,
-      href: `/managers/${mostSpoons.managerId}`,
+      href: `/managers/${managerId}`,
       excluded: [],
     });
   }
 
-  /* 2. The reigning wooden spoon — last place in the most recently completed
-   *    season. Included because the holder changes every year and because it
-   *    is the one entry a champion can walk into. */
+  /* 2. The reigning Scumbo — worst breakdown of the most recently completed
+   *    season. The one entry a champion can walk into. */
   const latest = completed[completed.length - 1];
-  const reigning = honours.find((h) => h.spoons.includes(latest));
+  const reigningHolders = getScumboHolders(latest).filter((c) => !c.provisional);
+  const reigning = reigningHolders[0];
   if (reigning) {
-    const finish = reigning.finishes.find((f) => f.year === latest);
+    const honour = honours.find((h) => h.managerId === reigning.managerId);
+    const record = getSeasonBreakdown(latest).find(
+      (b) => b.rosterId === reigning.rosterId
+    );
+    const legs = [
+      reigning.worstAllPlay && "worst all-play",
+      reigning.fewestWins && "fewest wins",
+      reigning.fewestPoints && "fewest points",
+    ].filter(Boolean) as string[];
     entries.push({
-      id: "reigning-spoon",
-      title: "Holder of the Current Spoon",
-      basis: `Last place in ${latest}, the most recently completed season.`,
+      id: "reigning-scumbo",
+      title: `Holder of the ${latest} Scumbo`,
+      basis: `Worst breakdown — all-play record — in ${latest}, the most recently completed season.`,
       managerId: reigning.managerId,
-      name: reigning.name,
-      teamName: reigning.teamName,
-      value: `${finish?.position ?? "last"} of ${finish?.teams ?? "?"} in ${latest}`,
+      name: honour?.name ?? reigning.managerId,
+      teamName: honour?.teamName ?? "",
+      value: record
+        ? `${record.wins}-${record.losses} all-play (${(record.winPercentage * 100).toFixed(1)}%)`
+        : "worst breakdown",
       detail:
-        reigning.titles.length > 0
-          ? `A ${reigning.titles.length}-time champion (${listYears(
-              reigning.titles
+        (reigning.scumboLegs === 3
+          ? "The full Scumbo: "
+          : `${legs.length} of the three: `) +
+        legs.join(", ") +
+        (honour && honour.titles.length > 0
+          ? `. A ${honour.titles.length}-time champion (${listYears(
+              honour.titles
             )}), which makes it worse rather than better.`
-          : `${reigning.finishes.length} seasons, still no title.`,
+          : "."),
       href: `/managers/${reigning.managerId}`,
       excluded: [],
     });

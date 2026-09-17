@@ -139,7 +139,7 @@ const Home = () => {
               Wins you got against wins your scores deserved.
             </p>
             <Suspense fallback={<div className="h-64" />}>
-              <LuckChart className="max-w-xl" />
+              <LuckChart />
             </Suspense>
           </div>
         )}

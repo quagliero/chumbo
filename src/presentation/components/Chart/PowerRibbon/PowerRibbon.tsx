@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { bandScale, linePath, linearScale } from "../scale";
-import { getManagerAccent } from "@/domain/managerColors";
+import { MAX_SERIES, SERIES_COLORS } from "@/domain/managerColors";
 import { usePowerRibbon, type RibbonSeries } from "./usePowerRibbon";
 
 /**
@@ -32,9 +32,49 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
   // Two states, not one. A click PINS a manager and a hover only previews, so
   // that moving the mouse off the legend does not undo the click -- and so that
   // a phone, which never hovers, still has a way to choose.
-  const [pinned, setPinned] = useState<string | null>(null);
+  //
+  // Pinning is a SET: comparing two or three careers is the question this chart
+  // is actually asked ("did rich ever finish above me?"), and one-at-a-time made
+  // you hold the other line in your head. Hovering still previews a single
+  // manager, and only when nothing is pinned -- once you have made a selection,
+  // sweeping the mouse over the legend must not keep wiping it.
+  const [pinned, setPinned] = useState<Set<string>>(() => new Set());
   const [hovered, setHovered] = useState<string | null>(null);
-  const active = hovered ?? pinned;
+  const highlighted =
+    pinned.size > 0 ? pinned : hovered ? new Set([hovered]) : new Set<string>();
+  const anyHighlighted = highlighted.size > 0;
+
+  const toggle = (managerId: string) =>
+    setPinned((current) => {
+      const next = new Set(current);
+      // Deselecting is always allowed; selecting stops at MAX_SERIES.
+      if (next.delete(managerId)) return next;
+      if (next.size >= MAX_SERIES) return current;
+      next.add(managerId);
+      return next;
+    });
+
+  /**
+   * Selected lines take the VALIDATED categorical palette in selection order,
+   * not each manager's own accent.
+   *
+   * The accents collide by design — twelve active managers into eight hues, so
+   * thd, karsten and ryan are all blue (see `managerColors.ts`). That is
+   * harmless when one manager is on screen and the name carries the identity,
+   * but the moment two can be selected at once it would draw two
+   * indistinguishable blue lines. Series colours are the palette that is
+   * actually checked for all-pairs separation, and the chip takes the same
+   * colour as the line so the mapping is never in doubt.
+   *
+   * Selecting beyond eight is refused rather than wrapped, for the same reason
+   * the palette stops at eight: a ninth colour is not distinguishable from one
+   * already on screen.
+   */
+  const colourOf = (managerId: string) => {
+    const order = [...highlighted];
+    const index = order.indexOf(managerId);
+    return index === -1 ? "currentColor" : SERIES_COLORS[index % MAX_SERIES];
+  };
 
   const height = field * ROW;
 
@@ -45,27 +85,24 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
           <button
             key={manager.managerId}
             type="button"
-            onClick={() =>
-              setPinned((current) =>
-                current === manager.managerId ? null : manager.managerId
-              )
-            }
+            onClick={() => toggle(manager.managerId)}
             onMouseEnter={() => setHovered(manager.managerId)}
             onMouseLeave={() => setHovered(null)}
             onFocus={() => setHovered(manager.managerId)}
             onBlur={() => setHovered(null)}
-            aria-pressed={pinned === manager.managerId}
+            aria-pressed={pinned.has(manager.managerId)}
             className={`rounded-full border px-2.5 py-1 text-xs transition-colors ${
-              active === manager.managerId
+              highlighted.has(manager.managerId)
                 ? "border-transparent text-white"
-                : pinned === manager.managerId
-                ? "border-line-strong text-ink"
-                : "border-line text-ink-muted hover:border-line-strong"
+                : "border-line text-ink-muted hover:border-line-strong disabled:opacity-40 disabled:hover:border-line"
             }`}
             style={
-              active === manager.managerId
-                ? { backgroundColor: getManagerAccent(manager.managerId) }
+              highlighted.has(manager.managerId)
+                ? { backgroundColor: colourOf(manager.managerId) }
                 : undefined
+            }
+            disabled={
+              !highlighted.has(manager.managerId) && pinned.size >= MAX_SERIES
             }
           >
             {manager.managerId}
@@ -137,8 +174,8 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
                   </g>
 
                   {series.map((manager) => {
-                    const highlighted = active === manager.managerId;
-                    const dimmed = active !== null && !highlighted;
+                    const isOn = highlighted.has(manager.managerId);
+                    const dimmed = anyHighlighted && !isOn;
                     return (
                       <path
                         key={manager.managerId}
@@ -148,11 +185,9 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
                           )
                         )}
                         fill="none"
-                        stroke={
-                          highlighted ? getManagerAccent(manager.managerId) : "currentColor"
-                        }
-                        strokeOpacity={highlighted ? 1 : dimmed ? 0.06 : 0.22}
-                        strokeWidth={highlighted ? 2.5 : 1.5}
+                        stroke={isOn ? colourOf(manager.managerId) : "currentColor"}
+                        strokeOpacity={isOn ? 1 : dimmed ? 0.06 : 0.22}
+                        strokeWidth={isOn ? 2.5 : 1.5}
                         strokeLinejoin="round"
                         strokeLinecap="round"
                         className="text-ink-muted transition-[stroke-opacity]"
@@ -163,7 +198,7 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
                   {/* Points only for the highlighted manager: seventeen lines'
                       worth of dots is noise, and they are the click targets. */}
                   {series
-                    .filter((manager) => manager.managerId === active)
+                    .filter((manager) => highlighted.has(manager.managerId))
                     .map((manager) =>
                       manager.points.map((point, i) =>
                         point ? (
@@ -179,9 +214,9 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
                               fill={
                                 point.provisional
                                   ? "var(--color-surface, #fff)"
-                                  : getManagerAccent(manager.managerId)
+                                  : colourOf(manager.managerId)
                               }
-                              stroke={getManagerAccent(manager.managerId)}
+                              stroke={colourOf(manager.managerId)}
                               strokeWidth={point.provisional ? 1.5 : 0}
                               strokeDasharray={point.provisional ? "2 2" : undefined}
                             />
@@ -196,10 +231,21 @@ export const PowerRibbon = ({ className }: { className?: string }) => {
         </div>
       </div>
 
-      <p className="mt-2 text-xs text-ink-faint">
-        Champion at the top. Pick a manager to trace their career; a hollow
-        marker is a season still being played.
-      </p>
+      <div className="mt-2 flex flex-wrap items-baseline gap-x-3 text-xs text-ink-faint">
+        <p>
+          Champion at the top. Pick up to {MAX_SERIES} managers to compare
+          careers; a hollow marker is a season still being played.
+        </p>
+        {pinned.size > 0 && (
+          <button
+            type="button"
+            onClick={() => setPinned(new Set())}
+            className="font-medium text-ink-muted underline decoration-dotted underline-offset-2 hover:text-ink"
+          >
+            Clear {pinned.size} selected
+          </button>
+        )}
+      </div>
     </div>
   );
 };

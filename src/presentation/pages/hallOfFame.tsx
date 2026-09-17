@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getPlayer } from "@/data";
 import { getManagerAccent } from "@/domain/managerColors";
 import { usePrecomputedStats } from "@/hooks/usePrecomputedStats";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 import {
   LINK_CLASS,
   ManagerLink,
@@ -12,6 +13,7 @@ import {
 import { Card } from "@/presentation/components/Card";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import {
+  getManagerHonours,
   getManagersWing,
   getRingOfShame,
   listYears,
@@ -36,13 +38,18 @@ interface HOFInductee {
   /**
    * The induction citation.
    *
-   * **This is the commissioner's to write (F4a), and it is deliberately absent
-   * rather than stubbed.** Every inductee used to carry the sentence
+   * **Whoever won the Chumbo that year picks the inductee, so the citation is
+   * THEIRS to write (F4a).** It is deliberately absent rather than stubbed.
+   * Every inductee used to carry the sentence
    * "Placeholder text for X's Hall of Fame induction in YYYY. This will be
    * replaced with the actual blurb.", which reads on the page as if it were
    * league lore that nobody bothered to finish. An absent field renders as a
    * plainly-marked "citation pending" instead, and the wing's header counts how
    * many are still missing.
+   *
+   * The champion is derived from that season's bracket rather than stored
+   * here, so the page always credits the right person and a data correction
+   * (2019 was rebuilt twice) can never leave this list stale.
    *
    * To fill one in: add `blurb: "..."` to that year below. Newlines are kept,
    * so it can be several paragraphs. Nothing else needs changing.
@@ -107,6 +114,14 @@ const PlayersWing = () => {
   const years = Object.keys(hofInductees)
     .map(Number)
     .sort((a, b) => a - b);
+
+  // Who won each season, and therefore whose pick the inductee was. Derived
+  // from the bracket rather than recorded alongside the name, so it cannot
+  // fall out of step with the standings.
+  const championOf = new Map<number, string>();
+  for (const honours of getManagerHonours()) {
+    for (const title of honours.titles) championOf.set(title, honours.managerId);
+  }
   const written = years.filter((year) => hofInductees[year].blurb).length;
 
   return (
@@ -114,8 +129,8 @@ const PlayersWing = () => {
       <Card>
         <h2 className="text-xl font-bold text-ink">The Players' Wing</h2>
         <p className="mt-1 text-sm text-ink-muted">
-          One inductee a season, chosen by the commissioner. The citations are
-          his to write, and{" "}
+          One inductee a season, chosen by whoever won the Chumbo that year —
+          so the citation is theirs to write, not the commissioner's.{" "}
           <strong className="font-semibold text-ink">
             {written} of {years.length}
           </strong>{" "}
@@ -126,6 +141,7 @@ const PlayersWing = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
         {years.map((year) => {
           const inductee = hofInductees[year];
+          const chooser = championOf.get(year);
           const player = inductee.playerId
             ? getPlayer(inductee.playerId)
             : undefined;
@@ -170,8 +186,21 @@ const PlayersWing = () => {
                       Citation not yet written
                     </p>
                     <p className="mt-0.5 text-xs text-ink-faint">
-                      The plaque is blank. Nobody has recorded why {inductee.name}{" "}
-                      went in.
+                      The plaque is blank.{" "}
+                      {chooser ? (
+                        <>
+                          <Link
+                            to={`/managers/${chooser}`}
+                            className="font-medium underline decoration-dotted underline-offset-2"
+                          >
+                            {chooser}
+                          </Link>{" "}
+                          won {year} and picked {inductee.name}, so this one is
+                          theirs to write.
+                        </>
+                      ) : (
+                        <>Nobody has recorded why {inductee.name} went in.</>
+                      )}
                     </p>
                   </div>
                 )}
@@ -220,6 +249,27 @@ const ManagerCard = ({ entry }: { entry: WingEntry }) => (
       </h3>
       <p className="text-sm text-ink-muted break-words">{entry.teamName}</p>
 
+      {/* The Triple Crown: most wins, most points AND the title, in one season.
+          Two of them in fifteen years, so it goes above everything else on the
+          card rather than into the run of honours below. */}
+      {entry.tripleCrowns.length > 0 && (
+        <p className="mt-3 rounded border border-line-strong bg-surface-sunk px-2.5 py-1.5 text-xs">
+          <span className="font-semibold text-ink">
+            👑 Triple Crown
+            {entry.tripleCrowns.length > 1 ? ` ×${entry.tripleCrowns.length}` : ""}
+          </span>
+          <span className="text-ink-muted">
+            {" — "}most wins, most points and the title in{" "}
+            {entry.tripleCrowns.map((year, index) => (
+              <span key={year}>
+                {index > 0 && ", "}
+                <SeasonLink year={year}>{year}</SeasonLink>
+              </span>
+            ))}
+          </span>
+        </p>
+      )}
+
       {entry.archetype && (
         <p className="mt-3 text-sm">
           <span className="font-semibold text-ink">{entry.archetype}</span>
@@ -236,7 +286,7 @@ const ManagerCard = ({ entry }: { entry: WingEntry }) => (
           years={entry.runnerUps}
         />
         <Honour
-          label={entry.spoons.length === 1 ? "wooden spoon" : "wooden spoons"}
+          label={entry.spoons.length === 1 ? "Scumbo" : "Scumbos"}
           years={entry.spoons}
         />
         <p className="text-sm text-ink-faint">
@@ -384,6 +434,13 @@ const TabButton = ({
 const HallOfFame = () => {
   // A4: the build-time answers, not fifteen seasons of matchups. Suspends on
   // the `<Suspense>` boundary in App.tsx until the file is in.
+  // The Scumbo is the worst BREAKDOWN — the all-play record — so this page
+  // needs the matchups, not just the precomputed stats. Without them
+  // `getSeasonCrowns` correctly returns nothing rather than awarding a partial
+  // Scumbo off the two legs that come from the rosters alone, which is exactly
+  // what it did before this line existed: the Triple Crown badge and the
+  // Scumbo entries silently rendered as absent rather than wrong.
+  useAllSeasons();
   const stats = usePrecomputedStats();
   const [wing, setWing] = useState<WingId>("players");
 
