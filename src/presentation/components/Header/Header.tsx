@@ -1,5 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
+import { CommandPaletteButton } from "@/presentation/components/CommandPalette";
+import { RandomMatchupButton } from "@/presentation/components/RandomMatchup";
 
 const Header = () => {
   const location = useLocation();
@@ -129,6 +131,14 @@ const Header = () => {
             </NavLink>
           </li>
         </ScrollableTabs>
+
+        {/* E3 and E5. Both are buttons rather than keyboard-only affordances,
+            because most of this league opens the site from a WhatsApp link on
+            a phone and will never press ⌘K. */}
+        <div className="flex-none ml-2 flex items-center gap-1">
+          <CommandPaletteButton />
+          <RandomMatchupButton />
+        </div>
       </div>
     </header>
   );
