@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { loadAllSeasons } from "@/data";
 import { computeStat, getStatContext } from "@/utils/stats";
 import type { Game } from "@/utils/stats";
 import { latestPlayedWeek } from "@/utils/stats/identityStats";
@@ -218,5 +219,39 @@ describe("championship inevitability", () => {
       );
       expect(theirs.length, `${entry.subject} in ${entry.year}`).toBeGreaterThan(0);
     }
+  });
+});
+describe("the coin flip", () => {
+  /**
+   * Added because htc led nothing and was wearing somebody else's label at
+   * rank 2 — "The Firework, 2nd of 14" is a runner-up rosette, not a character.
+   *
+   * Two things this guards, both of which the first attempt got wrong:
+   * the measure must be about being CLOSE TO .500 rather than about having
+   * played a lot (weighting by games handed it to rich on 46.8%), and the
+   * record it quotes must be the same set of games as the rate beside it (it
+   * printed an all-games 108-101 next to a regular-season 50.0%).
+   */
+  it("goes to the manager closest to .500, and its prose adds up", async () => {
+    await loadAllSeasons();
+    const entry = computeStat("manager-archetypes").find((e) =>
+      e.detail?.includes("The Coin Flip")
+    );
+    expect(entry).toBeDefined();
+
+    const record = entry!.detail!.match(/(\d+)-(\d+)(?:-(\d+))? across/);
+    expect(record).not.toBeNull();
+    const [wins, losses, ties] = [record![1], record![2], record![3] ?? "0"].map(Number);
+
+    const rate = Number(entry!.detail!.match(/win rate of ([\d.]+)%/)![1]);
+    const games = wins + losses + ties;
+    expect(games).toBe(
+      Number(entry!.detail!.match(/across (\d+) regular-season games/)![1])
+    );
+    // The number in the prose has to survive a reader doing the arithmetic.
+    expect(((wins + ties / 2) / games) * 100).toBeCloseTo(rate, 1);
+
+    // And it has to actually be near a coin toss, or the label is a lie.
+    expect(Math.abs(rate - 50)).toBeLessThan(2);
   });
 });

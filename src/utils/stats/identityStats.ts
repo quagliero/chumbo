@@ -323,6 +323,15 @@ interface Profile {
   /** Real win rate minus that share. Positive means the schedule was kind. */
   luck: number;
   regularWinRate: number;
+  /**
+   * REGULAR-SEASON record, to match `regularWinRate`.
+   *
+   * It has to be the same set of games as the rate it is quoted beside, or the
+   * prose fails its own arithmetic: the first version printed an all-games
+   * record (108-101) next to a regular-season rate (50.0%), and 108/209 is not
+   * 50%.
+   */
+  record: { wins: number; losses: number; ties: number };
   playoffWinRate: number | null;
   earlyWinRate: number | null;
   lateWinRate: number | null;
@@ -428,6 +437,11 @@ export const buildProfiles = (games: Game[]): Profile[] => {
     profiles.push({
       managerId,
       played: played.length,
+      record: {
+        wins: regular.filter((g) => g.result === "win").length,
+        losses: regular.filter((g) => g.result === "loss").length,
+        ties: regular.filter((g) => g.result === "tie").length,
+      },
       narrowLosses: losses.filter((g) => Math.abs(g.margin) < 5).length,
       narrowWins: wins.filter((g) => g.margin < 5).length,
       swing: stdevOf(played.map((g) => g.points)),
@@ -597,6 +611,33 @@ export const ARCHETYPES: Archetype[] = [
       `${percent(p.playoffWinRate ?? 0)} once the playoffs start — ${shown} ` +
       `percentage points worse when it matters`,
     lead: "the biggest drop in the league",
+  },
+  {
+    /**
+     * Added because htc led nothing.
+     *
+     * Every other label is an extreme, and a manager who is not extreme at
+     * anything ends up with somebody else's label at rank 2 — "The Firework,
+     * 2nd of 14" is a runner-up rosette, not a character. Being relentlessly,
+     * immovably average across fifteen years IS a character, and it is the one
+     * thing the middle of the table is unmatched at.
+     *
+     * Purely distance from .500, gated by MIN_GAMES. Weighting it by games
+     * played was the first attempt and it handed the label to rich on 46.8%,
+     * because 221 games outweighed being nowhere near a coin toss — the
+     * qualifying threshold belongs in the filter, not in the score.
+     */
+    key: "coin-flip",
+    label: "The Coin Flip",
+    measure: (p) =>
+      p.played < MIN_GAMES ? null : -Math.abs(p.regularWinRate - 0.5),
+    show: (v) => `${(Math.abs(v) * 100).toFixed(1)} points`,
+    evidence: (p) =>
+      `${p.record.wins}-${p.record.losses}` +
+      (p.record.ties ? `-${p.record.ties}` : "") +
+      ` across ${p.record.wins + p.record.losses + p.record.ties} regular-season games, a win rate of ${(p.regularWinRate * 100).toFixed(1)}%`,
+    lead: "the closest anyone has come to a coin toss over a whole career",
+    quip: "fifteen years of being exactly as good as everybody else",
   },
   {
     key: "firework",

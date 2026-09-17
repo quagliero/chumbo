@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-17T13:25:41.930Z",
+  "generatedAt": "2026-09-17T16:40:21.193Z",
   "years": [
     2012,
     2013,
@@ -4019,6 +4019,12 @@
           "detail": "The Closer — 35% through Week 6, 53% from Week 9 — a surge of 18 percentage points, the steepest surge in the league"
         },
         {
+          "value": 1.63,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "The Coin Flip — 88-88 across 176 regular-season games, a win rate of 50.0%, the closest anyone has come to a coin toss over a whole career — fifteen years of being exactly as good as everybody else"
+        },
+        {
           "value": 1.58,
           "subject": "nick",
           "href": "/managers/nick",
@@ -4041,12 +4047,6 @@
           "subject": "dix",
           "href": "/managers/dix",
           "detail": "The Bully — wins by 28.2 points on average, 2nd of 14 in the league — does not so much win as make a point"
-        },
-        {
-          "value": 1.28,
-          "subject": "htc",
-          "href": "/managers/htc",
-          "detail": "The Firework — a career-best 171.48 in 2015 Week 9, 2nd of 14 in the league — and has been telling everyone about it ever since"
         },
         {
           "value": 1.11,
