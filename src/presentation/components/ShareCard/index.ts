@@ -143,3 +143,41 @@ export {
   type RenderedCard,
   type ShareCardErrorCode,
 } from "./raster";
+
+/**
+ * The five templates (G2), and the shared chrome they are built from.
+ *
+ * Re-exported here so a call site has one import for "make me a card", and so
+ * G3/G4 never need to know which file a template lives in. `templates/index.ts`
+ * documents which card is for which fact and what a caller has to assemble.
+ */
+export {
+  CAVEAT_LONG,
+  CAVEAT_SHORT,
+  CONTENT_BOTTOM,
+  CONTENT_WIDTH,
+  FINAL_SCORE_NAME_BOX,
+  FOOTER_HEIGHT,
+  NEUTRAL_ACCENT,
+  SITE_NAME,
+  SITE_URL,
+  draftPickCard,
+  finalScoreCard,
+  formatPickLabel,
+  formatPoints,
+  formatRecord,
+  formatScore,
+  h2hRecordCard,
+  managerSeasonCard,
+  recordBrokenCard,
+  seasonMeta,
+  type CardChrome,
+  type CardNote,
+  type CardPerson,
+  type DraftPickCardProps,
+  type FinalScoreCardProps,
+  type FinalScoreSide,
+  type H2HRecordCardProps,
+  type ManagerSeasonCardProps,
+  type RecordBrokenCardProps,
+} from "./templates";

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Share card templates (G2) — harness</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        background: #f5f6f9;
+        color: #151922;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+          sans-serif;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0 0 4px;
+      }
+      p.lede {
+        margin: 0 0 24px;
+        color: #69738a;
+        font-size: 13px;
+        max-width: 78ch;
+      }
+      .case {
+        margin-bottom: 32px;
+      }
+      .case h2 {
+        font-size: 13px;
+        margin: 0 0 8px;
+        color: #69738a;
+        font-weight: 600;
+      }
+      .row {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .full img {
+        width: 600px;
+        display: block;
+        border: 1px solid #dce0e9;
+        border-radius: 8px;
+      }
+      /* The card as WhatsApp actually shows it in a thread. If it is not
+         legible here, it is not legible. */
+      .thumb img {
+        width: 200px;
+        display: block;
+        border: 1px solid #dce0e9;
+        border-radius: 8px;
+      }
+      .meta {
+        font-size: 11px;
+        color: #98a0b3;
+        margin-top: 6px;
+        font-family: ui-monospace, monospace;
+      }
+      .error {
+        background: #fef2f2;
+        border: 1px solid #a8241c;
+        color: #a8241c;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: ui-monospace, monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Share card templates (G2) — harness</h1>
+    <p class="lede">
+      Not part of the app: nothing imports this file and it is not referenced
+      from index.html, so it is never built. It is here because a template
+      whose output nobody has looked at is not finished. Every case below is
+      one of the five real templates, rendered through the real
+      <code>renderCard</code> pipeline, at 600px and at 200px — roughly the
+      size WhatsApp shows a preview in a thread. The nasty cases are last: a
+      team name that is markup, a name with an ampersand and an apostrophe, the
+      yellow accent that white text fails on, and a fact that rests on 2019's
+      reconstructed lineup data.
+    </p>
+    <div id="out"></div>
+    <script type="module" src="./harness.ts"></script>
+  </body>
+</html>
