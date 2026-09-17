@@ -132,10 +132,7 @@ const DraftBoard = ({
 
                     const player = getPlayer(pick.player_id, year);
                     const position =
-                      pick?.position ||
-                      player?.position ||
-                      pick.metadata?.position ||
-                      "UNK";
+                      pick?.position || player?.position || "UNK";
                     const bgColor = POSITION_COLORS[position] || "bg-white";
 
                     // Calculate position rank (e.g., WR5 means 5th WR taken)
@@ -144,9 +141,7 @@ const DraftBoard = ({
                       .filter((p) => {
                         const pPlayer = getPlayer(p.player_id, year);
                         const pPosition =
-                          pPlayer?.fantasy_positions?.[0] ||
-                          p.metadata?.position ||
-                          "UNK";
+                          pPlayer?.fantasy_positions?.[0] || "UNK";
                         return pPosition === position;
                       }).length;
 
@@ -154,13 +149,14 @@ const DraftBoard = ({
                     const expectedRosterId = slotToRoster[pick.draft_slot];
                     const isTraded = pick.roster_id !== expectedRosterId;
 
+                    // A1e: every pick resolves in the dictionary, so the old
+                    // pick.metadata fallback was unreachable and its 13 fields
+                    // were 71% of picks.json.
                     const playerName = player
                       ? `${player.first_name || ""} ${
                           player.last_name || ""
                         }`.trim()
-                      : `${pick.metadata?.first_name || ""} ${
-                          pick.metadata?.last_name || ""
-                        }`.trim() || pick.player_id;
+                      : pick.player_id;
 
                     // Get the actual picker
                     const pickerRoster = rosters.find(

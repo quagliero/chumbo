@@ -66,7 +66,7 @@ export const useDraftPicks = (playerId: string | undefined) => {
                 ownerId: roster.owner_id,
                 teamName: getTeamName(roster.owner_id, seasonData.users),
                 managerName: manager.name,
-                position: pick.position || pick.metadata?.position,
+                position: pick.position,
               });
             }
           }

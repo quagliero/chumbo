@@ -8,22 +8,13 @@ export interface Pick {
   position?: string;
 }
 
-export interface ExtendedPick extends Pick {
-  draft_id: string;
-  is_keeper: boolean | null;
-  metadata: {
-    first_name: string;
-    injury_status: string;
-    last_name: string;
-    news_updated: string;
-    number: string;
-    player_id: string;
-    position: string;
-    sport: string;
-    status: string;
-    team: string;
-    years_exp: string;
-  };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  reactions: any | null;
-}
+/**
+ * A1e: `metadata`, `draft_id`, `is_keeper` and `reactions` were removed from the
+ * committed data. The metadata block duplicated the player dictionary — 71% of
+ * picks.json — and was never displayed, because `getPlayer()` resolves for all
+ * 2,640 picks. The other three were read by nothing. See scripts/trim-picks.js.
+ *
+ * Nothing extends Pick any more; the alias is kept so existing imports of
+ * ExtendedPick keep working.
+ */
+export type ExtendedPick = Pick;

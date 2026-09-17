@@ -5130,8 +5130,8 @@ exports[`getOptimalLineup > 2019 — every matchup 1`] = `
     "pointsLeftOnBench": 0,
   },
   "w12 r3": {
-    "optimalTotal": 52.36000000000001,
-    "pointsLeftOnBench": 15.500000000000007,
+    "optimalTotal": 52.56,
+    "pointsLeftOnBench": 15.700000000000003,
   },
   "w12 r4": {
     "optimalTotal": 91.48,
@@ -6103,8 +6103,8 @@ exports[`getOptimalLineup > 2020 — every matchup 1`] = `
     "pointsLeftOnBench": 16.700000000000003,
   },
   "w2 r12": {
-    "optimalTotal": 115.67999999999999,
-    "pointsLeftOnBench": 12.099999999999994,
+    "optimalTotal": 114.97999999999999,
+    "pointsLeftOnBench": 11.399999999999991,
   },
   "w2 r2": {
     "optimalTotal": 156.52,
@@ -6199,8 +6199,8 @@ exports[`getOptimalLineup > 2020 — every matchup 1`] = `
     "pointsLeftOnBench": 0,
   },
   "w4 r12": {
-    "optimalTotal": 121.06,
-    "pointsLeftOnBench": 15.700000000000003,
+    "optimalTotal": 119.76,
+    "pointsLeftOnBench": 14.400000000000006,
   },
   "w4 r2": {
     "optimalTotal": 97.22,
