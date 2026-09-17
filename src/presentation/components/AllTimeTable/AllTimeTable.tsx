@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "@/data";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getCumulativeStandings, TeamStats } from "@/utils/standings";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
@@ -30,6 +31,8 @@ const activeTeamIds = new Set(
 );
 
 const AllTimeTable = () => {
+  // A2a: the matchups are a lazy chunk now; suspend until they are in.
+  useAllSeasons();
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [showTiers, setShowTiers] = useState(false);

@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { seasons } from "@/data";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getTeamName } from "@/utils/teamName";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import {
@@ -43,6 +44,8 @@ interface AllTimeScheduleComparisonStats {
 }
 
 const AllTimeScheduleComparison = () => {
+  // A2a: the matchups are a lazy chunk now; suspend until they are in.
+  useAllSeasons();
   const { view } = useParams<{ view?: string }>();
   const navigate = useNavigate();
   const [selectedTeam, setSelectedTeam] = useState<string>("");

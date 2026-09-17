@@ -37,7 +37,16 @@ export default defineConfig({
           if (id.includes("/data/players.json")) {
             return "players";
           }
-          // Keep other data files in the main chunk
+          // A2a: the per-week files are loaded on demand, one chunk per season
+          // per kind, so a page that wants 2014 fetches 2014 and nothing else.
+          // Without this Rollup would emit ~500 chunks, one per week file.
+          const perWeek = id.match(
+            /\/data\/(\d{4})\/(matchups|transactions)[/.]/
+          );
+          if (perWeek) {
+            return `${perWeek[2]}-${perWeek[1]}`;
+          }
+          // Keep the small per-season files in the main chunk
           if (id.includes("/data/") && id.includes(".json")) {
             return "data";
           }

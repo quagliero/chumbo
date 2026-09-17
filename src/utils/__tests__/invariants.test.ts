@@ -291,6 +291,40 @@ describe("lineup invariants", () => {
   });
 });
 
+describe("draft invariants", () => {
+  /**
+   * A draft happens once a season, before a single game is played, so nothing
+   * about it is a regular-season or a playoff fact.
+   *
+   * H11: it used to be. Draft picks were collected inside the weekly loop, so
+   * a season contributed nothing unless one of its weeks passed the data-mode
+   * filter — in "playoffs" mode a manager lost the entire draft for every year
+   * they missed the playoffs. fin showed 175 drafted players in regular mode
+   * and 28 in playoffs mode; kitch 194 and 57.
+   */
+  it("draft history is identical in every data mode", () => {
+    const violations: string[] = [];
+
+    managers.forEach((manager) => {
+      const regular = getManagerStats(manager.id, "regular");
+      const playoffs = getManagerStats(manager.id, "playoffs");
+      const combined = getManagerStats(manager.id, "combined");
+      if (!regular || !playoffs || !combined) return;
+
+      if (
+        regular.mostDraftedPlayers.length !== playoffs.mostDraftedPlayers.length ||
+        regular.mostDraftedPlayers.length !== combined.mostDraftedPlayers.length
+      ) {
+        violations.push(
+          `${manager.id}: regular ${regular.mostDraftedPlayers.length}, playoffs ${playoffs.mostDraftedPlayers.length}, combined ${combined.mostDraftedPlayers.length}`
+        );
+      }
+    });
+
+    expect(violations).toEqual([]);
+  });
+});
+
 describe("strength of schedule invariants", () => {
   /**
    * The live season is the only season this is ever called for

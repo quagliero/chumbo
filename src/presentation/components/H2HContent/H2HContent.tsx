@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import { seasons, managers, getPlayer } from "@/data";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
@@ -39,6 +40,8 @@ interface H2HContentProps {
 }
 
 export default function H2HContent({ managerA, managerB }: H2HContentProps) {
+  // A2a: the matchups are a lazy chunk now; suspend until they are in.
+  useAllSeasons();
   const [showAllRegularSeason, setShowAllRegularSeason] = useState(false);
   const { number } = useFormatter();
 

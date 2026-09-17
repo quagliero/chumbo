@@ -1,4 +1,5 @@
 import { YEARS } from "@/domain/constants";
+import { memoiseOverSeasons } from "@/utils/cache";
 import { seasons } from "@/data";
 import managers from "@/data/managers.json";
 import { ExtendedMatchup } from "@/types/matchup";
@@ -39,7 +40,7 @@ export interface H2HRecordWithGames extends H2HMatchupRecord {
  * @param team2OwnerId - Sleeper owner ID for team 2
  * @returns H2H record with wins, losses, ties, and average points
  */
-export const getAllTimeH2HRecord = (
+const computeAllTimeH2HRecord = (
   team1OwnerId: string,
   team2OwnerId: string
 ): H2HMatchupRecord => {
@@ -329,3 +330,15 @@ export const calculateH2HStreak = (
 
   return { type: mostRecentResult, count };
 };
+
+/**
+ * The all-time record between two managers. Memoised: the H2H grid asks for
+ * every pairing at once, and each call walks all fifteen seasons.
+ */
+export const getAllTimeH2HRecord = memoiseOverSeasons(
+  "getAllTimeH2HRecord",
+  computeAllTimeH2HRecord,
+  // The H2H grid asks for every ordered pairing in one pass: 17 managers is
+  // 272. Anything smaller evicts before the next render can read it.
+  320
+);

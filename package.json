@@ -12,6 +12,7 @@
     "test:run": "vitest run",
     "preview": "vite preview",
     "build-players": "node scripts/build-players.js",
+    "trim-picks": "node scripts/trim-picks.js",
     "fetch-data": "node scripts/fetch-sleeper-data.js",
     "fetch-latest": "node scripts/fetch-sleeper-data.js --latest",
     "fetch-week": "node scripts/fetch-sleeper-data.js",

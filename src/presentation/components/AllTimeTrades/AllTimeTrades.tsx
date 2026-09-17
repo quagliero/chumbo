@@ -7,6 +7,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { seasons, managers } from "@/data";
+import { useAllSeasons, useAllTransactions } from "@/hooks/useSeasonData";
 import { getSeasonTrades, TradeSummary } from "@/utils/transactionUtils";
 import { getTeamName } from "@/utils/teamName";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
@@ -56,6 +57,10 @@ interface ManagerTradePair {
 }
 
 const AllTimeTrades = () => {
+  // A2a: both are lazy chunks now; suspend until they are in. This is the
+  // only all-time view that needs the transactions.
+  useAllSeasons();
+  useAllTransactions();
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [view, setView] = useState<"teams" | "players" | "managers">("teams");

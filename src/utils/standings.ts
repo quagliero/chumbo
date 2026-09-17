@@ -1,4 +1,5 @@
 import { seasons } from "@/data";
+import { memoiseOverSeasons } from "@/utils/cache";
 import { getTeamName } from "@/utils/teamName";
 import {
   calculateWinPercentageAsPercent,
@@ -22,7 +23,7 @@ export interface TeamStats {
   scoringCrown: string[];
 }
 
-export const getCumulativeStandings = (years: number[]) => {
+const computeCumulativeStandings = (years: number[]) => {
   const teamStats: Record<string, TeamStats> = {};
   Object.entries(seasons).forEach(([year, season]) => {
     if (!years.includes(Number(year))) return;
@@ -106,3 +107,12 @@ export const getCumulativeStandings = (years: number[]) => {
 
   return sortedStats;
 };
+
+/**
+ * Cumulative standings across the given years. Memoised: the all-time pages
+ * call it with the same year set on every render, and it walks every season.
+ */
+export const getCumulativeStandings = memoiseOverSeasons(
+  "getCumulativeStandings",
+  computeCumulativeStandings
+);

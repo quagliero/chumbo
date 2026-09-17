@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormatter } from "use-intl";
 import { getManagerStats, DataMode } from "@/utils/managerStats";
 import managers from "@/data/managers.json";
+import { useAllSeasons } from "@/hooks/useSeasonData";
 
 type SortOption =
   | "wins"
@@ -15,6 +16,9 @@ type SortOption =
   | "playoffs";
 
 const Managers = () => {
+  // A2a: getManagerStats walks every season's matchups, which are a lazy
+  // chunk now; suspend until they are in.
+  useAllSeasons();
   const navigate = useNavigate();
   const { number } = useFormatter();
   const [sortBy, setSortBy] = useState<SortOption>("wins");

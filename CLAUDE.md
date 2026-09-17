@@ -25,6 +25,7 @@ yarn lint           # eslint
 yarn test           # vitest (watch)
 yarn test:run       # vitest (single run)
 yarn build-players  # rebuild players.json + per-season overlays
+yarn trim-picks     # strip duplicated player metadata from picks.json
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -66,7 +67,7 @@ scripts/
 | ---- | ------------------------- | ----- |
 | `league.json` | `/league/{league_id}` | Holds `league_id`, `draft_id`, settings, scoring. **Must exist before the fetch script can run** (see bootstrap). |
 | `draft.json` | `/draft/{draft_id}` | Draft metadata, order, slot→roster mapping. |
-| `picks.json` | `/draft/{draft_id}/picks` | Every pick. |
+| `picks.json` | `/draft/{draft_id}/picks` | Every pick, trimmed by `yarn trim-picks` to the six fields the app reads. The raw Sleeper pick carries a 13-field `metadata` block duplicating the player dictionary — 71% of the file — plus `draft_id`, `is_keeper` and `reactions`, which nothing reads. |
 | `rosters.json` | `/league/{id}/rosters` | |
 | `users.json` | `/league/{id}/users` | |
 | `matchups/<week>.json` | `/league/{id}/matchups/{week}` | Weeks 1–18 fetched; index consumes **1–17**. |
@@ -151,4 +152,6 @@ The fetch script reads `league_id` and `draft_id` from an existing
   from a raw Sleeper dump. It was 17.3MB across three files before A1.
 - `scripts/data/player-id-map.json` keeps the external ids (gsis, espn, pfr…)
   that the slim dictionary drops — needed by A1d to join historical roster data.
+- **After any `fetch-data` / `fetch-season` run, re-run `yarn trim-picks`** —
+  Sleeper returns the fat pick objects every time.
 - `dist/` and `node_modules/` are gitignored.
