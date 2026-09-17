@@ -251,6 +251,13 @@ budget, because it is still trusted.
   disk, because the prerender runs in Node with no origin to resolve it against.
   The 240x240 NFL default avatars (`DEF.png`, `PIT_1.png`…) are in there too;
   those URLs still resolved, but they are one shutdown away from not doing.
+  `scripts/find-lost-logos.py` is the tool for the five: a standalone,
+  stdlib-only scan of a browser cache that a league member can run on their own
+  machine, with `--self-test` to prove a null result means the cache is empty
+  rather than the script is broken. Take the end of a cached JPEG from the FIRST
+  `FF D9` after the start — the last one is somewhere in the cache's own
+  trailing metadata, and taking it appends about 5 kB of HTTP response headers
+  to every image. That decodes fine, which is exactly why it went unnoticed.
 - **After any `fetch-data` / `fetch-season` run, re-run `yarn trim-picks`** —
   Sleeper returns the fat pick objects every time.
 - **Two players can share a name.** Sleeper gives them separate ids and the
