@@ -468,7 +468,7 @@ without being wired into each by hand.
 
 **Acceptance:** adding a stat is one file and one registry line.
 
-- [ ] C1
+- [x] C1
 
 ### C2 · Lineup stats `M`
 **Blocked by:** C1
@@ -476,28 +476,28 @@ without being wired into each by hand.
 `getOptimalLineup` already exists in `src/utils/lineupAnalysis.ts` and only feeds
 the All-Star Lineup tile. Surface what it can already tell you:
 
-- [ ] **C2a** Points left on the bench — per manager, per season, all-time
-- [ ] **C2b** Manager efficiency % (actual ÷ optimal) — separates drafting from managing
-- [ ] **C2c** The single worst start/sit in league history — week, player, manager, margin
-- [ ] **C2d** The Bench Bandit — most points scored while benched
+- [x] **C2a** Points left on the bench — per manager, per season, all-time
+- [x] **C2b** Manager efficiency % (actual ÷ optimal) — separates drafting from managing
+- [x] **C2c** The single worst start/sit in league history — week, player, manager, margin
+- [x] **C2d** The Bench Bandit — most points scored while benched
 
 ### C3 · Matchup stats `M`
 **Blocked by:** C1
 
-- [ ] **C3a** Biggest and closest margins ever (top scores exist; margins don't)
-- [ ] **C3b** Unluckiest loss (highest-scoring loss) and its twin, the lowest-scoring win
-- [ ] **C3c** "Beat almost everyone" — scores that would have won against 12 of 13 opponents and still lost
-- [ ] **C3d** Longest win/loss streaks, all-time and current (`getCurrentStreak` exists; streaks are not shown as records)
-- [ ] **C3e** Rivalry intensity — average margin per H2H pairing
-- [ ] **C3f** Revenge games — record in the rematch following a blowout loss
+- [x] **C3a** Biggest and closest margins ever (top scores exist; margins don't)
+- [x] **C3b** Unluckiest loss (highest-scoring loss) and its twin, the lowest-scoring win
+- [x] **C3c** "Beat almost everyone" — scores that would have won against 12 of 13 opponents and still lost
+- [x] **C3d** Longest win/loss streaks, all-time and current (`getCurrentStreak` exists; streaks are not shown as records)
+- [x] **C3e** Rivalry intensity — average margin per H2H pairing
+- [x] **C3f** Revenge games — record in the rematch following a blowout loss
 
 ### C4 · Draft stats `M`
 **Blocked by:** C1
 
-- [ ] **C4a** Best and worst picks ever — points per draft slot vs the slot average
-- [ ] **C4b** Draft position luck — does pick 1 actually win in this league? Fifteen years is enough to answer
-- [ ] **C4c** Most-drafted players league-wide, and who kept going back
-- [ ] **C4d** The one that got away — drafted, dropped, then scored for someone else
+- [x] **C4a** Best and worst picks ever — points per draft slot vs the slot average
+- [x] **C4b** Draft position luck — does pick 1 actually win in this league? Fifteen years is enough to answer
+- [x] **C4c** Most-drafted players league-wide, and who kept going back
+- [x] **C4d** The one that got away — drafted, dropped, then scored for someone else
 
 ### C5 · Transaction stats `L`
 **Blocked by:** C1
@@ -505,16 +505,16 @@ the All-Star Lineup tile. Surface what it can already tell you:
 6.0 MB of transaction data is currently near-unused — the largest untapped
 dataset in the repo.
 
-- [ ] **C5a** Waiver wire hit rate — points added via waivers per manager
-- [ ] **C5b** Trade ledger — points received vs given up, scored retrospectively. Who won each trade?
-- [ ] **C5c** Most churned roster — transactions per manager per season
+- [x] **C5a** Waiver wire hit rate — points added via waivers per manager
+- [x] **C5b** Trade ledger — points received vs given up, scored retrospectively. Who won each trade?
+- [x] **C5c** Most churned roster — transactions per manager per season
 
 ### C6 · Identity & fun stats `M`
 **Blocked by:** C1
 
-- [ ] **C6a** Manager archetypes — derived labels ("The Streamer", "The Set-and-Forget", "The Heartbreaker" for most narrow losses)
-- [ ] **C6b** Championship probability by week, retrospectively — at what point did each title become inevitable?
-- [ ] **C6c** On this day in Chumbo history — same week, previous seasons (feeds `E6`)
+- [x] **C6a** Manager archetypes — derived labels ("The Streamer", "The Set-and-Forget", "The Heartbreaker" for most narrow losses)
+- [x] **C6b** Championship probability by week, retrospectively — at what point did each title become inevitable?
+- [x] **C6c** On this day in Chumbo history — same week, previous seasons (feeds `E6`)
 
 ---
 
@@ -666,7 +666,7 @@ because "Zaragoza's Zooting Zorro" wraps to two lines and shoves its stats down.
 - [x] **F1b** Trophy case as the hero, not a footnote row of emoji at the bottom. Championships are the point.
 - [x] **F1c** Finishing-position sparkline per card — instant career shape, makes the grid scannable.
 - [x] **F1d** Fix alignment — `grid-rows-subgrid` or a fixed-height name block, so the eye can compare across cards.
-- [ ] **F1e** Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
+- [ ] **F1e** *(now unblocked — E7 shipped; this is the one M5 item left)* Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
 
 ### F2 · Manager accent colours `S`
 **Blocks:** D1, D2, D4, F1, F3, G2 · **Blocked by:** B1
@@ -1089,6 +1089,37 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 | ☑ | `G6` Prerendered OG images | XL |
 
 ---
+
+## Where this stands
+
+M0-M6 are done. Seven items remain, and none of them is a milestone:
+
+| | |
+|---|---|
+| `F4a` | **Yours.** Fifteen Hall of Fame citations — and the champion of each year picks that year's inductee, so they are the champions' to write, not the commissioner's. Plus portraits at `public/images/hof/<year>-icon.jpg`; that directory has never existed, so the page degrades to an initials medallion. |
+| `F1e` | Unblocked now that E7 ships. One line per manager on the Managers page. |
+| `A2b` | Deferred on purpose — see the risks table. `A2a` got the payload from 2.89 MB to a 77 kB critical path, which was the point. |
+| `A3`+`H2` | `managerStats.ts` is still 1,200 lines with one exported function. |
+| `H3` | `src/data/index.ts` still uses `any` behind an eslint-disable. `src/types/manager.ts` was the narrow half of this and is done. |
+| `A1d` | Historical teams from nflverse. |
+
+Found along the way and worth their own tasks:
+
+- **Mid-season handovers are not modelled.** `managers.json` has a `weeks`
+  field recording that sol and phil split 2015 and 2016 and chris covered a week
+  of 2020, and nothing reads it — those part-seasons are credited entirely to
+  one of the two managers. A site-wide attribution change.
+- **Five legacy players exist twice**, once under a name and once under a
+  Sleeper id, so each has two pages holding half a career.
+  `scripts/fix-player-ids.js` is the home for it.
+- **`PerformanceTable`'s row click** can build a matchup URL that does not
+  resolve; `PlayerStatsCardLink`'s `gameHref` is importable.
+- **No dark mode.** `index.css` now declares `color-scheme: light` because
+  leaving it unset rendered dark text on the browser's dark ground. A real one
+  means a second palette and a pass over every hardcoded colour.
+- **Two share-card features were cut for bytes** before the budget was raised:
+  the streak pill on the H2H card and a manager badge that distinguishes Triple
+  Crown from Scumbo. Both fit now.
 
 ## Risks
 
