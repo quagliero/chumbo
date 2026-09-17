@@ -8,7 +8,7 @@ import {
   ManagerH2HRecord,
 } from "@/utils/managerStats";
 import {
-  ManagerStatsCard,
+  CareerSummary,
   H2HTable,
   AllStarLineup,
   MostDraftedPlayers,
@@ -19,6 +19,7 @@ import {
 import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDetail";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { getManagerAccent } from "@/domain/managerColors";
 import { Card } from "@/presentation/components/Card";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 
@@ -114,8 +115,14 @@ const ManagerDetail = () => {
           { label: managerStats.managerName },
         ]}
       />
-      {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* Header. The rule is the manager's accent — exactly one manager is on
+          screen here, which is the case F2 carves out for identity colour.
+          Stacks on a phone: the name and the data-mode select side by side at
+          375px squeezed the select to about eighty pixels. */}
+      <div
+        className="flex flex-col gap-3 border-l-4 pl-3 sm:flex-row sm:items-center sm:justify-between"
+        style={{ borderLeftColor: getManagerAccent(managerStats.managerId) }}
+      >
         <div>
           <h1 className="text-3xl font-bold">{managerStats.managerName}</h1>
           <p className="text-xl text-gray-600">{managerStats.teamName}</p>
@@ -234,7 +241,7 @@ const ManagerDetail = () => {
 
       {/* Tab Content */}
       {currentTab === "summary" && managerStats && (
-        <ManagerStatsCard managerStats={managerStats} />
+        <CareerSummary stats={managerStats} dataMode={dataMode} />
       )}
 
       {currentTab === "seasons" && managerStats && (
