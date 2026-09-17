@@ -251,6 +251,10 @@ const AllTimeTable = () => {
         <DataTable
           columns={columns}
           data={filteredData}
+          // E8: the front door of the site, and "sort by points for and look
+          // who is second" is the nugget people come back with. The sort rides
+          // in the URL so the link they paste arrives sorted.
+          urlState
           // Tiers colour the rows by rank, and zebra striping fights that.
           zebra={!showTiers}
           // Legacy Tailwind palette, deliberately: the token set has no ordinal

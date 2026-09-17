@@ -366,11 +366,15 @@ const AllTimeTrades = () => {
       columnHelper.accessor("tradeCount", {
         header: "Times Traded",
         cell: (info) => info.getValue(),
+        // The filter box under this table is for finding a player by name.
+        // Left on, typing "3" would also match every player traded 3 times.
+        enableGlobalFilter: false,
         meta: { kind: "numeric" as const },
       }),
       columnHelper.accessor("yearsTraded", {
         header: "Years",
         cell: (info) => renderYearList(info.getValue()),
+        enableGlobalFilter: false,
       }),
     ];
   }, []);
@@ -536,6 +540,14 @@ const AllTimeTrades = () => {
             // Long enough that the header is worth pinning, which needs the
             // table to own its own vertical scroll. See DataTable's note.
             maxHeight="max-h-[70vh]"
+            // E8. A hundred rows is the one place on the site where scrolling
+            // for a name is the wrong answer, so this is the table that gets
+            // the filter box — and what is typed goes in the link.
+            // Namespaced because the tab holds three tables.
+            urlState="players"
+            filterable
+            filterLabel="Filter traded players by name"
+            filterPlaceholder="Filter players…"
             emptyMessage="No players traded in the selected seasons."
           />
         </div>

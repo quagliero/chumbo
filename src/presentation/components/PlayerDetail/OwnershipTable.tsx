@@ -88,6 +88,9 @@ const OwnershipTable = ({ data }: OwnershipTableProps) => {
       columns={columns}
       data={data}
       initialSorting={[{ id: "gamesPlayed", desc: true }]}
+      // E8, namespaced: the player page shows several tables, so this one's
+      // sort is `?owners.sort=` and cannot be confused with a neighbour's.
+      urlState="owners"
       emptyMessage="No manager has rostered this player."
     />
   );
