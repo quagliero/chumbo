@@ -357,7 +357,7 @@ const DataTable = <TData,>({
                   // Not `surface-sunk`: that is the zebra colour, so half the
                   // rows would show no hover at all. There is no third neutral
                   // step in the token set yet.
-                  "border-b border-line hover:bg-line/40",
+                  "border-b border-line hover:bg-hover",
                   onRowClick ? "cursor-pointer" : "",
                   getRowClassName?.(row, index) ?? "",
                 ]

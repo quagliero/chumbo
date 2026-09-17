@@ -1,5 +1,4 @@
 import { useFormatter } from "use-intl";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
@@ -10,6 +9,7 @@ import { getPlayerImageUrl } from "@/utils/playerImage";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { getRecordUpToWeek, getCurrentStreak } from "@/utils/matchupStats";
 import { getPlayerRows, getOptimalLineup } from "@/utils/lineupAnalysis";
+import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 
 interface MatchupDetailProps {
   matchup: [ExtendedMatchup, ExtendedMatchup];
@@ -31,7 +31,6 @@ const MatchupDetail = ({
   users,
 }: MatchupDetailProps) => {
   const { number } = useFormatter();
-  const navigate = useNavigate();
   const [team1Data, team2Data] = matchup;
 
   // Helper function to get player nickname from roster metadata
@@ -96,13 +95,15 @@ const MatchupDetail = ({
 
   return (
     <div className="container mx-auto space-y-6">
-      {/* Back button */}
-      <button
-        onClick={() => navigate(`/seasons/${year}/matchups`)}
-        className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
-      >
-        ← Back to all matchups
-      </button>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Seasons", to: "/seasons" },
+          { label: String(year), to: `/seasons/${year}/standings` },
+          { label: "Matchups", to: `/seasons/${year}/matchups` },
+          { label: `Week ${week}` },
+          { label: `${teams[0].name} vs ${teams[1].name}` },
+        ]}
+      />
 
       {/* Header with team info */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">

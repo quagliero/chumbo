@@ -35,6 +35,27 @@ export default {
           strong: "#c6ccda",
         },
 
+        // Zebra rows alternate `surface` and `surface-sunk`, so a row hover has
+        // to be distinguishable from BOTH or half the rows appear not to react.
+        // A third neutral step, deliberately a touch cooler than sunk.
+        // (B3 reached for `line/40` in the absence of this; translucency is the
+        // wrong tool, because it composites twice under a pinned column and
+        // shows as a darker stripe down the sticky edge.)
+        hover: "#edf0f6",
+
+        // Ordinal bands for standings tiers and playoff highlights. OPAQUE, for
+        // the same reason: a pinned column sits over these, and a translucent
+        // fill would double up along the sticky boundary. Values sit where the
+        // legacy green-50 / blue-50 / yellow-50 / red-50 did, so appearance is
+        // preserved. Distinct from `series-*`, which is for chart identity, and
+        // from `result-*`, which is reserved for win/loss/tie.
+        band: {
+          best: "#f0fdf4",
+          good: "#eff6ff",
+          mid: "#fefce8",
+          worst: "#fef2f2",
+        },
+
         // Result semantics. Reserved — never reuse these as a series colour.
         result: {
           win: "#2a6344",

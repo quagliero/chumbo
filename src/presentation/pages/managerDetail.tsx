@@ -29,6 +29,7 @@ import type { H2HRecordWithOpponent } from "@/presentation/components/ManagerDet
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { Card } from "@/presentation/components/Card";
+import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 
 const ManagerDetail = () => {
   // A2a: getManagerStats walks every season's matchups, which are a lazy
@@ -117,17 +118,17 @@ const ManagerDetail = () => {
 
   return (
     <div className="container mx-auto space-y-6">
+      <Breadcrumbs
+        crumbs={[
+          { label: "Managers", to: "/managers" },
+          { label: managerStats.managerName },
+        ]}
+      />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">{managerStats.managerName}</h1>
           <p className="text-xl text-gray-600">{managerStats.teamName}</p>
-          <button
-            onClick={() => navigate("/managers")}
-            className="text-blue-600 hover:text-blue-800"
-          >
-            ← Back to Managers
-          </button>
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">

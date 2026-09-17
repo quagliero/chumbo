@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import {
   usePlayerData,
@@ -13,12 +13,12 @@ import {
 } from "@/presentation/components/PlayerDetail";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { Card } from "@/presentation/components/Card";
+import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 
 const PlayerDetail = () => {
   // A2a: every one of these hooks reads the matchups, a lazy chunk now.
   useAllSeasons();
   const { playerId } = useParams<{ playerId: string }>();
-  const navigate = useNavigate();
 
   // Use custom hooks for data
   const { player, allNicknames } = usePlayerData(playerId);
@@ -48,15 +48,17 @@ const PlayerDetail = () => {
 
   return (
     <div className="container mx-auto space-y-6">
-      {/* Back Button */}
-      <div className="mb-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-blue-600 hover:text-blue-800 text-sm"
-        >
-          ← Back
-        </button>
-      </div>
+      <Breadcrumbs
+        crumbs={[
+          { label: "Players", to: "/players" },
+          {
+            label:
+              player.full_name ||
+              `${player.first_name ?? ""} ${player.last_name ?? ""}`.trim() ||
+              String(playerId),
+          },
+        ]}
+      />
 
       {/* Player Header */}
       <div className="bg-white mb-8">
