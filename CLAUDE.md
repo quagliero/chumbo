@@ -29,6 +29,7 @@ yarn trim-picks     # strip duplicated player metadata from picks.json
 yarn fix-player-ids # apply the committed player-id corrections (idempotent)
 yarn build-aggregates  # regenerate public/data/all-time.json (runs in `yarn build`)
 yarn check-aggregates  # fail if that file is stale, without rewriting it
+yarn prerender-og   # per-route HTML + OG images into dist/ (runs in `yarn build`)
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
@@ -180,6 +181,31 @@ Three data-quality rules these all obey:
   regular-season order. The two brackets use different conventions — pre-2020
   the losers bracket numbers the league, 2020+ it restarts at 1 — so reading
   `p` straight off makes the consolation winner joint champion.
+
+## Link previews (G6)
+
+`yarn prerender-og`, part of `yarn build`, writes a real `index.html` for every
+manager, season and head-to-head pairing — 266 of them — each with its own OG
+tags and a 1200×630 card rendered by the SAME `ShareCard` templates the copy
+button uses, so a preview and a shared image cannot disagree. Images land in
+`dist/og/`.
+
+Three things to know:
+
+- **Not committed**, unlike `public/data/all-time.json`. That file is fetched by
+  the app at runtime; these PNGs are only ever fetched by crawlers, `dist/` is
+  gitignored, and every `fetch-latest` would rewrite them — tens of MB of binary
+  churn for no reader.
+- **It works because `public/_redirects` has no `!`.** The rule is
+  `/*  /index.html  200`, and Netlify serves an existing file in preference to a
+  non-forced redirect, so `/managers/thd` gets its own prerendered page while
+  `/players/4046` still falls through to the SPA. Adding a force flag to that
+  rule would silently switch every link preview back to the generic one.
+- **resvg draws nothing where it cannot resolve a font**, and the cards use a
+  system stack deliberately. The script renders a probe and counts dark pixels
+  before committing to 266 cards; if text is not drawing it falls back to a
+  crest-only card and says so, and `--strict` fails the build instead. That is
+  the one real production risk if the build image ever lacks a humanist sans.
 
 ## The bundle budget
 

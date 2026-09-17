@@ -786,7 +786,7 @@ so this is pure build-time work needing no server.
 A link that previews as a proper scorecard *and* a copy-image button is what turns
 "I found a thing" into something the group chat actually sees.
 
-- [ ] G6
+- [x] G6
 
 ---
 
@@ -1005,7 +1005,7 @@ snapshot tests proving no stat changed.
 ### M2 — Data layer `~4 days`
 | | Task | Size |
 |---|---|---|
-| ☐ | `A2a` Un-eager the heavy files | M |
+| ☑ | `A2a` Un-eager the heavy files | M |
 | ☑ | `A1e` Trim picks.json | S |
 | ☐ | `A2b` Move data to `public/`, add loader | L | *(deferred — see risks)*
 | ☐ | `A3` + `H2` Memoise and split `managerStats` | L |
@@ -1065,7 +1065,7 @@ use) and `H14` (the Chargers' Mike Williams split across two ids from 2019).
 | ☑ | `D1` Season arc | M |
 | ☑ | `D7` Luck chart | M |
 | ☑ | `D5` Weekly heatmap | M |
-| ☐ | `D4` Score distribution | M |
+| ☐ | `D4` Score distribution | M | *(the one M5 task not done — held back because it needed `home.tsx` while D7 was editing it)*
 | ☑ | `D6` Draft value scatter | M |
 | ◐ | `F1a–e` Managers page rebuild | L | *(a–d done; F1e needs E7/M6)*
 | ☑ | `F3` Manager detail rebuild | M |
@@ -1086,7 +1086,7 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 | ☑ | `G2` Card templates | M |
 | ☑ | `G3` Clipboard copy | M |
 | ☑ | `G4` Native share sheet | S |
-| ☐ | `G6` Prerendered OG images | XL |
+| ☑ | `G6` Prerendered OG images | XL |
 
 ---
 
