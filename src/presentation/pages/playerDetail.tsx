@@ -14,6 +14,7 @@ import {
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { Card } from "@/presentation/components/Card";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
+import { PlayerSeeAlso } from "@/presentation/components/SeeAlso";
 
 const PlayerDetail = () => {
   // A2a: every one of these hooks reads the matchups, a lazy chunk now.
@@ -151,6 +152,17 @@ const PlayerDetail = () => {
       <div className="mt-8">
         <PerformanceTable performances={playerStats.performances} />
       </div>
+
+      {/* E2: three exact facts, each a way off this page — the draft board he
+          last went in, the game he had his best week in, and the most-capped
+          list of the manager who played him most. Below the tables rather than
+          above them, so it is not sitting next to the Highest Score card
+          restating it. Renders nothing for a player with no history. */}
+      <PlayerSeeAlso
+        draftPicks={draftPicks}
+        bestWeek={playerStats.highestScoreGame}
+        ownerStats={playerStats.ownerStats}
+      />
     </div>
   );
 };

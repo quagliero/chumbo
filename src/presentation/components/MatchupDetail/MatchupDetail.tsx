@@ -3,15 +3,17 @@ import { Link } from "react-router-dom";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedUser } from "@/types/user";
-import { managers } from "@/data";
-import { getAllTimeH2HRecord } from "@/utils/h2h";
+import { managers, seasons } from "@/data";
+import { getH2HRecordForSeason } from "@/utils/h2h";
 import { getPlayerImageUrl } from "@/utils/playerImage";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { getRecordUpToWeek, getCurrentStreak } from "@/utils/matchupStats";
 import { getPlayerRows, getOptimalLineup } from "@/utils/lineupAnalysis";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 import { NarrativeNotes } from "@/presentation/components/Narrative";
+import { MatchupSeeAlso } from "@/presentation/components/SeeAlso";
 import { ShareButton } from "@/presentation/components/ShareButton";
+import { isWeekCompleted } from "@/utils/weekUtils";
 import { avatarDataUri } from "./shareAvatar";
 import { getManagerAccent } from "@/domain/managerColors";
 
@@ -56,9 +58,19 @@ const MatchupDetail = ({
 
   const team1Record = getRecordUpToWeek(team1Data.roster_id, allMatchups, week);
   const team2Record = getRecordUpToWeek(team2Data.roster_id, allMatchups, week);
-  const h2hRecord = getAllTimeH2HRecord(
-    team1Roster?.owner_id || "",
-    team2Roster?.owner_id || ""
+  // THIS SEASON's series, not the all-time one.
+  //
+  // This box called `getAllTimeH2HRecord`, which walks every year of `seasons`
+  // — but matchups are loaded per season on demand (A2a), so on this page it
+  // only ever saw the season being viewed, plus whichever others the visitor
+  // happened to have opened first. The heading said "All-Time" and the number
+  // changed depending on where you had been. E2's rail carries the real
+  // all-time series (from the precomputed file, which does not need the
+  // archive), so this box now says the season it can actually see.
+  const h2hRecord = getH2HRecordForSeason(
+    team1Data.roster_id,
+    team2Data.roster_id,
+    { matchups: allMatchups, league: seasons[year]?.league, year }
   );
   const team1Streak = getCurrentStreak(team1Data.roster_id, allMatchups, week);
   const team2Streak = getCurrentStreak(team2Data.roster_id, allMatchups, week);
@@ -249,7 +261,7 @@ const MatchupDetail = ({
           <div className="text-2xl font-bold text-gray-400 mb-2">VS</div>
           <div className="text-sm text-gray-600">
             <div className="font-semibold mb-1">
-              All-Time H2H (Regular Season)
+              {year} H2H (Regular Season)
             </div>
             <div>
               {teams[0].manager?.name}: {h2hRecord.team1Wins}
@@ -466,6 +478,44 @@ const MatchupDetail = ({
           </div>
         ))}
       </div>
+
+      {/* E2: where to go next, as opposed to E7's what-was-notable at the top.
+          It sits BELOW the score sheets on purpose — the scores are what the
+          page is for, and the moment you want somewhere else to be is the
+          moment you have finished reading them. Renders nothing at all when
+          there is nothing real to point at. */}
+      <MatchupSeeAlso
+        year={year}
+        week={week}
+        matchupId={team1Data.matchup_id}
+        teams={[
+          {
+            rosterId: team1Data.roster_id,
+            managerId: teams[0].manager?.id ?? null,
+            name: teams[0].name,
+          },
+          {
+            rosterId: team2Data.roster_id,
+            managerId: teams[1].manager?.id ?? null,
+            name: teams[1].name,
+          },
+        ]}
+        matchups={allMatchups}
+        nameOf={(rosterId) =>
+          getTeamName(
+            rosters.find((roster) => roster.roster_id === rosterId)?.owner_id ||
+              ""
+          )
+        }
+        // The league comes off the eager season data rather than a new prop:
+        // `history.tsx` already has it, but threading it through would mean
+        // editing a file this task does not own for something that is free
+        // here.
+        isPlayed={(candidate) =>
+          isWeekCompleted(candidate, seasons[year]?.league)
+        }
+        teamCount={rosters.length}
+      />
     </div>
   );
 };
