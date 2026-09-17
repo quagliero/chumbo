@@ -9,6 +9,7 @@ import {
   ManagerLink,
   SeasonLink,
 } from "@/presentation/components/Links";
+import { gameHref } from "./PlayerStatsCardLink";
 
 /** Render a list of seasons as links to the playoff bracket for each. */
 const SeasonList = ({ years }: { years: number[] }) => (
@@ -52,6 +53,10 @@ interface PlayerStatsCardProps {
 
 const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
   const { number } = useFormatter();
+
+  const bestGame = playerStats.highestScoreGame;
+  // A stored matchup id is not a page on its own — only a two-sided game is.
+  const bestGameHref = gameHref(bestGame);
 
   // Calculate ownership stats
   const ownershipStats = {
@@ -140,21 +145,27 @@ const PlayerStatsCard = ({ playerStats }: PlayerStatsCardProps) => {
           <p className="text-3xl font-bold text-gray-900">
             {number(playerStats.highestScore, { maximumFractionDigits: 2 })}
           </p>
-          {playerStats.highestScoreGame && (
+          {bestGame && (
             <div className="mt-1">
               <p className="text-sm text-gray-600">
-                vs {playerStats.highestScoreGame.opponent} (
-                <Link
-                  to={`/seasons/${playerStats.highestScoreGame.year}/matchups/${playerStats.highestScoreGame.week}/${playerStats.highestScoreGame.matchupId}`}
-                  className={LINK_CLASS}
-                  title="Open this matchup"
-                >
-                  {playerStats.highestScoreGame.year}, Week{" "}
-                  {playerStats.highestScoreGame.week}
-                </Link>
+                vs {bestGame.opponent} (
+                {bestGameHref ? (
+                  <Link
+                    to={bestGameHref}
+                    className={LINK_CLASS}
+                    title="Open this matchup"
+                  >
+                    {bestGame.year}, Week {bestGame.week}
+                  </Link>
+                ) : (
+                  // No two-sided game to open: the week still names itself.
+                  <>
+                    {bestGame.year}, Week {bestGame.week}
+                  </>
+                )}
                 )
               </p>
-              {!playerStats.highestScoreGame.wasStarted && (
+              {!bestGame.wasStarted && (
                 <span className="inline-block mt-1 px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
                   On the Bench!
                 </span>

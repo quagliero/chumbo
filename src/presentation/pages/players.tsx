@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { PlayerSearch, PlayerResults } from "@/presentation/components/Players";
 import { usePlayerSearch } from "@/hooks/players";
-import { useAllSeasons } from "@/hooks/useSeasonData";
 
 const Players = () => {
-  // A2a: the search sweeps every season's matchups for the legacy
-  // string-named players, and those are a lazy chunk now.
-  useAllSeasons();
+  // No `useAllSeasons()` here, deliberately. It used to be required because the
+  // search swept every season's matchups for the legacy string-named players —
+  // the whole archive downloaded to find thirty-nine names. Those names are a
+  // build-time fact now (`src/data/legacyPlayers.ts`), so this page searches the
+  // eager dictionary and nothing else.
   const [searchTerm, setSearchTerm] = useState("");
   const searchResults = usePlayerSearch(searchTerm);
 
