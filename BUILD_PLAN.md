@@ -1014,16 +1014,28 @@ remain; the Draft Board is fully navigable.
 ### M4 — Stats engine `~5 days`
 | | Task | Size |
 |---|---|---|
-| ☐ | `C1` Stat registry | L |
-| ☐ | `C2` Lineup stats (a–d) | M |
-| ☐ | `C3` Matchup stats (a–f) | M |
-| ☐ | `C4` Draft stats (a–d) | M |
-| ☐ | `C5` Transaction stats (a–c) | L |
-| ☐ | `C6` Identity & fun stats (a–c) | M |
+| ☑ | `C1` Stat registry | L |
+| ☑ | `C2` Lineup stats (a–d) | M |
+| ☑ | `C3` Matchup stats (a–f) | M |
+| ☑ | `C4` Draft stats (a–d) | M |
+| ☑ | `C5` Transaction stats (a–c) | L |
+| ☑ | `C6` Identity & fun stats (a–c) | M |
 | ☑ | `A4` Build-time aggregates | L |
 
 **Milestone test:** ~20 new statistics live; all-time pages render from a
 prebuilt file.
+
+**Half met, and the half that is missing is M5's.** 25 statistics are registered
+and tested, and all 25 are precomputed into `public/data/all-time.json` — but
+nothing renders them yet, so they are not "live" in the sense a league member
+would recognise. No page consumes the prebuilt file either; `usePrecomputedStats`
+is the reader waiting for one. The all-time pages that exist keep computing their
+own numbers deliberately (see A4).
+
+Three data corrections landed here rather than in M0, because building the draft
+stats is what surfaced them: `H12` (2019's picks joined to no roster), `H13`
+(2019's players held their points under scrape ids the rest of the app does not
+use) and `H14` (the Chargers' Mike Williams split across two ids from 2019).
 
 ### M5 — Visualisation & pages `~6 days`
 | | Task | Size |
