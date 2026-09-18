@@ -22,51 +22,13 @@ import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getManagerAccent } from "@/domain/managerColors";
 import { Card } from "@/presentation/components/Card";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
-import { managers, seasons } from "@/data";
-import { YEARS, type ValidYear } from "@/domain/constants";
-import { getFinalStandings } from "@/utils/finalStandings";
 import { narrate } from "@/utils/narrative/narrate";
-import { ordinal } from "@/utils/narrative/phrases";
-import { getTeamName } from "@/utils/teamName";
-import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import { useNarrativeStats } from "@/presentation/components/Narrative";
 import { ShareButton } from "@/presentation/components/ShareButton";
-
-/**
- * Has this season actually been decided?
- *
- * Asked of `finalStandings` rather than of `completedSeasons()`, which answers
- * the same question ("is there a winners bracket") — because this page already
- * reads finishing position from that module, and routing the second question
- * through `hallOfFame.ts` would make the manager page depend on the Hall of
- * Fame's whole chunk to run a two-line filter. A season nobody has bracketed
- * yet has every standing sourced from regular-season record, and a finish
- * claimed off that is a prediction, not a result.
- */
-const isDecided = (year: number): boolean =>
-  getFinalStandings(year).some((s) => s.source === "bracket");
-
-/** Their most recent avatar, for a card that is not about one season. */
-const latestAvatarUrl = (ownerId: string): string | null => {
-  for (const year of [...YEARS].sort((a, b) => b - a)) {
-    const url = getUserAvatarUrl(
-      getUserByOwnerId(ownerId, seasons[year as ValidYear]?.users)
-    );
-    if (url) return url;
-  }
-  return null;
-};
-
-/**
- * A season record with the tie column dropped when there are none, for the
- * caption under the button.
- *
- * Deliberately not the templates' `formatRecord`: that lives in the lazy share
- * chunk, and importing it to label a button would pull 25 kB of rasteriser
- * onto every manager page. Same en dashes, same rule, three lines.
- */
-const formatRecord = (wins: number, losses: number, ties: number) =>
-  ties ? `${wins}–${losses}–${ties}` : `${wins}–${losses}`;
+import {
+  managerCareerShare,
+  managerSeasonShare,
+} from "@/presentation/shareCards/factories";
 
 const ManagerDetail = () => {
   // A2a: getManagerStats walks every season's matchups, which are a lazy
@@ -115,87 +77,6 @@ const ManagerDetail = () => {
     return performances;
   }, [managerStats]);
 
-  /**
-   * The season the share card is about, and everything it needs.
-   *
-   * ## Why one season and not the career
-   *
-   * `managerSeasonCard` is about one season and there is no career template,
-   * so the card shows **their best season**: a title if they have one,
-   * otherwise their highest finish, tie-broken towards the most recent. That
-   * is a career page's highlight rather than an arbitrary slice, and it is
-   * deliberately the same choice `scripts/og/routes.ts` makes — so the card
-   * this button copies is the card a link to this page already previews as.
-   * The caption next to the button names the season, because a share button
-   * that produces a fact you did not ask for is worse than no button.
-   *
-   * ## Two things the card must not claim
-   *
-   * The finish comes from `finalStandings` (bracket-decided, champion = 1),
-   * never from regular-season order — and never at all for a season without a
-   * winners bracket, because "finished 1st" in September is a prediction.
-   *
-   * And `pointsFor` is a regular-season total, so this reads the REGULAR
-   * career regardless of the data-mode select: switching to "Playoffs only"
-   * must not quietly relabel 240 playoff points as the season. That is the
-   * default mode, so it is a cache hit rather than a second walk of history.
-   */
-  const bestSeason = useMemo(() => {
-    if (!managerId) return null;
-    const manager = managers.find((m) => m.id === managerId);
-    const career = getManagerStats(managerId, "regular");
-    if (!manager || !career || career.seasonStats.length === 0) return null;
-
-    const ranked = career.seasonStats
-      .map((season) => {
-        const rosterId = seasons[season.year as ValidYear]?.rosters?.find(
-          (r) => r.owner_id === manager.sleeper.id
-        )?.roster_id;
-        const position =
-          rosterId !== undefined && isDecided(season.year)
-            ? getFinalStandings(season.year).find(
-                (s) => s.rosterId === rosterId
-              )?.position ?? null
-            : null;
-        return { season, position };
-      })
-      // Best finish first; a season with no bracket sorts last; ties go to the
-      // most recent, which is the one the league is arguing about.
-      .sort(
-        (a, b) =>
-          (a.position ?? 99) - (b.position ?? 99) || b.season.year - a.season.year
-      );
-
-    const best = ranked[0];
-    const year = best.season.year;
-    return {
-      manager,
-      season: best.season,
-      year,
-      record: formatRecord(
-        best.season.wins,
-        best.season.losses,
-        best.season.ties
-      ),
-      finish: best.position ? ordinal(best.position) : undefined,
-      // The rosette, read off the finish this card already has.
-      //
-      // `crowns.ts` knows more — it would also say "Triple Crown" and
-      // "Scumbo", and `scripts/og/routes.ts` uses it for exactly that — but
-      // reaching it from here makes the manager page depend on the crowns
-      // chunk for one word, and the total bundle budget is 5 kB from its
-      // ceiling. A Triple Crown winner gets "Champion", which is less than
-      // the site says rather than more; and the one thing that must never be
-      // wrong, claiming a title, is the one thing this cannot get wrong,
-      // because the position is bracket-decided or it is absent.
-      badge: best.position === 1 ? "Champion" : undefined,
-      teamName: getTeamName(
-        manager.sleeper.id,
-        seasons[year as ValidYear]?.users
-      ),
-      avatarUrl: latestAvatarUrl(manager.sleeper.id),
-    };
-  }, [managerId]);
 
   // Prepare H2H records for the component
   const h2hRecords: H2HRecordWithOpponent[] = useMemo(() => {
@@ -271,60 +152,14 @@ const ManagerDetail = () => {
             </select>
           </div>
 
-          {/* G2/G3/G4. The card is built on click: embedding the avatar and
-              the crest are fetches, and nobody should pay for them just by
-              opening a manager page. */}
-          {bestSeason && (
-            <div className="flex flex-col items-start gap-1">
-              <ShareButton
-                card={async () => {
-                  const [{ managerSeasonCard }, { embedImage }] =
-                    await Promise.all([
-                      import("@/presentation/components/ShareCard/templates"),
-                      import("@/presentation/components/ShareCard"),
-                    ]);
-                  const [crest, avatar] = await Promise.all([
-                    embedImage("/images/logo.png"),
-                    bestSeason.avatarUrl
-                      ? embedImage(bestSeason.avatarUrl)
-                      : null,
-                  ]);
-                  return managerSeasonCard({
-                    year: bestSeason.year,
-                    manager: { name: bestSeason.manager.name, avatar },
-                    teamName: bestSeason.teamName,
-                    wins: bestSeason.season.wins,
-                    losses: bestSeason.season.losses,
-                    ties: bestSeason.season.ties,
-                    pointsFor: bestSeason.season.pointsFor,
-                    finish: bestSeason.finish,
-                    badge: bestSeason.badge,
-                    accent: getManagerAccent(bestSeason.manager.id),
-                    crest,
-                    // Filtered to notes about a manager or a season: a
-                    // manager-season card has no business printing "the 2nd
-                    // most notable week on this date", which is league-scoped
-                    // and true of a page this card is not.
-                    note: narrate(
-                      stats,
-                      {
-                        managerIds: [bestSeason.manager.id],
-                        year: bestSeason.year,
-                      },
-                      { limit: 8 }
-                    ).find(
-                      (n) => n.scope === "manager" || n.scope === "season"
-                    ),
-                  });
-                }}
-              />
-              {/* Which season the card is about, said before it is drawn. */}
-              <p className="text-xs text-gray-500">
-                Card: {bestSeason.year} — {bestSeason.record}
-                {bestSeason.finish ? `, finished ${bestSeason.finish}` : ""}
-              </p>
-            </div>
-          )}
+          {/* I4: the header's card is the career, because the page is the
+              career. Each season's card is at the end of its own row in the
+              timeline below — the rule is that a share control sits at the
+              end of the heading of the thing it shares. */}
+          <ShareButton
+            what="career card"
+            card={managerCareerShare(managerStats.managerId)}
+          />
         </div>
       </div>
 
@@ -426,7 +261,30 @@ const ManagerDetail = () => {
 
       {/* Tab Content */}
       {currentTab === "summary" && managerStats && (
-        <CareerSummary stats={managerStats} dataMode={dataMode} />
+        <CareerSummary
+          stats={managerStats}
+          dataMode={dataMode}
+          seasonAction={(season) => (
+            <ShareButton
+              iconOnly
+              what={`${season.year} season card`}
+              card={async () =>
+                managerSeasonShare(
+                  managerStats.managerId,
+                  season.year,
+                  // Only a note about this manager or this season: a season
+                  // card has no business printing a league-wide "on this
+                  // day" line that is true of a different page.
+                  narrate(
+                    stats,
+                    { managerIds: [managerStats.managerId], year: season.year },
+                    { limit: 8 }
+                  ).find((n) => n.scope === "manager" || n.scope === "season")
+                )()
+              }
+            />
+          )}
+        />
       )}
 
       {currentTab === "seasons" && managerStats && (

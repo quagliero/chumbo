@@ -16,10 +16,12 @@ describe("getAllTimeH2HRecord", () => {
 
     managers.forEach((a, i) => {
       managers.slice(i + 1).forEach((b) => {
-        records[`${a.id} vs ${b.id}`] = getAllTimeH2HRecord(
-          a.sleeper.id,
-          b.sleeper.id
-        );
+        // The totals only: this snapshot is the refactor net for them, and
+        // it predates `games` (added for the I4 streak). Checked below instead.
+        const record = getAllTimeH2HRecord(a.sleeper.id, b.sleeper.id);
+        records[`${a.id} vs ${b.id}`] = Object.fromEntries(
+          Object.entries(record).filter(([key]) => key !== "games")
+        ) as unknown as H2HMatchupRecord;
       });
     });
 
@@ -33,6 +35,24 @@ describe("getAllTimeH2HRecord", () => {
       ties: 0,
       team1AvgPoints: 0,
       team2AvgPoints: 0,
+      games: [],
+    });
+  });
+
+  it("keeps exactly the games its totals were counted from", () => {
+    // The streak on a share card reads these; a game in the list that is not
+    // in the record would put a streak on a card that its own score denies.
+    managers.forEach((a, i) => {
+      managers.slice(i + 1).forEach((b) => {
+        const record = getAllTimeH2HRecord(a.sleeper.id, b.sleeper.id);
+        const games = record.games ?? [];
+        const count = (r: string) => games.filter((g) => g.result === r).length;
+        expect([count("W"), count("L"), count("T")], `${a.id} vs ${b.id}`).toEqual([
+          record.team1Wins,
+          record.team2Wins,
+          record.ties,
+        ]);
+      });
     });
   });
 });

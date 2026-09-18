@@ -1056,7 +1056,7 @@ One consequence to decide with the same change: `draftStats.ts`'s
 explicitly. Change both together or they drift — a scatter and a records table
 disagreeing about the same pick is worse than either answer.
 
-### I4 · Share surfaces: size, placement, and the cards that aren't there `M`
+### I4 · Share surfaces: size, placement, and the cards that aren't there `M` — ✅ done
 
 Three separate complaints about the same component.
 
@@ -1076,7 +1076,7 @@ Three separate complaints about the same component.
 Carries the two features cut for bytes before the budget rose: the H2H streak
 pill and a badge distinguishing Triple Crown from Scumbo.
 
-### I5 · "Managed by" on interim-manager matchups `S`
+### I5 · "Managed by" on interim-manager matchups `S` — ✅ done
 
 Settled: the manager who **built** the team owns its record for the season, so
 `managers.json`'s `weeks` field does not change any W/L attribution anywhere.

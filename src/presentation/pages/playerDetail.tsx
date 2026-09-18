@@ -15,6 +15,9 @@ import { useAllSeasons } from "@/hooks/useSeasonData";
 import { Card } from "@/presentation/components/Card";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 import { PlayerSeeAlso } from "@/presentation/components/SeeAlso";
+import { ShareButton } from "@/presentation/components/ShareButton";
+import { PlayerSeasonsCard } from "@/presentation/components/PlayerDetail/PlayerSeasonsCard";
+import { playerCareerShare } from "@/presentation/shareCards/factories";
 
 const PlayerDetail = () => {
   // A2a: every one of these hooks reads the matchups, a lazy chunk now.
@@ -46,6 +49,12 @@ const PlayerDetail = () => {
   }
 
   const playerImageUrl = getPlayerImageUrl(playerId || "");
+  const playerName =
+    player.full_name ||
+    `${player.first_name ?? ""} ${player.last_name ?? ""}`.trim() ||
+    String(playerId);
+  const position = player.fantasy_positions?.[0] ?? player.position;
+  const years = playerStats.performances.map((p) => p.year);
 
   return (
     <div className="container mx-auto space-y-6">
@@ -124,12 +133,41 @@ const PlayerDetail = () => {
                 </div>
               )}
             </div>
+
+            {/* I4: the page's card at the end of its heading — his Chumbo
+                career. Each season's card is on its row in "By season". */}
+            {years.length > 0 && (
+              <ShareButton
+                what="career card"
+                className="ml-auto self-start"
+                card={playerCareerShare({
+                  name: playerName,
+                  position,
+                  imageUrl: playerImageUrl,
+                  firstYear: Math.min(...years),
+                  lastYear: Math.max(...years),
+                  points: playerStats.totalPoints,
+                  seasons: playerStats.seasonsPlayed,
+                  managers: playerStats.ownerStats.length,
+                  best: playerStats.highestScore,
+                })}
+              />
+            )}
           </div>
         </div>
       </div>
 
       {/* Player Statistics */}
       <PlayerStatsCard playerStats={playerStats} />
+
+      {/* I4: one row per season, each with its own card. */}
+      <PlayerSeasonsCard
+        playerId={playerId || ""}
+        name={playerName}
+        position={position}
+        imageUrl={playerImageUrl}
+        performances={playerStats.performances}
+      />
 
       {/* Ownership Table */}
       {playerStats.ownerStats.length > 1 && (

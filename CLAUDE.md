@@ -94,7 +94,10 @@ is invisible until `CURRENT_YEAR`/`YEARS` include it.
 Canonical identity map (not from Sleeper). Each manager: `id`, `name`, `teamName`,
 `userId[]` (Sleeper user ids they've used), `teamId` (string, or `{year: id}` /
 `{current: id}` when it changed over time), optional `sleeper`, `active`, and
-`weeks` overrides for mid-season replacements. Update this if 2026 has a new
+`weeks` overrides for mid-season replacements. `weeks` changes no attribution:
+the league's rule is that whoever built the team owns its record, and the site
+credits it that way; `utils/interimManagers.ts` only reads it to put "managed by"
+on the stand-in's matchups. Update this if 2026 has a new
 owner, a returning owner under a new Sleeper account, or a team-id change.
 
 ## Adding a new season (2026 — draft just completed)
@@ -161,10 +164,17 @@ same fact cannot be computed two different ways in two places.
   precomputed file, so a share card and a page cannot disagree about what was
   notable.
 - **`src/presentation/components/ShareCard/`** — hand-rolled SVG to a canvas
-  (G1), five templates (G2). Every template is a pure function of flat
+  (G1), five templates (G2) plus the profile cards (I4). Every template is a pure function of flat
   primitives, deliberately: no `managers.json` import and no season loader, so
   the same code can render an OG image in Node. `ShareButton/` is the flow —
   native share sheet on a phone, clipboard on desktop.
+- **`src/presentation/shareCards/`** — what goes ON a card, decided once
+  (I4). `cardData.ts` turns league data into card inputs and is read by both
+  the share buttons (through `factories.ts`, lazily, on click) and the link
+  previews in `scripts/og/routes.ts`, so a copied card and the preview of the
+  same page cannot disagree. Add a card's data here, never inline in a page.
+  Share buttons go at the right-hand end of the heading of the thing they
+  share, and name it with `what` ("Copy season card").
 
 Three data-quality rules these all obey:
 

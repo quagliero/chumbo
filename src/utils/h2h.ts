@@ -43,7 +43,10 @@ export interface H2HRecordWithGames extends H2HMatchupRecord {
 const computeAllTimeH2HRecord = (
   team1OwnerId: string,
   team2OwnerId: string
-): H2HMatchupRecord => {
+): H2HRecordWithGames => {
+  // Kept for the streak (I4): the share card and the link preview need the
+  // order the games were played in, not just the totals.
+  const games: H2HGame[] = [];
   let team1Wins = 0;
   let team2Wins = 0;
   let ties = 0;
@@ -62,6 +65,7 @@ const computeAllTimeH2HRecord = (
       ties: 0,
       team1AvgPoints: 0,
       team2AvgPoints: 0,
+      games,
     };
   }
 
@@ -122,6 +126,13 @@ const computeAllTimeH2HRecord = (
         if (result === "W") team1Wins++;
         else if (result === "L") team2Wins++;
         else ties++;
+        games.push({
+          year: yr,
+          week: weekNum,
+          result,
+          pointsFor: team1Match.points,
+          pointsAgainst: team2Match.points,
+        });
       }
     });
   });
@@ -132,6 +143,7 @@ const computeAllTimeH2HRecord = (
     ties,
     team1AvgPoints: matchupCount > 0 ? team1TotalPoints / matchupCount : 0,
     team2AvgPoints: matchupCount > 0 ? team2TotalPoints / matchupCount : 0,
+    games,
   };
 };
 
@@ -330,6 +342,38 @@ export const calculateH2HStreak = (
 
   return { type: mostRecentResult, count };
 };
+
+/** Below this, a run of results is a coincidence rather than a streak. */
+export const MIN_STREAK = 3;
+
+/**
+ * The current streak between two managers as a phrase — "thd has won the last
+ * 4 regular-season meetings" — or `undefined` if there is not one worth
+ * saying. For the H2H share card's pill (I4).
+ *
+ * Says "regular-season" because that is what the games are: the all-time
+ * record skips playoff weeks, so a playoff meeting in the middle of a run is
+ * invisible to it, and a pill that said only "the last 4" would claim it.
+ * Ties end a streak and never start one.
+ */
+export const describeH2HStreak = (
+  games: readonly H2HGame[],
+  nameA: string,
+  nameB: string
+): string | undefined => {
+  const recentFirst = [...games].sort(
+    (x, y) => y.year - x.year || y.week - x.week
+  );
+  const { type, count } = calculateH2HStreak(recentFirst);
+  if (type === "T" || count < MIN_STREAK) return undefined;
+  const winner = type === "W" ? nameA : nameB;
+  return `${winner} has won the last ${COUNT_WORDS[count] ?? count} regular-season meetings`;
+};
+
+/** "the last four" reads better than "the last 4", up to about ten. */
+const COUNT_WORDS = [
+  "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+];
 
 /**
  * The all-time record between two managers. Memoised: the H2H grid asks for

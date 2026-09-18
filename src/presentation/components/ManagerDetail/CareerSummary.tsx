@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import { useFormatter } from "use-intl";
 import { Card } from "@/presentation/components/Card";
 import { ScoreHeatmap } from "@/presentation/components/Chart/ScoreHeatmap/ScoreHeatmap";
 import { getManagerAccent } from "@/domain/managerColors";
 import type { DataMode, ManagerStats } from "@/utils/managerStats";
 import { CareerTimeline } from "./CareerTimeline";
-import { useCareerTimeline } from "./useCareerTimeline";
+import { useCareerTimeline, type TimelineSeason } from "./useCareerTimeline";
 
 /**
  * The manager page's summary tab (F3).
@@ -30,9 +31,12 @@ import { useCareerTimeline } from "./useCareerTimeline";
 export const CareerSummary = ({
   stats,
   dataMode,
+  seasonAction,
 }: {
   stats: ManagerStats;
   dataMode: DataMode;
+  /** A control at the end of each season's row — the season card's share. */
+  seasonAction?: (season: TimelineSeason) => ReactNode;
 }) => {
   const { number } = useFormatter();
   const timeline = useCareerTimeline(stats.managerId, stats.seasonStats);
@@ -158,7 +162,11 @@ export const CareerSummary = ({
           Where they actually finished, from the playoff brackets — not the
           regular-season table. Tap a year for that season.
         </p>
-        <CareerTimeline timeline={timeline} accent={accent} />
+        <CareerTimeline
+          timeline={timeline}
+          accent={accent}
+          rowAction={seasonAction}
+        />
       </Card>
 
       <Card>

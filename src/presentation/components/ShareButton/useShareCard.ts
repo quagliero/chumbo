@@ -84,6 +84,8 @@ export interface UseShareCardOptions {
    * still be on screen when the user looks back at it.
    */
   resetAfterMs?: number;
+  /** What is being shared, e.g. "season card" — named in the success message. */
+  what?: string;
   /** Called with the raw error. Failures also reach the console regardless. */
   onError?: (error: unknown) => void;
 }
@@ -131,6 +133,7 @@ export const useShareCard = ({
   card,
   resetAfterMs = 5_000,
   onError,
+  what,
 }: UseShareCardOptions) => {
   // Detected once: the answer cannot change within a page view, and the button
   // label needs it before the first click.
@@ -185,8 +188,8 @@ export const useShareCard = ({
 
   const succeeded = useCallback(
     ({ path, fileName }: ShareOutcome) =>
-      settle("done", successMessage(path, fileName)),
-    [settle]
+      settle("done", successMessage(path, fileName, what)),
+    [settle, what]
   );
 
   const failed = useCallback(
@@ -337,5 +340,9 @@ export const useShareCard = ({
     succeeded,
   ]);
 
-  return { ...state, share };
+  // For a toast's close button: a failure is never auto-cleared (see
+  // `resetAfterMs`), so the reader needs a way to put it away.
+  const dismiss = useCallback(() => settle("idle", ""), [settle]);
+
+  return { ...state, share, dismiss };
 };

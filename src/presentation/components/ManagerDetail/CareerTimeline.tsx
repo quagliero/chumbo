@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useFormatter } from "use-intl";
 import { SeasonLink } from "@/presentation/components/Links";
 import { normalisedFinish } from "@/presentation/components/Chart/CareerSparkline/useCareerSparkline";
@@ -35,9 +36,12 @@ import type { CareerTimeline as Timeline, TimelineSeason } from "./useCareerTime
 export const CareerTimeline = ({
   timeline,
   accent,
+  rowAction,
 }: {
   timeline: Timeline;
   accent: string;
+  /** Rendered at the right-hand end of each row, e.g. its share button. */
+  rowAction?: (season: TimelineSeason) => ReactNode;
 }) => {
   const { number } = useFormatter();
 
@@ -80,44 +84,47 @@ export const CareerTimeline = ({
             />
           </div>
 
-          <div className="pb-4">
-            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="text-sm font-semibold text-ink">
-                {season.position === null
-                  ? "No standings"
-                  : `${ordinal(season.position)} of ${season.field}`}
-              </span>
-              {season.inProgress && (
-                <span
-                  className="rounded-full bg-surface-sunk px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-ink-muted"
-                  title="The season is still being played, so this is where they stand rather than where they finished."
-                >
-                  so far
+          <div className="flex items-start gap-2 pb-4">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span className="text-sm font-semibold text-ink">
+                  {season.position === null
+                    ? "No standings"
+                    : `${ordinal(season.position)} of ${season.field}`}
                 </span>
-              )}
-              <span className="font-numeric text-sm tabular-nums text-ink-muted">
-                {season.wins}-{season.losses}
-                {season.ties > 0 ? `-${season.ties}` : ""}
-              </span>
-              {/* Rounded to Sleeper's own two decimals before being formatted
-                  to whole points. The season totals arrive as a float sum —
-                  1456.4999999999995 where the career total, summed in a
-                  different order, is exactly 1456.5 — and without this the
-                  same number reads 1456 here and 1457 in the card above. */}
-              <span className="font-numeric text-xs tabular-nums text-ink-faint">
-                {number(roundToTwoDecimals(season.pointsFor), {
-                  maximumFractionDigits: 0,
-                })}{" "}
-                for ·{" "}
-                {number(roundToTwoDecimals(season.pointsAgainst), {
-                  maximumFractionDigits: 0,
-                })}{" "}
-                against
-              </span>
-              <Trophies season={season} />
-            </div>
+                {season.inProgress && (
+                  <span
+                    className="rounded-full bg-surface-sunk px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-ink-muted"
+                    title="The season is still being played, so this is where they stand rather than where they finished."
+                  >
+                    so far
+                  </span>
+                )}
+                <span className="font-numeric text-sm tabular-nums text-ink-muted">
+                  {season.wins}-{season.losses}
+                  {season.ties > 0 ? `-${season.ties}` : ""}
+                </span>
+                {/* Rounded to Sleeper's own two decimals before being formatted
+                    to whole points. The season totals arrive as a float sum —
+                    1456.4999999999995 where the career total, summed in a
+                    different order, is exactly 1456.5 — and without this the
+                    same number reads 1456 here and 1457 in the card above. */}
+                <span className="font-numeric text-xs tabular-nums text-ink-faint">
+                  {number(roundToTwoDecimals(season.pointsFor), {
+                    maximumFractionDigits: 0,
+                  })}{" "}
+                  for ·{" "}
+                  {number(roundToTwoDecimals(season.pointsAgainst), {
+                    maximumFractionDigits: 0,
+                  })}{" "}
+                  against
+                </span>
+                <Trophies season={season} />
+              </div>
 
-            <FinishBar season={season} accent={accent} />
+              <FinishBar season={season} accent={accent} />
+            </div>
+            {rowAction && <div className="flex-none">{rowAction(season)}</div>}
           </div>
         </li>
       ))}

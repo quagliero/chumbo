@@ -483,11 +483,12 @@ const DraftBoard = ({
                   the `selectedPick` note. The card is built on click: the
                   drafter's avatar and the crest are both fetches. */}
               {shareable && (
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                   <span className="font-semibold">
                     {shareable.label} {shareable.player.name}
                   </span>
                   <ShareButton
+                    what="pick card"
                     card={async () => {
                       const [{ draftPickCard }, { embedImage }] =
                         await Promise.all([

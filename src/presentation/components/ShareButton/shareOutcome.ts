@@ -121,10 +121,16 @@ export const classifyShareError = (
 };
 
 /** What to say after it worked. Names what happened and what to do next. */
-export const successMessage = (path: SharePath, fileName?: string): string => {
+export const successMessage = (
+  path: SharePath,
+  fileName?: string,
+  /** What was shared, e.g. "season card", so the toast can name it. */
+  what?: string
+): string => {
+  const noun = what ? what.charAt(0).toUpperCase() + what.slice(1) : "Card";
   switch (path) {
     case "clipboard":
-      return "Card copied — paste it into the chat.";
+      return `${noun} copied — paste it into the chat.`;
     case "share-sheet":
       return "Shared.";
     case "download":

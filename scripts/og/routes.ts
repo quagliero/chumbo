@@ -33,14 +33,12 @@
  * turns them on, and `--since <year>` narrows them, so the day somebody wants
  * this season's games previewable it is a flag, not a rewrite.
  *
- * **Players are out, and not because of the count.** There is no player card:
- * G2's five templates are a final score, a manager season, a head-to-head, a
- * draft pick and a broken record. A player page previewed with any of them
- * would be claiming something the page does not say — `recordBrokenCard` in
- * particular announces a league record, and "most career points among players
- * I happen to have prerendered" is not one. A sixth template is a G2-shaped
- * job in `src/presentation/components/ShareCard/templates/`, and once it
- * exists this file grows one function. Prerendering 4,389 HTML files with
+ * **Players are out, for now.** There was no player card when this was
+ * written; I4 added `playerCareerCard`, so a player route is now one function
+ * here. The reason it has not been written is the count — 4,389 pages — and
+ * the per-player stats, which today live in a React hook (`usePlayerStats`)
+ * this script cannot call. Moving that computation out of the hook is the
+ * first step. Prerendering 4,389 HTML files with
  * *only* text tags was the other option and is worse than it looks: it is
  * ~9 MB of `dist` and it would make the player pages the only ones whose
  * preview is a portrait crest in a `summary` card, which is the state G5
@@ -63,10 +61,9 @@ import path from "node:path";
 import { managers, seasons } from "@/data";
 import { CURRENT_YEAR, YEARS } from "@/domain/constants";
 import { getManagerAccent } from "@/domain/managerColors";
-import { getAllTimeH2HRecord } from "@/utils/h2h";
 import { completedSeasons } from "@/utils/hallOfFame";
 import { getFinalPosition, getFinalStandings } from "@/utils/finalStandings";
-import { getSeasonCrowns } from "@/utils/crowns";
+import { seasonBadge } from "@/utils/seasonBadge";
 import { getManagerStats } from "@/utils/managerStats";
 import { narrate, type Note } from "@/utils/narrative/narrate";
 import {
@@ -74,15 +71,20 @@ import {
   type PrecomputedStats,
 } from "@/utils/stats/precomputed";
 import { getTeamName } from "@/utils/teamName";
-import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
 import type { ShareCard } from "@/presentation/components/ShareCard/card";
 import {
   finalScoreCard,
   formatPoints,
   formatRecord,
   h2hRecordCard,
+  managerCareerCard,
   managerSeasonCard,
 } from "@/presentation/components/ShareCard/templates";
+import {
+  avatarUrlFor,
+  h2hData,
+  managerCareerData,
+} from "@/presentation/shareCards/cardData";
 
 import { ordinal } from "./tags";
 
@@ -188,38 +190,8 @@ const hasPlayedGames = (year: number): boolean =>
 const rosterOwner = (year: number, rosterId: number): string | undefined =>
   seasons[year]?.rosters?.find((r) => r.roster_id === rosterId)?.owner_id;
 
-/** That season's avatar URL for a manager, which is what the season's card shows. */
-const avatarUrlFor = (year: number, ownerId: string): string | null =>
-  getUserAvatarUrl(getUserByOwnerId(ownerId, seasons[year]?.users));
-
-/** Their most recent avatar, for a card that is not about one season. */
-const latestAvatarUrl = (ownerId: string): string | null => {
-  for (const year of [...YEARS].sort((a, b) => b - a)) {
-    const url = avatarUrlFor(year, ownerId);
-    if (url) return url;
-  }
-  return null;
-};
-
 const avatarOf = (assets: CardAssets, url: string | null) =>
   url ? assets.avatars.get(url) ?? null : null;
-
-/**
- * The badge on a manager-season card.
- *
- * The three the league has words for, in the order that matters: a Triple Crown
- * is a championship *and* both scoring legs, so it outranks the plain title.
- * The strings are the UI's copy, not data — `crowns.ts` deliberately returns
- * booleans and leg counts (see its docblock) — so they are written once here.
- */
-const badgeFor = (year: number, managerId: string): string | undefined => {
-  const crown = getSeasonCrowns(year).find((c) => c.managerId === managerId);
-  if (!crown) return undefined;
-  if (crown.crownLegs === 3) return "Triple Crown";
-  if (crown.champion) return "Champion";
-  if (crown.scumboLegs === 3) return "Scumbo";
-  return undefined;
-};
 
 /** A W–L record as prose: "9–5". Shared by the copy and the cards. */
 const record = (wins: number, losses: number, ties: number) =>
@@ -300,7 +272,7 @@ const seasonRoutes = (): OgRoute[] =>
             ties: season.ties,
             pointsFor: season.pointsFor,
             finish: isComplete && position ? ordinal(position) : undefined,
-            badge: isComplete ? badgeFor(year, managerId) : undefined,
+            badge: isComplete ? seasonBadge(year, managerId) : undefined,
             accent: getManagerAccent(managerId),
             crest: assets.crest,
             note: noteFor({ managerIds: [managerId], year }, SEASON_SCOPES),
@@ -313,117 +285,60 @@ const seasonRoutes = (): OgRoute[] =>
 /**
  * One page per manager.
  *
- * The copy is the career, because that is what the page is. The card cannot be
- * — `managerSeasonCard` is about one season, and inventing a career card would
- * mean a sixth template — so it shows **their best season**: a title if they
- * have one, otherwise their highest finish, tie-broken towards the most recent.
- * That is a career page's highlight rather than an arbitrary slice, and the
- * card labels its own year, so it cannot be read as a claim about the career.
+ * The copy is the career, because that is what the page is — and since I4 so
+ * is the card: `managerCareerCard`, built from `shareCards/cardData`, the same
+ * data the "Copy career card" button in the page header uses. It used to show
+ * their best season, only because no career template existed; a preview and
+ * the page's own card now cannot be two different pictures.
  */
 const managerRoutes = (): OgRoute[] =>
   allManagers.flatMap((manager): OgRoute[] => {
     const career = getManagerStats(manager.id);
-    if (!career || career.seasonStats.length === 0) return [];
+    const data = managerCareerData(manager.id);
+    if (!career || !data) return [];
 
-    const seasonsPlayed = career.seasonStats;
-    const ranked = seasonsPlayed
-      .map((season) => {
-        const rosterId = seasons[season.year]?.rosters?.find(
-          (r) => r.owner_id === manager.sleeper.id
-        )?.roster_id;
-        const position =
-          rosterId !== undefined && completed.has(season.year)
-            ? getFinalPosition(season.year, rosterId)
-            : null;
-        return { season, position };
-      })
-      // Best finish first; an unfinished season sorts last; ties go to the most
-      // recent, which is the one the league is arguing about.
-      .sort(
-        (a, b) =>
-          (a.position ?? 99) - (b.position ?? 99) || b.season.year - a.season.year
-      );
-    const best = ranked[0];
-    const year = best.season.year;
-    const avatarUrl = latestAvatarUrl(manager.sleeper.id);
-
-    const careerRecord = record(
-      career.totalWins,
-      career.totalLosses,
-      career.totalTies
-    );
-    const titles = career.championships;
+    const careerRecord = record(data.wins, data.losses, data.ties);
     const titleClause =
-      titles === 0
+      data.titles === 0
         ? "no titles yet"
-        : titles === 1
+        : data.titles === 1
         ? "one title"
-        : `${titles} titles`;
+        : `${data.titles} titles`;
 
     return [
       {
         path: `/managers/${manager.id}`,
         title: `${manager.name}'s Chumbo career`,
         description: `${careerRecord} across ${
-          seasonsPlayed.length
+          data.seasons
         } seasons, ${titleClause}, ${formatPoints(
           career.totalPointsFor
         )} points. Every season, every head-to-head, every draft pick.`,
-        imageAlt: `${manager.name}'s ${year} season: ${record(
-          best.season.wins,
-          best.season.losses,
-          best.season.ties
-        )}`,
-        avatarUrls: avatarUrl ? [avatarUrl] : [],
+        imageAlt: `${manager.name}'s Chumbo career: ${careerRecord}, ${titleClause}`,
+        avatarUrls: data.avatarUrl ? [data.avatarUrl] : [],
         card: (assets) =>
-          managerSeasonCard({
-            year,
+          managerCareerCard({
             manager: {
-              name: manager.name,
-              avatar: avatarOf(assets, avatarUrl),
+              name: data.name,
+              avatar: avatarOf(assets, data.avatarUrl),
             },
-            teamName: getTeamName(manager.sleeper.id, seasons[year]?.users),
-            wins: best.season.wins,
-            losses: best.season.losses,
-            ties: best.season.ties,
-            pointsFor: best.season.pointsFor,
-            finish: best.position ? ordinal(best.position) : undefined,
-            badge: completed.has(year) ? badgeFor(year, manager.id) : undefined,
-            accent: getManagerAccent(manager.id),
+            teamName: data.teamName,
+            firstYear: data.firstYear,
+            lastYear: data.lastYear,
+            wins: data.wins,
+            losses: data.losses,
+            ties: data.ties,
+            titles: data.titles,
+            bestFinish: data.bestFinish,
+            seasons: data.seasons,
+            accent: data.accent,
             crest: assets.crest,
-            note: noteFor({ managerIds: [manager.id], year }, SEASON_SCOPES),
           }),
       },
     ];
   });
 
 /* --------------------------------------------------------------------- h2h */
-
-/** "has won the last four" reads better than "the last 4" up to about ten. */
-const COUNTS = [
-  "",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-];
-
-const streakLine = (
-  aName: string,
-  bName: string,
-  streak: { type: "W" | "L" | "T"; count: number } | undefined
-): string | undefined => {
-  if (!streak || streak.type === "T" || streak.count < 2) return undefined;
-  const who = streak.type === "W" ? aName : bName;
-  const n = COUNTS[streak.count] ?? String(streak.count);
-  return `${who} has won the last ${n}`;
-};
 
 /**
  * One page per ordered pair that has met, from the left manager's side.
@@ -450,58 +365,44 @@ const streakLine = (
 const h2hRoutes = (): OgRoute[] => {
   const routes: OgRoute[] = [];
   for (const a of allManagers) {
-    const careerA = getManagerStats(a.id);
     for (const b of allManagers) {
       if (a.id === b.id) continue;
-      const rec = getAllTimeH2HRecord(a.sleeper.id, b.sleeper.id);
-      const meetings = rec.team1Wins + rec.team2Wins + rec.ties;
-      if (meetings === 0) continue;
+      // The same data the page's "Copy head-to-head card" button reads (I4),
+      // so the span, the streak and the accent cannot differ between them.
+      const pair = h2hData(a.id, b.id);
+      if (!pair || pair.meetings === 0) continue;
 
-      const wins = rec.team1Wins;
-      const losses = rec.team2Wins;
-      const rowRecord = record(wins, losses, rec.ties);
+      const { wins, losses, ties } = pair;
+      const rowRecord = record(wins, losses, ties);
       const lead =
         wins > losses
           ? `${a.name} leads ${b.name} ${rowRecord}`
           : losses > wins
-          ? `${b.name} leads ${a.name} ${record(losses, wins, rec.ties)}`
+          ? `${b.name} leads ${a.name} ${record(losses, wins, ties)}`
           : `${a.name} and ${b.name} are level at ${rowRecord}`;
-      // One accent, and it belongs to whoever is ahead (the F2 rule); a level
-      // series gets the template's neutral ink.
-      const accent =
-        wins > losses
-          ? getManagerAccent(a.id)
-          : losses > wins
-          ? getManagerAccent(b.id)
-          : undefined;
-      const avatarA = latestAvatarUrl(a.sleeper.id);
-      const avatarB = latestAvatarUrl(b.sleeper.id);
-      const streak = streakLine(
-        a.name,
-        b.name,
-        careerA?.h2hRecords[b.sleeper.id]?.currentStreak
-      );
 
       routes.push({
         path: `/h2h/${a.id}/${b.id}`,
         title: `${a.name} vs ${b.name} — head to head`,
-        description: `${lead} all time in the Chumbo regular season, over ${meetings} meetings, averaging ${rec.team1AvgPoints.toFixed(
-          1
-        )} points to ${rec.team2AvgPoints.toFixed(
+        description: `${lead} all time in the Chumbo regular season, over ${
+          pair.meetings
+        } meetings, averaging ${pair.avgA.toFixed(1)} points to ${pair.avgB.toFixed(
           1
         )}. Every game they have played.`,
-        imageAlt: `${a.name} vs ${b.name}, ${rowRecord} all time`,
-        avatarUrls: [avatarA, avatarB].filter((u): u is string => Boolean(u)),
+        imageAlt: `${a.name} vs ${b.name}, ${rowRecord} in the regular season`,
+        avatarUrls: [pair.a.avatarUrl, pair.b.avatarUrl].filter(
+          (u): u is string => Boolean(u)
+        ),
         card: (assets) =>
           h2hRecordCard({
-            a: { name: a.name, avatar: avatarOf(assets, avatarA) },
-            b: { name: b.name, avatar: avatarOf(assets, avatarB) },
+            a: { name: pair.a.name, avatar: avatarOf(assets, pair.a.avatarUrl) },
+            b: { name: pair.b.name, avatar: avatarOf(assets, pair.b.avatarUrl) },
             wins,
             losses,
-            ties: rec.ties,
-            span: "All time",
-            streak,
-            accent,
+            ties,
+            span: pair.span,
+            streak: pair.streak,
+            accent: pair.accent,
             crest: assets.crest,
           }),
       });

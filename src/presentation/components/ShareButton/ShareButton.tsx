@@ -18,29 +18,46 @@
  *   people looking for a dialog that is never coming.
  * - **It is a real `<button>`**, so it is tabbable, Enter/Space work, and the
  *   busy state is `aria-busy` rather than a spinner only sighted users see.
- * - **It is a 44px tap target**, because this flow exists mainly for a phone.
+ * - **It is a 44px tap target, drawn at 32px** (I4). The first version drew
+ *   the whole 44px, a shadowed pill that dwarfed the headings it sat next to
+ *   and would not line up with them. The target is still 44px — an invisible
+ *   `::before` extends it — because this flow exists mainly for a phone.
+ * - **It names its card.** "Copy season card", not "Copy image": with a card
+ *   per season row and one for the career on the same page, a bare "Copy
+ *   image" made you press it to find out what it copied.
+ * - **The outcome is a toast**, fixed to the bottom of the screen, rather than
+ *   a line of text beside the button that pushed the heading around.
+ *
+ * Placement rule, for every caller: a share control sits at the right-hand
+ * end of the heading of the thing it shares — a card's `CardHeader` action, a
+ * page header's action row, the end of a list row. Never floating in the body.
  */
 
 import { useShareCard, type ShareCardInput } from "./useShareCard";
-import { fallbackMessage } from "./shareOutcome";
-import { shareActionLabel } from "./shareCapabilities";
+import { shareActionLabel, shareVerb } from "./shareCapabilities";
 
 export interface ShareButtonProps {
   /** The card to share, or a function returning it (called on click). */
   card: ShareCardInput;
   /**
-   * Override the label. Leave unset to let it name the actual outcome, which is
-   * usually what you want.
+   * What the card is, as a noun phrase: "season card", "career card",
+   * "final score". The label becomes the verb this browser will actually do
+   * plus this — "Copy season card" — and the success toast names it too.
+   */
+  what?: string;
+  /**
+   * Override the label entirely. Leave unset: `what` is usually what you want,
+   * because the verb has to follow the path this browser takes.
    */
   label?: string;
-  /** Hide the label, keeping it as the accessible name. For dense toolbars. */
+  /** Hide the label, keeping it as the accessible name. For list rows. */
   iconOnly?: boolean;
   className?: string;
   /** Called with the raw error on failure, for page-level logging. */
   onError?: (error: unknown) => void;
 }
 
-const ICON_CLASS = "h-[1.125rem] w-[1.125rem] flex-none";
+const ICON_CLASS = "h-4 w-4 flex-none";
 
 /** The OS share glyph: a box with an arrow leaving the top. */
 const ShareIcon = () => (
@@ -119,22 +136,23 @@ const SpinnerIcon = () => (
 
 export const ShareButton = ({
   card,
+  what,
   label,
   iconOnly = false,
   className = "",
   onError,
 }: ShareButtonProps) => {
-  const { share, status, path, decision, message } = useShareCard({ card, onError });
+  const { share, dismiss, status, path, message } = useShareCard({
+    card,
+    onError,
+    what,
+  });
 
-  const actionLabel = label ?? shareActionLabel(path);
+  const actionLabel =
+    label ?? (what ? `${shareVerb(path)} ${what}` : shareActionLabel(path));
   const working = status === "working";
   const failed = status === "error";
   const done = status === "done";
-
-  // Shown as the tooltip rather than as body text: it explains a downgrade
-  // ("this browser cannot copy images"), which is worth having available but
-  // not worth a line of prose next to every button.
-  const note = decision.reason ? fallbackMessage(decision.reason) : undefined;
 
   const icon = working ? (
     <SpinnerIcon />
@@ -148,8 +166,10 @@ export const ShareButton = ({
     <CopyIcon />
   );
 
+  const toast = working ? "Drawing the card…" : message;
+
   return (
-    <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 ${className}`}>
+    <>
       <button
         type="button"
         onClick={share}
@@ -165,27 +185,60 @@ export const ShareButton = ({
         // reads as a different button; progress is `aria-busy` plus the
         // spinner, and the outcome is announced by the status region below.
         aria-label={iconOnly ? actionLabel : undefined}
-        title={note ? `${actionLabel} — ${note}` : actionLabel}
-        className="inline-flex min-h-[2.75rem] items-center gap-2 rounded-card border border-line bg-surface px-3.5 text-sm font-semibold text-ink shadow-card transition-colors hover:bg-hover hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-series-1 disabled:cursor-progress disabled:text-ink-muted sm:min-h-[2.25rem]"
+        className={
+          // `before:` is the 44px target around the 32px drawing.
+          "relative inline-flex h-8 flex-none items-center justify-center gap-1.5 " +
+          "rounded-md border border-line bg-surface text-xs font-medium " +
+          "text-ink-muted transition-colors hover:border-line-strong hover:bg-hover " +
+          "hover:text-ink focus-visible:outline-none focus-visible:ring-2 " +
+          "focus-visible:ring-series-1 disabled:cursor-progress " +
+          "before:absolute before:-inset-1.5 before:content-[''] " +
+          (iconOnly ? "w-8" : "px-2.5") +
+          (done ? " text-result-win" : "") +
+          (className ? ` ${className}` : "")
+        }
       >
         {icon}
-        {!iconOnly && <span>{actionLabel}</span>}
+        {!iconOnly && <span className="whitespace-nowrap">{actionLabel}</span>}
       </button>
 
       {/*
         One live region, always in the DOM. Mounting it only when there is a
         message is the classic way to make an announcement that never fires:
         some screen readers do not read a region that appears at the same moment
-        as its content.
+        as its content. Fixed to the bottom of the screen, clear of the iOS home
+        indicator, so an outcome never moves the heading the button sits in.
       */}
-      <span
-        role="status"
-        aria-live="polite"
-        className={`text-xs ${failed ? "text-result-loss" : "text-ink-muted"}`}
+      <div
+        className="pointer-events-none fixed inset-x-0 z-50 flex justify-center px-4"
+        style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
       >
-        {working ? "Drawing the card…" : message}
-      </span>
-    </div>
+        <div
+          role="status"
+          aria-live="polite"
+          className={
+            toast
+              ? "pointer-events-auto flex max-w-md items-center gap-3 rounded-card px-4 py-2.5 text-sm shadow-card-hover " +
+                (failed ? "bg-result-loss text-white" : "bg-ink text-surface")
+              : "sr-only"
+          }
+        >
+          <span>{toast}</span>
+          {/* A failure stays until it is read — see `useShareCard` — so it
+              needs a way to be put away. Success clears itself. */}
+          {failed && toast && (
+            <button
+              type="button"
+              onClick={dismiss}
+              aria-label="Dismiss"
+              className="-mr-1 rounded px-1 text-base leading-none opacity-80 hover:opacity-100"
+            >
+              ×
+            </button>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

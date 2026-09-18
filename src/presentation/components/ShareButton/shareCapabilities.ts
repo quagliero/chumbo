@@ -166,6 +166,23 @@ export const chooseSharePath = (caps: ShareCapabilities): ShareDecision => {
  * a PNG on the clipboard is a small lie, and the user then goes looking for a
  * dialog that never appears.
  */
+/**
+ * The verb alone, for a label that names its card: "Copy season card",
+ * "Share season card", "Save season card" (I4). Which card a button shares
+ * used to be something you found out by pressing it.
+ */
+export const shareVerb = (path: SharePath): string => {
+  switch (path) {
+    case "clipboard":
+      return "Copy";
+    case "download":
+      return "Save";
+    case "share-sheet":
+    case "unsupported":
+      return "Share";
+  }
+};
+
 export const shareActionLabel = (path: SharePath): string => {
   switch (path) {
     case "share-sheet":

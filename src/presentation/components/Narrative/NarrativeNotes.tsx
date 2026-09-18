@@ -30,7 +30,8 @@ const RECORD_KICKER = "\u{1F3C6} CHUMBO RECORD";
 const RecordShare = ({ note }: { note: Note }) => (
   <ShareButton
     iconOnly
-    className="ml-auto flex-none self-center"
+    what="record card"
+    className="ml-auto self-center"
     card={async () => {
       const [{ recordBrokenCard, seasonMeta }, { embedImage }] =
         await Promise.all([

@@ -96,3 +96,15 @@ export {
   recordBrokenCard,
   type RecordBrokenCardProps,
 } from "./recordBroken";
+
+export {
+  managerCareerCard,
+  playerCareerCard,
+  playerSeasonCard,
+  profileCard,
+  type ManagerCareerCardProps,
+  type PlayerCareerCardProps,
+  type PlayerSeasonCardProps,
+  type ProfileCardProps,
+  type ProfileMetric,
+} from "./profile";

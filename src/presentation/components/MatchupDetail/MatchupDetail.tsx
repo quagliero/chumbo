@@ -14,6 +14,7 @@ import { NarrativeNotes } from "@/presentation/components/Narrative";
 import { MatchupSeeAlso } from "@/presentation/components/SeeAlso";
 import { ShareButton } from "@/presentation/components/ShareButton";
 import { isWeekCompleted } from "@/utils/weekUtils";
+import { interimManager } from "@/utils/interimManagers";
 import { avatarDataUri } from "./shareAvatar";
 import { getManagerAccent } from "@/domain/managerColors";
 
@@ -122,37 +123,26 @@ const MatchupDetail = ({
 
   return (
     <div className="container mx-auto space-y-6">
-      <Breadcrumbs
-        crumbs={[
-          { label: "Seasons", to: "/seasons" },
-          { label: String(year), to: `/seasons/${year}/standings` },
-          { label: "Matchups", to: `/seasons/${year}/matchups` },
-          { label: `Week ${week}` },
-          { label: `${teams[0].name} vs ${teams[1].name}` },
-        ]}
-      />
-
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        {/* E7: what this game was, if it was anything. Renders nothing at all on
-            an ordinary week — the rail is only worth reading because it stays
-            quiet the rest of the time. */}
-        <NarrativeNotes
-          subject={{
-            year,
-            week,
-            managerIds: teams
-              .map((team) => team.manager?.id)
-              .filter((id): id is string => Boolean(id)),
-          }}
+      {/* I4: the page's card at the end of the page's top row — the rule is
+          that a share control ends the heading of the thing it shares, and
+          here the breadcrumb is the heading. */}
+      <div className="flex items-start justify-between gap-3">
+        <Breadcrumbs
+          crumbs={[
+            { label: "Seasons", to: "/seasons" },
+            { label: String(year), to: `/seasons/${year}/standings` },
+            { label: "Matchups", to: `/seasons/${year}/matchups` },
+            { label: `Week ${week}` },
+            { label: `${teams[0].name} vs ${teams[1].name}` },
+          ]}
         />
-
         {/* G2/G3/G4: the whole point of the project — "I love it when one of the
             managers goes on the site and then comes back and shares a nugget".
             The card is built on click rather than up front, because embedding
             the avatars is a fetch and nobody should pay for it just by opening
             a matchup. */}
         <ShareButton
-          className="ml-auto"
+          what="final score"
           card={async () => {
             const [{ finalScoreCard }, { embedImage }] = await Promise.all([
               import("@/presentation/components/ShareCard/templates"),
@@ -175,6 +165,22 @@ const MatchupDetail = ({
             });
           }}
         />
+      </div>
+
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        {/* E7: what this game was, if it was anything. Renders nothing at all on
+            an ordinary week — the rail is only worth reading because it stays
+            quiet the rest of the time. */}
+        <NarrativeNotes
+          subject={{
+            year,
+            week,
+            managerIds: teams
+              .map((team) => team.manager?.id)
+              .filter((id): id is string => Boolean(id)),
+          }}
+        />
+
       </div>
 
       {/* Header with team info */}
@@ -216,6 +222,29 @@ const MatchupDetail = ({
               <div>
                 <h2 className="text-xl font-bold mb-0">{team.name}</h2>
                 <h3 className="text-xs text-gray-600">{team.manager?.name}</h3>
+                {/* I5. A stand-in ran this team this week; the result still
+                    belongs to the manager who built it (the league's rule),
+                    and the site already credits it that way — this only
+                    says who was actually picking the lineup. */}
+                {(() => {
+                  const standInId = interimManager(year, week, team.manager?.id);
+                  const standIn = standInId
+                    ? managers.find((m) => m.id === standInId)
+                    : undefined;
+                  if (!standIn) return null;
+                  return (
+                    <p className="mt-0.5 text-xs text-amber-800">
+                      Managed by{" "}
+                      <Link
+                        to={`/managers/${standIn.id}`}
+                        className="font-medium underline decoration-dotted underline-offset-2"
+                      >
+                        {standIn.name}
+                      </Link>{" "}
+                      this week — the result counts to {team.manager?.name}
+                    </p>
+                  );
+                })()}
               </div>
             </div>
             <div className="text-3xl font-bold mb-2">
