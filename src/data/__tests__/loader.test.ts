@@ -179,3 +179,36 @@ describe("every season file on disk", () => {
     }
   });
 });
+
+describe("a download that fails", () => {
+  /**
+   * The retry loop. A failed load cleared its in-flight entry; React re-rendered
+   * when the thrown promise settled; the re-render found the data still missing
+   * and threw a fresh load, which failed at once — forever, behind a silent
+   * "Loading…". Now the failure is remembered and the next read throws a real
+   * error for the app's boundary, not another promise.
+   */
+  it("is remembered, and the next read throws an error instead of retrying", async () => {
+    vi.resetModules();
+    vi.doMock("@/data/2014/league.json", () => {
+      throw new Error("offline");
+    });
+    const fresh = await import("@/data");
+
+    await expect(fresh.loadSeasonParts([2014], ["core"])).rejects.toThrow();
+
+    const error = thrownBy(() => fresh.seasons[2014].rosters);
+    expect(error).toBeInstanceOf(fresh.DataLoadFailedError);
+    // Not a thenable: React will not suspend on it, so nothing re-renders
+    // into another attempt.
+    expect((error as { then?: unknown }).then).toBeUndefined();
+
+    // On navigation the failure is forgotten, and the read starts one new load.
+    vi.doUnmock("@/data/2014/league.json");
+    fresh.clearLoadFailure();
+    const retry = thrownBy(() => fresh.seasons[2014].rosters);
+    expect(retry).toBeInstanceOf(fresh.DataNotLoadedError);
+    await retry;
+    expect(fresh.seasons[2014].rosters.length).toBeGreaterThan(0);
+  });
+});

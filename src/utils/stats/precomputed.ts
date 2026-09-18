@@ -1,4 +1,8 @@
 import type { StatDefinition, StatEntry } from "./types";
+import {
+  forgetPrecomputedFailure,
+  recordPrecomputedFailure,
+} from "@/data/loadFailure";
 
 /**
  * The build-time answers (A4).
@@ -68,8 +72,15 @@ export const loadPrecomputedStats = (): Promise<PrecomputedStats> => {
         );
       }
       cache = data;
+      forgetPrecomputedFailure();
       return data;
     })
+    // Remembered, so the one hook that suspends on this file can show the
+    // failure instead of retrying on every render — see `DataLoadFailedError`
+    // in `@/data`. Its own record, not the season loader's: the narrative
+    // notes read this file without suspending, and a garnish that failed must
+    // not turn a later, perfectly downloadable season read into an error.
+    .catch(recordPrecomputedFailure)
     .finally(() => {
       inFlight = null;
     });

@@ -3,6 +3,7 @@ import {
   getPlayer,
   loadTransactions,
   seasons,
+  throwIfLoadFailed,
 } from "@/data";
 import type { Transaction } from "@/types/transaction";
 import { defineStat } from "./registry";
@@ -190,7 +191,10 @@ interface DatedTransaction {
  * seasons in which nobody did anything.
  */
 const completedTransactions = (years: number[]): DatedTransaction[] => {
-  if (!areTransactionsLoaded(years)) throw loadTransactions(years);
+  if (!areTransactionsLoaded(years)) {
+    throwIfLoadFailed();
+    throw loadTransactions(years);
+  }
 
   const all: DatedTransaction[] = [];
 

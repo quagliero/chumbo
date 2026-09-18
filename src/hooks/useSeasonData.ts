@@ -7,6 +7,7 @@ import {
   loadSeasonParts,
   loadTransactions,
   seasons,
+  throwIfLoadFailed,
   type SeasonPart,
 } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
@@ -74,7 +75,12 @@ export const useDataLoaded = (...needs: Needs[]): void => {
     if (players && !arePlayersLoaded()) pending.push(loadPlayers());
   }
 
-  if (pending.length) throw Promise.all(pending);
+  if (pending.length) {
+    // A load that already failed must not be retried by re-rendering — see
+    // `DataLoadFailedError`. The error boundary offers the retry instead.
+    throwIfLoadFailed();
+    throw Promise.all(pending);
+  }
 };
 
 /** Suspend until `years` are loaded — everything in them but the transactions. */

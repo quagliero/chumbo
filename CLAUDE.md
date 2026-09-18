@@ -264,6 +264,19 @@ Three things to know:
   crest-only card and says so, and `--strict` fails the build instead. That is
   the one real production risk if the build image ever lacks a humanist sans.
 
+## When a download fails
+
+`src/data/loadFailure.ts` remembers the first failed data download, and every
+place that would suspend on a load calls `throwIfLoadFailed()` first — so a
+failure becomes a real error for `AppErrorBoundary` (around the routes in
+`App.tsx`) instead of re-rendering into another attempt forever. The boundary
+offers **Reload**, not an in-page retry: a browser caches a failed dynamic
+`import()` for the life of the page, so re-importing the same chunk fails
+without a request. Any new code that throws a load for Suspense must call
+`throwIfLoadFailed()` before it. The module has no imports on purpose — the
+boundary is in the app shell, and importing `@/data` there put the loader on
+every page's critical path.
+
 ## The bundle budget
 
 `yarn build` fails if the payload grows. `initial` is read out of

@@ -4,6 +4,7 @@ import {
   type PrecomputedStat,
   type PrecomputedStats,
 } from "@/utils/stats/precomputed";
+import { DataLoadFailedError, getPrecomputedFailure } from "@/data/loadFailure";
 
 /**
  * The build-time stat answers, suspending until they are in (A4).
@@ -19,7 +20,11 @@ import {
  */
 export const usePrecomputedStats = (): PrecomputedStats => {
   const loaded = getPrecomputedStats();
-  if (!loaded) throw loadPrecomputedStats();
+  if (!loaded) {
+    const failed = getPrecomputedFailure();
+    if (failed) throw new DataLoadFailedError(failed);
+    throw loadPrecomputedStats();
+  }
   return loaded;
 };
 

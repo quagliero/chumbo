@@ -1255,14 +1255,17 @@ the leftovers are done; what remains is the league's to write, not code.
   the blocker is that per-player stats live in a React hook the prerender
   cannot call, and it would be ~4,400 more pages.
 
-Found by the H2 split and left alone deliberately (a refactor that also
-changes behaviour cannot be reviewed as one), each small:
-
-- The by-team schedule table lists never-met teams as 0-0-0 rows.
-- `Standings` sorts the array it is given in place when a season has no
-  divisions; its win-percentage sort would give NaN for a team with no games.
-- The strength-of-schedule colour scale divides by 11, assuming 12 teams.
-- H2H groups player scores by name, merging two players who share one.
+**No known bugs or quirks are outstanding** (2026-09-18). Everything the H2
+split and A2b turned up has been fixed: the stale "2025 participants" text,
+a leftover debug log, round-blind H2H playoff matching, the H2H streak's
+owner, never-met 0-0-0 schedule rows, standings sorting their input in
+place, win percentage giving NaN before a first game and counting a tie as
+nothing (2015's two 7-5-1 teams showed .538, now .577), a strength-of-schedule
+scale that assumed twelve teams, H2H grouping and positioning players by name
+(David Johnson the RB was slotted at TE in twelve pairings), two comments that
+contradicted their code, three copies of the TopScores playoff rule, a
+failed data download retrying forever behind a silent spinner, and the last
+lint warning.
 
 ## Risks
 

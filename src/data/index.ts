@@ -11,6 +11,13 @@ import { ExtendedUser } from "@/types/user";
 import { Transaction } from "@/types/transaction";
 import managersJson from "./managers.json";
 import { SEASON_FILE_PARTS } from "./parts";
+import { recordFailure, throwIfLoadFailed } from "./loadFailure";
+
+export {
+  DataLoadFailedError,
+  clearLoadFailure,
+  throwIfLoadFailed,
+} from "./loadFailure";
 
 /* ------------------------------------------------------------------ *
  * A2: nothing here is eager any more, bar managers.json.
@@ -287,6 +294,7 @@ const loadPartYear = (part: PartCache, year: number): Promise<void> => {
 
   const promise = Promise.all(files.map((task) => task()))
     .then(complete)
+    .catch(recordFailure)
     .finally(() => {
       part.inFlight.delete(year);
     });
@@ -422,6 +430,7 @@ const ALL_PARTS: readonly SeasonPart[] = ["core", "draft", "matchups"];
  */
 const guard = (year: number, part: SeasonPart, field: string) => {
   if (PARTS[part].done.has(year)) return;
+  throwIfLoadFailed();
   throw new DataNotLoadedError(
     `seasons[${year}].${field}`,
     loadSeasonParts(YEARS, [part])
@@ -451,6 +460,7 @@ const buildSeason = (year: number): SeasonData => {
   guarded("matchups", () => guard(year, "matchups", "matchups"));
   guarded("playerOverlay", () => {
     if (!dictionary) {
+      throwIfLoadFailed();
       throw new DataNotLoadedError(
         `seasons[${year}].playerOverlay`,
         loadPlayers()
@@ -564,6 +574,7 @@ export const loadPlayers = (): Promise<void> => {
       dictionary = base.default;
       dataVersion += 1;
     })
+    .catch(recordFailure)
     .finally(() => {
       playersInFlight = null;
     });
@@ -590,6 +601,7 @@ export const loadAllSeasons = (): Promise<void> =>
  */
 export const getPlayers = (): Record<string, Player> => {
   if (!dictionary) {
+    throwIfLoadFailed();
     throw new DataNotLoadedError("The player dictionary", loadPlayers());
   }
   return dictionary;

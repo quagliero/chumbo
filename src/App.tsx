@@ -5,6 +5,7 @@ import "./App.css";
 import Header from "@/presentation/components/Header/Header";
 import ScrollToTop from "@/presentation/components/ScrollToTop/ScrollToTop";
 import { CommandPaletteProvider } from "@/presentation/components/CommandPalette";
+import { AppErrorBoundary } from "@/presentation/components/ErrorBoundary/AppErrorBoundary";
 
 // Lazy load heavy components
 const Home = lazy(() => import("@/presentation/pages/home"));
@@ -41,6 +42,9 @@ function App() {
           <Header />
           <div className="px-4">
           <main className="mx-auto my-4">
+            {/* Above the Suspense, so a page that fails to load says so
+                instead of spinning forever or blanking the app. */}
+            <AppErrorBoundary>
             <Suspense
               fallback={
                 <div className="flex items-center justify-center py-12">
@@ -90,6 +94,7 @@ function App() {
                 <Route path="/hof" element={<HallOfFame />} />
               </Routes>
             </Suspense>
+            </AppErrorBoundary>
             </main>
           </div>
         </CommandPaletteProvider>
