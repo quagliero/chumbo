@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { computeStat, getStatContext } from "@/utils/stats";
+import { PINNED_THROUGH } from "./helpers";
 
 /**
  * Draft records (C4).
@@ -20,11 +21,15 @@ describe("draft value", () => {
   it("scores every pick from every completed season, and no others", () => {
     const entries = computeStat("best-draft-picks");
 
-    // 2026 has a draft but no football yet. Everything else is in, 2019
-    // included — its per-player scoring is a reconstruction, but a good enough
-    // one for a whole-season measure, so it is caveated rather than hidden.
+    // A season is in once fourteen weeks have been played, so the live one
+    // joins in December. Everything else is in, 2019 included — its
+    // per-player scoring is a reconstruction, but a good enough one for a
+    // whole-season measure, so it is caveated rather than hidden.
+    const { games } = getStatContext();
+    const weeksPlayed = (year: number) =>
+      new Set(games.filter((g) => g.year === year).map((g) => g.week)).size;
     const scored = YEAR_NUMBERS.filter(
-      (year) => year !== 2026 && pickCount(year) > 0
+      (year) => weeksPlayed(year) >= 14 && pickCount(year) > 0
     );
     const expected = scored.reduce((total, year) => total + pickCount(year), 0);
 
@@ -101,7 +106,9 @@ describe("draft value", () => {
     // 2024: thd took Lamar Jackson in round 4 and traded him in week 1. The
     // pick is the drafter's; the points are not. Both halves have to hold, or
     // the join has slipped a roster.
-    const [lamar] = computeStat("one-that-got-away", 1);
+    const [lamar] = computeStat("one-that-got-away").filter(
+      (entry) => (entry.year ?? 0) <= PINNED_THROUGH
+    );
     expect(lamar.subject).toBe("Lamar Jackson");
     expect(lamar.year).toBe(2024);
     expect(lamar.detail).toContain("thd drafted him in round 4");

@@ -112,7 +112,12 @@ describe("calculateStrengthOfSchedule", () => {
     });
   });
 
-  it("ranks the live season by its remaining fixtures", () => {
+  // Only while there are regular-season fixtures left to rank by.
+  const fixturesLeft =
+    (getCompletedWeek(seasons[CURRENT_YEAR].league) ?? 0) <
+    getPlayoffWeekStart(seasons[CURRENT_YEAR]) - 1;
+
+  it.runIf(fixturesLeft)("ranks the live season by its remaining fixtures", () => {
     const input = sosInput(CURRENT_YEAR);
     const ranks = calculateStrengthOfSchedule(input);
     const strength = remainingOpponentStrength(input);
@@ -135,7 +140,7 @@ describe("calculateStrengthOfSchedule", () => {
     expect(rosterIds.map((id) => ranks[id])).not.toEqual(rosterIds);
   });
 
-  it("gives two teams with different remaining opponents different ranks", () => {
+  it.runIf(fixturesLeft)("gives two teams with different remaining opponents different ranks", () => {
     const input = sosInput(CURRENT_YEAR);
     const ranks = calculateStrengthOfSchedule(input);
     const strength = remainingOpponentStrength(input);

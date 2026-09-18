@@ -231,13 +231,16 @@ describe("the coin flip", () => {
    * played a lot (weighting by games handed it to rich on 46.8%), and the
    * record it quotes must be the same set of games as the rate beside it (it
    * printed an all-games 108-101 next to a regular-season 50.0%).
+   *
+   * Nobody may hold it at all unless they are near .500: a live season can
+   * move the whole middle of the table, and closest is not the same as close.
    */
-  it("goes to the manager closest to .500, and its prose adds up", async () => {
+  it("goes only to a manager near .500, and its prose adds up", async () => {
     await loadAllSeasons();
     const entry = computeStat("manager-archetypes").find((e) =>
       e.detail?.includes("The Coin Flip")
     );
-    expect(entry).toBeDefined();
+    if (!entry) return;
 
     const record = entry!.detail!.match(/(\d+)-(\d+)(?:-(\d+))? across/);
     expect(record).not.toBeNull();

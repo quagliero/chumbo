@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 // Read through Vite rather than `fs`, for the same reason precomputed.test.ts
 // does: the app tsconfig has no node types, and `?raw` is the exact bytes that
 // get served.
@@ -43,9 +44,9 @@ beforeAll(async () => {
 });
 
 describe("completed seasons", () => {
-  it("is every season with a winners bracket, and no others", () => {
+  it("is every season whose final has been played, and no others", () => {
     expect(completedSeasons()).toEqual(
-      YEAR_NUMBERS.filter((y) => (seasons[y]?.winners_bracket?.length ?? 0) > 0)
+      YEAR_NUMBERS.filter((y) => isSeasonSettled(seasons[y]))
     );
   });
 
@@ -59,7 +60,7 @@ describe("completed seasons", () => {
     const inProgress = YEAR_NUMBERS.filter(
       (y) =>
         (seasons[y]?.rosters?.length ?? 0) > 0 &&
-        (seasons[y]?.winners_bracket?.length ?? 0) === 0
+        !isSeasonSettled(seasons[y])
     );
     for (const year of inProgress) {
       expect(completedSeasons()).not.toContain(year);
@@ -335,24 +336,16 @@ describe("the ring of shame", () => {
   /* ---------------- the current holders ---------------- */
 
   /**
-   * Deliberately hardcoded. These are the names printed on the page next to
-   * words like "the single worst decision ever made", and the league will
-   * quote them. If this test fails, the record changed hands: check the new
-   * holder reads well before updating the list.
+   * These are the names printed on the page next to words like "the single
+   * worst decision ever made", and the league will quote them. Most of them
+   * take in the live season, so this is a snapshot the automatic update
+   * re-records: when a record changes hands it shows in that commit's diff,
+   * and that is the moment to check the new holder reads well.
    */
   it("names today's holders", () => {
     expect(
       Object.fromEntries(ring.map((e) => [e.id, `${e.managerId} · ${e.value}`]))
-    ).toEqual({
-      "most-scumbos": "fin · 3 full Scumbos",
-      "reigning-scumbo": "rich · 47-107 all-play (30.5%)",
-      "bench-points": "kitch · 2949.3 points benched",
-      "manager-efficiency": "brock · 85.3% efficient",
-      "worst-start-sit": "chris · 47.7 points thrown away",
-      "longest-loss-streak": "thd · 10 straight defeats",
-      "waiver-hit-rate": "sol · 5.27 points per pickup",
-      "roster-churn": "sol · 248 moves in one season",
-    });
+    ).toMatchSnapshot();
   });
 });
 

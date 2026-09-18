@@ -19,6 +19,7 @@
     "fetch-brackets": "node scripts/fetch-sleeper-data.js --brackets",
     "fetch-season": "node scripts/fetch-sleeper-data.js --end-of-season",
     "fetch-matchup": "node scripts/fetch-matchup.js",
+    "update-season": "node scripts/update-season.js",
     "fix-player-ids": "node scripts/fix-player-ids.js",
     "build-aggregates": "vite-node scripts/build-aggregates.ts",
     "check-aggregates": "vite-node scripts/build-aggregates.ts --check",

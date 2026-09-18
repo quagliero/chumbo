@@ -1,5 +1,5 @@
 import { seasons } from "@/data";
-import { YEARS } from "@/domain/constants";
+import { CURRENT_YEAR, YEARS } from "@/domain/constants";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 
@@ -90,3 +90,19 @@ export const everyMatchup = (): Array<{
 
 /** Round to 4dp so float noise doesn't make reconciliation tests flaky. */
 export const round4 = (n: number): number => Math.round(n * 10000) / 10000;
+
+/**
+ * The last season the hand-checked facts in these suites were checked against.
+ *
+ * The automatic update (J1) fetches the live season two or three times a week
+ * and publishes it only if this suite passes, so no test may fail because the
+ * live season did something new: set a record, crown a Scumbo, top a
+ * leaderboard. A fact checked by hand is pinned to the seasons that had
+ * finished when it was checked. Anything that takes in the live season is a
+ * snapshot instead, and the update re-records those.
+ */
+export const PINNED_THROUGH = 2025;
+
+/** Whether the newest season is still being played. */
+export const liveSeasonInProgress = (): boolean =>
+  seasons[CURRENT_YEAR]?.league?.status !== "complete";

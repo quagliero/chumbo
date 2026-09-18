@@ -111,7 +111,8 @@ describe("the narrative engine", () => {
     // against managers.json rather than asserting they differ.)
     expect(note.managerId).toBe(top.subject);
     expect(note.holder).toBe(managers.find((m) => m.id === top.subject)!.name);
-    expect(note.recordValue).toBe("125.98");
+    // Whoever holds it by then: the live season can take this record.
+    expect(note.recordValue).toBe(top.value.toFixed(2));
   });
 
   /**

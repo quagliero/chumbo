@@ -32,6 +32,7 @@ yarn check-aggregates  # fail if that file is stale, without rewriting it
 yarn prerender-og   # per-route HTML + OG images into dist/ (runs in `yarn build`)
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
+yarn update-season                             # what the weekly Action runs (J1)
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
 yarn fetch-latest    -- --year 2026            # latest completed week only
 yarn fetch-week      -- --year 2026 --week 3   # specific week(s)
@@ -174,6 +175,8 @@ The fetch script reads `league_id` and `draft_id` from an existing
 6. **Optional annotations.** If the 2026 draft order/rules changed notably, add a
    `2026` entry to `getManualChanges()` in `src/utils/leagueRules.ts`.
 7. `yarn build` / `yarn lint` to verify, then commit and push to `main`.
+8. Re-enable the **Update the season** workflow on GitHub's Actions tab if it
+   was switched off over the summer (see "The automatic update" below).
 
 ## Behaviour with an in-progress season (relevant right now)
 
@@ -236,6 +239,35 @@ Three data-quality rules these all obey:
   the losers bracket numbers the league, 2020+ it restarts at 1 — so reading
   `p` straight off makes the consolation winner joint champion.
 
+## The automatic update (J1)
+
+`.github/workflows/update-season.yml` keeps the live season current with
+nobody touching it: 10:00 UTC on Tuesdays, Wednesdays and Fridays from
+September to January (after Monday night, after waivers, after stat
+corrections), and on demand with **Run workflow**. It runs `yarn update-season`
+(`scripts/update-season.js`): every week Sleeper has scored
+(`fetch-sleeper-data --completed`, which reads `last_scored_leg` and never
+commits a half-played week), `trim-picks`, and a player-dictionary refresh only
+when a rostered or transacted player is missing from it. Then `yarn test:run -u`
+and `yarn build`, and only if both pass does `github-actions[bot]` commit and
+push, which Netlify deploys. A failure commits nothing and opens (or comments
+on) an issue titled "The automatic season update failed"; the next good run
+closes it.
+
+What this asks of the tests: **no test may fail because the live season did
+something new.** A fact checked by hand is pinned to `PINNED_THROUGH`
+(`src/utils/__tests__/helpers.ts`, the last finished season); anything that
+takes in the live season is a snapshot, which the run re-records (`-u`) and
+commits beside the data, so a record changing hands shows in that commit's
+diff. A test that only makes sense while the season is being played is
+`it.runIf(...)`. And a season is settled when its final has a winner
+(`isSeasonSettled` in `utils/playoffUtils.ts`), never when it merely has
+brackets: the update writes those the week the playoffs start.
+
+Scheduled workflows are switched off by GitHub after 60 days without a commit,
+which the off-season always is. Re-enable it on the Actions tab when the new
+season is added.
+
 ## Link previews (G6)
 
 `yarn prerender-og`, part of `yarn build`, writes a real `index.html` for every
@@ -286,6 +318,13 @@ that is how a real regression hid: a `manualChunks` entry for charts became
 Rollup's home for a shared module, so every page statically depended on 24 kB of
 chart code and it was preloaded on every visit, while the check reported a
 critical path that excluded it.
+
+The rest is split three ways (J1): `code` (every chunk that is not season data
+or the dictionary — the number that catches a dependency nobody meant to add),
+`players` (the dictionary), and `season` (each season's four chunks together).
+There is deliberately no grand total: season data grows every week the
+automatic update runs, and a total that data counts toward fails the build
+over data that was meant to arrive.
 
 Two rules follow. **Do not add a manual chunk per feature** — see the comment in
 `vite.config.ts`. And if a number here has to move, move it deliberately and say

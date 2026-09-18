@@ -3,6 +3,7 @@ import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { computeStat, getStatContext } from "@/utils/stats";
 import { playerTrades } from "@/utils/stats/transactionStats";
+import { PINNED_THROUGH } from "./helpers";
 
 /**
  * Waiver and trade stats (C5).
@@ -107,7 +108,8 @@ describe("trade ledger", () => {
   });
 
   it("puts the 2013 Arian Foster trade at the top", () => {
-    const [top] = entries;
+    // Of the finished seasons: a trade this season could yet beat it.
+    const [top] = entries.filter((entry) => (entry.year ?? 0) <= PINNED_THROUGH);
     expect(top.year).toBe(2013);
     expect(top.subject).toBe("jay");
     expect(top.value).toBeGreaterThan(400);

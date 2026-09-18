@@ -4,6 +4,7 @@ import { YEAR_NUMBERS } from "@/domain/constants";
 import { buildCareerTimeline } from "@/presentation/components/ManagerDetail/useCareerTimeline";
 import { getSeasonCrowns } from "@/utils/crowns";
 import { getManagerStats } from "@/utils/managerStats";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import { managerStory } from "./managerStory";
 
 /**
@@ -15,8 +16,8 @@ import { managerStory } from "./managerStory";
  * on `useAllSeasons` before it gets here.
  */
 export const buildManagerStories = (): Record<string, string | null> => {
-  const settledYears = YEAR_NUMBERS.filter(
-    (year) => (seasons[year]?.winners_bracket?.length ?? 0) > 0
+  const settledYears = YEAR_NUMBERS.filter((year) =>
+    isSeasonSettled(seasons[year])
   );
   const latestSettledYear = Math.max(...settledYears);
 

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import { seasons } from "@/data";
 import managers from "@/data/managers.json";
 import { YEAR_NUMBERS } from "@/domain/constants";
@@ -44,7 +45,7 @@ describe("the H2H streak phrase", () => {
 });
 
 const decided = YEAR_NUMBERS.filter(
-  (year) => (seasons[year]?.winners_bracket?.length ?? 0) > 0
+  (year) => isSeasonSettled(seasons[year])
 );
 
 describe("the season badge", () => {

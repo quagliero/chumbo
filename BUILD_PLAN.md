@@ -1264,7 +1264,26 @@ The order, and why:
 
 ## Workstream J — Keep the live season alive
 
-### J1 · The site updates itself `M`
+### J1 · The site updates itself `M` ✅
+
+> **Done (2026-09-18).** `.github/workflows/update-season.yml` runs
+> `yarn update-season` Tue/Wed/Fri 10:00 UTC, Sep–Jan, then `test:run -u` and
+> `build`, and commits as `github-actions[bot]` only if both pass. It fetches
+> every week Sleeper has scored (`last_scored_leg`, never the half-played
+> `leg` that `fetch-latest` takes), refuses a scored week that is short of
+> teams or all zeroes, strips the league chat fields that would otherwise
+> make every run a commit, and refreshes the player dictionary only when a
+> player it mentions is missing. A failure opens an issue; the next success
+> closes it. Rehearsing the whole season against simulated data turned up
+> three things that would have stopped it partway: 47 tests pinned values the
+> live season moves (now pinned to finished seasons, or snapshots the run
+> re-records); a season with brackets was treated as finished, so for the
+> three playoff weeks the best record was crowned champion with a Triple
+> Crown and a "won the 2026 Chumbo" link preview (`isSeasonSettled` now
+> needs a played final); and the bundle `total` counted season data, which
+> would have failed the build around week 8 (split into `code`, `players`
+> and a per-season ceiling). Bot push access needed nothing: `main` is
+> unprotected and the repo's Actions token can write.
 
 A scheduled GitHub Action (the repo is public on GitHub, so it is free):
 `fetch-latest` → `trim-picks` → `build-aggregates` → **`yarn build` must pass**
@@ -1382,9 +1401,6 @@ stats and the card system; shipped the week of the final.
 - **L's data.** It needs the nflverse downloads above (the commissioner
   declined the smaller nflverse roster download for A1d earlier). L0 can be
   done with two seasons' files (~40 MB) before committing to the backfill.
-- **J1's bot** needs push access: a GitHub Actions token with write
-  permission on this repo (the default token suffices if branch protection
-  allows it).
 - **Parked, needs a backend:** predictions/pick'em, reactions, HOF blurb
   submission. The HOF blurbs could instead be a markdown file per year edited
   on GitHub — no backend — if a champion is willing.

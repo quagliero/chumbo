@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import allTime from "../../../public/data/all-time.json";
+import { liveSeasonInProgress } from "@/utils/__tests__/helpers";
 
 /**
  * What a first visit to a page actually loads (A2b).
@@ -152,7 +153,9 @@ describe("what a first visit loads", () => {
     });
   });
 
-  it("/seasons/2026/standings — the live season, and only it", async () => {
+  // After the final the newest season loads like any finished one, as 2014
+  // does below.
+  it.runIf(liveSeasonInProgress())("/seasons/2026/standings — the live season, and only it", async () => {
     const { loaded, errors } = await visit(
       "/seasons/:year/:tab",
       "/seasons/2026/standings",

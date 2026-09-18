@@ -341,6 +341,9 @@ interface Profile {
 /** Fewer games than this and any of these measures is noise. */
 const MIN_GAMES = 40;
 
+/** How far from .500 a career can be and still be called a coin toss. */
+const COIN_FLIP_MARGIN = 0.02;
+
 /** Playoff form needs a sample before it means anything. */
 const MIN_PLAYOFF_GAMES = 6;
 
@@ -481,6 +484,11 @@ export interface Archetype {
   lead: string;
   /** The unkind bit. Appended after the evidence and the ranking. */
   quip?: string;
+  /**
+   * Whether a measure is enough to wear the label at all. Applied after the
+   * ranking, so it takes a label away without changing anyone's rank in it.
+   */
+  deserves?: (value: number) => boolean;
 }
 
 const splitGap = (profile: Profile): number | null =>
@@ -638,6 +646,10 @@ export const ARCHETYPES: Archetype[] = [
       ` across ${p.record.wins + p.record.losses + p.record.ties} regular-season games, a win rate of ${(p.regularWinRate * 100).toFixed(1)}%`,
     lead: "the closest anyone has come to a coin toss over a whole career",
     quip: "fifteen years of being exactly as good as everybody else",
+    // Closest to .500 is not the same as near it. If a season moves the
+    // whole middle of the table, nobody is a coin flip, and the label says
+    // so by going unclaimed.
+    deserves: (v) => Math.abs(v) <= COIN_FLIP_MARGIN,
   },
   {
     key: "firework",
@@ -771,10 +783,15 @@ export const assignArchetypes = (games: Game[]): Assignment[] => {
     });
   }
 
+  // A label its measure does not earn is nobody's, whatever the ranking says.
+  const earned = pairs.filter(
+    (pair) => pair.archetype.deserves?.(pair.raw) ?? true
+  );
+
   // Labels somebody actually leads go out first, strongest fit first. Without
   // this the greedy hands "The Iron Man" to the fourth-most durable manager
   // just because the top three fitted something else even better.
-  pairs.sort(
+  earned.sort(
     (a, b) =>
       Number(b.rank === 1) - Number(a.rank === 1) ||
       b.z - a.z ||
@@ -786,7 +803,7 @@ export const assignArchetypes = (games: Game[]): Assignment[] => {
   const labelled = new Map<string, Assignment>();
 
   // Pass one: strongest fits first, each label claimed once.
-  for (const pair of pairs) {
+  for (const pair of earned) {
     if (pair.z <= 0) continue;
     if (labelled.has(pair.profile.managerId)) continue;
     if (taken.has(pair.archetype.key)) continue;
@@ -796,7 +813,7 @@ export const assignArchetypes = (games: Game[]): Assignment[] => {
 
   // Pass two: anyone left takes the best label still on the shelf. Still only
   // above-average fits — "The Cursed, 0 weeks cursed" is worse than no label.
-  for (const pair of pairs) {
+  for (const pair of earned) {
     if (pair.z <= 0) continue;
     if (labelled.has(pair.profile.managerId)) continue;
     if (taken.has(pair.archetype.key)) continue;
@@ -804,9 +821,9 @@ export const assignArchetypes = (games: Game[]): Assignment[] => {
     taken.add(pair.archetype.key);
   }
 
-  // Pass three: if the labels ran out, the last few share one. `pairs` is in
+  // Pass three: if the labels ran out, the last few share one. `earned` is in
   // descending order, so this is still that manager's own strongest fit.
-  for (const pair of pairs) {
+  for (const pair of earned) {
     if (pair.z <= 0) continue;
     if (labelled.has(pair.profile.managerId)) continue;
     labelled.set(pair.profile.managerId, pair);

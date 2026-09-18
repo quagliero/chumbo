@@ -11,6 +11,17 @@ interface SeasonData {
 }
 
 /**
+ * Whether a season is over: its final has a winner.
+ *
+ * Not whether it has brackets. The automatic update writes them the week the
+ * playoffs start, and for the three weeks until the final a season with
+ * brackets is still being played. Reading "has brackets" as "settled" there
+ * crowned the best regular-season record as champion, Triple Crown and all.
+ */
+export const isSeasonSettled = (seasonData: SeasonData | undefined): boolean =>
+  typeof seasonData?.winners_bracket?.find((m) => m.p === 1)?.w === "number";
+
+/**
  * Get the playoff week start for a season, with default fallback
  * @param seasonData - The season data containing league settings
  * @returns The week number when playoffs start (default: 15)

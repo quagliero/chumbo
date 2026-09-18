@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import managers from "@/data/managers.json";
 import { seasons } from "@/data";
 import { CURRENT_YEAR, YEAR_NUMBERS } from "@/domain/constants";
@@ -76,7 +77,7 @@ describe("buildCareerTimeline", () => {
     }
 
     for (const year of YEAR_NUMBERS) {
-      const settled = (seasons[year]?.winners_bracket?.length ?? 0) > 0;
+      const settled = isSeasonSettled(seasons[year]);
       if (!settled) continue;
       expect(champions.get(year) ?? []).toHaveLength(1);
     }

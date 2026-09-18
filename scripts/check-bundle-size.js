@@ -71,8 +71,29 @@ const BUDGET_KB = {
   // Currently 1056. A2b added 12 kB, knowingly and not moved for: the season
   // base data compresses 7 kB worse as thirty per-season chunks than as one,
   // and the dictionary 4 kB worse as a JSON.parse string (see vite.config.ts).
-  total: 1080,
+  //
+  // Replaced by J1 with the three below. `total` counted every season's data,
+  // which grows by design: the automatic update adds a week of the live season
+  // two or three times a week, a full season is ~72 kB, and at 1060 today the
+  // build would have started failing around week 8 -- over data that was
+  // meant to arrive, which is exactly the failure a budget must not have.
+  // Split, each number measures one thing and can stay tight:
+  //
+  // Every chunk that is code: everything but season data and the dictionary.
+  // Currently 254. This is the one that catches a dependency nobody meant to
+  // add, and its 26 kB of headroom is no longer eaten by each week of data.
+  code: 280,
+  // The player dictionary. Currently 109; it grows by a handful of players
+  // when the update refreshes it for a waiver pickup it did not know.
+  players: 125,
+  // Each season's four chunks together. The biggest is 2020 at 85; a whole
+  // Sleeper season is 67-85. Catches a season that ships something it should
+  // not -- picks.json untrimmed, a raw 6 MB players dump left in its folder.
+  season: 100,
 };
+
+const SEASON_CHUNK = /^(core|draft|matchups|transactions)-(\d{4})-/;
+const PLAYERS_CHUNK = /^players-/;
 
 // D0's +40 kB chart allowance and G1's +25 kB share allowance are enforced by
 // `initial` and `total` above rather than by per-chunk lines. The per-chunk
@@ -94,6 +115,20 @@ const sizes = js
   .sort((a, b) => b.kb - a.kb);
 
 const total = sizes.reduce((sum, s) => sum + s.kb, 0);
+const sum = (list) => list.reduce((acc, s) => acc + s.kb, 0);
+const code = sum(
+  sizes.filter(({ file }) => !SEASON_CHUNK.test(file) && !PLAYERS_CHUNK.test(file))
+);
+const players = sum(sizes.filter(({ file }) => PLAYERS_CHUNK.test(file)));
+const bySeason = new Map();
+for (const { file, kb } of sizes) {
+  const year = SEASON_CHUNK.exec(file)?.[2];
+  if (year) bySeason.set(year, (bySeason.get(year) ?? 0) + kb);
+}
+const [biggestYear, biggestSeason] = [...bySeason].sort((a, b) => b[1] - a[1])[0] ?? [
+  "-",
+  0,
+];
 
 // What the browser actually fetches before the first render, read out of
 // index.html rather than guessed from chunk names.
@@ -128,22 +163,31 @@ console.log(`  ${"—".repeat(9)}`);
 console.log(
   `  ${fmt(initial).padStart(9)}  on the critical path  (budget ${BUDGET_KB.initial} kB, ${preloaded.length} files from index.html)`
 );
-console.log(`  ${fmt(total).padStart(9)}  total                 (budget ${BUDGET_KB.total} kB)`);
+console.log(`  ${fmt(code).padStart(9)}  code                  (budget ${BUDGET_KB.code} kB)`);
+console.log(`  ${fmt(players).padStart(9)}  player dictionary     (budget ${BUDGET_KB.players} kB)`);
+console.log(
+  `  ${fmt(biggestSeason).padStart(9)}  largest season, ${biggestYear}  (budget ${BUDGET_KB.season} kB each, ${bySeason.size} seasons)`
+);
+console.log(`  ${fmt(total).padStart(9)}  total, for the record`);
 console.log("");
 
 const failures = [];
 if (initial > BUDGET_KB.initial)
   failures.push(`critical path ${fmt(initial)} exceeds ${BUDGET_KB.initial} kB`);
-if (total > BUDGET_KB.total)
-  failures.push(`total ${fmt(total)} exceeds ${BUDGET_KB.total} kB`);
+if (code > BUDGET_KB.code)
+  failures.push(`code ${fmt(code)} exceeds ${BUDGET_KB.code} kB`);
+if (players > BUDGET_KB.players)
+  failures.push(`player dictionary ${fmt(players)} exceeds ${BUDGET_KB.players} kB`);
+for (const [year, kb] of bySeason) {
+  if (kb > BUDGET_KB.season)
+    failures.push(`${year}'s season data ${fmt(kb)} exceeds ${BUDGET_KB.season} kB`);
+}
 
 // Season data is loaded per season, on demand (A2b), and must never be on the
 // critical path. One season's chunk is 2-20 kB -- inside the headroom above --
 // so the kB check alone would let one slip in. The names come from
 // manualChunks in vite.config.ts.
-const preloadedSeasons = preloaded.filter((file) =>
-  /^(core|draft|matchups|transactions)-\d{4}-/.test(file)
-);
+const preloadedSeasons = preloaded.filter((file) => SEASON_CHUNK.test(file));
 if (preloadedSeasons.length)
   failures.push(
     `season data on the critical path: ${preloadedSeasons.join(", ")}`

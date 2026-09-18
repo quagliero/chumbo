@@ -6,6 +6,7 @@ import { buildCareerTimeline } from "@/presentation/components/ManagerDetail/use
 import { getFinalStandings } from "@/utils/finalStandings";
 import { describeH2HStreak, getAllTimeH2HRecord } from "@/utils/h2h";
 import { getManagerStats } from "@/utils/managerStats";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import { seasonBadge } from "@/utils/seasonBadge";
 import { getTeamName } from "@/utils/teamName";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
@@ -54,9 +55,8 @@ export const latestAvatarUrl = (ownerId: string): string | null => {
   return null;
 };
 
-/** A season is settled once it has a winners bracket — the timeline's test. */
-const isSettled = (year: number) =>
-  (seasons[year]?.winners_bracket?.length ?? 0) > 0;
+/** A season is settled once its final is played — the timeline's test. */
+const isSettled = (year: number) => isSeasonSettled(seasons[year]);
 
 /* ------------------------------------------------------------------ *
  * A manager's season

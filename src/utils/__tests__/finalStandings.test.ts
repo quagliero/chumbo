@@ -3,6 +3,7 @@ import { loadAllSeasons, seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { getFinalStandings, getFinalPosition } from "@/utils/finalStandings";
 import { getCumulativeStandings } from "@/utils/standings";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 
 beforeAll(async () => {
   await loadAllSeasons();
@@ -81,8 +82,10 @@ describe("final standings", () => {
     }
 
     expect(disagreements).toEqual([]);
-    // The page's own champion list should name as many champions as seasons.
-    expect(cumulative.flatMap((t) => t.champion).length).toBeGreaterThanOrEqual(played.length);
+    // The page's own champion list should name as many champions as there
+    // are finals played (brackets arrive three weeks before the final).
+    const settled = YEAR_NUMBERS.filter((year) => isSeasonSettled(seasons[year]));
+    expect(cumulative.flatMap((t) => t.champion).length).toBeGreaterThanOrEqual(settled.length);
   });
 
   it("falls back to record when a season has no brackets", () => {

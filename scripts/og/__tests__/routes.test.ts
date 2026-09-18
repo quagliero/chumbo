@@ -117,10 +117,15 @@ describe("what each page says", () => {
   it("never claims a completed season is in progress, or the reverse", () => {
     const finished = routes.find((r) => r.path === "/seasons/2019/standings");
     expect(finished?.description).toContain("won the 2019 Chumbo");
-    const live = routes.find(
-      (r) => r.path === `/seasons/${Math.max(...YEARS)}/standings`
-    );
-    expect(live?.description).not.toContain("won the");
+    // The newest season, whichever it is right now: in progress until the
+    // final, and then it has a champion like any other.
+    const newest = Math.max(...YEARS);
+    const live = routes.find((r) => r.path === `/seasons/${newest}/standings`);
+    if (seasons[newest].league.status === "complete") {
+      expect(live?.description).toContain(`won the ${newest} Chumbo`);
+    } else {
+      expect(live?.description).not.toContain("won the");
+    }
   });
 
   it("agrees with the data it came from", () => {

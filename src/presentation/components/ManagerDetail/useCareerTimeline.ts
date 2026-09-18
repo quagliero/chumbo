@@ -4,6 +4,7 @@ import managers from "@/data/managers.json";
 import type { ExtendedRoster } from "@/types/roster";
 import { getFinalStandings, type FinalStanding } from "@/utils/finalStandings";
 import type { SeasonStats } from "@/utils/managerStats";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 
 /**
  * One manager's career, season by season, for the timeline on their page (F3).
@@ -93,9 +94,9 @@ export const buildCareerTimeline = (
         position: standing?.position ?? null,
         field: rosters.length,
         source: standing?.source ?? null,
-        // No brackets at all means the season is in progress. Same test the
-        // power ribbon uses (D2), so the two agree about which season is live.
-        inProgress: (season?.winners_bracket?.length ?? 0) === 0,
+        // No final yet means the season is in progress. Same test the power
+        // ribbon uses (D2), so the two agree about which season is live.
+        inProgress: !isSeasonSettled(season),
         wins: stat.wins,
         losses: stat.losses,
         ties: stat.ties,

@@ -3,6 +3,8 @@ import { loadAllSeasons, seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { getSeasonCrowns, getTripleCrown, getScumboCrown } from "@/utils/crowns";
 import { getSeasonBreakdown } from "@/utils/seasonBreakdown";
+import { isSeasonSettled } from "@/utils/playoffUtils";
+import { PINNED_THROUGH } from "./helpers";
 
 beforeAll(async () => {
   await loadAllSeasons();
@@ -26,7 +28,8 @@ describe("crowns", () => {
   it("finds the two Triple Crowns in league history", () => {
     // jay 2018 and dix 2022 — verified by hand against wins, points and the
     // bracket. If a third appears, the data changed and someone should look.
-    const won = YEAR_NUMBERS.map((year) => [year, getTripleCrown(year)?.managerId])
+    const won = YEAR_NUMBERS.filter((year) => year <= PINNED_THROUGH)
+      .map((year) => [year, getTripleCrown(year)?.managerId])
       .filter(([, id]) => id);
     expect(won).toEqual([
       [2018, "jay"],
@@ -36,9 +39,9 @@ describe("crowns", () => {
 
   it("never awards a Triple Crown on a season with no champion yet", () => {
     for (const year of YEAR_NUMBERS) {
-      const complete = (seasons[year]?.winners_bracket?.length ?? 0) > 0;
-      if (complete) continue;
-      // An in-progress season has a leader, not a champion.
+      if (isSeasonSettled(seasons[year])) continue;
+      // An in-progress season has a leader, not a champion — the playoffs
+      // included, when the brackets exist and the final does not.
       expect(getTripleCrown(year)).toBeNull();
       expect(getSeasonCrowns(year).every((c) => !c.champion)).toBe(true);
     }
@@ -86,8 +89,8 @@ describe("crowns", () => {
   });
 
   it("records the full Scumbos", () => {
-    const full = YEAR_NUMBERS.flatMap((year) =>
-      getScumboCrown(year).map((c) => `${year} ${c.managerId}`)
+    const full = YEAR_NUMBERS.filter((year) => year <= PINNED_THROUGH).flatMap(
+      (year) => getScumboCrown(year).map((c) => `${year} ${c.managerId}`)
     );
     // Hand-checked against the three legs season by season.
     expect(full).toEqual([

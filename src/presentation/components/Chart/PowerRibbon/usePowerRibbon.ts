@@ -4,6 +4,7 @@ import { YEAR_NUMBERS } from "@/domain/constants";
 import { useDataLoaded } from "@/hooks/useSeasonData";
 import { getFinalStandings } from "@/utils/finalStandings";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import managers from "@/data/managers.json";
 
 export interface RibbonPoint {
@@ -47,10 +48,10 @@ export const usePowerRibbon = (years: readonly number[] = YEAR_NUMBERS) => {
 
       const standings = getFinalStandings(year);
       const field = season.rosters.length;
-      // No brackets yet means the season is in progress: the order is real but
+      // No final yet means the season is in progress: the order is real but
       // provisional, and the chart should say so rather than drawing it as
       // settled history.
-      const provisional = (season.winners_bracket?.length ?? 0) === 0;
+      const provisional = !isSeasonSettled(season);
 
       for (const standing of standings) {
         const roster = season.rosters.find((r) => r.roster_id === standing.rosterId);

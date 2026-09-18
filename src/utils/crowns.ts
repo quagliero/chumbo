@@ -2,6 +2,7 @@ import { seasons } from "@/data";
 import { getRosterPointsFor } from "@/utils/recordUtils";
 import { getSeasonBreakdown } from "@/utils/seasonBreakdown";
 import { getFinalStandings } from "@/utils/finalStandings";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import { memoiseOverSeasons } from "@/utils/cache";
 
@@ -75,10 +76,10 @@ const compute = (year: number): SeasonCrown[] => {
   const maxPoints = Math.max(...teams.map((t) => t.points));
   const minPoints = Math.min(...teams.map((t) => t.points));
 
-  // The champion only exists once the brackets are written. An in-progress
+  // The champion only exists once the final is played. An in-progress
   // season has no champion rather than a provisional one, so nobody can hold
   // a Triple Crown on a season still being played.
-  const complete = (season.winners_bracket?.length ?? 0) > 0;
+  const complete = isSeasonSettled(season);
   const championRosterId = complete
     ? (getFinalStandings(year).find((s) => s.position === 1)?.rosterId ?? null)
     : null;

@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
+import { checkWeek, weeksToFetch } from './season-weeks.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -95,7 +96,12 @@ async function fetchRosterData(leagueId, year) {
   
   writeJsonFile(path.join(yearDir, 'rosters.json'), rosters);
   writeJsonFile(path.join(yearDir, 'users.json'), users);
-  writeJsonFile(path.join(yearDir, 'league.json'), league);
+  // The league object also carries the league chat's latest message, which
+  // nothing here reads and which would make every fetch a change to commit.
+  const leagueToWrite = Object.fromEntries(
+    Object.entries(league).filter(([key]) => !/^last_(message|author|read|pinned)/.test(key))
+  );
+  writeJsonFile(path.join(yearDir, 'league.json'), leagueToWrite);
   
   return { rosters, users, league };
 }
@@ -272,7 +278,7 @@ async function fetchYearData(year, options = {}) {
     }
     
     // Fetch draft and roster data (these are year-specific)
-    const [, { league }] = await Promise.all([
+    const [, { league, rosters }] = await Promise.all([
       fetchDraftData(draft_id, year),
       fetchRosterData(league_id, year)
     ]);
@@ -281,6 +287,24 @@ async function fetchYearData(year, options = {}) {
     if (league.status !== 'complete') {
       console.log('Fetching regular season schedule...');
       await fetchScheduleData(league_id, year, league.settings?.playoff_week_start || 15);
+    }
+
+    // Every week Sleeper has scored, for the automatic update (J1)
+    if (options.completed) {
+      const plan = weeksToFetch(league, year);
+      console.log(`Scored weeks: 1-${plan.completed} (Sleeper is on week ${league.settings?.leg ?? '-'})`);
+      for (const week of plan.matchups) {
+        checkWeek(week, await fetchMatchupData(league_id, year, week), rosters.length);
+      }
+      for (const week of plan.transactions) {
+        await fetchTransactionData(league_id, year, week);
+      }
+      if (plan.brackets) {
+        console.log('Fetching playoff bracket data...');
+        await fetchBracketData(league_id, year);
+      }
+      console.log(`✅ Successfully fetched every scored week for ${year}`);
+      return;
     }
     
     // Handle matchup data
@@ -348,6 +372,7 @@ function parseArgs() {
     brackets: false,
     endOfSeason: false,
     allTransactions: false,
+    completed: false,
     help: false
   };
   
@@ -388,6 +413,11 @@ function parseArgs() {
         options.endOfSeason = true;
         break;
         
+      case '--completed':
+      case '-c':
+        options.completed = true;
+        break;
+
       case '--all-transactions':
       case '-t':
         options.allTransactions = true;
@@ -423,6 +453,8 @@ Options:
   -b, --brackets           Fetch playoff bracket data
   -e, --end-of-season      Fetch all data including brackets (end of season)
   -t, --all-transactions   Fetch all transactions for the season (2020+ only)
+  -c, --completed          Fetch every week Sleeper has scored, and brackets once
+                           the regular season is over (the automatic update)
   -h, --help               Show this help message
 
 Examples:
@@ -479,7 +511,7 @@ async function main() {
     }
     
     // Set default behavior if no specific options
-    if (options.weeks.length === 0 && !options.latestWeek && !options.brackets && !options.endOfSeason && !options.allTransactions) {
+    if (options.weeks.length === 0 && !options.latestWeek && !options.brackets && !options.endOfSeason && !options.allTransactions && !options.completed) {
       options.latestWeek = true;
     }
     

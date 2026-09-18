@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { YEARS } from "@/domain/constants";
 import { gameHref } from "@/presentation/components/PlayerDetail/PlayerStatsCardLink";
 import { calculatePositionalStats } from "@/utils/statsExplorer";
+import { PINNED_THROUGH } from "./helpers";
 
 /**
  * The explorer paired every eliminated team sitting out a playoff week with
@@ -28,6 +29,7 @@ describe("the stats explorer, playoffs included", () => {
   it("leaves the regular-season numbers alone", () => {
     // Unpaired team-weeks only exist in playoff weeks, so the default view —
     // regular season only — was never affected.
-    expect(calculatePositionalStats([], YEARS, false).totalMatchups).toBe(2224);
+    const finished = YEARS.filter((year) => year <= PINNED_THROUGH);
+    expect(calculatePositionalStats([], finished, false).totalMatchups).toBe(2212);
   });
 });

@@ -1,6 +1,7 @@
 import { managers, seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { getFinalStandings } from "@/utils/finalStandings";
+import { isSeasonSettled } from "@/utils/playoffUtils";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import type { PrecomputedStats } from "@/utils/stats/precomputed";
 import {
@@ -82,14 +83,14 @@ export interface ManagerHonours {
 /**
  * Seasons whose result is final.
  *
- * A season is complete when its winners bracket exists — the bracket is only
- * written at the end of the year. Detected rather than hardcoded, so the
+ * A season is complete when its final has a winner (brackets alone are not
+ * enough: they arrive when the playoffs start). Detected rather than hardcoded, so the
  * in-progress season drops out on its own: on 2026's data today every roster
  * is 0-0, and reading a champion or a wooden spoon off that would be an
  * invented fact rather than a late one.
  */
 export const completedSeasons = (): number[] =>
-  YEAR_NUMBERS.filter((year) => (seasons[year]?.winners_bracket?.length ?? 0) > 0);
+  YEAR_NUMBERS.filter((year) => isSeasonSettled(seasons[year]));
 
 /**
  * Every manager's finishing record across the completed seasons.

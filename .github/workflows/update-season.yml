@@ -1,0 +1,104 @@
+name: Update the season
+
+# J1: fetch every week Sleeper has scored and publish it, but only if the tests
+# pass and the site still builds. A failure commits nothing and opens an issue,
+# so a bad week of data never reaches the site. See scripts/update-season.js.
+
+on:
+  schedule:
+    # 10:00 UTC, September to January: Tuesday (Monday night is over and
+    # scored), Wednesday (waivers have run) and Friday (stat corrections).
+    - cron: "0 10 * 1,9-12 2,3,5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: update-season
+  cancel-in-progress: false
+
+env:
+  FAILURE_TITLE: The automatic season update failed
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Fetch from Sleeper
+        id: fetch
+        run: yarn update-season
+
+      - name: Anything new?
+        id: changes
+        run: |
+          git add -A src/data public/data scripts/data
+          if git diff --cached --quiet; then
+            echo "Nothing has changed since the last update."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git diff --cached --stat
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # -u: the archive snapshots take in the live season, so a new week moves
+      # them; they are re-recorded and committed with the data. Every other
+      # assertion must still pass (see "The automatic update" in CLAUDE.md).
+      - name: Test
+        if: steps.changes.outputs.changed == 'true'
+        run: yarn test:run -u
+
+      - name: Build
+        if: steps.changes.outputs.changed == 'true'
+        run: yarn build
+
+      - name: Publish
+        if: steps.changes.outputs.changed == 'true'
+        env:
+          MESSAGE: ${{ steps.fetch.outputs.message }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898798+github-actions[bot]@users.noreply.github.com"
+          git add -A src/data public/data scripts/data ':(glob)**/__snapshots__/**'
+          git commit -m "$MESSAGE" -m "Fetched and published by the Update the season workflow."
+          # Someone may have pushed while this ran. The data files are only
+          # ever written here, so a rebase onto their work cannot conflict.
+          git pull --rebase
+          git push
+
+      - name: Close the last failure's issue
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          for n in $(gh issue list --state open --search "\"$FAILURE_TITLE\" in:title" --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "Working again: $RUN"
+          done
+
+      - name: Report the failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          BODY="The update failed at: $RUN
+
+          Nothing was committed, so the site still shows the last good data. The next scheduled run tries again; to run it now, use **Run workflow** on the Update the season workflow."
+          EXISTING=$(gh issue list --state open --search "\"$FAILURE_TITLE\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "Failed again: $RUN"
+          else
+            gh issue create --title "$FAILURE_TITLE" --body "$BODY"
+          fi

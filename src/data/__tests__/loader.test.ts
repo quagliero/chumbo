@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SEASON_FILE_PARTS } from "@/data/parts";
+import { YEARS } from "@/domain/constants";
 
 /**
  * The loader behind `seasons` and `getPlayer` (A2b).
@@ -118,14 +119,23 @@ describe("loading", () => {
     expect(() => data.seasons[2015].rosters).toThrow(data.DataNotLoadedError);
   });
 
-  it("gives a missing file a stand-in that is the same object every read", async () => {
-    // A season in progress has no brackets yet.
-    await data.loadSeasonParts([2026], ["core"]);
+  // A season in progress has no brackets until its playoffs start. Between a
+  // final and the next draft there is no such season, and nothing to test.
+  const brackets = import.meta.glob("../*/winners_bracket.json");
+  const bracketless = YEARS.find(
+    (year) => !(`../${year}/winners_bracket.json` in brackets)
+  );
 
-    const bracket = data.seasons[2026].winners_bracket;
-    expect(bracket).toEqual([]);
-    expect(data.seasons[2026].winners_bracket).toBe(bracket);
-  });
+  it.runIf(bracketless)(
+    "gives a missing file a stand-in that is the same object every read",
+    async () => {
+      await data.loadSeasonParts([bracketless!], ["core"]);
+
+      const bracket = data.seasons[bracketless!].winners_bracket;
+      expect(bracket).toEqual([]);
+      expect(data.seasons[bracketless!].winners_bracket).toBe(bracket);
+    }
+  );
 
   it("treats a year that is not a season as loaded and empty", async () => {
     await data.loadSeasons([1999]);
