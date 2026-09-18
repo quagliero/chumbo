@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-18T08:30:11.374Z",
+  "generatedAt": "2026-09-18T13:32:56.569Z",
   "years": [
     2012,
     2013,
@@ -3273,7 +3273,7 @@
         2019
       ],
       "caveat": [],
-      "total": 763,
+      "total": 767,
       "entries": [
         {
           "value": 460.2,
@@ -3497,10 +3497,10 @@
           "detail": "103 pickups, 2122.3 points started (2965.8 rostered); best Ryan Tannehill (172.4 started, 2020)"
         },
         {
-          "value": 18.22,
+          "value": 18.07,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "124 pickups, 2259.1 points started (3399.0 rostered); best Chris Boswell (141.0 started, 2024)"
+          "detail": "125 pickups, 2259.1 points started (3399.0 rostered); best Chris Boswell (141.0 started, 2024)"
         },
         {
           "value": 16.26,
@@ -3515,34 +3515,34 @@
           "detail": "131 pickups, 1958.4 points started (3221.7 rostered); best Nick Folk (98.0 started, 2022)"
         },
         {
-          "value": 11.91,
+          "value": 11.79,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
-          "detail": "103 pickups, 1226.2 points started (2622.1 rostered); best Dustin Hopkins (88.1 started, 2021)"
+          "detail": "104 pickups, 1226.2 points started (2622.1 rostered); best Dustin Hopkins (88.1 started, 2021)"
         },
         {
-          "value": 11.67,
+          "value": 11.63,
           "subject": "kitch",
           "href": "/managers/kitch",
-          "detail": "300 pickups, 3502.0 points started (5731.6 rostered); best Matthew Stafford (287.9 started, 2021)"
+          "detail": "301 pickups, 3502.0 points started (5731.6 rostered); best Matthew Stafford (287.9 started, 2021)"
         },
         {
-          "value": 10.56,
+          "value": 10.51,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "201 pickups, 2122.3 points started (3146.7 rostered); best Dak Prescott (277.4 started, 2023)"
+          "detail": "202 pickups, 2122.3 points started (3146.7 rostered); best Dak Prescott (277.4 started, 2023)"
         },
         {
-          "value": 10,
+          "value": 9.8,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "237 pickups, 2370.6 points started (3742.6 rostered); best Dak Prescott (145.6 started, 2022)"
+          "detail": "242 pickups, 2370.6 points started (3742.6 rostered); best Dak Prescott (145.6 started, 2022)"
         },
         {
-          "value": 9.67,
+          "value": 9.63,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "224 pickups, 2166.6 points started (3390.9 rostered); best Jason Myers (122.0 started, 2025)"
+          "detail": "225 pickups, 2166.6 points started (3390.9 rostered); best Jason Myers (122.0 started, 2025)"
         },
         {
           "value": 8.75,
@@ -3551,22 +3551,22 @@
           "detail": "98 pickups, 857.1 points started (1446.8 rostered); best Matt Gay (139.7 started, 2021)"
         },
         {
-          "value": 8.32,
+          "value": 8.22,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "329 pickups, 2736.2 points started (4682.9 rostered); best Brock Purdy (171.4 started, 2024)"
+          "detail": "333 pickups, 2736.2 points started (4682.9 rostered); best Brock Purdy (171.4 started, 2024)"
         },
         {
-          "value": 7.39,
+          "value": 7.34,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "290 pickups, 2142.0 points started (3735.0 rostered); best Drake Maye (282.0 started, 2025)"
+          "detail": "292 pickups, 2142.0 points started (3735.0 rostered); best Drake Maye (282.0 started, 2025)"
         },
         {
-          "value": 5.27,
+          "value": 5.24,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "450 pickups, 2372.6 points started (4577.6 rostered); best Chris Boswell (82.6 started, 2021)"
+          "detail": "453 pickups, 2372.6 points started (4577.6 rostered); best Chris Boswell (82.6 started, 2021)"
         }
       ]
     },
@@ -3579,7 +3579,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 81,
+      "total": 83,
       "entries": [
         {
           "value": 248,
