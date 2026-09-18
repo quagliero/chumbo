@@ -3,6 +3,7 @@ import managers from "@/data/managers.json";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getManagerStats, type DataMode, type ManagerStats } from "@/utils/managerStats";
 import { ManagerCard, useManagerAvatars } from "@/presentation/components/ManagerCard";
+import { buildManagerStories } from "@/presentation/components/ManagerCard/managerStories";
 import { useCareerSparklines } from "@/presentation/components/Chart/CareerSparkline/useCareerSparkline";
 
 /**
@@ -104,6 +105,8 @@ const Managers = () => {
   const avatars = useManagerAvatars();
   // One walk over the seasons for all fourteen sparklines, not fourteen.
   const { byManager: careers, years } = useCareerSparklines();
+  // F1e. Independent of the sort and the data mode, so computed once.
+  const stories = useMemo(() => buildManagerStories(), []);
 
   const ordered = useMemo(() => {
     const { keys } = SORTS[sortBy];
@@ -177,6 +180,7 @@ const Managers = () => {
             dataMode={dataMode}
             rank={index + 1}
             rankLabel={SORTS[sortBy].label}
+            story={stories[stats.managerId]}
           />
         ))}
       </div>

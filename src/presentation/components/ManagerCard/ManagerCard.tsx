@@ -47,6 +47,7 @@ export const ManagerCard = ({
   dataMode,
   rank,
   rankLabel,
+  story,
 }: {
   stats: ManagerStats;
   /** Their finishing positions, or undefined if they have never played. */
@@ -59,6 +60,8 @@ export const ManagerCard = ({
   rank: number;
   /** What the sort is by, so the rank badge can say what it means. */
   rankLabel: string;
+  /** Their career in a line (F1e). See `managerStory.ts`. */
+  story?: string | null;
 }) => {
   const { number } = useFormatter();
   const accent = getManagerAccent(stats.managerId);
@@ -102,6 +105,12 @@ export const ManagerCard = ({
           <p className="mt-0.5 line-clamp-2 text-sm leading-snug text-ink-muted">
             {stats.teamName}
           </p>
+          {/* F1e. Inside the identity row, which the subgrid already sizes to
+              the tallest card in the row, so a two-line story cannot knock
+              the trophy shelves out of line. */}
+          {story && (
+            <p className="mt-1.5 text-xs leading-snug text-ink">{story}</p>
+          )}
         </div>
         <span
           className="shrink-0 rounded-full bg-surface-sunk px-2 py-0.5 text-xs font-medium tabular-nums text-ink-muted"

@@ -666,7 +666,7 @@ because "Zaragoza's Zooting Zorro" wraps to two lines and shoves its stats down.
 - [x] **F1b** Trophy case as the hero, not a footnote row of emoji at the bottom. Championships are the point.
 - [x] **F1c** Finishing-position sparkline per card — instant career shape, makes the grid scannable.
 - [x] **F1d** Fix alignment — `grid-rows-subgrid` or a fixed-height name block, so the eye can compare across cards.
-- [ ] **F1e** *(now unblocked — E7 shipped; this is the one M5 item left)* Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
+- [x] **F1e** *(done — `ManagerCard/managerStory.ts`; every clause recounted by a test)* Auto-generated one-line story per manager: *"3 titles, but hasn't made the playoffs since 2022."* *(needs E7)*
 
 ### F2 · Manager accent colours `S`
 **Blocks:** D1, D2, D4, F1, F3, G2 · **Blocked by:** B1
