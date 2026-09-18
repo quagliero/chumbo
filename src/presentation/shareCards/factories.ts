@@ -1,4 +1,4 @@
-import { loadSeasons } from "@/data";
+import { loadPlayers, loadSeasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import type { CardNote } from "@/presentation/components/ShareCard/templates";
 import type { ShareCard } from "@/presentation/components/ShareCard";
@@ -20,9 +20,13 @@ const load = () =>
     import("@/presentation/components/ShareCard/templates"),
     import("@/presentation/components/ShareCard"),
     import("./cardData"),
-    // Everything below reads matchups. A no-op on the pages that already
-    // loaded them, which is all of the ones that show these buttons.
+    // Everything below reads matchups, and the manager stats name players.
+    // A no-op on the pages that already loaded them, which is most of the
+    // ones that show these buttons. This runs in a click handler, not a
+    // render, so there is no Suspense to fall back on: a read of anything not
+    // loaded here would throw `DataNotLoadedError` (A2b).
     loadSeasons(YEAR_NUMBERS),
+    loadPlayers(),
   ]);
 
 const CREST = "/images/logo.png";

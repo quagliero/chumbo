@@ -1,5 +1,5 @@
 import { YEARS } from "@/domain/constants";
-import { ExtendedLeague } from "@/types/league";
+import { seasons } from "@/data";
 
 export interface DraftSettings {
   rounds: number;
@@ -41,60 +41,58 @@ export interface LeagueRules {
   draftSettings?: DraftSettings;
 }
 
+/**
+ * Every season's league settings, in year order.
+ *
+ * Reads `seasons`, so the league and draft files have to be loaded first —
+ * the settings page asks for them (`useDataLoaded`). This used to eager-glob
+ * the two files itself, a second route to the same JSON that kept every
+ * season's league and draft in whatever chunk imported it (A2b).
+ *
+ * No try/catch round a season any more, deliberately. It was there for a
+ * failed import; what it would catch now is `DataNotLoadedError`, and
+ * swallowing that would drop a season from the page without a word.
+ */
 export const getLeagueRules = (): LeagueRules[] => {
   const rules: LeagueRules[] = [];
 
   YEARS.forEach((year: number) => {
-    try {
-      // Use dynamic import with import.meta.glob
-      const leagueData = import.meta.glob("../data/*/league.json", {
-        eager: true,
-      });
-      const draftData = import.meta.glob("../data/*/draft.json", {
-        eager: true,
-      });
-      const leagueKey = `../data/${year}/league.json`;
-      const draftKey = `../data/${year}/draft.json`;
+    const data = seasons[year].league;
+    const draft = seasons[year].draft as DraftData;
 
-      if (leagueData[leagueKey]) {
-        const data = (leagueData[leagueKey] as { default: ExtendedLeague })
-          .default;
+    // A season's league and draft read as `{}` when its file is missing.
+    if (Object.keys(data).length === 0) return;
 
-        let draftSettings: DraftSettings | undefined;
-        if (draftData[draftKey]) {
-          const draft = (draftData[draftKey] as { default: DraftData }).default;
-          draftSettings = {
-            rounds: draft.settings?.rounds || 15,
-            alphaSort: draft.settings?.alpha_sort === 1,
-            pickTimer: draft.settings?.pick_timer || 0,
-            type: draft.type || "snake",
-            teams: draft.settings?.teams || 12,
-          };
-        }
-
-        rules.push({
-          year,
-          name: data.name || `The Chumbo ${year}`,
-          settings: {
-            numTeams: data.settings?.num_teams || 12,
-            playoffTeams: data.settings?.playoff_teams || 6,
-            playoffWeekStart: data.settings?.playoff_week_start || 15,
-            playoffSeedType: data.settings?.playoff_seed_type || 0,
-            draftRounds: data.settings?.draft_rounds || 3,
-            maxKeepers: data.settings?.max_keepers || 1,
-            waiverBudget: data.settings?.waiver_budget || 100,
-            waiverType: getWaiverType(data.settings?.waiver_type),
-            tradeDeadline: data.settings?.trade_deadline || 99,
-            vetoVotesNeeded: 6, // Default value since it's not in the type
-          },
-          rosterPositions: data.roster_positions || [],
-          scoringSettings: data.scoring_settings || {},
-          draftSettings,
-        });
-      }
-    } catch {
-      console.warn(`Could not load league data for ${year}`);
+    let draftSettings: DraftSettings | undefined;
+    if (Object.keys(draft).length > 0) {
+      draftSettings = {
+        rounds: draft.settings?.rounds || 15,
+        alphaSort: draft.settings?.alpha_sort === 1,
+        pickTimer: draft.settings?.pick_timer || 0,
+        type: draft.type || "snake",
+        teams: draft.settings?.teams || 12,
+      };
     }
+
+    rules.push({
+      year,
+      name: data.name || `The Chumbo ${year}`,
+      settings: {
+        numTeams: data.settings?.num_teams || 12,
+        playoffTeams: data.settings?.playoff_teams || 6,
+        playoffWeekStart: data.settings?.playoff_week_start || 15,
+        playoffSeedType: data.settings?.playoff_seed_type || 0,
+        draftRounds: data.settings?.draft_rounds || 3,
+        maxKeepers: data.settings?.max_keepers || 1,
+        waiverBudget: data.settings?.waiver_budget || 100,
+        waiverType: getWaiverType(data.settings?.waiver_type),
+        tradeDeadline: data.settings?.trade_deadline || 99,
+        vetoVotesNeeded: 6, // Default value since it's not in the type
+      },
+      rosterPositions: data.roster_positions || [],
+      scoringSettings: data.scoring_settings || {},
+      draftSettings,
+    });
   });
 
   return rules.sort((a, b) => a.year - b.year);

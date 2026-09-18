@@ -1,7 +1,7 @@
 import { ExtendedMatchup } from "@/types/matchup";
-import { getPlayer } from "@/data";
+import { getPlayer, getPlayers } from "@/data";
 import { seasons } from "@/data";
-import { players } from "@/data";
+import { legacyPlayers } from "@/data/legacyPlayers";
 
 /**
  * Get player name with fallbacks for string-named players
@@ -121,6 +121,16 @@ export const getPlayerPosition = (
     return player.position;
   }
 
+  // A legacy string-named player's position is a committed fact, derived from
+  // exactly the sweep below by `yarn build-aggregates`. Reading it here is not
+  // an optimisation: the sweep reads every season's matchups, which since A2b
+  // is a guarded read, so a draft board with one "Beanie Wells" on it would
+  // otherwise download the whole archive to learn he was a RB.
+  const legacyPosition = legacyPlayers[playerIdStr];
+  if (legacyPosition) {
+    return legacyPosition;
+  }
+
   // Search through all seasons to find position information for this player
   for (const [, seasonData] of Object.entries(seasons)) {
     for (const [, weekMatchups] of Object.entries(seasonData.matchups || {})) {
@@ -140,15 +150,13 @@ export const getPlayerPosition = (
   }
 
   // Also try root players.json for string-named players
-  if (players) {
-    const foundPlayer = Object.values(players).find(
-      (p) =>
-        p.full_name === playerIdStr ||
-        `${p.first_name} ${p.last_name}` === playerIdStr
-    );
-    if (foundPlayer?.position) {
-      return foundPlayer.position;
-    }
+  const foundPlayer = Object.values(getPlayers()).find(
+    (p) =>
+      p.full_name === playerIdStr ||
+      `${p.first_name} ${p.last_name}` === playerIdStr
+  );
+  if (foundPlayer?.position) {
+    return foundPlayer.position;
   }
 
   return "UNK"; // Default if position not found
@@ -206,7 +214,7 @@ export const getPlayerPositionFromMatchups = (playerName: string): string => {
 export const getPlayerPositionFromData = (playerName: string): string => {
   // The base dictionary is the union of every snapshot, so one scan covers what
   // used to be a scan per season.
-  const player = Object.values(players).find(
+  const player = Object.values(getPlayers()).find(
     (p) =>
       p.full_name === playerName ||
       `${p.first_name} ${p.last_name}` === playerName

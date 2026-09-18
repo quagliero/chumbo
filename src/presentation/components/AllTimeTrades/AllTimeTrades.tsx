@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { seasons, managers } from "@/data";
-import { useAllSeasons, useAllTransactions } from "@/hooks/useSeasonData";
+import { getActiveOwnerIds } from "@/utils/activeOwners";
+import { useDataLoaded } from "@/hooks/useSeasonData";
+import { YEAR_NUMBERS } from "@/domain/constants";
 import { getSeasonTrades, TradeSummary } from "@/utils/transactionUtils";
 import { getTeamName } from "@/utils/teamName";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
@@ -34,14 +36,6 @@ const renderYearList = (years: string) => {
   });
 };
 
-// Get the most recent season's active teams
-const mostRecentSeason = Object.entries(seasons).sort(
-  (a, b) => Number(b[0]) - Number(a[0])
-)[0][1];
-const activeTeamIds = new Set(
-  mostRecentSeason.rosters.map((roster) => roster.owner_id.toString())
-);
-
 interface TeamTradeStats {
   owner_id: string;
   team_name: string;
@@ -70,9 +64,14 @@ interface ManagerTradePair {
 
 const AllTimeTrades = () => {
   // A2a: both are lazy chunks now; suspend until they are in. This is the
-  // only all-time view that needs the transactions.
-  useAllSeasons();
-  useAllTransactions();
+  // only all-time view that needs the transactions. One hook for the lot, so
+  // the seasons, the transactions and the player names arrive together rather
+  // than one after the other (A2b).
+  useDataLoaded({
+    years: YEAR_NUMBERS,
+    transactions: YEAR_NUMBERS,
+    players: true,
+  });
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [view, setView] = useState<"teams" | "players" | "managers">("teams");
@@ -152,7 +151,9 @@ const AllTimeTrades = () => {
     let results = Array.from(stats.values());
 
     if (showOnlyActiveTeams) {
-      results = results.filter((stat) => activeTeamIds.has(stat.owner_id));
+      results = results.filter((stat) =>
+        getActiveOwnerIds().has(stat.owner_id)
+      );
     }
 
     // Create a new sorted array (don't mutate)
@@ -508,7 +509,7 @@ const AllTimeTrades = () => {
               <option value="">All Teams</option>
               {managers
                 .filter((m) =>
-                  showOnlyActiveTeams ? activeTeamIds.has(m.sleeper.id) : true
+                  showOnlyActiveTeams ? getActiveOwnerIds().has(m.sleeper.id) : true
                 )
                 .map((manager) => (
                   <option key={manager.id} value={manager.id}>

@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "tailwindcss";
+import { SEASON_FILE_PARTS } from "./src/data/parts";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -33,10 +34,6 @@ export default defineConfig({
             }
             return "vendor";
           }
-          // Separate players.json into its own chunk
-          if (id.includes("/data/players.json")) {
-            return "players";
-          }
           // NO manual chunk for charts or share cards, deliberately — see
           // scripts/check-bundle-size.js.
           //
@@ -54,18 +51,32 @@ export default defineConfig({
           // the pages), so Rollup's own splitting keeps them off the critical
           // path without help. The budget now measures what index.html
           // actually preloads, which is the thing that was going wrong.
-          // A2a: the per-week files are loaded on demand, one chunk per season
-          // per kind, so a page that wants 2014 fetches 2014 and nothing else.
-          // Without this Rollup would emit ~500 chunks, one per week file.
-          const perWeek = id.match(
-            /\/data\/(\d{4})\/(matchups|transactions)[/.]/
+          // A2: every season file is loaded on demand, and these group them
+          // into the units `src/data/index.ts` loads — one chunk per season
+          // per part, so a page that wants 2014 fetches 2014 and nothing else.
+          // Without them Rollup would emit ~460 chunks, one per file.
+          //
+          // These are data, not features: the rule against a manual chunk per
+          // feature (above) is about shared CODE finding a home in a chunk it
+          // does not belong to. A JSON module has no imports and nothing to
+          // share, so the hazard does not arise — and the names are what make
+          // a network tab, and the budget's output, readable.
+          //
+          // The parts are defined once, in src/data/parts.ts, which the
+          // loader reads too. `matchups/3.json` and the legacy whole-season
+          // `transactions.json` both match on their folder or file name.
+          const season = id.match(
+            /\/src\/data\/(\d{4})\/([^/.]+)(?:\/\d+)?\.json$/
           );
-          if (perWeek) {
-            return `${perWeek[2]}-${perWeek[1]}`;
+          if (season && season[2] in SEASON_FILE_PARTS) {
+            const part =
+              SEASON_FILE_PARTS[season[2] as keyof typeof SEASON_FILE_PARTS];
+            return `${part}-${season[1]}`;
           }
-          // Keep the small per-season files in the main chunk
-          if (id.includes("/data/") && id.includes(".json")) {
-            return "data";
+          // The player dictionary, with every season's overlay: `getPlayer`
+          // reads them together, so they load together.
+          if (/\/src\/data\/(players|\d{4}\/players\.delta)\.json$/.test(id)) {
+            return "players";
           }
         },
       },

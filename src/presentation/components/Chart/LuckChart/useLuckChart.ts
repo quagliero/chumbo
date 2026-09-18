@@ -79,7 +79,8 @@ export const countedWeeks = (year: number): number[] => {
  */
 export const useLuckChart = () => {
   // The matchups are a lazy chunk (A2a); suspend until every season is in.
-  useAllSeasons();
+  // Names no players, so it does not wait for the dictionary (A2b).
+  useAllSeasons({ players: false });
 
   // No dependencies: nothing below this line reads a prop or state, and by the
   // time the hook returns at all, every season's matchups are loaded and will

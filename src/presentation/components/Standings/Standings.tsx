@@ -746,13 +746,17 @@ const Standings = ({
                 const championshipHistory = () => {
                   if (!championRoster) return null;
 
+                  // Every season up to this one: the history page loads exactly
+                  // those for this card (A2b). Test the year BEFORE touching
+                  // the season, because reading a later season's bracket is a
+                  // read of data nobody asked for, and it would be fetched.
                   const allChampionships = Object.entries(seasons)
                     .filter(([year, season]) => {
                       const yearNum = parseInt(year);
                       // Only include years up to and including the current year
                       return (
-                        season?.winners_bracket &&
-                        (!currentYear || yearNum <= currentYear)
+                        (!currentYear || yearNum <= currentYear) &&
+                        season?.winners_bracket
                       );
                     })
                     .map(([year, season]) => {

@@ -9,6 +9,40 @@ import { Player, PlayerOverlay } from "@/types/player";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedUser } from "@/types/user";
 import { Transaction } from "@/types/transaction";
+import managersJson from "./managers.json";
+import { SEASON_FILE_PARTS } from "./parts";
+
+/* ------------------------------------------------------------------ *
+ * A2: nothing here is eager any more, bar managers.json.
+ *
+ * Every other file under src/data is behind a dynamic import, in one of five
+ * kinds of chunk that `vite.config.ts` groups them into:
+ *
+ *   core-<year>     league, rosters, users, both brackets, schedule
+ *   draft-<year>    draft, picks
+ *   matchups-<year> the per-week matchup files (A2a)
+ *   transactions-<year>  the per-week transaction files (A2a)
+ *   players         the base dictionary plus every season's overlay
+ *
+ * — one load unit ("part") each; `./parts.ts` is the single list of which file
+ * is in which.
+ *
+ * Per season, so a page about 2014 fetches 2014. Content-hashed, so a repeat
+ * visit is served from the HTTP cache (see public/_headers) — and so a weekly
+ * `fetch-latest` during the live season changes the 2026 chunks' names and
+ * leaves 2012-2025 exactly where every returning visitor's cache already has
+ * them. That last point is why this is a glob and not the `public/data/` +
+ * `fetch()` the plan first sketched: files under public/ are not hashed, so
+ * they could only be cached for as long as it is safe to serve last week's
+ * 2026 standings, which during a season is not long at all.
+ *
+ * The files stay where the fetch scripts write them. `yarn fetch-latest`
+ * needs no extra step, and the Node consumers (vitest, build-aggregates,
+ * prerender-og) read them through this same module.
+ *
+ * managers.json stays eager: it is 1 kB gzipped and twenty modules import it
+ * directly.
+ * ------------------------------------------------------------------ */
 
 type WeekKeys =
   | "1"
@@ -37,29 +71,48 @@ type Transactions = {
   [key in WeekKeys]?: Transaction[];
 };
 
+/**
+ * One season, as a synchronous view over data that arrives on demand.
+ *
+ * Every field but `transactions` is a getter that THROWS if its part of the
+ * season has not loaded yet — see `DataNotLoadedError`. It never answers with
+ * an empty array, because an empty array renders a plausible, wrong page (a
+ * standings table with no teams, a champion with no previous titles), and
+ * nothing would ever report it.
+ */
 type SeasonData = {
+  /** Part "draft". */
   draft: ExtendedDraft;
+  /** Part "draft". */
   picks: ExtendedPick[];
+  /** Part "core". */
   league: ExtendedLeague;
+  /** Part "core". */
   rosters: ExtendedRoster[];
+  /** Part "core". */
   users: ExtendedUser[];
+  /** Part "core". */
   winners_bracket: WinnersBracket;
+  /** Part "core". */
   losers_bracket: LosersBracket;
-  /**
-   * Loaded on demand (A2a). Empty until `loadSeasons([year])` — or
-   * `loadAllSeasons()` — has resolved for this season; read it through
-   * `useSeasonData` / `useAllSeasons`, which suspend until it is populated.
-   */
+  /** Part "matchups" (A2a). Read it through `useSeasonData` / `useAllSeasons`. */
   matchups: Matchups;
-  /** Loaded on demand (A2a). See `matchups`, plus `useSeasonTransactions`. */
+  /**
+   * Loaded on demand (A2a) and — alone here — NOT guarded: empty until
+   * `loadTransactions([year])` resolves. The history page reads it on every
+   * tab but only needs it on two, and a guard would make the other six fetch
+   * the biggest file in the season. Read it through `useSeasonTransactions`.
+   */
   transactions?: Transactions;
   /**
    * This season's corrections to the base player dictionary — team and position
    * as at this season, for the few hundred players they differed for. Absent for
    * seasons with no recorded differences, which then resolve straight to base.
+   * Part "players", because it is only ever read alongside the dictionary.
    */
   playerOverlay?: PlayerOverlay;
-  schedule?: Record<string, ScheduledMatchup[]>; // In-progress seasons only
+  /** Part "core". In-progress seasons only. */
+  schedule?: Record<string, ScheduledMatchup[]>;
 };
 
 /** The last week the loader maps; the fetch scripts pull up to 18. */
@@ -70,213 +123,359 @@ const asWeekKey = (raw: string): WeekKeys | null => {
   return week >= 1 && week <= LAST_WEEK ? (raw as WeekKeys) : null;
 };
 
+export const managers = managersJson as Manager[];
+
 /* ------------------------------------------------------------------ *
- * Eager: everything small.
+ * The guard.
+ * ------------------------------------------------------------------ */
+
+/**
+ * Thrown by any read of data that has not loaded yet.
  *
- * `league`, `rosters`, `users`, `draft`, `picks`, the brackets, the
- * schedule and the player overlays come to ~1.7 MB raw across fifteen
- * seasons and are read by nearly every page, so they stay in the main
- * bundle. The per-week matchup and transaction files — 8.3 MB raw, and
- * the whole reason the data chunk was 933 kB gzipped — are loaded on
- * demand below.
+ * It is an Error, so outside React — a script, an event handler, a test that
+ * forgot to await — it fails with a message naming what was read too early
+ * and a stack pointing at the reader. It is ALSO a thenable that settles when
+ * the data arrives, and React treats a thrown thenable as "suspend": so a
+ * component that reads unloaded data during render shows the nearest
+ * `<Suspense>` fallback and renders again once it is there, exactly as the
+ * A2a hooks do on purpose. A reader nobody put behind a hook is therefore
+ * slow, never wrong.
+ */
+export class DataNotLoadedError extends Error {
+  readonly promise: Promise<void>;
+
+  constructor(what: string, promise: Promise<void>) {
+    super(
+      `${what} was read before it loaded. Await loadSeasons() / loadPlayers() ` +
+        `first, or read it during render behind one of the hooks in ` +
+        `src/hooks/useSeasonData.ts.`
+    );
+    this.name = "DataNotLoadedError";
+    this.promise = promise;
+  }
+
+  // This is what makes it suspend. See the class comment.
+  then<A = void, B = never>(
+    onFulfilled?: ((value: void) => A | PromiseLike<A>) | null,
+    onRejected?: ((reason: unknown) => B | PromiseLike<B>) | null
+  ): Promise<A | B> {
+    return this.promise.then(onFulfilled, onRejected);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Loading, one part of one season at a time.
  * ------------------------------------------------------------------ */
 
 type JsonModule<T> = { default: T };
-
-const eagerFiles = import.meta.glob(
-  [
-    "./**/*.json",
-    "!./*/matchups/*.json",
-    "!./*/transactions/*.json",
-    "!./*/transactions.json",
-  ],
-  { eager: true }
-) as Record<string, JsonModule<unknown>>;
-
-/** Read one eagerly-globbed file, or `undefined` if that season lacks it. */
-const eager = <T>(path: string): T | undefined =>
-  (eagerFiles[path] as JsonModule<T> | undefined)?.default;
-
-/** Read one eagerly-globbed file, falling back for seasons that lack it. */
-const eagerOr = <T>(path: string, fallback: T): T =>
-  eager<T>(path) ?? fallback;
-
-export const managers = eagerOr<Manager[]>("./managers.json", []);
-
-/** The base dictionary: every player we have ever seen, newest attributes. */
-export const players = eagerOr<Record<string, Player>>("./players.json", {});
-
-const buildSeasons = (): Record<number, SeasonData> => {
-  const built: Partial<Record<ValidYear, SeasonData>> = {};
-
-  for (const year of YEARS) {
-    built[year] = {
-      draft: eagerOr<ExtendedDraft>(`./${year}/draft.json`, {} as ExtendedDraft),
-      picks: eagerOr<ExtendedPick[]>(`./${year}/picks.json`, []),
-      league: eagerOr<ExtendedLeague>(
-        `./${year}/league.json`,
-        {} as ExtendedLeague
-      ),
-      rosters: eagerOr<ExtendedRoster[]>(`./${year}/rosters.json`, []),
-      users: eagerOr<ExtendedUser[]>(`./${year}/users.json`, []),
-      winners_bracket: eagerOr<WinnersBracket>(
-        `./${year}/winners_bracket.json`,
-        [] as WinnersBracket
-      ),
-      losers_bracket: eagerOr<LosersBracket>(
-        `./${year}/losers_bracket.json`,
-        [] as LosersBracket
-      ),
-      matchups: {},
-      transactions: {},
-      playerOverlay: eager<PlayerOverlay>(`./${year}/players.delta.json`),
-      schedule: eager<Record<string, ScheduledMatchup[]>>(
-        `./${year}/schedule.json`
-      ),
-    };
-  }
-
-  // Indexed by plain `number`, not ValidYear, so the ~15 existing call sites
-  // that index with an unvalidated number keep compiling.
-  return built as Record<number, SeasonData>;
-};
-
-/**
- * The resolved view of the league. Present synchronously, but `matchups` and
- * `transactions` fill in as seasons are loaded — see `loadSeasons` below.
- */
-export const seasons = buildSeasons();
-
-/* ------------------------------------------------------------------ *
- * Lazy: the per-week files.
- *
- * `import.meta.glob` without `eager` gives one dynamic import per file;
- * `vite.config.ts` groups them into a chunk per season per kind, so a
- * page that wants 2014 fetches 2014 and nothing else.
- * ------------------------------------------------------------------ */
-
 type Loader<T> = () => Promise<JsonModule<T>>;
 
-/** A week file, or (for 2012-2019 transactions) a whole season in one file. */
-type WeekLoader<T> = { week: WeekKeys | null; load: Loader<T> };
+/** The per-year parts `seasons` is split into. Transactions are separate. */
+export type SeasonPart = "core" | "draft" | "matchups";
 
-const groupByYear = <T>(
-  files: Record<string, Loader<T>>,
-  pattern: RegExp
-): Map<number, WeekLoader<T>[]> => {
-  const byYear = new Map<number, WeekLoader<T>[]>();
+/**
+ * Every file of a season that is not a week file, and the part it is in —
+ * which is also the chunk `vite.config.ts` puts it in. See `./parts.ts`.
+ */
+const BASE_FIELDS = {
+  league: SEASON_FILE_PARTS.league,
+  rosters: SEASON_FILE_PARTS.rosters,
+  users: SEASON_FILE_PARTS.users,
+  winners_bracket: SEASON_FILE_PARTS.winners_bracket,
+  losers_bracket: SEASON_FILE_PARTS.losers_bracket,
+  schedule: SEASON_FILE_PARTS.schedule,
+  draft: SEASON_FILE_PARTS.draft,
+  picks: SEASON_FILE_PARTS.picks,
+} as const satisfies Partial<Record<keyof SeasonData, SeasonPart>>;
 
-  for (const [path, load] of Object.entries(files)) {
-    const match = path.match(pattern);
-    if (!match) continue;
+type BaseField = keyof typeof BASE_FIELDS;
 
-    const year = parseInt(match[1], 10);
-    if (!seasons[year]) continue;
-
-    // match[2] is absent for the legacy whole-season transactions.json.
-    const week = match[2] === undefined ? null : asWeekKey(match[2]);
-    if (match[2] !== undefined && week === null) continue;
-
-    const existing = byYear.get(year);
-    if (existing) existing.push({ week, load });
-    else byYear.set(year, [{ week, load }]);
-  }
-
-  return byYear;
+/**
+ * What a season's field reads as when its file does not exist — a season
+ * still in progress has no brackets and most seasons no schedule. Assigned
+ * once when the part loads rather than built on every read, so that a
+ * `useMemo` keyed on `season.winners_bracket` sees the same array each time.
+ */
+const MISSING: { [K in BaseField]: () => SeasonData[K] } = {
+  league: () => ({}) as ExtendedLeague,
+  rosters: () => [],
+  users: () => [],
+  winners_bracket: () => [] as WinnersBracket,
+  losers_bracket: () => [] as LosersBracket,
+  schedule: () => undefined,
+  draft: () => ({}) as ExtendedDraft,
+  picks: () => [],
 };
 
-const matchupLoaders = groupByYear(
-  import.meta.glob("./*/matchups/*.json") as Record<
-    string,
-    Loader<ExtendedMatchup[]>
-  >,
-  /^\.\/(\d{4})\/matchups\/(\d+)\.json$/
-);
-
-const transactionLoaders = groupByYear(
-  import.meta.glob([
-    "./*/transactions/*.json",
-    "./*/transactions.json",
-  ]) as Record<string, Loader<Transaction[]>>,
-  /^\.\/(\d{4})\/transactions(?:\/(\d+))?\.json$/
-);
-
 /**
- * One cache per kind: the years already resolved, and the loads still in
- * flight so that two components asking for 2014 at once issue one fetch.
+ * The raw values behind each season's getters. The loaders write here, never
+ * through `seasons`, whose getters would refuse to answer mid-load.
  */
-type LoadCache = { done: Set<number>; inFlight: Map<number, Promise<void>> };
+type SeasonValues = Partial<Omit<SeasonData, "transactions">> & {
+  matchups: Matchups;
+};
 
-const newCache = (): LoadCache => ({ done: new Set(), inFlight: new Map() });
+const values = new Map<number, SeasonValues>(
+  YEARS.map((year) => [year, { matchups: {} }])
+);
 
-const matchupCache = newCache();
-const transactionCache = newCache();
+/** One season's worth of one part: the files to load and where to put them. */
+type FileTask = () => Promise<void>;
 
 /**
- * Bumped every time a season finishes loading.
+ * Years resolved, loads in flight so that two components asking for 2014 at
+ * once issue one fetch, the files each year is made of, and what to do once
+ * they are all in.
+ */
+type PartCache = {
+  done: Set<number>;
+  inFlight: Map<number, Promise<void>>;
+  files: Map<number, FileTask[]>;
+  finish?: (year: number) => void;
+};
+
+const newPart = (finish?: (year: number) => void): PartCache => ({
+  done: new Set(),
+  inFlight: new Map(),
+  files: new Map(),
+  finish,
+});
+
+const addFile = (part: PartCache, year: number, task: FileTask) => {
+  const existing = part.files.get(year);
+  if (existing) existing.push(task);
+  else part.files.set(year, [task]);
+};
+
+/** `./2014/rosters.json` → `[2014, "rosters"]`, for this season's files only. */
+const parsePath = (path: string, pattern: RegExp): [number, string] | null => {
+  const match = path.match(pattern);
+  if (!match) return null;
+  const year = parseInt(match[1], 10);
+  return values.has(year) ? [year, match[2]] : null;
+};
+
+/**
+ * Bumped every time a part of a season finishes loading.
  *
- * `seasons` is a synchronous view that fills in over time (A2a), so anything
- * that derives a value from it and caches the result has to know when the
- * underlying data changed. Without this, a stat computed while only 2014 was
- * loaded would be cached forever as if it were the whole league.
- *
- * See `src/utils/cache.ts`.
+ * `seasons` is a synchronous view that fills in over time, so anything that
+ * derives a value from it and caches the result has to know when the
+ * underlying data changed. See `src/utils/cache.ts`.
  */
 let dataVersion = 0;
 
 /** The current data version. Include it in any key that caches derived stats. */
 export const getDataVersion = (): number => dataVersion;
 
-const loadYear = <T>(
-  cache: LoadCache,
-  loaders: Map<number, WeekLoader<T>[]>,
-  year: number,
-  assign: (season: SeasonData, week: WeekKeys | null, data: T) => void
-): Promise<void> => {
-  if (cache.done.has(year)) return Promise.resolve();
+const loadPartYear = (part: PartCache, year: number): Promise<void> => {
+  if (part.done.has(year)) return Promise.resolve();
 
-  const inFlight = cache.inFlight.get(year);
+  const inFlight = part.inFlight.get(year);
   if (inFlight) return inFlight;
 
-  const season = seasons[year];
-  const files = loaders.get(year);
-  if (!season || !files?.length) {
-    cache.done.add(year);
+  const complete = () => {
+    part.finish?.(year);
+    part.done.add(year);
     dataVersion += 1;
+  };
+
+  const files = part.files.get(year);
+  if (!files?.length) {
+    complete();
     return Promise.resolve();
   }
 
-  const promise = Promise.all(
-    files.map(async ({ week, load }) => {
-      assign(season, week, (await load()).default);
-    })
-  )
-    .then(() => {
-      cache.done.add(year);
-      dataVersion += 1;
-    })
+  const promise = Promise.all(files.map((task) => task()))
+    .then(complete)
     .finally(() => {
-      cache.inFlight.delete(year);
+      part.inFlight.delete(year);
     });
 
-  cache.inFlight.set(year, promise);
+  part.inFlight.set(year, promise);
   return promise;
 };
 
-const assignMatchups = (
-  season: SeasonData,
-  week: WeekKeys | null,
-  data: ExtendedMatchup[]
-) => {
-  if (week) season.matchups[week] = data;
+const loadPart = (part: PartCache, years: readonly number[]): Promise<void> =>
+  years.every((year) => part.done.has(year))
+    ? Promise.resolve()
+    : Promise.all(years.map((year) => loadPartYear(part, year))).then(
+        () => undefined
+      );
+
+/* ---------------------------------------------------- core and draft */
+
+/**
+ * Give every field whose file a season lacks its stand-in, once the rest of
+ * its part is in — 2013 has no losers bracket, a live season has no brackets.
+ */
+const fillMissing = (part: SeasonPart) => (year: number) => {
+  // A year that is not a season — `/seasons/1999/standings` — has nothing to
+  // fill in, and `seasons[1999]` stays undefined, as it always was.
+  const season = values.get(year) as Record<string, unknown> | undefined;
+  if (!season) return;
+  for (const [field, owner] of Object.entries(BASE_FIELDS)) {
+    if (owner === part && !(field in season)) {
+      season[field] = MISSING[field as BaseField]();
+    }
+  }
 };
 
+const corePart = newPart(fillMissing("core"));
+const draftPart = newPart(fillMissing("draft"));
+
+const baseFiles = import.meta.glob([
+  "./*/league.json",
+  "./*/rosters.json",
+  "./*/users.json",
+  "./*/winners_bracket.json",
+  "./*/losers_bracket.json",
+  "./*/schedule.json",
+  "./*/draft.json",
+  "./*/picks.json",
+]) as Record<string, Loader<unknown>>;
+
+for (const [path, load] of Object.entries(baseFiles)) {
+  const parsed = parsePath(path, /^\.\/(\d{4})\/(\w+)\.json$/);
+  if (!parsed) continue;
+  const [year, name] = parsed;
+  const field = name as BaseField;
+  const part = BASE_FIELDS[field] === "core" ? corePart : draftPart;
+
+  addFile(part, year, async () => {
+    const data = (await load()).default;
+    (values.get(year) as Record<string, unknown>)[field] = data;
+  });
+}
+
+/* -------------------------------------------- matchups, transactions */
+
+const matchupPart = newPart();
+const transactionPart = newPart();
+
+const matchupFiles = import.meta.glob("./*/matchups/*.json") as Record<
+  string,
+  Loader<ExtendedMatchup[]>
+>;
+
+for (const [path, load] of Object.entries(matchupFiles)) {
+  const parsed = parsePath(path, /^\.\/(\d{4})\/matchups\/(\d+)\.json$/);
+  if (!parsed) continue;
+  const [year, rawWeek] = parsed;
+  const week = asWeekKey(rawWeek);
+  if (!week) continue;
+
+  addFile(matchupPart, year, async () => {
+    values.get(year)!.matchups[week] = (await load()).default;
+  });
+}
+
+const transactionFiles = import.meta.glob([
+  "./*/transactions/*.json",
+  "./*/transactions.json",
+]) as Record<string, Loader<Transaction[]>>;
+
+for (const [path, load] of Object.entries(transactionFiles)) {
+  // Group 2 is the week, absent for the legacy whole-season transactions.json.
+  const match = path.match(/^\.\/(\d{4})\/transactions(?:\/(\d+))?\.json$/);
+  if (!match) continue;
+  const year = parseInt(match[1], 10);
+  if (!values.has(year)) continue;
+  const week = match[2] === undefined ? null : asWeekKey(match[2]);
+  if (match[2] !== undefined && week === null) continue;
+
+  addFile(transactionPart, year, async () => {
+    assignTransactions(year, week, (await load()).default);
+  });
+}
+
+/* ------------------------------------------------------------ players */
+
+let dictionary: Record<string, Player> | null = null;
+const overlays = new Map<number, PlayerOverlay>();
+let playersInFlight: Promise<void> | null = null;
+
+const overlayFiles = import.meta.glob("./*/players.delta.json") as Record<
+  string,
+  Loader<PlayerOverlay>
+>;
+
+/* ------------------------------------------------------------ seasons */
+
+const PARTS: Record<SeasonPart, PartCache> = {
+  core: corePart,
+  draft: draftPart,
+  matchups: matchupPart,
+};
+
+const ALL_PARTS: readonly SeasonPart[] = ["core", "draft", "matchups"];
+
+/**
+ * Refuse to read `part` of `year` before it has loaded.
+ *
+ * The load this starts is for EVERY season, not just `year`. The pages ask
+ * for what they need up front through the hooks, so a read that gets here is
+ * almost always one of the sweeps — `Object.entries(seasons).map(...)` in a
+ * component that was only thought of as being about one season. Loading one
+ * year per miss would turn that sweep into fifteen round trips, one after the
+ * other; loading them together makes it one.
+ */
+const guard = (year: number, part: SeasonPart, field: string) => {
+  if (PARTS[part].done.has(year)) return;
+  throw new DataNotLoadedError(
+    `seasons[${year}].${field}`,
+    loadSeasonParts(YEARS, [part])
+  );
+};
+
+const buildSeason = (year: number): SeasonData => {
+  const backing = values.get(year)!;
+  const season = { transactions: {} } as SeasonData;
+
+  const guarded = (field: keyof SeasonValues, check: () => void) =>
+    Object.defineProperty(season, field, {
+      enumerable: true,
+      get() {
+        check();
+        return backing[field];
+      },
+      // The tests swap a season's matchups out and back; nothing else writes.
+      set(value) {
+        (backing as Record<string, unknown>)[field] = value;
+      },
+    });
+
+  for (const [field, part] of Object.entries(BASE_FIELDS)) {
+    guarded(field as BaseField, () => guard(year, part, field));
+  }
+  guarded("matchups", () => guard(year, "matchups", "matchups"));
+  guarded("playerOverlay", () => {
+    if (!dictionary) {
+      throw new DataNotLoadedError(
+        `seasons[${year}].playerOverlay`,
+        loadPlayers()
+      );
+    }
+  });
+
+  return season;
+};
+
+/**
+ * The resolved view of the league. Every season's key is present from the
+ * start; its contents answer once loaded and throw `DataNotLoadedError` until
+ * then. Indexed by plain `number`, not ValidYear, so the call sites that index
+ * with an unvalidated number keep compiling.
+ */
+export const seasons: Record<number, SeasonData> = Object.fromEntries(
+  YEARS.map((year) => [year, buildSeason(year)])
+);
+
 const assignTransactions = (
-  season: SeasonData,
+  year: number,
   week: WeekKeys | null,
   data: Transaction[]
 ) => {
-  const transactions = (season.transactions ??= {});
+  const transactions = (seasons[year].transactions ??= {});
 
   if (week) {
     transactions[week] = data;
@@ -293,51 +492,107 @@ const assignTransactions = (
   }
 };
 
-/** Have every one of `years` had its matchups loaded? */
+/* ------------------------------------------------------------ the API */
+
+/** Have `parts` of every one of `years` loaded? */
+export const areSeasonPartsLoaded = (
+  years: readonly number[],
+  parts: readonly SeasonPart[]
+): boolean =>
+  parts.every((part) => years.every((year) => PARTS[part].done.has(year)));
+
+/**
+ * Load `parts` of `years`. Deduplicated and cached, so calling it on every
+ * render is cheap once the data is in. For a page that needs less than a
+ * whole season — the all-time standings read `core` and nothing else.
+ */
+export const loadSeasonParts = (
+  years: readonly number[],
+  parts: readonly SeasonPart[]
+): Promise<void> =>
+  areSeasonPartsLoaded(years, parts)
+    ? Promise.resolve()
+    : Promise.all(parts.map((part) => loadPart(PARTS[part], years))).then(
+        () => undefined
+      );
+
+/** Has everything but the transactions loaded for every one of `years`? */
 export const areSeasonsLoaded = (years: readonly number[]): boolean =>
-  years.every((year) => matchupCache.done.has(year));
+  areSeasonPartsLoaded(years, ALL_PARTS);
+
+/**
+ * Load everything in `years` but the transactions: the core files, the draft
+ * and the matchups. The matchups are ~20 kB a season gzipped against the draft's
+ * ~3 kB, so a page that wants one without the other can ask for exactly that
+ * through `loadSeasonParts`; most want both.
+ */
+export const loadSeasons = (years: readonly number[]): Promise<void> =>
+  loadSeasonParts(years, ALL_PARTS);
 
 /** Have every one of `years` had its transactions loaded? */
 export const areTransactionsLoaded = (years: readonly number[]): boolean =>
-  years.every((year) => transactionCache.done.has(year));
-
-/**
- * Load the matchups for `years` into `seasons`. Deduplicated and cached, so
- * calling it on every render is cheap once the data is in.
- */
-export const loadSeasons = (years: readonly number[]): Promise<void> =>
-  areSeasonsLoaded(years)
-    ? Promise.resolve()
-    : Promise.all(
-        years.map((year) =>
-          loadYear(matchupCache, matchupLoaders, year, assignMatchups)
-        )
-      ).then(() => undefined);
+  years.every((year) => transactionPart.done.has(year));
 
 /** Load the transactions for `years` into `seasons`. See `loadSeasons`. */
 export const loadTransactions = (years: readonly number[]): Promise<void> =>
-  areTransactionsLoaded(years)
-    ? Promise.resolve()
-    : Promise.all(
-        years.map((year) =>
-          loadYear(
-            transactionCache,
-            transactionLoaders,
-            year,
-            assignTransactions
-          )
-        )
-      ).then(() => undefined);
+  loadPart(transactionPart, years);
+
+/** Has the player dictionary (with every season's overlay) loaded? */
+export const arePlayersLoaded = (): boolean => dictionary !== null;
 
 /**
- * Everything, for the all-time pages and the test suite's global setup —
- * which awaits this so that every existing synchronous `seasons[...]` read
- * keeps working unchanged.
+ * Load the player dictionary: 105 kB gzipped, and the one thing here that is
+ * not per season. The overlays ride along — 2 kB between them, and only ever
+ * read through `getPlayer`, which needs the dictionary anyway.
+ */
+export const loadPlayers = (): Promise<void> => {
+  if (dictionary) return Promise.resolve();
+  if (playersInFlight) return playersInFlight;
+
+  playersInFlight = Promise.all([
+    import("./players.json") as Promise<JsonModule<Record<string, Player>>>,
+    ...Object.entries(overlayFiles).map(async ([path, load]) => {
+      const parsed = parsePath(path, /^\.\/(\d{4})\/(players)\.delta\.json$/);
+      if (parsed) overlays.set(parsed[0], (await load()).default);
+    }),
+  ])
+    .then(([base]) => {
+      for (const [year, overlay] of overlays) {
+        (values.get(year) as SeasonValues).playerOverlay = overlay;
+      }
+      dictionary = base.default;
+      dataVersion += 1;
+    })
+    .finally(() => {
+      playersInFlight = null;
+    });
+
+  return playersInFlight;
+};
+
+/**
+ * Everything, for the test suite's global setup and the build scripts —
+ * which await this so that every synchronous `seasons[...]` read keeps working
+ * unchanged.
  */
 export const loadAllSeasons = (): Promise<void> =>
-  Promise.all([loadSeasons(YEARS), loadTransactions(YEARS)]).then(
-    () => undefined
-  );
+  Promise.all([
+    loadSeasons(YEARS),
+    loadTransactions(YEARS),
+    loadPlayers(),
+  ]).then(() => undefined);
+
+/**
+ * The base player dictionary: every player we have ever seen, newest
+ * attributes. Throws `DataNotLoadedError` until `loadPlayers()` has resolved.
+ * Prefer `getPlayer`, which applies the season's overlay.
+ */
+export const getPlayers = (): Record<string, Player> => {
+  if (!dictionary) {
+    throw new DataNotLoadedError("The player dictionary", loadPlayers());
+  }
+  return dictionary;
+};
 
 /**
  * Look a player up in the base dictionary, then apply that season's overlay.
@@ -345,22 +600,26 @@ export const loadAllSeasons = (): Promise<void> =>
  * Without `year` you get the player's most recent team and position, which is the
  * right answer where there is no season context (player search) and the wrong one
  * everywhere else — pass the year whenever you have it.
+ *
+ * Throws `DataNotLoadedError` until `loadPlayers()` has resolved — never
+ * `undefined` for a player who is merely not downloaded yet, because callers
+ * read `undefined` as "not a real player" and render his id instead.
  */
 export const getPlayer = (
   playerId: string | number,
   year?: number
 ): Player | undefined => {
   const playerIdStr = playerId.toString();
-  const player = players[playerIdStr];
+  const player = getPlayers()[playerIdStr];
 
   if (player) {
     const overlay = year
-      ? seasons[year as ValidYear]?.playerOverlay?.[playerIdStr]
+      ? overlays.get(year as ValidYear)?.[playerIdStr]
       : undefined;
 
     if (!overlay) return player;
 
-    // Spread rather than mutate: `players` is a shared module-level object.
+    // Spread rather than mutate: the dictionary is a shared module-level object.
     return {
       ...player,
       ...("t" in overlay ? { team: overlay.t } : {}),

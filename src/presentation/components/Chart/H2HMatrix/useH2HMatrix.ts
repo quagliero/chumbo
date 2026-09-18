@@ -219,6 +219,7 @@ export const buildH2HMatrix = (): H2HMatrix => {
  * seasons inside `getAllTimeH2HRecord` has something to walk.
  */
 export const useH2HMatrix = (): H2HMatrix => {
-  useAllSeasons();
+  // Names no players, so it does not wait for the dictionary (A2b).
+  useAllSeasons({ players: false });
   return useMemo(() => buildH2HMatrix(), []);
 };

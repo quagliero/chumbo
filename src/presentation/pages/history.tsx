@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect, lazy, Suspense } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { YEARS, YEAR_NUMBERS } from "@/domain/constants";
 import { TabType } from "@/constants/fantasy";
-import { useSeasonData, useSeasonTransactions } from "@/hooks/useSeasonData";
+import { seasons } from "@/data";
+import { useDataLoaded } from "@/hooks/useSeasonData";
 import { useTeamName } from "@/hooks/useTeamName";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
@@ -95,14 +96,36 @@ const History = () => {
     if (Number.isFinite(parsed) && parsed > 0) setSelectedWeek(parsed);
   }, [weekParam]);
 
-  const seasonData = useSeasonData(selectedYear);
+  // One season, and only what the tab shows of it, in one round trip (A2b).
+  //
   // A2a: transactions are their own lazy chunk — 6.0 MB raw across the
   // league, and only these two tabs read them, so the rest of the season
-  // never pays for the fetch.
-  useSeasonTransactions(
-    selectedYear,
-    activeTab === "trades" || activeTab === "matchups"
+  // never pays for the fetch. The player dictionary is the same argument at
+  // 105 kB gzipped: the standings never name a player, so they do not wait
+  // for one. A tab left off these lists still renders correctly — a read of
+  // anything unloaded suspends — it just fetches it a step later.
+  //
+  // The one read of other seasons is the standings' champion card, which
+  // counts the winner's earlier titles: a finished season's standings need
+  // the brackets and rosters of every season up to it. So they ask for those
+  // seasons' core alongside this one — for 2014 that is 2012 and 2013, at
+  // ~5 kB each. The live season has no champion yet and asks for nothing.
+  const needsTransactions = activeTab === "trades" || activeTab === "matchups";
+  const needsPlayers =
+    activeTab === "matchups" || activeTab === "draft" || activeTab === "trades";
+  const titleHistory =
+    activeTab === "standings" && selectedYear < CURRENT_YEAR
+      ? YEAR_NUMBERS.filter((y) => y < selectedYear)
+      : [];
+  useDataLoaded(
+    {
+      years: [selectedYear],
+      transactions: needsTransactions ? [selectedYear] : [],
+      players: needsPlayers,
+    },
+    { years: titleHistory, parts: ["core"] }
   );
+  const seasonData = seasons[selectedYear];
   const getTeamName = useTeamName(seasonData?.users);
 
   // Handle year change with URL update

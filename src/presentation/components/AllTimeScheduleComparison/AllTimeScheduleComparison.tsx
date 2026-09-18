@@ -159,7 +159,8 @@ interface AllTimeScheduleComparisonStats {
 
 const AllTimeScheduleComparison = () => {
   // A2a: the matchups are a lazy chunk now; suspend until they are in.
-  useAllSeasons();
+  // Names no players, so it does not wait for the dictionary (A2b).
+  useAllSeasons({ players: false });
   const { view } = useParams<{ view?: string }>();
   const navigate = useNavigate();
   const [selectedTeam, setSelectedTeam] = useState<string>("");
