@@ -21,7 +21,8 @@ const Header = () => {
                   location.pathname === "/standings" ||
                   location.pathname === "/breakdown" ||
                   location.pathname === "/top-scores" ||
-                  location.pathname.startsWith("/schedule-comparison");
+                  location.pathname.startsWith("/schedule-comparison") ||
+                  location.pathname.startsWith("/records");
                 return `${
                   isActive || isHomePage
                     ? "text-blue-600"

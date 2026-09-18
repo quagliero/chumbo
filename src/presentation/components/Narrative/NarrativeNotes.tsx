@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
-import { narrate, type NarrativeSubject, type Note } from "@/utils/narrative/narrate";
+import {
+  narrate,
+  recordListHref,
+  type NarrativeSubject,
+  type Note,
+} from "@/utils/narrative/narrate";
 import { getManagerAccent } from "@/domain/managerColors";
 import { ShareButton } from "@/presentation/components/ShareButton";
 import { useNarrativeStats } from "./useNarrativeStats";
@@ -98,16 +103,15 @@ export const NarrativeNotes = ({
         >
           <span aria-hidden="true" className="text-ink-faint">★</span>
           <span>
-            {note.href ? (
-              <Link
-                to={note.href}
-                className="underline decoration-dotted underline-offset-2 hover:text-ink"
-              >
-                {note.text}
-              </Link>
-            ) : (
-              note.text
-            )}
+            {/* To the ranking the sentence is about, at this row: "the 3rd-
+                biggest margin" is only worth clicking if it shows the other
+                two. The game itself is one link on from there. */}
+            <Link
+              to={recordListHref(note.statId, note.rank)}
+              className="underline decoration-dotted underline-offset-2 hover:text-ink"
+            >
+              {note.text}
+            </Link>
             {note.rank > 1 && (
               <span className="text-ink-faint">
                 {" "}

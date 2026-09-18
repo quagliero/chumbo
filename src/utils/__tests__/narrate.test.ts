@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import raw from "../../../public/data/all-time.json?raw";
-import { narrate } from "@/utils/narrative/narrate";
+import { narrate, recordListHref } from "@/utils/narrative/narrate";
 import { ordinal } from "@/utils/narrative/phrases";
 import type { PrecomputedStats } from "@/utils/stats/precomputed";
 import managers from "@/data/managers.json";
@@ -138,14 +138,15 @@ describe("the narrative engine", () => {
    * still narrate; they just offer no number.
    */
   it("offers no record number where the number is not a magnitude", () => {
-    const onThisDay = stats.stats.find((s) => s.id === "on-this-day")!;
-    const entry = onThisDay.entries[0];
+    // Ranked by the week a title became certain: a number, not a magnitude.
+    const inevitable = stats.stats.find((s) => s.id === "championship-inevitability")!;
+    const entry = inevitable.entries[0];
     const notes = narrate(
       stats,
       { year: entry.year, week: entry.week },
       { limit: 25, minWeight: 0 }
     );
-    const note = notes.find((n) => n.statId === "on-this-day");
+    const note = notes.find((n) => n.statId === "championship-inevitability");
     expect(note).toBeDefined();
     expect(note!.recordValue).toBeUndefined();
   });
@@ -274,5 +275,34 @@ describe("ordinal", () => {
     expect([1, 2, 3, 4, 11, 12, 13, 21, 22, 23, 101, 111].map(ordinal)).toEqual([
       "1st", "2nd", "3rd", "4th", "11th", "12th", "13th", "21st", "22nd", "23rd", "101st", "111th",
     ]);
+  });
+});
+
+describe("which week a note belongs to", () => {
+  it("puts an inevitable championship on the final, not the week it was settled", () => {
+    // 2024: thd never left the top three after Week 6 and won the final in
+    // Week 17. The note was showing on Week 6's recap.
+    const settledWeek = narrate(stats, { year: 2024, week: 6 }, { limit: 25, minWeight: 0 });
+    expect(settledWeek.map((n) => n.statId)).not.toContain("championship-inevitability");
+    const final = narrate(stats, { year: 2024, week: 17 }, { limit: 25, minWeight: 0 });
+    expect(final.map((n) => n.statId)).toContain("championship-inevitability");
+  });
+
+  it("never narrates on-this-day, which is a date, not a ranking", () => {
+    for (const stat of stats.stats) {
+      for (const entry of stat.entries) {
+        const notes = narrate(
+          stats,
+          { year: entry.year, week: entry.week },
+          { limit: 50, minWeight: 0 }
+        );
+        expect(notes.map((n) => n.statId)).not.toContain("on-this-day");
+      }
+    }
+  });
+
+  it("links a note to its own row of its list", () => {
+    expect(recordListHref("biggest-margin", 3)).toBe("/records/biggest-margin#rank-3");
+    expect(recordListHref("biggest-margin")).toBe("/records/biggest-margin");
   });
 });

@@ -291,6 +291,13 @@ describe("every route renders from a cold loader", () => {
     ],
     ["/explorer", "/explorer", () => import("@/presentation/pages/stats"), "Explorer"],
     ["/hof", "/hof", () => import("@/presentation/pages/hallOfFame"), "Hall of Fame"],
+    ["/records", "/records", () => import("@/presentation/pages/records"), "Chumbo records"],
+    [
+      "/records/:statId",
+      "/records/biggest-margin",
+      () => import("@/presentation/pages/records"),
+      "Biggest blowout",
+    ],
     [
       "/wiki/settings",
       "/wiki/settings",

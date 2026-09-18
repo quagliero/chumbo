@@ -986,7 +986,11 @@ const inevitabilityEntries = ({ games }: StatContext): StatEntry[] =>
           `never left the top ${cutoff} again, finished ${ordinal(finishedAt)} ` +
           `at ${record}, and won the final${byline}`,
         year: title.year,
-        week: settledWeek,
+        // The week the title was won, not the week it became inevitable. A
+        // note is attached to whatever week an entry names, and "the 2nd-most
+        // inevitable championship" belongs on the final, not on a Week 6 the
+        // league will not remember. The week it was settled is in the detail.
+        week: titleGame?.week ?? lastWeek,
       },
     ];
   });

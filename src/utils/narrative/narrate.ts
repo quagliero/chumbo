@@ -84,6 +84,22 @@ export interface NarrativeSubject {
 }
 
 const MANAGER_IDS = new Set(managers.map((m) => m.id));
+
+/**
+ * Stats in the file that are not rankings of anything, so "the 2nd-most X in
+ * Chumbo history" would be false. `on-this-day` is the week of the season
+ * the data has reached, in every earlier year — its order is by date, and it
+ * moves every time a week is fetched. It has its own rail (E6).
+ */
+export const NOT_RECORDS = new Set(["on-this-day"]);
+
+/**
+ * Where a note's list lives: the stat's page on /records, at the note's row.
+ * A note's sentence is a claim about a ranking, so the link goes to the
+ * ranking, where the entry it came from is one row down or one link away.
+ */
+export const recordListHref = (statId: string, rank?: number): string =>
+  `/records/${statId}${rank ? `#rank-${rank}` : ""}`;
 const MANAGER_NAMES = new Map(managers.map((m) => [m.id, m.name]));
 
 /**
@@ -128,7 +144,7 @@ const samePairing = (
   (entry[0] === asked[1] && entry[1] === asked[0]);
 
 /** A name a card can print for whoever holds the entry. */
-const holderName = (subject: string): string => {
+export const holderName = (subject: string): string => {
   const manager = MANAGER_NAMES.get(subject);
   if (manager) return manager;
   const pair = asPairing(subject);
@@ -233,6 +249,7 @@ export const narrate = (
   const notes: Note[] = [];
 
   for (const stat of stats.stats) {
+    if (NOT_RECORDS.has(stat.id)) continue;
     stat.entries.forEach((entry, index) => {
       if (!describes(entry, subject)) return;
 

@@ -21,6 +21,7 @@ const H2H = lazy(() => import("@/presentation/pages/h2h"));
 const H2HDetail = lazy(() => import("@/presentation/pages/h2hDetail"));
 const Stats = lazy(() => import("@/presentation/pages/stats"));
 const HallOfFame = lazy(() => import("@/presentation/pages/hallOfFame"));
+const Records = lazy(() => import("@/presentation/pages/records"));
 
 // Lazy load WikiOverview separately
 const WikiOverview = lazy(() =>
@@ -95,6 +96,8 @@ function App() {
                 />
                 <Route path="/explorer" element={<Stats />} />
                 <Route path="/hof" element={<HallOfFame />} />
+                <Route path="/records" element={<Records />} />
+                <Route path="/records/:statId" element={<Records />} />
               </Routes>
             </Suspense>
             </AppErrorBoundary>
