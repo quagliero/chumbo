@@ -294,6 +294,16 @@ export const calculatePositionalStats = (
 
       // Process each matchup
       weekMatchups.forEach((matchup) => {
+        // Not a matchup: an eliminated team still setting a playoff-week
+        // lineup with nobody to play (`matchup_id` null — 48 of them). Only
+        // reachable with playoffs included, and it went wrong three ways:
+        // `null === null` paired every such team with whichever other one came
+        // first in the file (invented games, lopsided enough that league-wide
+        // wins stopped equalling losses); the rest counted as games with no
+        // result, dragging every win rate down; and each became a sample row
+        // linking to ".../matchups/15/null". The explorer is about games.
+        if (matchup.matchup_id == null) return;
+
         // Filter by manager if specified
         if (selectedManagerId) {
           const roster = seasonData.rosters?.find(

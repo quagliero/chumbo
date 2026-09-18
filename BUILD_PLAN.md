@@ -1228,8 +1228,11 @@ Found along the way and worth their own tasks:
   `fix-player-ids.js`. Two of the original five were false: Sleeper's "Kevin
   Smith" is a different player, and Jackie Battle's id never scores. An
   invariant test now fails on the next exact-name split.
-- **`PerformanceTable`'s row click** can build a matchup URL that does not
-  resolve; `PlayerStatsCardLink`'s `gameHref` is importable.
+- ~~**`PerformanceTable`'s row click**~~ ✅ Goes through `gameHref`, as does
+  the stats explorer's, and `DataTable` rows that have no real game are no
+  longer clickable. Fixing it found a real stats bug behind the explorer's copy:
+  with playoffs included it paired the 48 unpaired team-weeks with each other
+  (`null === null`) and counted them in every win rate.
 - **No dark mode.** `index.css` now declares `color-scheme: light` because
   leaving it unset rendered dark text on the browser's dark ground. A real one
   means a second palette and a pass over every hardcoded colour.

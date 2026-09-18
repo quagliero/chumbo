@@ -4,6 +4,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "../Table";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/presentation/components/Card";
+import { gameHref } from "./PlayerStatsCardLink";
 
 export interface PlayerPerformance {
   year: number;
@@ -198,11 +199,16 @@ const PerformanceTable = ({ performances }: PerformanceTableProps) => {
             ? "bg-yellow-50"
             : undefined
         }
-        onRowClick={(performance) =>
-          navigate(
-            `/seasons/${performance.year}/matchups/${performance.week}/${performance.matchupId}`
-          )
-        }
+        // Through `gameHref`, which checks the stored matchup id is a real
+        // two-sided game before it becomes a URL. The row used to build the
+        // URL by hand, and an unpaired team-week (matchup_id null) would have
+        // sent the reader to ".../matchups/15/null". Such a row is simply not
+        // clickable — no pointer, no dead end.
+        isRowClickable={(performance) => gameHref(performance) !== null}
+        onRowClick={(performance) => {
+          const href = gameHref(performance);
+          if (href) navigate(href);
+        }}
         emptyMessage="No games for this filter."
       />
 

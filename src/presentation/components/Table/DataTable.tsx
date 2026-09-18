@@ -199,6 +199,12 @@ interface DataTableProps<TData> {
   getRowBackground?: (row: Row<TData>, index: number) => string | undefined;
   onRowClick?: (row: TData) => void;
   /**
+   * Which rows `onRowClick` applies to. A row it returns false for gets no
+   * pointer cursor and no click, rather than looking like a link and then
+   * going nowhere — or somewhere broken. Default: every row.
+   */
+  isRowClickable?: (row: TData) => boolean;
+  /**
    * Zebra striping.
    *
    * Striping is a row-TRACKING aid: it earns its place when the eye has to
@@ -275,6 +281,7 @@ const DataTableView = <TData,>({
   getRowClassName,
   getRowBackground,
   onRowClick,
+  isRowClickable,
   zebra = true,
   className = "",
   filterable = false,
@@ -454,67 +461,74 @@ const DataTableView = <TData,>({
               </td>
             </tr>
           ) : (
-            rows.map((row, index) => (
-              <tr
-                key={row.id}
-                onClick={onRowClick ? () => onRowClick(row.original) : undefined}
-                className={[
-                  getRowBackground?.(row, index) || rowBackground,
-                  // Not `surface-sunk`: that is the zebra colour, so half the
-                  // rows would show no hover at all. There is no third neutral
-                  // step in the token set yet.
-                  "border-b border-line hover:bg-hover",
-                  onRowClick ? "cursor-pointer" : "",
-                  getRowClassName?.(row, index) ?? "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                {row.getVisibleCells().map((cell, cellIndex) => {
-                  const meta = cell.column.columnDef.meta;
-                  const kind = meta?.kind ?? "text";
-                  const align = meta?.align ?? ALIGN_BY_KIND[kind];
+            rows.map((row, index) => {
+              const clickable =
+                Boolean(onRowClick) &&
+                (isRowClickable?.(row.original) ?? true);
+              return (
+                <tr
+                  key={row.id}
+                  onClick={
+                    clickable ? () => onRowClick?.(row.original) : undefined
+                  }
+                  className={[
+                    getRowBackground?.(row, index) || rowBackground,
+                    // Not `surface-sunk`: that is the zebra colour, so half the
+                    // rows would show no hover at all. There is no third neutral
+                    // step in the token set yet.
+                    "border-b border-line hover:bg-hover",
+                    clickable ? "cursor-pointer" : "",
+                    getRowClassName?.(row, index) ?? "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {row.getVisibleCells().map((cell, cellIndex) => {
+                    const meta = cell.column.columnDef.meta;
+                    const kind = meta?.kind ?? "text";
+                    const align = meta?.align ?? ALIGN_BY_KIND[kind];
 
-                  const pin = pinStyle(cellIndex);
-                  const rowStyle = meta?.rowCellStyle?.(row.original);
+                    const pin = pinStyle(cellIndex);
+                    const rowStyle = meta?.rowCellStyle?.(row.original);
 
-                  return (
-                    <td
-                      key={cell.id}
-                      style={
-                        pin || rowStyle ? { ...pin, ...rowStyle } : undefined
-                      }
-                      className={[
-                        pad.cell,
-                        ALIGN_CLASS[align],
-                        "text-ink",
-                        TABULAR_KINDS.has(kind)
-                          ? "font-numeric tabular-nums"
-                          : "",
-                        // Everything but the pinned column keeps the old
-                        // no-wrap behaviour. The pinned column is allowed to
-                        // wrap so a long team name cannot eat half of a 375 px
-                        // viewport and leave no room for the numbers.
-                        // The pinned columns may wrap so a long team name
-                        // cannot eat half of a 375 px viewport and leave no
-                        // room for the numbers. Everything else keeps the
-                        // no-wrap behaviour the old tables had.
-                        isLastPinned(cellIndex)
-                          ? "max-w-[45vw] sm:max-w-none"
-                          : "whitespace-nowrap",
-                        pinnedCell(cellIndex),
-                        meta?.cellClassName ?? "",
-                        meta?.rowCellClassName?.(row.original) ?? "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                    >
-                      {renderCell(cell, kind, row.original)}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))
+                    return (
+                      <td
+                        key={cell.id}
+                        style={
+                          pin || rowStyle ? { ...pin, ...rowStyle } : undefined
+                        }
+                        className={[
+                          pad.cell,
+                          ALIGN_CLASS[align],
+                          "text-ink",
+                          TABULAR_KINDS.has(kind)
+                            ? "font-numeric tabular-nums"
+                            : "",
+                          // Everything but the pinned column keeps the old
+                          // no-wrap behaviour. The pinned column is allowed to
+                          // wrap so a long team name cannot eat half of a 375 px
+                          // viewport and leave no room for the numbers.
+                          // The pinned columns may wrap so a long team name
+                          // cannot eat half of a 375 px viewport and leave no
+                          // room for the numbers. Everything else keeps the
+                          // no-wrap behaviour the old tables had.
+                          isLastPinned(cellIndex)
+                            ? "max-w-[45vw] sm:max-w-none"
+                            : "whitespace-nowrap",
+                          pinnedCell(cellIndex),
+                          meta?.cellClassName ?? "",
+                          meta?.rowCellClassName?.(row.original) ?? "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
+                      >
+                        {renderCell(cell, kind, row.original)}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
           )}
         </tbody>
       </table>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { StatsResult } from "@/utils/statsExplorer";
 import { DataTable } from "../Table";
 import type { AnyColumnDef } from "../Table";
+import { gameHref } from "@/presentation/components/PlayerDetail/PlayerStatsCardLink";
 
 type PositionRow = {
   position: string;
@@ -130,12 +131,16 @@ const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
       : results.sampleMatchups.slice(0, 10);
   }, [results?.sampleMatchups, showAllMatchups]);
 
+  // Same guard as the player page's table: only a real two-sided game
+  // becomes a link. `calculatePositionalStats` no longer emits anything else,
+  // but a URL should not be built on the strength of somebody else's filter.
   const handleMatchupClick = (
     year: number,
     week: number,
     matchupId: number
   ) => {
-    navigate(`/seasons/${year}/matchups/${week}/${matchupId}`);
+    const href = gameHref({ year, week, matchupId });
+    if (href) navigate(href);
   };
   if (isLoading) {
     return (
@@ -249,6 +254,7 @@ const StatsResults: React.FC<StatsResultsProps> = ({ results, isLoading }) => {
             <DataTable
               columns={matchupColumns}
               data={displayedMatchups}
+              isRowClickable={(row) => gameHref(row) !== null}
               onRowClick={(row) =>
                 handleMatchupClick(row.year, row.week, row.matchupId)
               }
