@@ -972,6 +972,115 @@ A silently erodes.
 - [x] H5
 
 ---
+## Workstream I — Round two
+
+Everything in here came out of somebody actually using the site rather than
+reading the plan. Ordered by how badly it misleads a reader, not by size.
+
+### I1 · The faces are missing from share cards `S` — **bug, diagnosed**
+
+Every card that should carry a manager's team logo draws the initials
+fallback instead. The fallback is doing its job; the fetch behind it is not.
+
+**The cause is a poisoned HTTP cache entry, not CORS.** Sleeper sends
+`access-control-allow-origin: *` on both avatar paths — verified with `curl`
+against `/avatars/<id>` and `/uploads/<hash>.jpg`. But the page has already
+painted that same URL in an `<img>` with no `crossorigin` attribute, so the
+browser holds a **no-CORS** cache entry for it, and `embedImage`'s later
+`fetch(url, {mode: "cors"})` reuses that entry and is rejected before it ever
+reaches the network. Measured in the browser on `/managers/thd`:
+
+| | |
+|---|---|
+| `embedImage("/avatars/nfl/b9d4….jpg")` | 2,035 byte data URI — local files are same-origin, never affected |
+| `embedImage("https://sleepercdn.com/uploads/ef0f….jpg")` | `null` |
+| the same URL with `cache: "reload"` | 37,075 bytes, `image/png` |
+| a plain CORS fetch *after* that reload | now succeeds — the entry has been replaced |
+
+So the failure is deterministic and it is worst exactly where it matters: a
+manager's own page paints their avatar, then offers a card that cannot have it.
+
+Two halves to the fix, and it wants both:
+
+- **Retry with `cache: "reload"`** when the first CORS fetch fails. Cheap
+  (avatars are 20-40 kB), self-healing, and it fixes caches that are already
+  poisoned in the league's browsers today — which a markup change cannot.
+- **Add `crossOrigin="anonymous"`** to every `<img>` painting a remote avatar,
+  so the cached entry is CORS-clean and the retry stops being needed.
+
+Regression test: assert `embedImage` retries once on failure, since the bug is
+invisible by construction — a card with initials looks deliberate.
+
+### I2 · Charts need a real popover `L`
+
+Every dot, cell and line node currently hangs its explanation on an SVG
+`<title>`, which is the browser's native tooltip: an 800 ms delay, OS styling,
+no links, and nothing at all on touch. Clicking instead navigates the page away
+to the player or manager, which is a heavy answer to "what is that dot?".
+
+One shared `ChartPopover`, used by all six sites: `DraftScatter`, `LuckChart`,
+`SeasonArc`, `ScoreDistribution`, and both of `ScoreHeatmap`'s. Hover previews
+it, click pins it, Escape and outside-click dismiss it. It carries the numbers
+behind the mark and **the links out** — so navigation becomes a deliberate
+second click rather than the accidental first one.
+
+The same interaction model `useSeriesSelection` already uses for series
+(hover previews, click pins), applied to marks. Keyboard reachability comes
+with it: a pinned popover is focusable in a way a `<title>` never was.
+
+### I3 · A pick traded in week 1 is not a bust `M`
+
+`draftValue.ts` scores a pick by what the **drafting roster** got, so a player
+traded before a ball is snapped lands on the floor of the chart at 0.0 with no
+explanation. 2018 is full of it, because of the Le'Veon Bell holdout:
+
+| Pick | Player | What happened |
+|---|---|---|
+| 4 | Alvin Kamara | traded in leg 1 — "Team 12: Alvin Kamara \| Team 1: Le'Veon Bell" |
+| 6 | Saquon Barkley | traded in leg 1, then again in leg 11 |
+
+Neither manager got nothing; they got Bell. The chart says they wasted a
+top-six pick.
+
+**Score a pick by the player's total season points**, which the module already
+computes — `points + pointsElsewhere` — and put the trade in the popover from
+I2: when it moved, to whom, and for what. The 2012-2019 transactions carry a
+`metadata.notes` string naming both sides of every trade, so the popover can
+quote the deal rather than reconstruct it.
+
+One consequence to decide with the same change: `draftStats.ts`'s
+`best-draft-picks` makes the same judgement, and its docblock says so
+explicitly. Change both together or they drift — a scatter and a records table
+disagreeing about the same pick is worse than either answer.
+
+### I4 · Share surfaces: size, placement, and the cards that aren't there `M`
+
+Three separate complaints about the same component.
+
+- **The button is too big and out of line.** It is a 44 px standalone pill with
+  its own message row, dropped into flows built for a 20 px icon. It should be
+  an icon button sitting in the card header it belongs to, consistently
+  right-aligned, with the outcome message as a transient toast rather than a
+  layout-shifting sibling.
+- **Placement has no rule.** Five surfaces today, chosen by whichever template
+  existed. The rule should be: wherever there is a card with a heading, the
+  heading gets a share control, and it shares *that card*.
+- **The obvious cards are missing.** A manager has one card, for their best
+  season. There should be one per season row and one for the career; the same
+  for a player, season and career. Both are `managerSeasonCard` with different
+  inputs — the template work is mostly done.
+
+Carries the two features cut for bytes before the budget rose: the H2H streak
+pill and a badge distinguishing Triple Crown from Scumbo.
+
+### I5 · "Managed by" on interim-manager matchups `S`
+
+Settled: the manager who **built** the team owns its record for the season, so
+`managers.json`'s `weeks` field does not change any W/L attribution anywhere.
+What it should do is annotate — a "managed by" line on the matchup screen for
+the weeks somebody else was holding the reins. sol/phil in 2015 and 2016,
+chris for a week of 2020.
+
 
 ## Milestones
 
@@ -1092,7 +1201,9 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 
 ## Where this stands
 
-M0-M6 are done. Seven items remain, and none of them is a milestone:
+M0-M6 are done. What is left splits in two: **Workstream I**, which is the
+league's own feedback on the shipped site and is where the next work should go,
+and the seven leftovers below, none of which is a milestone.
 
 | | |
 |---|---|
@@ -1105,10 +1216,9 @@ M0-M6 are done. Seven items remain, and none of them is a milestone:
 
 Found along the way and worth their own tasks:
 
-- **Mid-season handovers are not modelled.** `managers.json` has a `weeks`
-  field recording that sol and phil split 2015 and 2016 and chris covered a week
-  of 2020, and nothing reads it — those part-seasons are credited entirely to
-  one of the two managers. A site-wide attribution change.
+- **Mid-season handovers** — settled, and smaller than it looked. The record
+  belongs to whoever built the team, so nothing needs re-attributing; the
+  `weeks` field should surface as a "managed by" note instead. Now `I5`.
 - **Five legacy players exist twice**, once under a name and once under a
   Sleeper id, so each has two pages holding half a career.
   `scripts/fix-player-ids.js` is the home for it.
@@ -1119,7 +1229,7 @@ Found along the way and worth their own tasks:
   means a second palette and a pass over every hardcoded colour.
 - **Two share-card features were cut for bytes** before the budget was raised:
   the streak pill on the H2H card and a manager badge that distinguishes Triple
-  Crown from Scumbo. Both fit now.
+  Crown from Scumbo. Both fit now. Folded into `I4`.
 
 ## Risks
 
