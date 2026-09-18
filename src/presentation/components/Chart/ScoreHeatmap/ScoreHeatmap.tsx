@@ -2,6 +2,13 @@ import { type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { bandScale } from "../scale";
+import {
+  ChartPopover,
+  PopoverLinks,
+  PopoverRows,
+  PopoverTitle,
+  useChartPopover,
+} from "../Popover";
 import { useChartWidth } from "../useChartWidth";
 import {
   BAND_COUNT,
@@ -12,6 +19,7 @@ import {
 import {
   useScoreHeatmap,
   type HeatmapCell,
+  type HeatmapRow,
   type ScoreHeatmap as Grid,
 } from "./useScoreHeatmap";
 
@@ -68,6 +76,7 @@ export const ScoreHeatmap = ({
   className?: string;
 }) => {
   const grid = useScoreHeatmap(managerId);
+  const popover = useChartPopover<HeatmapDatum>();
 
   // Measured here as well as inside `Chart` so the cell size — and from it the
   // chart's height — can be derived from the width. Both observe the same
@@ -120,6 +129,16 @@ export const ScoreHeatmap = ({
             margin={MARGIN}
             label={`${managerName}'s weekly regular-season scores, ${span}, one square per game shaded by points scored`}
             fallback={<HeatmapTable grid={grid} managerName={managerName} />}
+            overlay={(frame) => (
+              <ChartPopover
+                popover={popover}
+                frame={frame}
+                label={managerName}
+                render={(datum, pinned) => (
+                  <HeatmapPopover datum={datum} pinned={pinned} />
+                )}
+              />
+            )}
           >
             {(frame) => {
               const x = bandScale(grid.weeks.length, [
@@ -148,27 +167,26 @@ export const ScoreHeatmap = ({
 
                   {grid.rows.map((row, rowIndex) => (
                     <g key={row.year}>
-                      <Link
-                        to={`/seasons/${row.year}/matchups`}
-                        aria-label={`${row.year}: ${row.played} weeks, ${row.average.toFixed(
-                          1
-                        )} points a week`}
-                      >
-                        <text
-                          x={-8}
-                          y={y.at(rowIndex)}
-                          dy="0.32em"
-                          textAnchor="end"
-                          fontSize={10}
-                          fill="currentColor"
-                          className="text-ink-muted hover:text-ink"
-                        >
-                          {row.year}
-                          <title>{`${row.year}: ${row.played} weeks, ${row.average.toFixed(
+                      <text
+                        x={-8}
+                        y={y.at(rowIndex)}
+                        dy="0.32em"
+                        textAnchor="end"
+                        fontSize={10}
+                        fill="currentColor"
+                        className="text-ink-muted hover:text-ink"
+                        {...popover.mark(
+                          `year-${row.year}`,
+                          { kind: "year", row },
+                          -20,
+                          y.at(rowIndex),
+                          `${row.year}: ${row.played} weeks, ${row.average.toFixed(
                             1
-                          )} a week`}</title>
-                        </text>
-                      </Link>
+                          )} points a week`
+                        )}
+                      >
+                        {row.year}
+                      </text>
 
                       {row.cells.map((cellData, column) => {
                         const cx = x.at(column) - size / 2;
@@ -194,24 +212,24 @@ export const ScoreHeatmap = ({
                         }
 
                         return (
-                          <Link
+                          <rect
                             key={grid.weeks[column]}
-                            to={`/seasons/${cellData.year}/matchups/${cellData.week}/${cellData.matchupId}`}
-                            aria-label={describe(cellData)}
-                          >
-                            <rect
-                              x={cx}
-                              y={cy}
-                              width={size}
-                              height={size}
-                              rx={1.5}
-                              fill={colourFor(cellData.points, grid.floors)}
-                              className="text-ink hover:stroke-current"
-                              strokeWidth={1.5}
-                            >
-                              <title>{describe(cellData)}</title>
-                            </rect>
-                          </Link>
+                            x={cx}
+                            y={cy}
+                            width={size}
+                            height={size}
+                            rx={1.5}
+                            fill={colourFor(cellData.points, grid.floors)}
+                            className="text-ink hover:stroke-current"
+                            strokeWidth={1.5}
+                            {...popover.mark(
+                              `${cellData.year}-${cellData.week}`,
+                              { kind: "game", cell: cellData },
+                              x.at(column),
+                              cy,
+                              describe(cellData)
+                            )}
+                          />
                         );
                       })}
                     </g>
@@ -238,7 +256,7 @@ export const ScoreHeatmap = ({
             exactly.{" "}
           </>
         )}
-        Tap a square for the matchup.
+        Tap a square for the game, or a year for that season.
       </p>
 
       {grid.best && grid.worst && (
@@ -301,6 +319,83 @@ const Legend = ({ floors }: { floors: number[] }) => (
     </span>
   </div>
 );
+
+type HeatmapDatum =
+  | { kind: "game"; cell: HeatmapCell }
+  | { kind: "year"; row: HeatmapRow };
+
+const RESULT = { W: "Won", L: "Lost", T: "Tied" } as const;
+
+const matchupHref = (cell: HeatmapCell) =>
+  `/seasons/${cell.year}/matchups/${cell.week}/${cell.matchupId}`;
+
+/**
+ * A square's card, or a year label's (I2). The square is one game; the year is
+ * that season in a line, with the way to its best and worst weeks — which on
+ * the grid are just two squares among thirteen.
+ */
+const HeatmapPopover = ({
+  datum,
+  pinned,
+}: {
+  datum: HeatmapDatum;
+  pinned: boolean;
+}) => {
+  if (datum.kind === "game") {
+    const { cell } = datum;
+    return (
+      <>
+        <PopoverTitle sub={`vs ${cell.opponentName}`}>
+          {cell.year} · Week {cell.week}
+        </PopoverTitle>
+        <PopoverRows
+          rows={[
+            [
+              RESULT[cell.result],
+              `${cell.points.toFixed(2)}–${cell.opponentPoints.toFixed(2)}`,
+            ],
+            ["That week", `${ordinal(cell.rank)} of ${cell.field}`],
+          ]}
+        />
+        {pinned && (
+          <PopoverLinks
+            links={[
+              { to: matchupHref(cell), label: "Matchup" },
+              {
+                to: `/seasons/${cell.year}/matchups?week=${cell.week}`,
+                label: `Week ${cell.week}`,
+              },
+            ]}
+          />
+        )}
+      </>
+    );
+  }
+
+  const { row } = datum;
+  return (
+    <>
+      <PopoverTitle sub="Regular season">{row.year}</PopoverTitle>
+      <PopoverRows
+        rows={[
+          ["Weeks", row.played],
+          ["Average", row.average.toFixed(1)],
+          ["Best", `${row.best.points.toFixed(2)} · week ${row.best.week}`],
+          ["Worst", `${row.worst.points.toFixed(2)} · week ${row.worst.week}`],
+        ]}
+      />
+      {pinned && (
+        <PopoverLinks
+          links={[
+            { to: `/seasons/${row.year}/matchups`, label: `${row.year} season` },
+            { to: matchupHref(row.best), label: "Best week" },
+            { to: matchupHref(row.worst), label: "Worst week" },
+          ]}
+        />
+      )}
+    </>
+  );
+};
 
 const describe = (cell: HeatmapCell): string =>
   `${cell.year} week ${cell.week}: ${cell.points.toFixed(2)} against ${

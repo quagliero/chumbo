@@ -1,7 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { XAxis } from "../Axis";
+import {
+  ChartPopover,
+  PopoverLinks,
+  PopoverRows,
+  PopoverTitle,
+  useChartPopover,
+} from "../Popover";
 import { linearScale } from "../scale";
 import {
   binFloors,
@@ -89,6 +96,44 @@ const weekLabel = (week: ScoredWeek) =>
 const binLabel = (bin: Bin, width: number) =>
   `${bin.floor}–${bin.floor + width}`;
 
+interface BinDatum {
+  row: DistributionRow;
+  bin: Bin;
+  binWidth: number;
+}
+
+/**
+ * One bar's card (I2): how often this manager scored in this range, and — when
+ * the range holds their best or worst week — the way to that game, which is
+ * the one specific week a bar can point at.
+ */
+const BinPopover = ({ row, bin, binWidth, pinned }: BinDatum & { pinned: boolean }) => {
+  const holds = (week: ScoredWeek) =>
+    week.points >= bin.floor && week.points < bin.floor + binWidth;
+  return (
+    <>
+      <PopoverTitle sub={`${binLabel(bin, binWidth)} points`}>{row.name}</PopoverTitle>
+      <PopoverRows
+        rows={[
+          ["Weeks", bin.count],
+          ["Share of their weeks", `${Math.round(bin.share * 100)}%`],
+          holds(row.best) && ["Best ever", weekLabel(row.best)],
+          holds(row.worst) && ["Worst ever", weekLabel(row.worst)],
+        ]}
+      />
+      {pinned && (
+        <PopoverLinks
+          links={[
+            { to: `/managers/${row.managerId}`, label: row.name },
+            holds(row.best) && { to: matchupPath(row.best), label: "Best week" },
+            holds(row.worst) && { to: matchupPath(row.worst), label: "Worst week" },
+          ]}
+        />
+      )}
+    </>
+  );
+};
+
 /** The panel's one-line announcement, as the image's own label. */
 const announce = (row: DistributionRow) =>
   `${row.name}: ${row.spread.games} weeks averaging ${one(row.spread.mean)}, ` +
@@ -126,6 +171,10 @@ export const ScoreDistribution = ({ className }: { className?: string }) => {
   const { rows, league, years, currentSeasonWeeks } = useScoreDistribution();
   const [binWidth, setBinWidth] = useState<number>(BIN_WIDTHS[0]);
   const [sort, setSort] = useState<SortKey>("spread");
+  // One store for every panel: pinning a bar in one closes the card in another.
+  const popover = useChartPopover<BinDatum>();
+  // A new bin width replaces every bar, so a pinned card would point at none.
+  useEffect(() => popover.store.dismiss(), [binWidth, popover.store]);
 
   const { floors, panels, ceiling } = useMemo(() => {
     const floors = binFloors(league.min, league.max, binWidth);
@@ -259,6 +308,17 @@ export const ScoreDistribution = ({ className }: { className?: string }) => {
               margin={MARGIN}
               label={announce(row)}
               fallback={<p>{describe(row, bins, binWidth)}</p>}
+              overlay={(frame) => (
+                <ChartPopover
+                  popover={popover}
+                  frame={frame}
+                  label="Score range"
+                  owns={(datum) => datum.row.managerId === row.managerId}
+                  render={(datum, pinned) => (
+                    <BinPopover {...datum} pinned={pinned} />
+                  )}
+                />
+              )}
             >
               {(frame) => {
                 const x = linearScale(
@@ -296,23 +356,46 @@ export const ScoreDistribution = ({ className }: { className?: string }) => {
                       // A one-pixel gutter between bars, and never a zero or
                       // negative width on a narrow phone panel.
                       const width = Math.max(1, right - left - 1);
+                      const key = `${row.managerId}-${bin.floor}`;
                       return (
-                        <rect
-                          key={bin.floor}
-                          x={left}
-                          y={y(bin.share)}
-                          width={width}
-                          height={Math.max(0, frame.height - y(bin.share))}
-                          className="text-series-1"
-                          fill="currentColor"
-                          fillOpacity={0.85}
-                        >
-                          <title>
-                            {`${binLabel(bin, binWidth)}: ${bin.count} week${
-                              bin.count === 1 ? "" : "s"
-                            } (${Math.round(bin.share * 100)}%)`}
-                          </title>
-                        </rect>
+                        <g key={bin.floor}>
+                          <rect
+                            x={left}
+                            y={y(bin.share)}
+                            width={width}
+                            height={Math.max(0, frame.height - y(bin.share))}
+                            className="text-series-1"
+                            fill="currentColor"
+                            fillOpacity={0.85}
+                            aria-hidden="true"
+                          />
+                          {/* The target is the whole column, not the bar. A bin
+                              holding one week is a pixel tall — and those are
+                              the interesting bins, where the best and worst
+                              weeks live. An empty bin has nothing to say, and a
+                              tab stop on nothing is worse than none. */}
+                          {bin.count > 0 && (
+                            <rect
+                              x={left}
+                              y={0}
+                              width={width + 1}
+                              height={frame.height}
+                              fill="transparent"
+                              pointerEvents="all"
+                              {...popover.mark(
+                                key,
+                                { row, bin, binWidth },
+                                left + width / 2,
+                                y(bin.share),
+                                `${row.name}, ${binLabel(bin, binWidth)}: ${
+                                  bin.count
+                                } week${bin.count === 1 ? "" : "s"} (${Math.round(
+                                  bin.share * 100
+                                )}%)`
+                              )}
+                            />
+                          )}
+                        </g>
                       );
                     })}
 

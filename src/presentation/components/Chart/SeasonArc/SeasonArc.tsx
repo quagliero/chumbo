@@ -3,7 +3,16 @@ import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { YAxis } from "../Axis";
 import { bandScale, linePath, linearScale, niceTicks } from "../scale";
+import {
+  ChartPopover,
+  HIT_RADIUS,
+  PopoverLinks,
+  PopoverRows,
+  PopoverTitle,
+  useChartPopover,
+} from "../Popover";
 import { useSeriesSelection } from "../useSeriesSelection";
+import type { ArcPoint } from "./arc";
 import { useSeasonArc, type ArcManagerSeries } from "./useSeasonArc";
 
 /**
@@ -57,6 +66,7 @@ export const SeasonArc = ({
   // pins, hover previews, several at once, and colours come from the validated
   // palette rather than the colliding per-manager accents.
   const selection = useSeriesSelection();
+  const popover = useChartPopover<ArcDatum>();
 
   /** Which of the two running totals this mode plots. */
   const metricValue = (point: { wins: number; points: number }) =>
@@ -172,6 +182,24 @@ export const SeasonArc = ({
             margin={MARGIN}
             label={`${metricLabel} by week for ${series.length} managers, ${year} season, weeks ${weeks[0]} to ${weeks[weeks.length - 1]}`}
             fallback={<ArcTable series={series} weeks={weeks} metric={metric} />}
+            overlay={(frame) => (
+              <ChartPopover
+                popover={popover}
+                frame={frame}
+                label="Week"
+                // Its line can be deselected from the keyboard, which is no
+                // outside press; the card must not outlive its dot.
+                owns={(datum) => selection.isOn(seriesKey(datum.row))}
+                render={(datum, pinned) => (
+                  <ArcPopover
+                    {...datum}
+                    series={series}
+                    year={year}
+                    pinned={pinned}
+                  />
+                )}
+              />
+            )}
           >
             {(frame) => {
               const x = bandScale(weeks.length, [0, frame.width]);
@@ -234,28 +262,51 @@ export const SeasonArc = ({
                     );
                   })}
 
+                  {/* Near-miss targets, under every marker. See `HitProps`. */}
+                  {chosen.flatMap((row) =>
+                    row.points.map((point, i) => {
+                      if (!point) return null;
+                      const key = `${row.rosterId}-${point.week}`;
+                      const cx = x.at(i);
+                      const cy = y(metricValue(point));
+                      return (
+                        <circle
+                          key={`${key}-hit`}
+                          cx={cx}
+                          cy={cy}
+                          r={HIT_RADIUS}
+                          {...popover.hit(key, { row, point, index: i }, cx, cy)}
+                        />
+                      );
+                    })
+                  )}
+
                   {/* Markers only on the chosen line: a dot per manager per week
                       is 168 of them, which is noise and 168 overlapping click
-                      targets. These are the links out to the matchups. */}
+                      targets. Each opens the week's card, with the matchup. */}
                   {chosen.flatMap((row) =>
-                    row.points.map((point, i) =>
-                      point ? (
-                        <Link
-                          key={`${row.rosterId}-${point.week}`}
-                          to={matchupHref(year, point.week, point.matchupId)}
-                          aria-label={describe(row, point, metric)}
-                        >
-                          <circle
-                            cx={x.at(i)}
-                            cy={y(metricValue(point))}
-                            r={3.5}
-                            fill={selection.colourOf(seriesKey(row))}
-                          >
-                            <title>{describe(row, point, metric)}</title>
-                          </circle>
-                        </Link>
-                      ) : null
-                    )
+                    row.points.map((point, i) => {
+                      if (!point) return null;
+                      const key = `${row.rosterId}-${point.week}`;
+                      const cx = x.at(i);
+                      const cy = y(metricValue(point));
+                      return (
+                        <circle
+                          key={key}
+                          cx={cx}
+                          cy={cy}
+                          r={3.5}
+                          fill={selection.colourOf(seriesKey(row))}
+                          {...popover.mark(
+                            key,
+                            { row, point, index: i },
+                            cx,
+                            cy,
+                            describe(row, point, metric)
+                          )}
+                        />
+                      );
+                    })
                   )}
 
                   {/* The week labels are links in their own right, so a week is
@@ -309,7 +360,7 @@ export const SeasonArc = ({
               </span>
             ))}
             {chosen.length === 1 ? " points." : " points respectively."} Pick a
-            week to open the matchup.{" "}
+            week for the game and who it was against.{" "}
           </>
         ) : (
           <>Pick up to {selection.max} managers to compare their seasons. </>
@@ -347,6 +398,78 @@ const matchupHref = (year: number, week: number, matchupId: number | null) =>
 
 const weekHref = (year: number, week: number) =>
   `/seasons/${year}/matchups?week=${week}`;
+
+/** One marker on a chosen line: whose, which week, and where in the series. */
+interface ArcDatum {
+  row: ArcManagerSeries;
+  point: ArcPoint;
+  index: number;
+}
+
+const RESULT = { W: "Won", L: "Lost", T: "Tied" } as const;
+
+/**
+ * A week's card (I2). Names the opponent — the other half of the matchup is
+ * already in `series`, as whichever roster shares this week's matchup id — so
+ * the card answers "against whom" without a click.
+ */
+const ArcPopover = ({
+  row,
+  point,
+  index,
+  series,
+  year,
+  pinned,
+}: ArcDatum & {
+  series: ArcManagerSeries[];
+  year: number;
+  pinned: boolean;
+}) => {
+  const opponent =
+    point.matchupId === null
+      ? undefined
+      : series.find(
+          (other) =>
+            other.rosterId !== row.rosterId &&
+            other.points[index]?.matchupId === point.matchupId
+        );
+  const theirs = opponent?.points[index];
+
+  return (
+    <>
+      <PopoverTitle sub={row.teamName !== row.label ? row.teamName : undefined}>
+        {row.label} · Week {point.week}
+      </PopoverTitle>
+      <PopoverRows
+        rows={[
+          [
+            RESULT[point.result],
+            theirs
+              ? `${point.score.toFixed(2)}–${theirs.score.toFixed(2)}`
+              : point.score.toFixed(2),
+          ],
+          opponent && ["Against", opponent.label],
+          ["Wins so far", point.wins],
+          ["Points so far", point.points.toFixed(2)],
+        ]}
+      />
+      {pinned && (
+        <PopoverLinks
+          links={[
+            point.matchupId !== null && {
+              to: matchupHref(year, point.week, point.matchupId),
+              label: "Matchup",
+            },
+            { to: weekHref(year, point.week), label: `Week ${point.week}` },
+            row.managerId
+              ? { to: `/managers/${row.managerId}`, label: row.label }
+              : null,
+          ]}
+        />
+      )}
+    </>
+  );
+};
 
 const describe = (
   row: ArcManagerSeries,

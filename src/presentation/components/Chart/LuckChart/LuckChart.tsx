@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { XAxis, YAxis } from "../Axis";
 import { extent, linearScale, niceTicks } from "../scale";
+import {
+  ChartPopover,
+  HIT_RADIUS,
+  PopoverLinks,
+  PopoverNote,
+  PopoverRows,
+  PopoverTitle,
+  useChartPopover,
+} from "../Popover";
 import { useChartWidth } from "../useChartWidth";
 import { useLuckChart, type LuckPoint } from "./useLuckChart";
 
@@ -164,6 +173,68 @@ const describe = (point: LuckPoint) =>
     1
   )} expected, ${signed(point.luck)}`;
 
+/**
+ * One dot's card (I2): the record, what the scores deserved, and the verdict
+ * in words, because "+7.0" on its own does not say which way luck ran.
+ */
+const LuckPopover = ({
+  point,
+  pinned,
+}: {
+  point: LuckPoint;
+  pinned: boolean;
+}) => {
+  const gap = Math.abs(point.luck).toFixed(1);
+  const verdict =
+    Math.abs(point.luck) < 0.05
+      ? "Won exactly what the scores deserved."
+      : point.luck > 0
+        ? `The schedule gave ${point.name} ${gap} more wins than the scores deserved.`
+        : `The schedule cost ${point.name} ${gap} wins the scores deserved.`;
+
+  return (
+    <>
+      <PopoverTitle
+        sub={
+          point.year
+            ? `${point.year} regular season`
+            : `Career · ${point.seasons} season${point.seasons === 1 ? "" : "s"}`
+        }
+      >
+        {point.name}
+      </PopoverTitle>
+      <PopoverRows
+        rows={[
+          ["Record", record(point)],
+          ["Actual wins", point.actualWins.toFixed(1)],
+          ["Deserved", point.expectedWins.toFixed(1)],
+          [
+            "Luck",
+            <strong
+              key="luck"
+              style={{ color: colourFor(point.luck) }}
+            >
+              {signed(point.luck)}
+            </strong>,
+          ],
+        ]}
+      />
+      <PopoverNote>{verdict}</PopoverNote>
+      {pinned && (
+        <PopoverLinks
+          links={[
+            { to: `/managers/${point.managerId}`, label: point.name },
+            point.year !== undefined && {
+              to: `/seasons/${point.year}/standings`,
+              label: `${point.year} standings`,
+            },
+          ]}
+        />
+      )}
+    </>
+  );
+};
+
 export const LuckChart = ({ className }: { className?: string }) => {
   const { careerRows, seasonRows, years } = useLuckChart();
   const [mode, setMode] = useState<Mode>("careers");
@@ -173,6 +244,10 @@ export const LuckChart = ({ className }: { className?: string }) => {
   const [highlighted, setHighlighted] = useState<string | null>(null);
 
   const points = mode === "careers" ? careerRows : seasonRows;
+  const popover = useChartPopover<LuckPoint>();
+  // A pinned card belongs to a mark in the current mode; switching modes
+  // removes that mark, so the card goes with it.
+  useEffect(() => popover.store.dismiss(), [mode, popover.store]);
 
   // Measured here as well as inside `Chart` so the height can be derived from
   // the width. Both observe the same element, so they agree.
@@ -273,6 +348,16 @@ export const LuckChart = ({ className }: { className?: string }) => {
           margin={MARGIN}
           label={label}
           fallback={<LuckTable points={points} mode={mode} />}
+          overlay={(frame) => (
+            <ChartPopover
+              popover={popover}
+              frame={frame}
+              label="Luck"
+              render={(point, pinned) => (
+                <LuckPopover point={point} pinned={pinned} />
+              )}
+            />
+          )}
         >
           {(frame) => {
             // The frame's width is the container's; the plot is square, so the
@@ -325,35 +410,44 @@ export const LuckChart = ({ className }: { className?: string }) => {
                   what the scores deserved
                 </text>
 
+                {/* Near-miss targets, under every dot. See `HitProps`. */}
+                {points.map((point) => {
+                  const key = `${point.managerId}-${point.year ?? "career"}`;
+                  const cx = x(point.expectedWins);
+                  const cy = y(point.actualWins);
+                  return (
+                    <circle
+                      key={`${key}-hit`}
+                      cx={cx}
+                      cy={cy}
+                      r={HIT_RADIUS}
+                      {...popover.hit(key, point, cx, cy)}
+                    />
+                  );
+                })}
+
                 {points.map((point) => {
                   const dim =
                     mode === "seasons" &&
                     highlighted !== null &&
                     point.managerId !== highlighted;
+                  const key = `${point.managerId}-${point.year ?? "career"}`;
+                  const cx = x(point.expectedWins);
+                  const cy = y(point.actualWins);
                   return (
-                    <Link
-                      key={`${point.managerId}-${point.year ?? "career"}`}
-                      to={
-                        point.year
-                          ? `/seasons/${point.year}/standings`
-                          : `/managers/${point.managerId}`
-                      }
-                      aria-label={describe(point)}
-                    >
-                      <circle
-                        cx={x(point.expectedWins)}
-                        cy={y(point.actualWins)}
-                        r={mode === "careers" ? 5 : 4}
-                        fill={colourFor(point.luck)}
-                        fillOpacity={dim ? 0.08 : 0.85}
-                        stroke={colourFor(point.luck)}
-                        strokeOpacity={dim ? 0.1 : 1}
-                        strokeWidth={1}
-                        className="text-ink-muted"
-                      >
-                        <title>{describe(point)}</title>
-                      </circle>
-                    </Link>
+                    <circle
+                      key={key}
+                      cx={cx}
+                      cy={cy}
+                      r={mode === "careers" ? 5 : 4}
+                      fill={colourFor(point.luck)}
+                      fillOpacity={dim ? 0.08 : 0.85}
+                      stroke={colourFor(point.luck)}
+                      strokeOpacity={dim ? 0.1 : 1}
+                      strokeWidth={1}
+                      className="text-ink-muted"
+                      {...popover.mark(key, point, cx, cy, describe(point))}
+                    />
                   );
                 })}
 
@@ -362,6 +456,9 @@ export const LuckChart = ({ className }: { className?: string }) => {
                     key={`${point.managerId}-${point.year ?? "career"}-label`}
                     aria-hidden="true"
                     className="text-ink-muted"
+                    // Decoration: a tap on a name falls through to the dot's
+                    // near-miss target underneath rather than dying here.
+                    pointerEvents="none"
                   >
                     {/* A label nudged clear of its neighbours would otherwise
                         appear to belong to the wrong dot. */}

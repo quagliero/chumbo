@@ -44,6 +44,12 @@ interface ChartPopoverProps<T> {
   render: (datum: T, pinned: boolean) => ReactNode;
   /** Accessible name for the pinned dialog, e.g. "Draft pick details". */
   label: string;
+  /**
+   * For small multiples sharing one store: is this datum one of THIS panel's
+   * marks? Only the owning panel draws the card and listens for dismissal, so
+   * pinning a bar in one panel closes the card in another.
+   */
+  owns?: (datum: T) => boolean;
 }
 
 export const ChartPopover = <T,>({
@@ -51,10 +57,12 @@ export const ChartPopover = <T,>({
   frame,
   render,
   label,
+  owns,
 }: ChartPopoverProps<T>) => {
   const { store } = popover;
   const state = useSyncExternalStore(store.subscribe, store.get, store.get);
-  const { item, pinned, opener } = state;
+  const { pinned, opener } = state;
+  const item = state.item && (!owns || owns(state.item.datum)) ? state.item : null;
 
   const card = useRef<HTMLDivElement>(null);
   const [place, setPlace] = useState<{ left: number; top: number } | null>(
@@ -62,12 +70,16 @@ export const ChartPopover = <T,>({
   );
 
   const fullWidth = frame.width + frame.margin.left + frame.margin.right;
+  const fullHeight = frame.height + frame.margin.top + frame.margin.bottom;
   const anchorX = item ? item.x + frame.margin.left : 0;
   const anchorY = item ? item.y + frame.margin.top : 0;
 
   // Measure, then place: above the mark by default, below when there is no
-  // room above, and slid sideways to stay inside the chart. Hidden for the one
-  // frame before it is measured rather than drawn in the wrong place.
+  // room above, and slid sideways to stay inside the chart. If neither side
+  // fits, it takes the roomier one and is held inside the chart's box, because
+  // some charts sit in a scroller (the season arc does, for phones) that would
+  // clip a card hanging off the bottom. Hidden for the one frame before it is
+  // measured rather than drawn in the wrong place.
   useLayoutEffect(() => {
     const element = card.current;
     if (!item || !element) {
@@ -76,19 +88,26 @@ export const ChartPopover = <T,>({
     }
     const { width, height } = element.getBoundingClientRect();
     const above = anchorY - GAP - height;
-    const top = above >= EDGE ? above : anchorY + GAP;
+    const below = anchorY + GAP;
+    let top: number;
+    if (above >= EDGE) top = above;
+    else if (below + height <= fullHeight - EDGE) top = below;
+    else {
+      top = anchorY > fullHeight / 2 ? above : below;
+      top = Math.max(EDGE, Math.min(top, fullHeight - height - EDGE));
+    }
     const left = Math.min(
       Math.max(EDGE, anchorX - width / 2),
       Math.max(EDGE, fullWidth - width - EDGE)
     );
     setPlace({ left, top });
-  }, [item, pinned, anchorX, anchorY, fullWidth]);
+  }, [item, pinned, anchorX, anchorY, fullWidth, fullHeight]);
 
   // A pinned card is dismissed by Escape (focus goes back to its mark) or by a
   // press anywhere that is neither the card nor another mark — a mark handles
   // its own click, which moves the pin rather than closing it.
   useEffect(() => {
-    if (!pinned) return;
+    if (!pinned || !item) return;
 
     const onKey = (event: globalThis.KeyboardEvent) => {
       if (event.key !== "Escape") return;
@@ -110,7 +129,7 @@ export const ChartPopover = <T,>({
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("pointerdown", onPointer);
     };
-  }, [pinned, opener, store]);
+  }, [pinned, item, opener, store]);
 
   if (!item) return null;
 
