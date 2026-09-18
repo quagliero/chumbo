@@ -2,12 +2,13 @@ import { seasons } from "@/data";
 import managers from "@/data/managers.json";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
+import { getPlayoffWeekStart, isMeaningfulPlayoffGame } from "@/utils/playoffUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { MatchTotal, SortOrder } from "./types";
 
 /**
  * Every game's combined score, both teams together, sorted. The same playoff
- * rule as the team scores, with losers-bracket games dropped explicitly.
+ * rule as the team and player scores: `isMeaningfulPlayoffGame`.
  *
  * @param selectedSeason - a year as a string, or "all-time".
  */
@@ -33,8 +34,7 @@ export const getMatchTotals = (
       [key: string]: ExtendedMatchup[];
     };
 
-    const playoffWeekStart =
-      seasonData.league?.settings?.playoff_week_start || 15;
+    const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
     // Process each week
     Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
@@ -47,21 +47,18 @@ export const getMatchTotals = (
 
       // Skip playoff weeks except for elimination/championship games
       if (week >= playoffWeekStart) {
-        const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) => {
-          const bracketMatch = seasonData.winners_bracket?.find(
-            (bm) =>
-              (bm.t1 === matchup.roster_id ||
-                bm.t2 === matchup.roster_id) &&
-              bm.r === week - playoffWeekStart + 1
-          );
-          return bracketMatch && (!bracketMatch.p || bracketMatch.p === 1);
-        });
+        const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) =>
+          isMeaningfulPlayoffGame(matchup, seasonData, week, playoffWeekStart)
+        );
         if (!hasMeaningfulPlayoffGame) return;
       }
 
       // Group matchups by matchup_id to get pairs
       const matchupGroups = new Map<number, ExtendedMatchup[]>();
       weekMatchups.forEach((matchup) => {
+        // No opponent (an eliminated team's playoff-week lineup): not a game,
+        // and two of them must not be paired as one.
+        if (matchup.matchup_id == null) return;
         if (!matchupGroups.has(matchup.matchup_id)) {
           matchupGroups.set(matchup.matchup_id, []);
         }
@@ -74,30 +71,15 @@ export const getMatchTotals = (
 
         const [team1, team2] = matchupPair;
 
-        // For playoff weeks, check if this matchup is ineligible
-        if (week >= playoffWeekStart) {
-          // Check if either team is in losers_bracket (exclude these)
-          const isInLosersBracket = seasonData.losers_bracket?.some(
-            (lb) =>
-              lb.t1 === team1.roster_id ||
-              lb.t2 === team1.roster_id ||
-              lb.t1 === team2.roster_id ||
-              lb.t2 === team2.roster_id
-          );
-
-          if (isInLosersBracket) return; // Skip losers bracket games
-
-          // Check if this matchup is in winners_bracket and is meaningful (elimination or championship)
-          const bracketMatch = seasonData.winners_bracket?.find(
-            (bm) =>
-              (bm.t1 === team1.roster_id || bm.t2 === team1.roster_id) &&
-              bm.r === week - playoffWeekStart + 1
-          );
-
-          // Only include if it's in winners_bracket and is either elimination (no p property) or championship (p: 1)
-          if (!bracketMatch || (bracketMatch.p && bracketMatch.p !== 1))
-            return;
-        }
+        // The shared rule, as the other two modes use: an elimination game or
+        // the final, judged by this week's round. It used to be a third copy,
+        // with its own extra losers-bracket test — redundant, since a team in
+        // the losers bracket is never in a winners-bracket game that week.
+        if (
+          week >= playoffWeekStart &&
+          !isMeaningfulPlayoffGame(team1, seasonData, week, playoffWeekStart)
+        )
+          return;
 
         const team1Roster = rosters.find(
           (r) => r.roster_id === team1.roster_id

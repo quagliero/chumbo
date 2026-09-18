@@ -21,6 +21,7 @@ import PlayoffOdds from "@/presentation/components/PlayoffOdds/PlayoffOdds";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { getWeekTrades } from "@/utils/transactionUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
+import { calculateWinPercentage } from "@/utils/recordUtils";
 
 // D1 lives in the `charts` chunk (see vite.config.ts). Lazy, the same way
 // home.tsx loads the power ribbon and the luck chart, so a season's tables are
@@ -144,12 +145,17 @@ const History = () => {
   const standings = useMemo(() => {
     if (!seasonData?.rosters) return [];
     return [...seasonData.rosters].sort((a, b) => {
-      const aWinPerc =
-        a.settings.wins /
-        (a.settings.wins + a.settings.losses + a.settings.ties);
-      const bWinPerc =
-        b.settings.wins /
-        (b.settings.wins + b.settings.losses + b.settings.ties);
+      // Ties half, and 0 (not NaN) before a first game — see sortDivisions.
+      const aWinPerc = calculateWinPercentage(
+        a.settings.wins,
+        a.settings.losses,
+        a.settings.ties
+      );
+      const bWinPerc = calculateWinPercentage(
+        b.settings.wins,
+        b.settings.losses,
+        b.settings.ties
+      );
       if (aWinPerc !== bWinPerc) return bWinPerc - aWinPerc;
       const aPoints = a.settings.fpts + a.settings.fpts_decimal / 100;
       const bPoints = b.settings.fpts + b.settings.fpts_decimal / 100;
@@ -227,11 +233,9 @@ const History = () => {
         .filter((r) => byeTeams.has(r.roster_id))
         .sort((a, b) => {
           const aWinPct =
-            a.settings.wins /
-            (a.settings.wins + a.settings.losses + a.settings.ties);
+            calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
           const bWinPct =
-            b.settings.wins /
-            (b.settings.wins + b.settings.losses + b.settings.ties);
+            calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
           if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
@@ -251,11 +255,9 @@ const History = () => {
         .filter((r) => firstRoundTeams.has(r.roster_id))
         .sort((a, b) => {
           const aWinPct =
-            a.settings.wins /
-            (a.settings.wins + a.settings.losses + a.settings.ties);
+            calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
           const bWinPct =
-            b.settings.wins /
-            (b.settings.wins + b.settings.losses + b.settings.ties);
+            calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
           if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
@@ -272,11 +274,9 @@ const History = () => {
       // For non-division leagues, use H2H tiebreaking like standings
       const sortedStandings = [...seasonData.rosters].sort((a, b) => {
         const aWinPct =
-          a.settings.wins /
-          (a.settings.wins + a.settings.losses + a.settings.ties);
+          calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
         const bWinPct =
-          b.settings.wins /
-          (b.settings.wins + b.settings.losses + b.settings.ties);
+          calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
         // First tiebreaker: Win percentage
         if (aWinPct !== bWinPct) return bWinPct - aWinPct;

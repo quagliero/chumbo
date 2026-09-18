@@ -159,10 +159,11 @@ describe("season standings", () => {
     expect(season(year)).toMatchSnapshot();
   });
 
-  it("sorts the standings prop in place when there are no divisions", () => {
-    // Pinned because it is surprising, not because it is wanted: with no
-    // divisions the single group is the caller's own array.
+  it("leaves the caller's standings array alone", () => {
+    // It used to sort in place, and with no divisions the single group WAS
+    // the caller's array, so rendering the table re-sorted the page's data.
     const standings = standingsFor(2012);
+    const before = standings.map((r) => r.roster_id);
     const [group] = sortDivisions(
       groupStandings(standings, false),
       false,
@@ -170,7 +171,37 @@ describe("season standings", () => {
       () => ({ wins: 0, losses: 0, ties: 0 }),
       () => ({ wins: 0, losses: 0, ties: 0 })
     );
-    expect(group.teams).toBe(standings);
+    expect(group.teams).not.toBe(standings);
+    expect(standings.map((r) => r.roster_id)).toEqual(before);
+  });
+
+  it("orders a season before its first game without NaN", () => {
+    // Every team 0-0: `wins / games` was 0/0, and a comparator returning NaN
+    // leaves the order to the engine. Now it falls through to points.
+    const fresh = standingsFor(2012).map((r) => ({
+      ...r,
+      settings: { ...r.settings, wins: 0, losses: 0, ties: 0 },
+    }));
+    const [group] = sortDivisions(
+      groupStandings(fresh, false),
+      false,
+      2012,
+      () => ({ wins: 0, losses: 0, ties: 0 }),
+      () => ({ wins: 0, losses: 0, ties: 0 })
+    );
+    const points = group.teams.map(
+      (r) => r.settings.fpts + r.settings.fpts_decimal / 100
+    );
+    expect(points).toEqual([...points].sort((a, b) => b - a));
+  });
+
+  it("counts a tie as half a win", () => {
+    // 2015: two teams went 7-5-1. They showed .538 — the same as 7-6-0, as
+    // if the tie were a loss. Half a win is .577, as Sleeper and the rest of
+    // this site count it.
+    const rows = JSON.stringify(season(2015));
+    expect(rows).toMatch(/7-5-1 0\.577/);
+    expect(rows).not.toMatch(/7-5-1 0\.538/);
   });
 });
 

@@ -28,6 +28,8 @@ export type PlayerGameScore = {
   week: number;
   result: string;
   playerId: string;
+  /** For display. Never a key — see where the scores are collected. */
+  playerName: string;
 };
 
 /**
@@ -43,7 +45,7 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
   const regularSeasonMatchups: H2HMatchup[] = [];
   const playoffMatchups: H2HMatchup[] = [];
 
-  // New approach: collect player scores by player name for each manager
+  // Player scores per manager, keyed by player id
   const managerAPlayerScores: Map<
     string,
     Array<{
@@ -52,6 +54,7 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
       week: number;
       result: string;
       playerId: string;
+      playerName: string;
     }>
   > = new Map();
   const managerBPlayerScores: Map<
@@ -62,6 +65,7 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
       week: number;
       result: string;
       playerId: string;
+      playerName: string;
     }>
   > = new Map();
 
@@ -175,9 +179,13 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
                         ? `${player.first_name} ${player.last_name}`
                         : playerId.toString(); // Use the ID as the name for string-named players
 
-                      // Add this score to the player's array with context
-                      if (!currentPlayerScores.has(playerName)) {
-                        currentPlayerScores.set(playerName, []);
+                      // Keyed by id, not name: two players can share a name
+                      // (see scripts/fix-player-ids.js), and keying on it merged
+                      // their games into one line on the All-Stars and best-games
+                      // lists. The name rides along for display only.
+                      const scoreKey = playerId.toString();
+                      if (!currentPlayerScores.has(scoreKey)) {
+                        currentPlayerScores.set(scoreKey, []);
                       }
                       const result =
                         managerAMatchup.points > managerBMatchup.points
@@ -190,12 +198,13 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
                             : "W"
                           : "T";
 
-                      currentPlayerScores.get(playerName)!.push({
+                      currentPlayerScores.get(scoreKey)!.push({
                         score: pointsNum,
                         year,
                         week,
                         result,
-                        playerId: playerId.toString(),
+                        playerId: scoreKey,
+                        playerName,
                       });
                     }
                   });
@@ -328,9 +337,13 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
                           ? `${player.first_name} ${player.last_name}`
                           : playerId.toString(); // Use the ID as the name for string-named players
 
-                        // Add this score to the player's array with context
-                        if (!currentPlayerScores.has(playerName)) {
-                          currentPlayerScores.set(playerName, []);
+                        // Keyed by id, not name: two players can share a name
+                        // (see scripts/fix-player-ids.js), and keying on it merged
+                        // their games into one line on the All-Stars and best-games
+                        // lists. The name rides along for display only.
+                        const scoreKey = playerId.toString();
+                        if (!currentPlayerScores.has(scoreKey)) {
+                          currentPlayerScores.set(scoreKey, []);
                         }
                         const result =
                           managerAMatchup.points > managerBMatchup.points
@@ -343,12 +356,13 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
                               : "W"
                             : "T";
 
-                        currentPlayerScores.get(playerName)!.push({
+                        currentPlayerScores.get(scoreKey)!.push({
                           score: pointsNum,
                           year,
                           week,
                           result,
-                          playerId: playerId.toString(),
+                          playerId: scoreKey,
+                          playerName,
                         });
                       }
                     });

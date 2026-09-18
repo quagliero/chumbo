@@ -4,6 +4,7 @@ import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { SortOrder, TopScore } from "./types";
+import { getPlayoffWeekStart, isMeaningfulPlayoffGame } from "@/utils/playoffUtils";
 
 /**
  * Every team score in the archive (or in one season), sorted. Regular-season
@@ -36,8 +37,7 @@ export const getTeamScores = (
     };
 
     // Get playoff week start to filter out playoff games
-    const playoffWeekStart =
-      seasonData.league?.settings?.playoff_week_start || 15;
+    const playoffWeekStart = getPlayoffWeekStart(seasonData);
 
     // Process each week
     Object.entries(matchups).forEach(([weekStr, weekMatchups]) => {
@@ -50,15 +50,9 @@ export const getTeamScores = (
 
       // Skip playoff weeks except for elimination/championship games
       if (week >= playoffWeekStart) {
-        const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) => {
-          const bracketMatch = seasonData.winners_bracket?.find(
-            (bm) =>
-              (bm.t1 === matchup.roster_id ||
-                bm.t2 === matchup.roster_id) &&
-              bm.r === week - playoffWeekStart + 1
-          );
-          return bracketMatch && (!bracketMatch.p || bracketMatch.p === 1);
-        });
+        const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) =>
+          isMeaningfulPlayoffGame(matchup, seasonData, week, playoffWeekStart)
+        );
         if (!hasMeaningfulPlayoffGame) return;
       }
 
@@ -70,16 +64,18 @@ export const getTeamScores = (
         if (!roster) return;
 
         // For playoff weeks, check if this specific matchup is meaningful
-        if (week >= playoffWeekStart) {
-          const bracketMatch = seasonData.winners_bracket?.find(
-            (bm) =>
-              (bm.t1 === matchup.roster_id ||
-                bm.t2 === matchup.roster_id) &&
-              bm.r === week - playoffWeekStart + 1
-          );
-          if (!bracketMatch || (bracketMatch.p && bracketMatch.p !== 1))
-            return;
-        }
+
+        // (the shared rule — the three TopScores modes each had their own copy)
+
+        if (
+
+          week >= playoffWeekStart &&
+
+          !isMeaningfulPlayoffGame(matchup, seasonData, week, playoffWeekStart)
+
+        )
+
+          return;
 
         const manager = managers.find(
           (m) => m.sleeper.id === roster.owner_id

@@ -5,6 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import type { SeasonStats } from "@/utils/managerStats";
 import { DataTable } from "@/presentation/components/Table";
 import { Card } from "@/presentation/components/Card";
+import { calculateWinPercentageAsPercent } from "@/utils/recordUtils";
 
 /** The pill colours for a finishing position. Shared by both rank badges. */
 const standingClass = (standing: number) =>
@@ -58,7 +59,7 @@ const SeasonBreakdown = ({ seasonStats }: SeasonBreakdownProps) => {
         header: "Record",
         cell: ({ row }) => {
           const { wins, losses, ties } = row.original;
-          const winPercentage = (wins / (wins + losses + ties)) * 100;
+          const winPercentage = calculateWinPercentageAsPercent(wins, losses, ties);
           return (
             <>
               {wins}-{losses}

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cardClassName, type Padding } from "./cardClassName";
 
 /**
  * The card surface (B2).
@@ -13,40 +14,6 @@ import type { ReactNode } from "react";
  * by role here rather than stamped on every block. A card is a container for
  * one thing; if everything on a page is a card, nothing on it is grouped.
  */
-
-type Padding = "none" | "sm" | "md" | "lg";
-
-const PADDING: Record<Padding, string> = {
-  none: "",
-  sm: "p-4",
-  md: "p-6",
-  lg: "p-8",
-};
-
-/**
- * The card treatment as a class string, for elements that cannot be a `<div>` —
- * chiefly cards that are themselves `<Link>`s. Prefer `<Card>` everywhere else;
- * this exists so a link-card doesn't have to re-spell the idiom by hand.
- */
-export const cardClassName = ({
-  padding = "md",
-  interactive = false,
-  className = "",
-}: {
-  padding?: Padding;
-  interactive?: boolean;
-  className?: string;
-} = {}): string =>
-  [
-    "bg-surface rounded-card shadow-card overflow-hidden",
-    PADDING[padding],
-    interactive
-      ? "border border-line hover:shadow-card-hover hover:border-line-strong transition-all cursor-pointer group"
-      : "",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
 
 export interface CardProps {
   children: ReactNode;

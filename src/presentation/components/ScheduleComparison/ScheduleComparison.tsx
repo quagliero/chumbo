@@ -6,6 +6,7 @@ import { getRosterPointsFor, roundToTwoDecimals } from "@/utils/recordUtils";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "../Table";
 import { ManagerLink } from "@/presentation/components/Links";
+import { calculateWinPercentage } from "@/utils/recordUtils";
 
 const columnHelper = createColumnHelper<ExtendedRoster>();
 
@@ -44,9 +45,9 @@ const ScheduleComparison = ({
   // Sort rosters by overall record (best to worst)
   const sortedRosters = [...rosters].sort((a, b) => {
     const aWinPct =
-      a.settings.wins / (a.settings.wins + a.settings.losses + a.settings.ties);
+      calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
     const bWinPct =
-      b.settings.wins / (b.settings.wins + b.settings.losses + b.settings.ties);
+      calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
     if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 

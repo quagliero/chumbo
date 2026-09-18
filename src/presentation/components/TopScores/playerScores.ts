@@ -2,7 +2,7 @@ import { seasons, getPlayer } from "@/data";
 import managers from "@/data/managers.json";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
-import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
+import { getPlayoffWeekStart, isPlayoffWeek, isMeaningfulPlayoffGame } from "@/utils/playoffUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { PlayerScore, SortOrder } from "./types";
 
@@ -52,15 +52,9 @@ export const getPlayerScores = (
 
       // Skip playoff weeks except for elimination/championship games
       if (isPlayoffWeek(week, playoffWeekStart)) {
-        const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) => {
-          const bracketMatch = seasonData.winners_bracket?.find(
-            (bm) =>
-              (bm.t1 === matchup.roster_id ||
-                bm.t2 === matchup.roster_id) &&
-              bm.r === week - playoffWeekStart + 1
-          );
-          return bracketMatch && (!bracketMatch.p || bracketMatch.p === 1);
-        });
+        const hasMeaningfulPlayoffGame = weekMatchups.some((matchup) =>
+          isMeaningfulPlayoffGame(matchup, seasonData, week, playoffWeekStart)
+        );
         if (!hasMeaningfulPlayoffGame) return;
       }
 
@@ -72,16 +66,18 @@ export const getPlayerScores = (
         if (!roster) return;
 
         // For playoff weeks, check if this specific matchup is meaningful
-        if (week >= playoffWeekStart) {
-          const bracketMatch = seasonData.winners_bracket?.find(
-            (bm) =>
-              (bm.t1 === matchup.roster_id ||
-                bm.t2 === matchup.roster_id) &&
-              bm.r === week - playoffWeekStart + 1
-          );
-          if (!bracketMatch || (bracketMatch.p && bracketMatch.p !== 1))
-            return;
-        }
+
+        // (the shared rule — the three TopScores modes each had their own copy)
+
+        if (
+
+          week >= playoffWeekStart &&
+
+          !isMeaningfulPlayoffGame(matchup, seasonData, week, playoffWeekStart)
+
+        )
+
+          return;
 
         const manager = managers.find(
           (m) => m.sleeper.id === roster.owner_id

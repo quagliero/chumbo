@@ -1,5 +1,6 @@
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
+import { calculateWinPercentage } from "@/utils/recordUtils";
 
 /**
  * The season standings table, worked out from the props with no React in
@@ -29,6 +30,8 @@ export interface TeamStandingData {
   avgPointsFor: number;
   avgPointsAgainst: number;
   sosRank?: number;
+  /** How many teams the SOS ranks run over — 10 in 2012-13, 12 since. */
+  sosOutOf?: number;
   playoffHighlight?: string | null;
   isChampion?: boolean;
   isRunnerUp?: boolean;
@@ -56,8 +59,14 @@ export const groupStandings = (
 /**
  * Each division's teams in standings order, divisions in number order.
  *
- * NB: sorts each group's array in place, as it always has. Without divisions
- * the single group IS the `standings` array the page was given.
+ * Returns new arrays. It used to sort each group in place, and without
+ * divisions the single group IS the `standings` array the page was given, so
+ * rendering the table re-sorted the caller's data under it.
+ *
+ * Win percentage is `calculateWinPercentage`: a tie counts half, as it does
+ * everywhere else on the site and in Sleeper's own standings, and a team with
+ * no games is 0 — `wins / games` gave NaN before a season's first game, and a
+ * comparator that returns NaN leaves the order to the engine.
  */
 export const sortDivisions = (
   groupedStandings: Record<number, ExtendedRoster[]>,
@@ -72,13 +81,17 @@ export const sortDivisions = (
   Object.entries(groupedStandings)
     .map(([division, teams]) => ({
       division: parseInt(division),
-      teams: teams.sort((a, b) => {
-        const aWinPct =
-          a.settings.wins /
-          (a.settings.wins + a.settings.losses + a.settings.ties);
-        const bWinPct =
-          b.settings.wins /
-          (b.settings.wins + b.settings.losses + b.settings.ties);
+      teams: [...teams].sort((a, b) => {
+        const aWinPct = calculateWinPercentage(
+          a.settings.wins,
+          a.settings.losses,
+          a.settings.ties
+        );
+        const bWinPct = calculateWinPercentage(
+          b.settings.wins,
+          b.settings.losses,
+          b.settings.ties
+        );
 
         // First tiebreaker: Win percentage
         if (aWinPct !== bWinPct) return bWinPct - aWinPct;
@@ -98,12 +111,16 @@ export const sortDivisions = (
           // Third tiebreaker: Division record
           const aDivRecord = getDivisionRecord(a, teams);
           const bDivRecord = getDivisionRecord(b, teams);
-          const aDivWinPct =
-            aDivRecord.wins /
-            (aDivRecord.wins + aDivRecord.losses + aDivRecord.ties);
-          const bDivWinPct =
-            bDivRecord.wins /
-            (bDivRecord.wins + bDivRecord.losses + bDivRecord.ties);
+          const aDivWinPct = calculateWinPercentage(
+            aDivRecord.wins,
+            aDivRecord.losses,
+            aDivRecord.ties
+          );
+          const bDivWinPct = calculateWinPercentage(
+            bDivRecord.wins,
+            bDivRecord.losses,
+            bDivRecord.ties
+          );
 
           if (aDivWinPct !== bDivWinPct) return bDivWinPct - aDivWinPct;
         } else {
@@ -161,11 +178,11 @@ export const buildTableData = (
   }
 ): TeamStandingData[] => {
   return teams.map((roster, index) => {
-    const winPerc =
-      roster.settings.wins /
-      (roster.settings.wins +
-        roster.settings.losses +
-        roster.settings.ties);
+    const winPerc = calculateWinPercentage(
+      roster.settings.wins,
+      roster.settings.losses,
+      roster.settings.ties
+    );
     const pointsFor =
       roster.settings.fpts + roster.settings.fpts_decimal / 100;
     const pointsAgainst =
@@ -216,6 +233,7 @@ export const buildTableData = (
       avgPointsFor,
       avgPointsAgainst,
       sosRank: strengthOfScheduleRemaining[roster.roster_id],
+      sosOutOf: Object.keys(strengthOfScheduleRemaining).length,
       playoffHighlight,
       isChampion,
       isRunnerUp,

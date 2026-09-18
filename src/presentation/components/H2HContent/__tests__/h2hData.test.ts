@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { managers, seasons } from "@/data";
 import { CURRENT_YEAR } from "@/domain/constants";
 import { digest } from "@/utils/__tests__/helpers";
+import { getPlayerPosition } from "@/utils/playerDataUtils";
 import { getH2HData, H2HData, playoffRoundLabel } from "../h2hData";
 
 /**
@@ -149,5 +150,34 @@ describe("the current streak", () => {
     // Both orders of every pairing are walked, so both sides must occur.
     expect(aOwned).toBeGreaterThan(0);
     expect(bOwned).toBeGreaterThan(0);
+  });
+});
+
+describe("the All-Star lineups", () => {
+  /**
+   * Players used to be grouped, and positioned, by NAME. Looking up "David
+   * Johnson" found the tight end of that name, so the running back (2391) was
+   * slotted at TE in twelve pairings' lineups, and Kenneth Walker the running
+   * back at WR. Every slot must now hold a player whose own position — by id —
+   * fits it.
+   */
+  it("puts every player in a slot his own position fits", () => {
+    const fits = (slot: string, position: string) =>
+      slot === "FLEX" ? ["RB", "WR", "TE"].includes(position) : slot === position;
+    for (const a of managers) {
+      for (const b of managers) {
+        if (a.id >= b.id) continue;
+        const data = getH2HData(a.id, b.id);
+        if (!data) continue;
+        for (const slot of [...data.managerALineup, ...data.managerBLineup]) {
+          if (!slot.player) continue;
+          const position = getPlayerPosition(slot.player.playerId);
+          expect(
+            fits(slot.position, position),
+            `${a.id} v ${b.id}: ${slot.player.playerName} (${position}) at ${slot.position}`
+          ).toBe(true);
+        }
+      }
+    }
   });
 });

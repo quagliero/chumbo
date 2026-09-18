@@ -160,7 +160,11 @@ const DivisionTable = ({
                 const sosRank = info.getValue();
                 if (!sosRank) return "-";
 
-                const normalized = (sosRank - 1) / 11;
+                // Across however many teams were ranked. It divided by 11,
+                // which assumed twelve: in a ten-team season the easiest
+                // schedule never reached the end of the scale.
+                const outOf = info.row.original.sosOutOf ?? 12;
+                const normalized = outOf > 1 ? (sosRank - 1) / (outOf - 1) : 0;
                 const red = Math.round(255 * (1 - normalized));
                 const green = Math.round(255 * normalized);
                 const blue = 0;

@@ -1,4 +1,4 @@
-import { getPlayerPositionComprehensive } from "@/utils/playerDataUtils";
+import { getPlayerPosition } from "@/utils/playerDataUtils";
 import { H2HMatchup, PlayerGameScore } from "./h2hGames";
 
 /**
@@ -77,9 +77,9 @@ export const summariseH2H = (
 
   // Process player scores into All-Stars format
   const managerAPerformances = Array.from(managerAPlayerScores.entries())
-    .map(([playerName, scores]) => ({
-      playerName,
-      playerId: scores[0]?.playerId || playerName, // Use first score's playerId, fallback to playerName
+    .map(([playerId, scores]) => ({
+      playerName: scores[0]?.playerName ?? playerId,
+      playerId,
       totalPoints: scores.reduce((sum, scoreObj) => sum + scoreObj.score, 0),
       gamesPlayed: scores.length,
       averagePoints:
@@ -91,9 +91,9 @@ export const summariseH2H = (
     .sort((a, b) => b.totalPoints - a.totalPoints);
 
   const managerBPerformances = Array.from(managerBPlayerScores.entries())
-    .map(([playerName, scores]) => ({
-      playerName,
-      playerId: scores[0]?.playerId || playerName, // Use first score's playerId, fallback to playerName
+    .map(([playerId, scores]) => ({
+      playerName: scores[0]?.playerName ?? playerId,
+      playerId,
       totalPoints: scores.reduce((sum, scoreObj) => sum + scoreObj.score, 0),
       gamesPlayed: scores.length,
       averagePoints:
@@ -124,36 +124,38 @@ export const summariseH2H = (
     // Track which players we've already used
     const usedPlayers = new Set<string>();
 
-    // Helper function to get player position
-    const getPlayerPositionLocal = (playerName: string) => {
-      return getPlayerPositionComprehensive(playerName);
-    };
+    // By id, like the scores: a name lookup takes the first player of that
+    // name it finds, which is somebody else's position for a namesake. A
+    // legacy name-keyed player's id IS his name, and `getPlayerPosition`
+    // reads those from the committed legacy table.
+    const getPlayerPositionLocal = (playerId: string) =>
+      getPlayerPosition(playerId);
 
     // Fill each position with the best available player
     lineup.forEach((slot) => {
       const availablePlayers = performances.filter(
-        (p) => !usedPlayers.has(p.playerName)
+        (p) => !usedPlayers.has(p.playerId)
       );
 
       if (slot.position === "FLEX") {
         // FLEX can be RB, WR, or TE
         const flexPlayers = availablePlayers.filter((p) => {
-          const pos = getPlayerPositionLocal(p.playerName);
+          const pos = getPlayerPositionLocal(p.playerId);
           return pos === "RB" || pos === "WR" || pos === "TE";
         });
         if (flexPlayers.length > 0) {
           slot.player = flexPlayers[0];
-          usedPlayers.add(slot.player.playerName);
+          usedPlayers.add(slot.player.playerId);
         }
       } else {
         // Specific position
         const positionPlayers = availablePlayers.filter((p) => {
-          const pos = getPlayerPositionLocal(p.playerName);
+          const pos = getPlayerPositionLocal(p.playerId);
           return pos === slot.position;
         });
         if (positionPlayers.length > 0) {
           slot.player = positionPlayers[0];
-          usedPlayers.add(slot.player.playerName);
+          usedPlayers.add(slot.player.playerId);
         }
       }
     });
@@ -164,7 +166,7 @@ export const summariseH2H = (
   const managerALineup = createValidLineup(managerAPerformances);
   const managerBLineup = createValidLineup(managerBPerformances);
 
-  // Get best performances (top 10 individual game scores, deduplicated by player)
+  // Best performances: the top 5 individual game scores, one per player
   const managerABestPerformances = managerAPerformances
     .flatMap((p) =>
       p.allScores.map((scoreObj) => ({

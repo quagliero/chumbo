@@ -1,6 +1,7 @@
 import { ExtendedRoster } from "@/types/roster";
 import { BracketMatch } from "@/types/bracket";
 import { League } from "@/types/league";
+import { calculateWinPercentage } from "@/utils/recordUtils";
 
 /**
  * Which teams made the playoffs and their seeds, read off the winners bracket
@@ -56,11 +57,9 @@ export const getPlayoffTeams = (
       .filter((r) => byeTeams.has(r.roster_id))
       .sort((a, b) => {
         const aWinPct =
-          a.settings.wins /
-          (a.settings.wins + a.settings.losses + a.settings.ties);
+          calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
         const bWinPct =
-          b.settings.wins /
-          (b.settings.wins + b.settings.losses + b.settings.ties);
+          calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
         if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
@@ -80,11 +79,9 @@ export const getPlayoffTeams = (
       .filter((r) => firstRoundTeams.has(r.roster_id))
       .sort((a, b) => {
         const aWinPct =
-          a.settings.wins /
-          (a.settings.wins + a.settings.losses + a.settings.ties);
+          calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
         const bWinPct =
-          b.settings.wins /
-          (b.settings.wins + b.settings.losses + b.settings.ties);
+          calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
         if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 
@@ -101,11 +98,9 @@ export const getPlayoffTeams = (
     // For non-division leagues, use simple overall standings
     const sortedStandings = [...standings].sort((a, b) => {
       const aWinPct =
-        a.settings.wins /
-        (a.settings.wins + a.settings.losses + a.settings.ties);
+        calculateWinPercentage(a.settings.wins, a.settings.losses, a.settings.ties);
       const bWinPct =
-        b.settings.wins /
-        (b.settings.wins + b.settings.losses + b.settings.ties);
+        calculateWinPercentage(b.settings.wins, b.settings.losses, b.settings.ties);
 
       if (aWinPct !== bWinPct) return bWinPct - aWinPct;
 

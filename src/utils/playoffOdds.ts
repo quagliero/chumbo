@@ -3,6 +3,7 @@ import { ExtendedRoster } from "@/types/roster";
 import { ExtendedLeague } from "@/types/league";
 import { getPlayoffWeekStart } from "./playoffUtils";
 import { getCompletedWeek } from "./weekUtils";
+import { calculateWinPercentage } from "@/utils/recordUtils";
 
 interface SeasonData {
   matchups: Record<string, ExtendedMatchup[]>;
@@ -295,8 +296,8 @@ function simulateSeason(
 function rankTeamsByRecord(results: SimulationResult[]): number[] {
   return results
     .sort((a, b) => {
-      const aWinPct = a.wins / (a.wins + a.losses + a.ties);
-      const bWinPct = b.wins / (b.wins + b.losses + b.ties);
+      const aWinPct = calculateWinPercentage(a.wins, a.losses, a.ties);
+      const bWinPct = calculateWinPercentage(b.wins, b.losses, b.ties);
 
       if (aWinPct !== bWinPct) return bWinPct - aWinPct;
       return b.pointsFor - a.pointsFor;

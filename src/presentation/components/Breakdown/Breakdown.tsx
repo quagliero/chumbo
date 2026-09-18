@@ -6,8 +6,7 @@ import { ExtendedLeague } from "@/types/league";
 import {
   calculateWeeklyLeagueRecord,
   determineMatchupResult,
-  roundToTwoDecimals,
-} from "@/utils/recordUtils";
+  roundToTwoDecimals, calculateWinPercentage } from "@/utils/recordUtils";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
 import { createColumnHelper } from "@tanstack/react-table";
@@ -119,7 +118,12 @@ const Breakdown = ({
     const totalGames = weekRecord.wins + weekRecord.losses + weekRecord.ties;
     if (totalGames === 0) return 0;
 
-    const winPercentage = weekRecord.wins / totalGames;
+    // A tie with somebody's score that week counts half, as everywhere else.
+    const winPercentage = calculateWinPercentage(
+      weekRecord.wins,
+      weekRecord.losses,
+      weekRecord.ties
+    );
 
     // Only show luck when result is opposite of expectation
     if (actualResult === "W") {

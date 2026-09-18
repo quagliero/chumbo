@@ -49,6 +49,17 @@ const ScheduleMatrix = ({
 
           if (!record) return null;
 
+          // Two teams who never shared a season have no schedule to swap, so
+          // there is no record to show — a "0-0-0 / .000" here read as a real
+          // (and dreadful) result.
+          if (!isSameTeam && isEmptyRecord(record)) {
+            return (
+              <div className="text-xs text-ink-faint">
+                —
+              </div>
+            );
+          }
+
           const recordDifference = isSameTeam
             ? 0
             : roundToTwoDecimals(

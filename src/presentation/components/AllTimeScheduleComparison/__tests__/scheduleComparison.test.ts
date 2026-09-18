@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   AllTimeScheduleComparisonStats,
   buildComparisonRows,
+  isEmptyRecord,
   formatWinPercentage,
   getAllTimeScheduleComparison,
 } from "../scheduleComparison";
@@ -85,5 +86,24 @@ describe("buildComparisonRows", () => {
       )
     ).toMatchSnapshot();
     expect(rows.filter((row) => row.isSelectedTeam)).toHaveLength(1);
+  });
+
+  it("leaves out teams that never shared a season with the selected one", () => {
+    // They used to appear as 0-0-0 rows at .000, which read like a real and
+    // dreadful result rather than "no schedule to compare".
+    for (const selected of all) {
+      const rows = buildComparisonRows(all, selected, selected.ownerId);
+      const empty = rows.filter(
+        (row) => !row.isSelectedTeam && isEmptyRecord(row.record)
+      );
+      expect(empty, selected.ownerId).toEqual([]);
+    }
+    // And the check is not vacuous: somebody DID miss somebody.
+    const everyone = all.length;
+    expect(
+      all.some(
+        (s) => buildComparisonRows(all, s, s.ownerId).length < everyone
+      )
+    ).toBe(true);
   });
 });

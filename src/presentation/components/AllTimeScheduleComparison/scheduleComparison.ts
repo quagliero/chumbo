@@ -312,7 +312,10 @@ export const buildComparisonRows = (
       ? team.actualRecord
       : selectedTeamStats.crossScheduleRecords[team.ownerId];
 
-    if (!record) return [];
+    // A team that never shared a season with the selected one has no
+    // schedule to compare against: leave it out rather than list it as a
+    // 0-0-0 row that reads like a real result.
+    if (!record || (!isSelectedTeam && isEmptyRecord(record))) return [];
 
     return [
       {

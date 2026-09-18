@@ -152,7 +152,9 @@ const Standings = ({
       const seed = playoffTeamSeeds[rosterId];
       const numTeams = league?.settings?.num_teams || 12;
 
-      // In 10-team leagues, all playoff teams get green (no byes)
+      // In 10-team leagues (2012-13) the playoff was four teams and nobody had
+      // a bye, so every playoff team gets the plain playoff colour — yellow,
+      // not the green that means a bye.
       if (numTeams === 10) {
         return "playoff";
       }
