@@ -977,7 +977,7 @@ A silently erodes.
 Everything in here came out of somebody actually using the site rather than
 reading the plan. Ordered by how badly it misleads a reader, not by size.
 
-### I1 · The faces are missing from share cards `S` — **bug, diagnosed**
+### I1 · The faces are missing from share cards `S` — ✅ done
 
 Every card that should carry a manager's team logo draws the initials
 fallback instead. The fallback is doing its job; the fetch behind it is not.
@@ -1005,13 +1005,15 @@ Two halves to the fix, and it wants both:
 - **Retry with `cache: "reload"`** when the first CORS fetch fails. Cheap
   (avatars are 20-40 kB), self-healing, and it fixes caches that are already
   poisoned in the league's browsers today — which a markup change cannot.
-- **Add `crossOrigin="anonymous"`** to every `<img>` painting a remote avatar,
-  so the cached entry is CORS-clean and the retry stops being needed.
+- ~~**Add `crossOrigin="anonymous"`** to every `<img>` painting a remote
+  avatar.~~ Dropped when it came to it: that would make every avatar on the
+  site depend on Sleeper's CORS header, when `images.ts` exists so that only
+  cards pay if it ever goes. The retry alone fixes it.
 
 Regression test: assert `embedImage` retries once on failure, since the bug is
 invisible by construction — a card with initials looks deliberate.
 
-### I2 · Charts need a real popover `L`
+### I2 · Charts need a real popover `L` — ✅ done
 
 Every dot, cell and line node currently hangs its explanation on an SVG
 `<title>`, which is the browser's native tooltip: an 800 ms delay, OS styling,
@@ -1028,7 +1030,7 @@ The same interaction model `useSeriesSelection` already uses for series
 (hover previews, click pins), applied to marks. Keyboard reachability comes
 with it: a pinned popover is focusable in a way a `<title>` never was.
 
-### I3 · A pick traded in week 1 is not a bust `M`
+### I3 · A pick traded in week 1 is not a bust `M` — ✅ done
 
 `draftValue.ts` scores a pick by what the **drafting roster** got, so a player
 traded before a ball is snapped lands on the floor of the chart at 0.0 with no
