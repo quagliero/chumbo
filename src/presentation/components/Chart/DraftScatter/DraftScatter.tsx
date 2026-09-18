@@ -10,7 +10,7 @@ import { useDraftScatter, type DraftScatterPoint } from "./useDraftScatter";
  * The draft value scatter (D6).
  *
  * Overall pick number along the bottom, points that player went on to score
- * for the manager who drafted him up the side — every pick of every draft the
+ * that season, for whoever had him, up the side — every pick of every draft the
  * league has finished, in one box. The dashed curve is what a pick at that
  * number has actually returned across fourteen drafts, so the chart answers
  * "was that a good pick" against this league's own history rather than
@@ -69,10 +69,10 @@ const signed = (value: number) =>
 
 const describe = (point: DraftScatterPoint) =>
   `${point.name}, ${point.year} pick ${point.pickNo} (round ${point.round}) ` +
-  `by ${point.managerId}: ${point.points.toFixed(1)} points for him against ` +
+  `by ${point.managerId}: ${point.total.toFixed(1)} points against ` +
   `${point.baseline.toFixed(1)} for that slot, ${signed(point.value)}` +
   (point.pointsElsewhere > 0
-    ? `, and ${point.pointsElsewhere.toFixed(1)} elsewhere after he left`
+    ? `, ${point.pointsElsewhere.toFixed(1)} of them for other teams`
     : "") +
   (point.approximate ? " (2019 — reconstructed lineup data)" : "");
 
@@ -102,7 +102,7 @@ export const DraftScatter = ({ className }: { className?: string }) => {
   // the dots, not the ruler, or two positions cannot be compared by eye.
   const { x, y } = useMemo(() => {
     const maxPick = points.reduce((max, p) => Math.max(max, p.pickNo), 0);
-    const maxPoints = points.reduce((max, p) => Math.max(max, p.points), 0);
+    const maxPoints = points.reduce((max, p) => Math.max(max, p.total), 0);
     return {
       x: niceTicks(0, maxPick, 4),
       y: niceTicks(0, maxPoints, 5),
@@ -179,7 +179,7 @@ export const DraftScatter = ({ className }: { className?: string }) => {
           margin={MARGIN}
           label={
             `Every draft pick from ${span}: overall pick number against the ` +
-            `points that player scored for the manager who drafted him`
+            `the points that player scored that season`
           }
           fallback={<DraftTable points={shown} />}
         >
@@ -195,7 +195,7 @@ export const DraftScatter = ({ className }: { className?: string }) => {
                 {points.map((point) => {
                   const dim = position !== null && point.position !== position;
                   const cx = scaleX(point.pickNo);
-                  const cy = scaleY(point.points);
+                  const cy = scaleY(point.total);
                   const colour = colourFor(point.value);
 
                   // A dimmed mark is context, not a target: rendering it as a
@@ -269,7 +269,7 @@ export const DraftScatter = ({ className }: { className?: string }) => {
                   named.map((point) => ({
                     point,
                     cx: scaleX(point.pickNo),
-                    cy: scaleY(point.points),
+                    cy: scaleY(point.total),
                   })),
                   frame.width
                 ).map(({ point, cx, cy, labelX, labelY, anchor }) => (
@@ -375,10 +375,10 @@ export const DraftScatter = ({ className }: { className?: string }) => {
         The dashed line is{" "}
         <strong className="font-medium">what that pick usually returns</strong>{" "}
         — the average of every pick within six of it, across every draft. A pick
-        is scored by what the drafting manager actually got: points while the
-        player was on his roster, bench included, so a bust he dropped in week 2
-        scores him nothing and a player traded away sits low with the rest of
-        his season recorded in the tooltip. Drafts are only counted once their
+        is scored on everything the player did that season, bench included and
+        whoever had him: a player traded in week 1 was still a good or bad pick,
+        and what the trade did is a separate question, answered when you click
+        the dot. Drafts are only counted once their
         season has been played, so {years[years.length - 1]} is the last one
         here. 2019&rsquo;s per-player scores are a reconstruction rather than a
         record — good enough to plot, so they are drawn hollow rather than
@@ -485,7 +485,7 @@ const DraftTable = ({ points }: { points: DraftScatterPoint[] }) => {
             <td>{point.year}</td>
             <td>{point.pickNo}</td>
             <td>{point.managerId}</td>
-            <td>{point.points.toFixed(1)}</td>
+            <td>{point.total.toFixed(1)}</td>
             <td>{point.baseline.toFixed(1)}</td>
             <td>{signed(point.value)}</td>
           </tr>

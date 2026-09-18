@@ -248,6 +248,7 @@ interface TradeSide {
 }
 
 interface ScoredTrade {
+  transactionId: string;
   year: number;
   /** The week the trade took effect — see `effectiveWeek`. */
   week: number;
@@ -408,6 +409,7 @@ const scoreTrades = (context: StatContext): ScoredTrade[] => {
     }
 
     scored.push({
+      transactionId: transaction.transaction_id,
       year,
       week: from,
       sides: [...sides.values()].map((side) => ({
@@ -418,6 +420,117 @@ const scoreTrades = (context: StatContext): ScoredTrade[] => {
   }
 
   return scored;
+};
+
+/* ------------------------------------------------------------------ *
+ * One player's trades (I3)
+ * ------------------------------------------------------------------ */
+
+/** A trade that moved one particular player, told from the giving side. */
+export interface PlayerTrade {
+  year: number;
+  /** The week it took effect — the ledger's `effectiveWeek`, not `leg`. */
+  week: number;
+  /** Manager who gave the player up. */
+  from: string;
+  /** Manager who received him. */
+  to: string;
+  /** What `from` got back, with each player's points from `week` on. */
+  received: Array<{ playerId: string; name: string; points: number }>;
+  /** Draft picks `from` got back, as "2021 round 3". */
+  picks: string[];
+  /** FAAB `from` got back. */
+  faab: number;
+  /**
+   * `from`'s net on the whole deal, straight off the trade ledger. Absent
+   * where the ledger declines to settle it: a deal with picks or FAAB in it,
+   * or one entered and undone in the same week.
+   */
+  net?: number;
+}
+
+/**
+ * Every trade that moved `playerId` in `year`, in the order they happened.
+ *
+ * For the draft scatter's popover: a pick whose points all went elsewhere
+ * needs to say where, and whether the drafter came out ahead. This is the
+ * ledger's own reading of the transactions, narrowed to one player, so the
+ * popover and the trade ledger cannot disagree about the same deal.
+ *
+ * Scoped to one season on purpose. The ledger reads every transaction it can
+ * see, and would suspend until all fifteen seasons' worth had downloaded;
+ * narrowing the games to `year` narrows the transactions it waits for to one
+ * file. Suspends like the rest of this module if that file is not loaded yet.
+ */
+export const playerTrades = (
+  context: StatContext,
+  year: number,
+  playerId: string
+): PlayerTrade[] => {
+  const scoped: StatContext = {
+    ...context,
+    games: context.games.filter((game) => game.year === year),
+  };
+  const season = indexSeasons(scoped.games).get(year);
+  if (!season) return [];
+
+  const settled = new Map(
+    scoreTrades(scoped).map((trade) => [trade.transactionId, trade])
+  );
+
+  const trades: PlayerTrade[] = [];
+
+  for (const { week: leg, transaction } of completedTransactions([year])) {
+    if (transaction.type !== "trade") continue;
+
+    const moves: TradeMove[] = [];
+    for (const [id, to] of Object.entries(transaction.adds ?? {})) {
+      const from = transaction.drops?.[id];
+      if (from !== undefined && from !== to) moves.push({ playerId: id, from, to });
+    }
+    const mine = moves.find((move) => move.playerId === playerId);
+    if (!mine) continue;
+
+    const from = season.managerByRoster.get(mine.from);
+    const to = season.managerByRoster.get(mine.to);
+    if (!from || !to) continue;
+
+    const ledger = settled.get(transaction.transaction_id);
+    const picks = transaction.draft_picks.filter(
+      (pick) => pick.owner_id === mine.from
+    );
+    const faab = transaction.waiver_budget
+      .filter((budget) => budget.receiver === mine.from)
+      .reduce((sum, budget) => sum + budget.amount, 0);
+    // The ledger settles every player-for-player deal. One it did not settle
+    // and that has no picks or FAAB in it was entered and undone in the same
+    // week — a data-entry correction, like 2018's James Conner pair — and is
+    // not a trade anybody made.
+    if (!ledger && !transaction.draft_picks.length && !transaction.waiver_budget.length) {
+      continue;
+    }
+    const week = ledger?.week ?? effectiveWeek(season, leg, moves);
+
+    trades.push({
+      year,
+      week,
+      from,
+      to,
+      received: moves
+        .filter((move) => move.to === mine.from)
+        .map((move) => ({
+          playerId: move.playerId,
+          name: playerName(move.playerId, year),
+          points: round(pointsFrom(season, week, move.playerId)),
+        }))
+        .sort((a, b) => b.points - a.points),
+      picks: picks.map((pick) => `${pick.season} round ${pick.round}`),
+      faab,
+      net: ledger?.sides.find((side) => side.rosterId === mine.from)?.net,
+    });
+  }
+
+  return trades.sort((a, b) => a.week - b.week);
 };
 
 export const tradeLedger = defineStat({

@@ -1039,8 +1039,9 @@ explanation. 2018 is full of it, because of the Le'Veon Bell holdout:
 | 4 | Alvin Kamara | traded in leg 1 — "Team 12: Alvin Kamara \| Team 1: Le'Veon Bell" |
 | 6 | Saquon Barkley | traded in leg 1, then again in leg 11 |
 
-Neither manager got nothing; they got Bell. The chart says they wasted a
-top-six pick.
+And Bell then held out all season, so the deals returned nothing — but that
+is the *trade* failing, not the pick, and the trade ledger already scores it
+(chris −256.9 on the Kamara deal). The chart blames the pick instead.
 
 **Score a pick by the player's total season points**, which the module already
 computes — `points + pointsElsewhere` — and put the trade in the popover from

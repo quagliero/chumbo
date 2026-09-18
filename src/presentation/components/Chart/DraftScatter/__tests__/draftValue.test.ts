@@ -56,7 +56,7 @@ const pick = (
 });
 
 describe("scoreDraftPicks", () => {
-  it("credits a pick only with what the drafting roster got", () => {
+  it("values a pick on the player's whole season, and keeps who got what", () => {
     const games = playedSeason(2020, [
       { rosterId: 1, playersPoints: { "99": 100 } },
       { rosterId: 2, playersPoints: { "99": 50 } },
@@ -67,8 +67,23 @@ describe("scoreDraftPicks", () => {
       new Map([[2020, [pick(1, "99", 1)]]])
     );
 
+    expect(scored.total).toBe(150);
     expect(scored.points).toBe(100);
     expect(scored.pointsElsewhere).toBe(50);
+  });
+
+  it("does not call a player traded before week 1 a zero", () => {
+    // I3. Every point for somebody else — the drafter kept none of them.
+    const games = playedSeason(2020, [
+      { rosterId: 2, playersPoints: { "99": 300 } },
+    ]);
+    const [valued] = withBaseline(
+      scoreDraftPicks(games, new Map([[2020, [pick(1, "99", 1)]]]))
+    );
+
+    expect(valued.points).toBe(0);
+    expect(valued.total).toBe(300);
+    expect(valued.value).toBe(0); // alone in its window: it IS the baseline
   });
 
   it("scores a pick who never played for anyone as zero, not as missing", () => {
@@ -123,9 +138,9 @@ describe("scoreDraftPicks", () => {
 
 describe("baselineByPickNumber", () => {
   const scored = [
-    { ...pick(1, "a", 1), points: 100, pointsElsewhere: 0 },
-    { ...pick(2, "b", 2), points: 80, pointsElsewhere: 0 },
-    { ...pick(3, "c", 3), points: 60, pointsElsewhere: 0 },
+    { ...pick(1, "a", 1), total: 100, points: 100, pointsElsewhere: 0 },
+    { ...pick(2, "b", 2), total: 80, points: 80, pointsElsewhere: 0 },
+    { ...pick(3, "c", 3), total: 60, points: 60, pointsElsewhere: 0 },
   ];
 
   it("averages every pick within the window, both sides", () => {
@@ -137,8 +152,8 @@ describe("baselineByPickNumber", () => {
 
   it("pools every season's observations of the same pick number", () => {
     const twoSeasons = [
-      { ...pick(1, "a", 1, 2020), points: 100, pointsElsewhere: 0 },
-      { ...pick(1, "b", 1, 2021), points: 0, pointsElsewhere: 0 },
+      { ...pick(1, "a", 1, 2020), total: 100, points: 100, pointsElsewhere: 0 },
+      { ...pick(1, "b", 1, 2021), total: 0, points: 0, pointsElsewhere: 0 },
     ];
     expect(baselineByPickNumber(twoSeasons, 0).get(1)).toBe(50);
   });
@@ -152,8 +167,8 @@ describe("baselineByPickNumber", () => {
 describe("withBaseline", () => {
   it("values a pick as its return minus the going rate for that slot", () => {
     const valued = withBaseline([
-      { ...pick(1, "a", 1), points: 100, pointsElsewhere: 0 },
-      { ...pick(2, "b", 2), points: 0, pointsElsewhere: 0 },
+      { ...pick(1, "a", 1), total: 100, points: 100, pointsElsewhere: 0 },
+      { ...pick(2, "b", 2), total: 0, points: 0, pointsElsewhere: 0 },
     ]);
 
     // Both picks are inside one window of each other, so both baselines are 50.
@@ -205,6 +220,23 @@ describe("the real drafts", () => {
     // Every year with a draft and a played season, and only those.
     for (const year of years) {
       expect(seasons[year]?.picks?.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("values Kamara and Barkley 2018 on their seasons, not on a week-1 trade", () => {
+    // Picks 4 and 6 of 2018, both traded in leg 1 for Le'Veon Bell. Before I3
+    // both sat on the floor of the chart at 0.0 as two of the worst picks the
+    // league had ever made.
+    const valued = realPoints().filter((point) => point.year === 2018);
+    for (const [pickNo, playerId] of [
+      [4, "4035"],
+      [6, "4866"],
+    ] as const) {
+      const point = valued.find((p) => p.pickNo === pickNo);
+      expect(point?.playerId).toBe(playerId);
+      expect(point?.points).toBe(0);
+      expect(point?.total).toBeGreaterThan(200); // 256.9 and 248.9
+      expect(point?.value).toBeGreaterThan(0);
     }
   });
 

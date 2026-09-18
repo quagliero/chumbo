@@ -85,6 +85,18 @@ describe("draft value", () => {
     );
   });
 
+  it("says where the points went when the drafter did not keep them", () => {
+    // I3: Kamara, pick 4 of 2018, traded in week 1. Valued on his season, and
+    // the detail names who had it rather than letting the number stand alone.
+    const kamara = computeStat("best-draft-picks").find(
+      (e) => e.year === 2018 && e.subject === "Alvin Kamara"
+    );
+    expect(kamara?.detail).toContain("(pick 4)");
+    expect(kamara?.detail).toMatch(/, all of it for \w+$/);
+    const total = Number(/— ([\d.]+) pts/.exec(kamara?.detail ?? "")?.[1]);
+    expect(total).toBeCloseTo(256.9, 1);
+  });
+
   it("credits the drafting roster, not whoever ended up with the player", () => {
     // 2024: thd took Lamar Jackson in round 4 and traded him in week 1. The
     // pick is the drafter's; the points are not. Both halves have to hold, or

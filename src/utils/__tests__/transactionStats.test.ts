@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
-import { computeStat } from "@/utils/stats";
+import { computeStat, getStatContext } from "@/utils/stats";
+import { playerTrades } from "@/utils/stats/transactionStats";
 
 /**
  * Waiver and trade stats (C5).
@@ -150,5 +151,41 @@ describe("roster churn", () => {
     const [top] = entries;
     expect(top.value).toBeGreaterThan(100);
     expect(top.detail).toMatch(/^\d{4}: \d+ adds, \d+ drops, \d+ trades$/);
+  });
+});
+
+describe("one player's trades (I3)", () => {
+  it("tells the Kamara deal from the giving side, settled by the ledger", () => {
+    // Pick 4 of 2018, traded in week 1 for a Le'Veon Bell who never played
+    // that season. The popover leans on every field of this.
+    const [trade, ...rest] = playerTrades(getStatContext(), 2018, "4035");
+    expect(rest).toEqual([]);
+    expect(trade).toMatchObject({ week: 1, from: "chris", to: "thd", picks: [], faab: 0 });
+    expect(trade.received.map((r) => [r.name, r.points])).toEqual([["Le'Veon Bell", 0]]);
+
+    const ledger = computeStat("trade-ledger").find(
+      (e) => e.year === 2018 && e.subject === "chris" && e.detail?.includes("Alvin Kamara")
+    );
+    expect(trade.net).toBe(ledger?.value);
+  });
+
+  it("follows a player through every trade in order", () => {
+    const trades = playerTrades(getStatContext(), 2018, "4866"); // Barkley
+    expect(trades.map((t) => [t.week, t.from, t.to])).toEqual([
+      [1, "thd", "sol"],
+      [11, "sol", "ant"],
+    ]);
+  });
+
+  it("leaves a deal with FAAB in it unsettled rather than guessing", () => {
+    const [lamar] = playerTrades(getStatContext(), 2024, "4881");
+    expect(lamar.faab).toBeGreaterThan(0);
+    expect(lamar.net).toBeUndefined();
+  });
+
+  it("does not report an entry corrected in the same week as a trade", () => {
+    // NFL.com trades 232/233 in 2018: James Conner swapped and swapped back
+    // ten minutes later. The ledger drops the pair; so must this.
+    expect(playerTrades(getStatContext(), 2018, "4137")).toEqual([]);
   });
 });

@@ -13,16 +13,19 @@ import type { Game, StatContext, StatEntry } from "./types";
  * Two decisions the numbers depend on, stated once here because every stat
  * below inherits them:
  *
- * **A pick is scored by what the drafting team got.** `pointsForDrafter` is the
- * player's points while he was on the roster that drafted him, bench included.
- * The alternative — everything he scored that season, wherever he played — is a
- * cleaner measure of "was he a good player", but it is a worse measure of a
- * draft pick: it would credit a manager who cut a league-winner in week 2 with
- * the whole season. Measuring what you actually got means a bust you dropped
- * scores you nothing, which is exactly the story of a bust. The cost is that a
- * player traded away in-season looks like a miss, so any entry where that
- * happened says so in its detail, and `one-that-got-away` is the other half of
- * the same picture.
+ * **A pick is valued on everything the player scored that season**, for
+ * whoever had him. This used to be only what the drafting roster kept, on the
+ * argument that a manager who cut a league-winner in week 2 should not be
+ * credited with his season. The cost of that turned out to be worse than the
+ * benefit: a player traded before a ball was snapped scored the drafter 0.0
+ * and read as a catastrophic pick — Alvin Kamara and Saquon Barkley, picks 4
+ * and 6 of 2018, both moved in week 1 in deals for a Le'Veon Bell who then
+ * held out all season. Those were good picks and bad trades, and the trade
+ * ledger already scores the trades. A draft pick is a bet on a player, and the
+ * player is what gets valued; where the points went is the trade's story, and
+ * every entry where they went elsewhere says so in its detail.
+ * `one-that-got-away` is still about the drafter's share, because that is its
+ * subject. The D6 scatter makes the same call, and a test holds them together.
  *
  * **The baseline is the overall pick number, not the round.** Pick 11 takes
  * roughly the eleventh-best player left whether the league has ten teams or
@@ -130,7 +133,9 @@ interface ScoredPick {
   playerId: string;
   /** The internal manager id of whoever made the pick. */
   managerId: string;
-  /** Points scored while on the drafting roster. */
+  /** Everything the player scored that season, for anyone. What is valued. */
+  total: number;
+  /** The part of `total` scored while on the drafting roster. */
   pointsForDrafter: number;
   /** Points scored for everyone else that season, best owner first. */
   elsewhere: Array<{ managerId: string; points: number }>;
@@ -185,6 +190,9 @@ const scorePicks = (games: Game[]): ScoredPick[] => {
         pickNo: pick.pick_no,
         playerId,
         managerId: managerOf(pick.picked_by, pick.roster_id),
+        total:
+          pointsForDrafter +
+          elsewhere.reduce((sum, owner) => sum + owner.points, 0),
         pointsForDrafter,
         elsewhere,
       });
@@ -202,8 +210,8 @@ const baselineByPickNumber = (picks: ScoredPick[]): Map<number, number> => {
   const byPickNo = new Map<number, number[]>();
   for (const pick of picks) {
     const bucket = byPickNo.get(pick.pickNo);
-    if (bucket) bucket.push(pick.pointsForDrafter);
-    else byPickNo.set(pick.pickNo, [pick.pointsForDrafter]);
+    if (bucket) bucket.push(pick.total);
+    else byPickNo.set(pick.pickNo, [pick.total]);
   }
 
   const baseline = new Map<number, number>();
@@ -234,21 +242,30 @@ const valueEntries = ({ games }: StatContext): StatEntry[] => {
     const expected = baseline.get(pick.pickNo);
     if (expected === undefined) return [];
 
-    // A player traded or cut mid-season shows up here as a miss, which is
-    // only half the story — say the other half rather than leave it looking
-    // like the data is wrong.
+    // Where the points went, when not all of them went to the drafter. The
+    // value is the player's whole season; this is who enjoyed it.
     const gone = totalElsewhere(pick);
-    const left = gone > 0 ? `, then ${shown(gone)} elsewhere` : "";
+    const [topOwner] = pick.elsewhere;
+    const others =
+      pick.elsewhere.length === 1
+        ? topOwner.managerId
+        : `${pick.elsewhere.length} other teams`;
+    const where =
+      gone <= 0
+        ? ""
+        : pick.pointsForDrafter <= 0
+          ? `, all of it for ${others}`
+          : `, ${shown(gone)} of it for ${others}`;
 
     return [
       {
-        value: oneDecimal(pick.pointsForDrafter - expected),
+        value: oneDecimal(pick.total - expected),
         subject: playerName(pick.playerId, pick.year),
         href: draftHref(pick.year),
         detail:
           `${pick.managerId}, ${pick.year} round ${pick.round} ` +
-          `(pick ${pick.pickNo}) — ${shown(pick.pointsForDrafter)} pts ` +
-          `against ${shown(expected)} for that slot${left}`,
+          `(pick ${pick.pickNo}) — ${shown(pick.total)} pts ` +
+          `against ${shown(expected)} for that slot${where}`,
         year: pick.year,
       },
     ];

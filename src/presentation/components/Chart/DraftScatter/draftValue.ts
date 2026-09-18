@@ -8,11 +8,16 @@ import type { Game } from "@/utils/stats/types";
  * already made for `best-draft-picks`, restated here so the scatter and the
  * records tables cannot drift apart.
  *
- * **A pick is scored by what the DRAFTING team got.** `points` is the player's
- * points while on the roster that drafted him, bench included. Anything he
- * scored elsewhere after being cut or traded is kept separately, as
- * `pointsElsewhere`, so a point low on the chart can say which kind of miss it
- * was rather than looking like bad data.
+ * **A pick is valued on everything the player scored that season** — `total`,
+ * wherever he was rostered, bench included. It used to be only what the
+ * drafting roster kept, and that put Alvin Kamara and Saquon Barkley, picks 4
+ * and 6 of 2018, on the floor of the chart at 0.0: both were traded in week 1,
+ * in deals built around a Le'Veon Bell who then sat out the whole season. The
+ * picks were good; the trades were bad, and the trade ledger already scores
+ * those. What a pick is worth is what the player did; who ended up enjoying it
+ * is the trade's story, so the split is kept beside the total — `points` for
+ * the drafter, `pointsElsewhere` for everyone else — for the popover to tell.
+ * `draftStats.ts` makes the same call (I3).
  *
  * **The baseline is the overall pick number, not the round.** Pick 11 takes
  * roughly the eleventh-best player left whether the league has ten teams or
@@ -57,16 +62,18 @@ export interface DraftPick {
 }
 
 export interface ScoredPick extends DraftPick {
-  /** Points scored while on the drafting roster, bench included. */
+  /** Everything the player scored that season, for anyone. What is valued. */
+  total: number;
+  /** The part of `total` scored while on the drafting roster. */
   points: number;
-  /** Points the same player scored for anybody else that season. */
+  /** The part of `total` scored for anybody else. */
   pointsElsewhere: number;
 }
 
 export interface ValuedPick extends ScoredPick {
   /** What a pick at this number has returned on average, league-wide. */
   baseline: number;
-  /** `points − baseline`. Positive is a steal, negative a bust. */
+  /** `total − baseline`. Positive is a steal, negative a bust. */
   value: number;
 }
 
@@ -138,7 +145,12 @@ export const scoreDraftPicks = (
         else pointsElsewhere += scoredPoints;
       }
 
-      scored.push({ ...pick, points, pointsElsewhere });
+      scored.push({
+        ...pick,
+        total: points + pointsElsewhere,
+        points,
+        pointsElsewhere,
+      });
     }
   }
 
@@ -156,8 +168,8 @@ export const baselineByPickNumber = (
   const byPickNo = new Map<number, number[]>();
   for (const pick of picks) {
     const bucket = byPickNo.get(pick.pickNo);
-    if (bucket) bucket.push(pick.points);
-    else byPickNo.set(pick.pickNo, [pick.points]);
+    if (bucket) bucket.push(pick.total);
+    else byPickNo.set(pick.pickNo, [pick.total]);
   }
 
   const baseline = new Map<number, number>();
@@ -185,6 +197,6 @@ export const withBaseline = (picks: readonly ScoredPick[]): ValuedPick[] => {
     // Unreachable for a pick that helped build the map, but the map is keyed
     // on a number and this keeps the type honest rather than asserting.
     if (expected === undefined) return [];
-    return [{ ...pick, baseline: expected, value: pick.points - expected }];
+    return [{ ...pick, baseline: expected, value: pick.total - expected }];
   });
 };
