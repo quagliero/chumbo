@@ -114,3 +114,40 @@ describe("playoffRoundLabel", () => {
     );
   });
 });
+
+describe("the current streak", () => {
+  /**
+   * It used to be credited to manager A whatever the results, so a run of A's
+   * losses rendered as "A L3" in A's colour — A looking like the one on a run.
+   * The run belongs to whoever is winning it: A's losses are B's wins.
+   */
+  it("belongs to whoever won the most recent regular-season meeting", () => {
+    let aOwned = 0;
+    let bOwned = 0;
+    for (const a of managers) {
+      for (const b of managers) {
+        if (a.id === b.id) continue;
+        const data = getH2HData(a.id, b.id);
+        const games = data?.regularSeasonMatchups ?? [];
+        if (!data || games.length === 0) continue;
+        const [latest] = [...games].sort(
+          (x, y) => y.year - x.year || y.week - x.week
+        );
+        const streak = data.stats.currentStreak;
+        if (latest.result === "W") {
+          expect(streak.manager, `${a.id} v ${b.id}`).toBe("A");
+          aOwned++;
+        } else if (latest.result === "L") {
+          expect(streak.manager, `${a.id} v ${b.id}`).toBe("B");
+          bOwned++;
+        } else {
+          expect(streak.manager, `${a.id} v ${b.id}`).toBeNull();
+        }
+        expect(streak.type).toBe(latest.result === "T" ? "T" : "W");
+      }
+    }
+    // Both orders of every pairing are walked, so both sides must occur.
+    expect(aOwned).toBeGreaterThan(0);
+    expect(bOwned).toBeGreaterThan(0);
+  });
+});

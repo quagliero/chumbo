@@ -1258,16 +1258,10 @@ the leftovers are done; what remains is the league's to write, not code.
 Found by the H2 split and left alone deliberately (a refactor that also
 changes behaviour cannot be reviewed as one), each small:
 
-- Schedule comparison's "How it works" says active teams are "2025
-  participants"; the filter uses the latest season, now 2026.
 - The by-team schedule table lists never-met teams as 0-0-0 rows.
 - `Standings` sorts the array it is given in place when a season has no
   divisions; its win-percentage sort would give NaN for a team with no games.
 - The strength-of-schedule colour scale divides by 11, assuming 12 teams.
-- A debug `console.log` for jay vs rich survives in `H2HContent/h2hGames.ts`.
-- H2H playoff matching ignores the round, so a semi and a consolation game
-  between the same two teams would both count; its streak is always shown
-  as manager A's (a losing run reads "A L3" in A's colour).
 - H2H groups player scores by name, merging two players who share one.
 
 ## Risks

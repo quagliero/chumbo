@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAllSeasons } from "@/hooks/useSeasonData";
+import { CURRENT_YEAR } from "@/domain/constants";
 import { Card } from "@/presentation/components/Card";
 import {
   buildComparisonRows,
@@ -162,7 +163,7 @@ const AllTimeScheduleComparison = () => {
             </p>
             <p>
               <strong>Active Teams Only:</strong> Filter to show only teams
-              currently in the league (2025 participants).
+              currently in the league ({CURRENT_YEAR} participants).
             </p>
           </div>
         </Card>

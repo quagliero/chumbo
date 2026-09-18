@@ -124,10 +124,10 @@ const OverallStats = ({
               }`}
             >
               {stats.currentStreak.manager === "A"
-                ? managerAData?.teamName
-                : managerBData?.teamName}{" "}
-              {stats.currentStreak.type}
-              {stats.currentStreak.count}
+                ? `${managerAData?.teamName} W${stats.currentStreak.count}`
+                : stats.currentStreak.manager === "B"
+                ? `${managerBData?.teamName} W${stats.currentStreak.count}`
+                : `Tied the last ${stats.currentStreak.count}`}
             </span>
           </div>
         </div>

@@ -252,6 +252,13 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
             // Check if this is a meaningful playoff game (elimination/championship only)
             // Must find a bracket match where these two specific teams are paired together
             // Exclude consolation games (3rd place, 5th place, etc.) which have 'p' property
+            //
+            // IN THIS WEEK'S ROUND. Without the round, `find` returned the pair's
+            // first bracket game of the season, so two teams who met in a semi and
+            // again in the third-place game had the consolation week judged by the
+            // semi — no `p`, so "meaningful" — and counted as a second playoff
+            // meeting. Same week-to-round rule as `isMeaningfulPlayoffGame`.
+            const round = week - playoffWeekStart + 1;
             const meaningfulBracketMatch = seasonData.winners_bracket?.find(
               (bm: BracketMatch) => {
                 const teamAMatch =
@@ -260,7 +267,7 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
                 const teamBMatch =
                   bm.t1 === managerBRoster.roster_id ||
                   bm.t2 === managerBRoster.roster_id;
-                return teamAMatch && teamBMatch;
+                return bm.r === round && teamAMatch && teamBMatch;
               }
             );
 
@@ -269,22 +276,6 @@ export const collectH2HGames = (managerAData: Manager, managerBData: Manager) =>
             const isMeaningfulPlayoff =
               meaningfulBracketMatch &&
               (!meaningfulBracketMatch.p || meaningfulBracketMatch.p === 1);
-
-            // Debug logging for jay vs rich
-            if (
-              (managerAData?.id === "jay" && managerBData?.id === "rich") ||
-              (managerAData?.id === "rich" && managerBData?.id === "jay")
-            ) {
-              console.log(`Debug jay vs rich ${year} W${week}:`, {
-                matchupId: matchup.matchup_id,
-                week,
-                meaningfulBracketMatch,
-                isMeaningfulPlayoff,
-                managerARosterId: managerARoster.roster_id,
-                managerBRosterId: managerBRoster.roster_id,
-                willInclude: isMeaningfulPlayoff,
-              });
-            }
 
             if (isMeaningfulPlayoff) {
               // Mark this matchup as processed

@@ -46,10 +46,14 @@ export const summariseH2H = (
     return b.week - a.week;
   });
 
+  // The run belongs to whoever is winning it. Results are from manager A's
+  // side, so A's losses are B's wins: a run of "L" is B's winning streak, not
+  // A's losing one — it used to be shown as "A L3" in A's colour, which read
+  // as though A were the one on a run. A run of ties belongs to neither.
   let currentStreak = {
-    type: "W" as "W" | "L" | "T",
+    type: "W" as "W" | "T",
     count: 0,
-    manager: "A" as "A" | "B",
+    manager: null as "A" | "B" | null,
   };
   if (sortedMatchups.length > 0) {
     const mostRecentResult = sortedMatchups[0].result;
@@ -63,16 +67,11 @@ export const summariseH2H = (
       }
     }
 
-    // Determine which manager the streak belongs to
-    // The result is from Manager A's perspective, so:
-    // - "W" streak belongs to Manager A
-    // - "L" streak belongs to Manager A (Manager A is losing)
-    // - "T" streak belongs to both (but we'll show Manager A)
-    const streakManager = "A";
     currentStreak = {
-      type: mostRecentResult,
+      type: mostRecentResult === "T" ? "T" : "W",
       count: streakCount,
-      manager: streakManager,
+      manager:
+        mostRecentResult === "W" ? "A" : mostRecentResult === "L" ? "B" : null,
     };
   }
 
