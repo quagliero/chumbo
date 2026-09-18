@@ -31,12 +31,35 @@ async function fetchFromAPI(url) {
   }
 }
 
+// The same value with every object's keys in order. Sleeper does not return
+// keys in a stable order, so comparing raw text calls a reshuffle a change.
+const canonical = (value) =>
+  JSON.stringify(value, (_key, v) =>
+    v && typeof v === 'object' && !Array.isArray(v)
+      ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, v[k]]))
+      : v
+  );
+
 // Helper function to write JSON file
 function writeJsonFile(filePath, data) {
   try {
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
+    }
+
+    // Leave an unchanged file alone, so a run that finds nothing new has
+    // nothing to commit (J1).
+    if (fs.existsSync(filePath)) {
+      try {
+        const existing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (canonical(existing) === canonical(data)) {
+          console.log(`= Unchanged ${filePath}`);
+          return;
+        }
+      } catch {
+        // Unreadable: overwrite it.
+      }
     }
     
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
