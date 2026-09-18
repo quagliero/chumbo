@@ -248,8 +248,45 @@ long-lived `Cache-Control` for `/data/` at the host.
 season older than the current year · navigating to a 2014 page fetches exactly
 one season file · a second visit to that page issues no network request.
 
+**A2b landed as lazy chunks, not `public/data/` + `fetch()`.** Every season
+file stays in `src/data/` and is a dynamic import, grouped into one chunk per
+season per part — `core-<year>` (league, rosters, users, brackets, schedule),
+`draft-<year>`, and A2a's matchups and transactions — plus one lazy `players`
+chunk for the dictionary and overlays. `public/_headers` makes `/assets/*`
+immutable for a year. Chosen over `public/data/` because a hashed chunk can be
+cached forever and an unhashed file only as long as last week's 2026 standings
+are acceptable; and the fetch scripts, tests and build scripts keep reading the
+same files. The JSON.parse argument is kept too: `json.namedExports: false`
+makes Vite emit one `JSON.parse` per file (dictionary: 6.7 → 3.9 ms to
+evaluate, +3.9 kB gzip).
+
+The safety net is the part that matters: every field of `seasons[year]` bar
+`transactions`, and `getPlayer`, throws `DataNotLoadedError` until loaded — a
+thenable, so a read in render suspends and a read anywhere else fails loudly.
+Nothing can silently see an empty season.
+
+Measured (static-import closure of the route plus the data it loads, gzip):
+
+| First visit | Before | After |
+| --- | --- | --- |
+| `/` | 668 kB — `data` 141, `players` 104, all 15 `matchups` 318 | **228 kB** — 15 × `core` 107, no draft, matchups or players |
+| `/seasons/2014/standings` | 412 kB — `data` 141, `players` 104, `matchups-2014` 22 | **180 kB** — `core` 2012-14, `draft-2014`, `matchups-2014` |
+
+`/` never read a matchup; it had been waiting on all of them since A2a. 2014's
+standings read 2012-13's core because the champion card counts earlier titles.
+`routeLoads.test.ts` pins both down by server-rendering the pages from a cold
+loader. After a simulated `fetch-latest`, only 2026's data chunks (14 kB)
+change name; 2012-2025 and the dictionary stay cached.
+
+Against the original acceptance: initial JS is 77 kB (it already was) · `/`
+fetches every season's core, which the all-time standings genuinely read; the
+way below that is precomputing per-season standings rows, which A4 declined ·
+a 2014 page fetches 2014, plus 5 kB of earlier cores on the standings tab ·
+a second visit makes no request for anything under `/assets/`; it still
+revalidates `index.html` and the unhashed `all-time.json`, which it must.
+
 - [x] A2a
-- [ ] A2b
+- [x] A2b
 
 ### A3 · Memoise the history scans `M`
 **Blocked by:** H1
