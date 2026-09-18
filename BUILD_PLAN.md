@@ -1239,6 +1239,158 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 
 ---
 
+# Round 3 — the 2026 season (planned 2026-09-18)
+
+Decided in the planning session: all four areas are in; the site updates
+itself; **no backend this round** (predictions, reactions and HOF blurb
+submissions are parked); **in-season first** — what is useful during weeks
+2–17 goes before anything that can wait for the off-season.
+
+Plus one idea from the commissioner, checked before planning rather than
+dismissed: **real NFL stats for every game, and when the points were scored**,
+so a matchup can be drawn as the weekend it actually was. It is possible — see
+Workstream L.
+
+The order, and why:
+
+| When | What | Why then |
+|---|---|---|
+| Now (week 2) | **J1** automatic weekly updates | Everything live depends on it. The site has been at week 1 because nobody re-ran `fetch-latest`. |
+| By ~week 4 | **J2** weekly recap · **K1** matchup previews | The two things worth sharing every single week. |
+| Weeks 4–10 | **L0** spike → **L1** box scores → **L2** scoring timelines | The big one; a spike first so a dead end costs a week, not a month. |
+| Weeks 8–12 | **J3** records watch | Needs half a season of pace to be interesting. |
+| Weeks 10–16 | **N** Chumbo Wrapped | Built mid-season, shipped the week the final is played. |
+| Off-season | **M** archive deep-dives | Nothing about them is time-sensitive. |
+
+## Workstream J — Keep the live season alive
+
+### J1 · The site updates itself `M`
+
+A scheduled GitHub Action (the repo is public on GitHub, so it is free):
+`fetch-latest` → `trim-picks` → `build-aggregates` → **`yarn build` must pass**
+→ commit as a bot → push → Netlify deploys. Runs Tuesday morning UK time
+(after Monday Night Football) and again Friday (Sleeper's stat corrections
+land mid-week). From week 15 it also fetches brackets; after the final,
+`fetch-season`. A failed build commits nothing and opens a GitHub issue, so a
+bad week of data can never reach the site. Manual `workflow_dispatch` too.
+
+**Acceptance:** week 2 appears on the site with nobody touching it · a
+deliberately broken fetch leaves `main` untouched and opens an issue.
+
+### J2 · "Week N in the Chumbo" `L`
+
+A recap for every completed week, generated from the stat registry — highest
+and lowest score, closest game, biggest beating, the worst benching (points
+left on the bench), the luckiest win by all-play, any all-time record entered
+(the narrative engine's job already), streaks started or ended. On the
+matchups tab for that week, with its own share card and a prerendered link
+preview, so the Tuesday-morning message to the group is one paste. Works for
+every past week too, which is 225 recaps of back catalogue for free.
+
+### J3 · Records watch `M`
+
+Who is on pace for a season record (points, all-play, win streak) and who is
+near a career milestone (100th win, 20,000 points), with the pace honest about
+how many weeks are left. On the home page and in the weekly recap.
+
+## Workstream K — The build-up to each week
+
+### K1 · Matchup previews `M`
+
+For next week's games (`schedule.json` already has them): the head-to-head
+record and current streak, their last meeting, both managers' form, and
+**what is at stake** — the playoff-odds simulation already exists, so "win and
+jay's playoff odds go to 71%; lose and they are 38%" is two simulation runs.
+Records that could fall this week. A share card per preview.
+
+## Workstream L — Game-day data (the commissioner's idea)
+
+**What exists** (checked, nothing downloaded):
+
+- nflverse publishes **per-player weekly stats** (~1.6 MB a season) and full
+  **play-by-play** (~18 MB a season, 1999 onward). The play-by-play carries a
+  **wall-clock `time_of_day` for every play**, plus who passed, rushed,
+  caught, kicked or scored on it.
+- Sleeper serves its own **per-week stat lines keyed by Sleeper player id** —
+  the ids this site already uses, so no join at all.
+- DynastyProcess publishes the **Sleeper-id ↔ NFL-id table** for the rest.
+
+**What that makes possible:** rebuild every starter's fantasy points play by
+play, with a real timestamp, using that season's own `scoring_settings` — and
+so each team's score across the weekend, Thursday night to Monday night.
+
+**The honest limits:**
+
+- **Not live.** The data is published the morning after; this is a replay of
+  Sunday, not a tracker. Live needs a real-time feed and a backend.
+- **Rebuilt, then reconciled.** Stat corrections and scoring quirks mean a
+  rebuilt total can differ from Sleeper's by a point or two. The curve is
+  scaled to end on the official score, and flagged where the drift is large.
+- **Team defences** score partly on points allowed, which is only known at the
+  final whistle, so a D/ST's curve steps at the end of its game.
+- **2012–2015 name-keyed players** join by name — the same small set the site
+  already handles, and checkable.
+- **Size.** ~280 MB of raw play-by-play to backfill fifteen seasons, processed
+  offline into small per-week files (well under 1 MB a season), lazy-loaded
+  like matchups. The raw files are never committed. nflverse data is CC-BY,
+  so the site credits it.
+
+### L0 · Spike `S`
+
+Rebuild one 2025 matchup and one 2018 matchup play by play; check the totals
+land within a point of Sleeper's; draw the curve. Go/no-go on L1–L3.
+
+### L1 · Box scores `M`
+
+Every starter's real stat line on the matchup page — "22 car, 104 yds, 1 TD ·
+4 rec, 31 yds". As a by-product, each player's **NFL team for that week**:
+the old A1d gap (players shown on today's team in old draft boards) closes
+without a separate job.
+
+### L2 · How the game unfolded `L`
+
+On every matchup page: both teams' scores through the weekend, lead changes
+marked, the play that decided it named ("won it at 21:42 on Monday, Kelce
+2-yd TD"). New records the league has never been able to see: **biggest
+comeback**, **won it on Monday night**, **latest decisive play**. A share
+card — the most shareable thing on the site, probably.
+
+### L3 · Weekly, automatically
+
+J1's job also pulls the week's play-by-play, so each week's timelines appear
+the morning after with everything else.
+
+## Workstream M — Archive deep-dives (off-season)
+
+- **M1 Trades:** a page per trade with the hindsight verdict (the ledger
+  exists), trade of each season, and **trade trees** following one player
+  through a chain of deals.
+- **M2 Drafts:** a **redraft** of every year (who should have gone first) and
+  a draft grade per manager per year, from the D6 values.
+- **M3 What-ifs:** your season with the optimal lineup every week; your record
+  with someone else's schedule (the schedule comparison, in narrative form).
+
+## Workstream N — Chumbo Wrapped
+
+A personal end-of-season story per manager, a sequence of cards to swipe and
+share: the season in numbers, best week, MVP, worst benching, luck, their
+rival, best and worst trade, Triple Crown or Scumbo legs. Built from existing
+stats and the card system; shipped the week of the final.
+
+## Decisions still needed
+
+- **L's data.** It needs the nflverse downloads above (the commissioner
+  declined the smaller nflverse roster download for A1d earlier). L0 can be
+  done with two seasons' files (~40 MB) before committing to the backfill.
+- **J1's bot** needs push access: a GitHub Actions token with write
+  permission on this repo (the default token suffices if branch protection
+  allows it).
+- **Parked, needs a backend:** predictions/pick'em, reactions, HOF blurb
+  submission. The HOF blurbs could instead be a markdown file per year edited
+  on GitHub — no backend — if a champion is willing.
+
+---
+
 ## Where this stands
 
 **Everything that is going to be built is built.** M0–M6, Workstream I and
