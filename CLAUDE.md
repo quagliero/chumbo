@@ -239,6 +239,28 @@ Three data-quality rules these all obey:
   the losers bracket numbers the league, 2020+ it restarts at 1 — so reading
   `p` straight off makes the consolation winner joint champion.
 
+## The week: recaps and previews (J2, K1)
+
+A week of matchups has an address, `/seasons/:year/matchups/:week`, and the
+page leads with **"Week N in the Chumbo"**: `utils/weekRecap.ts` works out the
+week's facts from that season alone (never the archive), and `recapLines` turns
+them into the sentences the page, the share card and the link preview all
+print. Whether any of it is an all-time record is left to `narrate()`.
+
+The week after the last one scored is offered as **"Week N · preview"**, and
+each of its games has a preview at the address its result will have
+(`/seasons/:year/matchups/:week/:matchupId`), so a link shared before the game
+turns into the result once the update fetches it. `utils/matchupPreview.ts`
+reads the archive (a rivalry is fifteen seasons long) and the stakes come from
+`calculateWeekStakes` in `playoffOdds.ts`: one seeded run of the playoff-odds
+simulation that remembers each team's result that week, so "win and your odds
+go to 71%" is the same number on the page and in its preview. Regular season
+only — the playoffs' fixtures are the bracket's, not `schedule.json`'s.
+
+The simulation pulls every team towards the league average by `PRIOR_GAMES`
+(four games' worth). Without it the week-1 top scorer made the playoffs in 100%
+of simulations after one game.
+
 ## The automatic update (J1)
 
 `.github/workflows/update-season.yml` keeps the live season current with
@@ -271,7 +293,8 @@ season is added.
 ## Link previews (G6)
 
 `yarn prerender-og`, part of `yarn build`, writes a real `index.html` for every
-manager, season and head-to-head pairing — 266 of them — each with its own OG
+manager, season, head-to-head pairing, played week (the J2 recap) and game of
+the week to come (the K1 preview) — about 500 of them — each with its own OG
 tags and a 1200×630 card rendered by the SAME `ShareCard` templates the copy
 button uses, so a preview and a shared image cannot disagree. Images land in
 `dist/og/`.

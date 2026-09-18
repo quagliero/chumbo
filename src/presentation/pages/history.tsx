@@ -18,10 +18,17 @@ import Breakdown from "@/presentation/components/Breakdown/Breakdown";
 import Trades from "@/presentation/components/Trades";
 import TradeCard from "@/presentation/components/TradeCard";
 import PlayoffOdds from "@/presentation/components/PlayoffOdds/PlayoffOdds";
+import { WeekRecap } from "@/presentation/components/WeekRecap";
+import {
+  MatchupPreviewDetail,
+  WeekPreview,
+} from "@/presentation/components/MatchupPreview";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { getWeekTrades } from "@/utils/transactionUtils";
 import { CURRENT_YEAR } from "@/domain/constants";
 import { calculateWinPercentage } from "@/utils/recordUtils";
+import { fixturesFor, previewWeek } from "@/utils/matchupPreview";
+import { getCompletedWeek, isWeekCompleted } from "@/utils/weekUtils";
 
 // D1 lives in the `charts` chunk (see vite.config.ts). Lazy, the same way
 // home.tsx loads the power ribbon and the luck chart, so a season's tables are
@@ -30,6 +37,11 @@ const SeasonArc = lazy(() =>
   import("@/presentation/components/Chart/SeasonArc/SeasonArc").then((m) => ({
     default: m.SeasonArc,
   }))
+);
+
+/** Holds the space while a recap or a preview loads, so the page does not jump. */
+const LoadingPanel = () => (
+  <div className="h-40 animate-pulse rounded-card bg-surface-sunk" aria-hidden="true" />
 );
 
 const History = () => {
@@ -41,11 +53,9 @@ const History = () => {
   }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  // D1: the season arc's week labels link to `?week=n`, because that is the
-  // only way to address a week — the matchup LIST route carries no week
-  // segment, and `/seasons/:year/:tab/:week/:matchupId` needs a specific game.
-  // Read only: the week picker below goes on setting state without rewriting
-  // the URL, so its behaviour is unchanged and there is no feedback loop.
+  // A week is addressed by its path, `/seasons/:year/matchups/:week` (J2), so
+  // a recap can be shared and have its own link preview. `?week=n` is still
+  // read: the season arc's week labels (D1) link that way.
   const weekParam = searchParams.get("week");
 
   // Parse URL params with fallbacks
@@ -54,7 +64,6 @@ const History = () => {
 
   const [selectedYear, setSelectedYear] = useState<number>(initialYear);
   const [activeTab, setActiveTab] = useState<TabType>(initialTab);
-  const [selectedWeek, setSelectedWeek] = useState<number>(1);
 
   // Redirect to default URL if no params provided
   useEffect(() => {
@@ -89,14 +98,6 @@ const History = () => {
     }
   }, [year, tab]);
 
-  // Depends on the string, not on the `searchParams` object — React Router
-  // hands that back as a new instance on every render, which would re-run this
-  // effect and snap the picker back to the linked week.
-  useEffect(() => {
-    const parsed = weekParam ? parseInt(weekParam) : NaN;
-    if (Number.isFinite(parsed) && parsed > 0) setSelectedWeek(parsed);
-  }, [weekParam]);
-
   // One season, and only what the tab shows of it, in one round trip (A2b).
   //
   // A2a: transactions are their own lazy chunk — 6.0 MB raw across the
@@ -128,6 +129,24 @@ const History = () => {
   );
   const seasonData = seasons[selectedYear];
   const getTeamName = useTeamName(seasonData?.users);
+
+  // K1: the first week still to be played, if the live season has one.
+  const upcomingWeek =
+    activeTab === "matchups" ? previewWeek(selectedYear) : null;
+
+  // The week on show: the path's, else `?week=`, else — for a season still
+  // being played — the latest one scored, which is the one people come for.
+  const pathWeek = week && !matchupId ? parseInt(week) : NaN;
+  const queryWeek = weekParam ? parseInt(weekParam) : NaN;
+  const selectedWeek = Number.isFinite(pathWeek) && pathWeek > 0
+    ? pathWeek
+    : Number.isFinite(queryWeek) && queryWeek > 0
+      ? queryWeek
+      : seasonData?.league?.status !== "complete"
+        ? getCompletedWeek(seasonData?.league) || upcomingWeek || 1
+        : 1;
+  const handleWeekChange = (newWeek: number) =>
+    navigate(`/seasons/${selectedYear}/matchups/${newWeek}`, { replace: true });
 
   // Handle year change with URL update
   const handleYearChange = (newYear: number) => {
@@ -478,6 +497,26 @@ const History = () => {
                     weekNum.toString() as keyof typeof seasonData.matchups
                   ];
 
+                // K1: a game not yet played is previewed at the address its
+                // result will have, so a link shared on Tuesday still works on
+                // Monday night.
+                if (
+                  !isWeekCompleted(weekNum, seasonData.league) &&
+                  fixturesFor(selectedYear, weekNum).some(
+                    ([id]) => id === matchupIdNum
+                  )
+                ) {
+                  return (
+                    <Suspense fallback={<LoadingPanel />}>
+                      <MatchupPreviewDetail
+                        year={selectedYear}
+                        week={weekNum}
+                        matchupId={matchupIdNum}
+                      />
+                    </Suspense>
+                  );
+                }
+
                 if (!weekMatchupsData) return <div>Matchup not found</div>;
 
                 // Find the specific matchup
@@ -506,8 +545,18 @@ const History = () => {
                 <Matchups
                   weekMatchups={weekMatchups}
                   availableWeeks={availableWeeks}
+                  upcomingWeek={upcomingWeek ?? undefined}
                   selectedWeek={selectedWeek}
-                  onWeekChange={setSelectedWeek}
+                  onWeekChange={handleWeekChange}
+                  intro={
+                    <Suspense fallback={<LoadingPanel />}>
+                      {selectedWeek === upcomingWeek ? (
+                        <WeekPreview year={selectedYear} week={selectedWeek} />
+                      ) : (
+                        <WeekRecap year={selectedYear} week={selectedWeek} />
+                      )}
+                    </Suspense>
+                  }
                   rosters={seasonData.rosters}
                   getTeamName={getTeamName}
                   year={selectedYear}

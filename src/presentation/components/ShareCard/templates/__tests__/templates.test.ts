@@ -33,7 +33,9 @@ import {
   formatRecord,
   h2hRecordCard,
   managerSeasonCard,
+  matchupPreviewCard,
   recordBrokenCard,
+  weekRecapCard,
 } from "../index";
 import { FINAL_SCORE_NAME_BOX } from "../finalScore";
 
@@ -219,6 +221,28 @@ const allFive = (name: string) => ({
     when: "2021 · Week 9",
     accent: "#eda100",
     note: { text: "The highest single-week score in Chumbo history." },
+  }),
+  weekRecap: weekRecapCard({
+    year: 2025,
+    week: 7,
+    rows: [
+      { label: "Top score", text: `${name} 162.4, and still lost to ${name} II` },
+      { label: "Closest game", text: `${name} 97.6–96.5 ${name} II, by 1.06` },
+      { label: "Luckiest win", text: `${name}, with the week's 7th-best score (beat 5 of 11)` },
+      { label: "Worst benching", text: `${name} left 44.2 on the bench — enough to have won` },
+      { label: "Low score", text: "not drawn: the card holds four" },
+    ],
+    note: { text: "The 3rd-highest score in Chumbo history." },
+  }),
+  matchupPreview: matchupPreviewCard({
+    year: 2026,
+    week: 3,
+    a: { ...person(name), record: "2–0", stakes: "win 71% · lose 38%" },
+    b: { ...person(`${name} II`), record: "0–2", stakes: "win 12% · lose 3%" },
+    wins: 14,
+    losses: 10,
+    ties: 1,
+    note: { text: `${name} has won the last four regular-season meetings` },
   }),
 });
 

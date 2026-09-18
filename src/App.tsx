@@ -66,6 +66,9 @@ function App() {
                 </Route>
                 <Route path="/seasons" element={<History />} />
                 <Route path="/seasons/:year/:tab" element={<History />} />
+                {/* J2: a week of matchups has an address, so its recap can be
+                    shared and prerendered with its own link preview. */}
+                <Route path="/seasons/:year/:tab/:week" element={<History />} />
                 <Route
                   path="/seasons/:year/:tab/:week/:matchupId"
                   element={<History />}

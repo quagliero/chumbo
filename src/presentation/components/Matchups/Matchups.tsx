@@ -1,6 +1,6 @@
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { ExtendedMatchup } from "@/types/matchup";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedUser } from "@/types/user";
@@ -11,6 +11,8 @@ import { getPlayoffWeekStart } from "@/utils/playoffUtils";
 interface MatchupsProps {
   weekMatchups: ExtendedMatchup[][];
   availableWeeks: number[];
+  /** The next week to be played, offered in the picker as its preview (K1). */
+  upcomingWeek?: number;
   selectedWeek: number;
   onWeekChange: (week: number) => void;
   rosters: ExtendedRoster[];
@@ -20,11 +22,14 @@ interface MatchupsProps {
   users?: ExtendedUser[];
   league?: { settings?: { playoff_week_start?: number } }; // For playoff week detection
   winnersBracket?: Array<{ t1: number; t2: number; r: number; p?: number }>; // For playoff match classification
+  /** Shown between the week picker and the games: the recap, or the preview. */
+  intro?: ReactNode;
 }
 
 const Matchups = ({
   weekMatchups,
   availableWeeks,
+  upcomingWeek,
   selectedWeek,
   onWeekChange,
   rosters,
@@ -34,6 +39,7 @@ const Matchups = ({
   users,
   league,
   winnersBracket,
+  intro,
 }: MatchupsProps) => {
   const { number } = useFormatter();
 
@@ -108,7 +114,21 @@ const Matchups = ({
             </button>
           );
         })}
+        {upcomingWeek !== undefined && !availableWeeks.includes(upcomingWeek) && (
+          <button
+            className={`px-3 py-1 rounded text-sm font-medium border border-dashed ${
+              selectedWeek === upcomingWeek
+                ? "bg-blue-800 text-white border-blue-800"
+                : "border-gray-400 text-gray-700 hover:bg-gray-100"
+            }`}
+            onClick={() => onWeekChange(upcomingWeek)}
+          >
+            Week {upcomingWeek} · preview
+          </button>
+        )}
       </div>
+
+      {intro}
 
       {/* Matchups Display */}
       <div className="space-y-6">

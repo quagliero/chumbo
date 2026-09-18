@@ -1296,7 +1296,15 @@ bad week of data can never reach the site. Manual `workflow_dispatch` too.
 **Acceptance:** week 2 appears on the site with nobody touching it · a
 deliberately broken fetch leaves `main` untouched and opens an issue.
 
-### J2 · "Week N in the Chumbo" `L`
+### J2 · "Week N in the Chumbo" `L` ✅
+
+> **Done (2026-09-18).** `/seasons/:year/matchups/:week` leads with the recap
+> (`utils/weekRecap.ts`): top and low score, closest game, biggest beating,
+> luckiest win and unluckiest loss by all-play, worst benching (not for 2019),
+> streaks extended past three or ended, and E7's all-time notes for the week.
+> "Copy week card" (`weekRecapCard`) and a prerendered link preview for all
+> ~240 played weeks, from the same `recapLines`. The week picker now changes
+> the address, and the live season opens on its latest scored week.
 
 A recap for every completed week, generated from the stat registry — highest
 and lowest score, closest game, biggest beating, the worst benching (points
@@ -1314,7 +1322,22 @@ how many weeks are left. On the home page and in the weekly recap.
 
 ## Workstream K — The build-up to each week
 
-### K1 · Matchup previews `M`
+### K1 · Matchup previews `M` ✅
+
+> **Done (2026-09-18).** The week after the last scored one appears as "Week N
+> · preview": each game's series, streak, last meeting (playoffs included),
+> form, what one result decides (a series levelled or taken, the league's
+> longest winning or losing run equalled or broken, a round number of career
+> wins or points), and the stakes — playoff
+> odds now, with a win, with a loss — from `calculateWeekStakes`, one seeded
+> pass of the odds simulation. Each game has a preview page at the address its
+> result will have, a "Copy preview card" (`matchupPreviewCard`) and a link
+> preview. The odds model now shrinks each team towards the league average by
+> four games (`PRIOR_GAMES`), which also changes the Playoff Odds page: after
+> week 1 it had the top scorer at 100% and the bottom at under 1%. Not done:
+> single-game records (the biggest margin, the highest score) are not
+> previewed, because no result makes them likely; and playoff weeks have no
+> previews, because their fixtures come from the bracket, not the schedule.
 
 For next week's games (`schedule.json` already has them): the head-to-head
 record and current streak, their last meeting, both managers' form, and

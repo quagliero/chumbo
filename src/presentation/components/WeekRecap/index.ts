@@ -1,0 +1,1 @@
+export { WeekRecap } from "./WeekRecap";

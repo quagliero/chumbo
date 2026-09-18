@@ -16,11 +16,13 @@
 import { describe, expect, it } from "vitest";
 
 import { managers, seasons } from "@/data";
-import { YEARS } from "@/domain/constants";
+import { CURRENT_YEAR, YEARS } from "@/domain/constants";
 import { buildCardSvg } from "@/presentation/components/ShareCard/card";
 
 import { imageSlug } from "../tags";
 import { DEFAULT_GROUPS, ogRoutes, type CardAssets } from "../routes";
+import { completedWeeks } from "@/utils/weekRecap";
+import { fixturesFor, previewWeek } from "@/utils/matchupPreview";
 
 const routes = ogRoutes();
 
@@ -37,13 +39,20 @@ const bare: CardAssets = { crest: null, avatars: new Map() };
 const APP_ROUTES = [
   /^\/managers\/[^/]+$/,
   /^\/seasons\/\d{4}\/[^/]+$/,
+  /^\/seasons\/\d{4}\/[^/]+\/\d+$/,
   /^\/seasons\/\d{4}\/[^/]+\/\d+\/\d+$/,
   /^\/h2h\/[^/]+\/[^/]+$/,
 ];
 
 describe("the default route set", () => {
-  it("is the three groups, and nothing has quietly been added", () => {
-    expect(DEFAULT_GROUPS).toEqual(["seasons", "managers", "h2h"]);
+  it("is these five groups, and nothing has quietly been added", () => {
+    expect(DEFAULT_GROUPS).toEqual([
+      "seasons",
+      "managers",
+      "h2h",
+      "weeks",
+      "previews",
+    ]);
   });
 
   it("has one page per season and one per manager", () => {
@@ -57,7 +66,7 @@ describe("the default route set", () => {
     expect(routes.filter((r) => r.path.startsWith("/managers/"))).toHaveLength(
       managers.length
     );
-    expect(routes.filter((r) => r.path.startsWith("/seasons/"))).toHaveLength(
+    expect(routes.filter((r) => r.path.endsWith("/standings"))).toHaveLength(
       YEARS.length
     );
   });
@@ -173,6 +182,32 @@ describe("every card builds", () => {
       // The only honest cardless page is a season with no games in it yet.
       expect(route.path, route.path).toMatch(/^\/seasons\/\d{4}\/standings$/);
       expect(route.description).toContain("before a game has been played");
+    }
+  });
+});
+
+describe("the weeks and the week to come (J2, K1)", () => {
+  it("has one recap page per played week, with the recap's own words", () => {
+    const weeks = routes.filter((r) => /^\/seasons\/\d{4}\/matchups\/\d+$/.test(r.path));
+    const expected = YEARS.reduce((sum, year) => sum + completedWeeks(year).length, 0);
+    expect(weeks).toHaveLength(expected);
+    const recap = routes.find((r) => r.path === "/seasons/2025/matchups/7");
+    expect(recap?.title).toBe("Week 7 in the Chumbo, 2025");
+    expect(recap?.description).toContain("Top score: hadkiss 130.4.");
+    expect(buildCardSvg(recap!.card!(bare))).toContain("Week 7 in the Chumbo");
+  });
+
+  it("previews exactly the games of the week to come, if there is one", () => {
+    const week = previewWeek(CURRENT_YEAR);
+    const previews = routes.filter(
+      (r) =>
+        week !== null &&
+        r.path.startsWith(`/seasons/${CURRENT_YEAR}/matchups/${week}/`)
+    );
+    expect(previews).toHaveLength(week === null ? 0 : fixturesFor(CURRENT_YEAR, week).length);
+    for (const route of previews) {
+      expect(route.title).toMatch(/ preview$/);
+      expect(buildCardSvg(route.card!(bare))).toContain("preview");
     }
   });
 });

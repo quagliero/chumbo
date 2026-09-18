@@ -11,7 +11,9 @@
  * | manager (`/managers/:id`) | 17 | yes |
  * | season (`/seasons/:year/standings`) | 15 | yes |
  * | head-to-head (`/h2h/:a/:b`) | 234 ordered pairs that have met | yes |
- * | matchup (`/seasons/:y/matchups/:w/:id`) | 1,294 | **no**, `--group matchups` |
+ * | week recap (`/seasons/:y/matchups/:w`, J2) | every played week, ~240 | yes |
+| matchup preview (`/seasons/:y/matchups/:w/:id`, K1) | next week's games, 6 | yes |
+| matchup (`/seasons/:y/matchups/:w/:id`) | 1,294 | **no**, `--group matchups` |
  * | player (`/players/:id`) | 4,389 | **no**, and not implemented |
  *
  * The default set is 266 pages and 266 cards — 25 seconds and 25 MB of `dist`,
@@ -79,12 +81,24 @@ import {
   h2hRecordCard,
   managerCareerCard,
   managerSeasonCard,
+  matchupPreviewCard,
+  weekRecapCard,
 } from "@/presentation/components/ShareCard/templates";
 import {
   avatarUrlFor,
   h2hData,
   managerCareerData,
+  matchupPreviewData,
+  weekRecapData,
 } from "@/presentation/shareCards/cardData";
+import { seriesText } from "@/presentation/components/MatchupPreview/format";
+import {
+  fixturesFor,
+  formatOdds,
+  previewWeek,
+  stakesFor,
+} from "@/utils/matchupPreview";
+import { completedWeeks } from "@/utils/weekRecap";
 
 import { ordinal } from "./tags";
 
@@ -115,11 +129,24 @@ export interface OgRoute {
   card?: (assets: CardAssets) => ShareCard;
 }
 
-export const ROUTE_GROUPS = ["seasons", "managers", "h2h", "matchups"] as const;
+export const ROUTE_GROUPS = [
+  "seasons",
+  "managers",
+  "h2h",
+  "weeks",
+  "previews",
+  "matchups",
+] as const;
 export type RouteGroup = (typeof ROUTE_GROUPS)[number];
 
 /** The groups generated when nothing is asked for. See the table above. */
-export const DEFAULT_GROUPS: RouteGroup[] = ["seasons", "managers", "h2h"];
+export const DEFAULT_GROUPS: RouteGroup[] = [
+  "seasons",
+  "managers",
+  "h2h",
+  "weeks",
+  "previews",
+];
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -497,6 +524,104 @@ const matchupRoutes = (since: number): OgRoute[] => {
   return routes;
 };
 
+/* -------------------------------------------------------------------- weeks */
+
+/**
+ * One page per played week: "Week N in the Chumbo" (J2).
+ *
+ * The description is the recap's own first lines, cut to fit, and the card is
+ * the page's share card with the same E7 sentence the page puts on it — the
+ * first `narrate()` note for the week — so the preview, the page and a copied
+ * card are one set of words. Every week of every season, because the back
+ * catalogue is the point: "remember week 7 of 2014" is a link now.
+ */
+const weekRoutes = (): OgRoute[] =>
+  [...YEARS].flatMap((year) =>
+    completedWeeks(year).flatMap((week): OgRoute[] => {
+      const recap = weekRecapData(year, week);
+      if (!recap) return [];
+      const facts: string[] = [];
+      for (const row of recap.rows) {
+        const next = [...facts, `${row.label}: ${row.text}.`].join(" ");
+        if (next.length > 280) break;
+        facts.push(`${row.label}: ${row.text}.`);
+      }
+      const [note] = narrate(stats, { year, week }, { limit: 1 });
+      return [
+        {
+          path: `/seasons/${year}/matchups/${week}`,
+          title: `Week ${week} in the Chumbo, ${year}`,
+          description: facts.join(" "),
+          imageAlt: `Week ${week} of ${year}: ${recap.rows
+            .slice(0, 2)
+            .map((row) => row.text)
+            .join("; ")}`,
+          avatarUrls: [],
+          card: (assets) =>
+            weekRecapCard({
+              year,
+              week,
+              playoffs: recap.playoffs,
+              rows: recap.rows,
+              crest: assets.crest,
+              note: note && { text: note.text, approximate: note.approximate },
+            }),
+        },
+      ];
+    })
+  );
+
+/* ----------------------------------------------------------------- previews */
+
+/**
+ * One page per game in the week still to be played (K1), at the address the
+ * result will have. Six pages, rebuilt by every automatic update (J1), so the
+ * link somebody drops in the group on Tuesday previews the game, and after
+ * the next update that same address previews the result instead.
+ */
+const previewRoutes = (): OgRoute[] => {
+  const year = CURRENT_YEAR;
+  const week = previewWeek(year);
+  if (week === null) return [];
+  const stakes = stakesFor(year, week);
+
+  return fixturesFor(year, week).flatMap(([matchupId]): OgRoute[] => {
+    const data = matchupPreviewData(year, week, matchupId, stakes);
+    if (!data) return [];
+    const [a, b] = data.preview.sides;
+    const odds = a.stakes
+      ? ` A win takes ${a.name}'s playoff odds to ${formatOdds(
+          a.stakes.ifWin
+        )}; a loss, to ${formatOdds(a.stakes.ifLose)}.`
+      : "";
+    return [
+      {
+        path: `/seasons/${year}/matchups/${week}/${matchupId}`,
+        title: `${a.name} vs ${b.name} · ${year} week ${week} preview`,
+        description: `${seriesText(a, b, data.preview.h2h)}. ${a.name} is ${
+          data.a.record
+        } this season, ${b.name} ${data.b.record}.${odds}`,
+        imageAlt: `${a.name} vs ${b.name}, week ${week} preview`,
+        avatarUrls: [data.a.avatarUrl, data.b.avatarUrl].filter(
+          (u): u is string => Boolean(u)
+        ),
+        card: (assets) =>
+          matchupPreviewCard({
+            year,
+            week,
+            a: { ...data.a, avatar: avatarOf(assets, data.a.avatarUrl) },
+            b: { ...data.b, avatar: avatarOf(assets, data.b.avatarUrl) },
+            wins: data.wins,
+            losses: data.losses,
+            ties: data.ties,
+            crest: assets.crest,
+            note: data.note ? { text: data.note } : undefined,
+          }),
+      },
+    ];
+  });
+};
+
 /* ------------------------------------------------------------------- public */
 
 export interface RouteOptions {
@@ -521,6 +646,8 @@ export const ogRoutes = ({
     ...(wanted.has("seasons") ? seasonRoutes() : []),
     ...(wanted.has("managers") ? managerRoutes() : []),
     ...(wanted.has("h2h") ? h2hRoutes() : []),
+    ...(wanted.has("weeks") ? weekRoutes() : []),
+    ...(wanted.has("previews") ? previewRoutes() : []),
     ...(wanted.has("matchups") ? matchupRoutes(since) : []),
   ];
 };

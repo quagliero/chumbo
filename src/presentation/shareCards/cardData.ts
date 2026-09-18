@@ -10,6 +10,13 @@ import { isSeasonSettled } from "@/utils/playoffUtils";
 import { seasonBadge } from "@/utils/seasonBadge";
 import { getTeamName } from "@/utils/teamName";
 import { getUserAvatarUrl, getUserByOwnerId } from "@/utils/userAvatar";
+import {
+  buildMatchupPreview,
+  stakesText,
+  type MatchupPreview,
+} from "@/utils/matchupPreview";
+import type { WeekStakes } from "@/utils/playoffOdds";
+import { buildWeekRecap, recapLines, type RecapLine } from "@/utils/weekRecap";
 
 /**
  * What goes on a card, decided once (I4).
@@ -215,5 +222,78 @@ export const h2hData = (aId: string, bId: string): H2HData | null => {
     meetings: wins + losses + record.ties,
     avgA: record.team1AvgPoints,
     avgB: record.team2AvgPoints,
+  };
+};
+
+/* ------------------------------------------------------------------ *
+ * A week (J2)
+ * ------------------------------------------------------------------ */
+
+export interface WeekRecapData {
+  year: number;
+  week: number;
+  playoffs: boolean;
+  /** Every line, in order. The card draws the first four. */
+  rows: RecapLine[];
+}
+
+export const weekRecapData = (year: number, week: number): WeekRecapData | null => {
+  const recap = buildWeekRecap(year, week);
+  if (!recap) return null;
+  return { year, week, playoffs: recap.playoffs, rows: recapLines(recap) };
+};
+
+/* ------------------------------------------------------------------ *
+ * A game not yet played (K1)
+ * ------------------------------------------------------------------ */
+
+export interface PreviewCardSideData {
+  name: string;
+  avatarUrl: string | null;
+  record: string;
+  stakes?: string;
+}
+
+export interface MatchupPreviewData {
+  year: number;
+  week: number;
+  a: PreviewCardSideData;
+  b: PreviewCardSideData;
+  wins: number;
+  losses: number;
+  ties: number;
+  /** The one sentence the card has room for: the streak, else what is on the line. */
+  note?: string;
+  preview: MatchupPreview;
+}
+
+const recordText = (w: number, l: number, t: number) =>
+  t ? `${w}–${l}–${t}` : `${w}–${l}`;
+
+export const matchupPreviewData = (
+  year: number,
+  week: number,
+  matchupId: number,
+  stakes?: Map<number, WeekStakes>
+): MatchupPreviewData | null => {
+  const preview = buildMatchupPreview(year, week, matchupId, stakes);
+  if (!preview) return null;
+  const [a, b] = preview.sides;
+  const side = (s: typeof a): PreviewCardSideData => ({
+    name: s.name,
+    avatarUrl: avatarUrlFor(year, s.ownerId),
+    record: recordText(s.wins, s.losses, s.ties),
+    stakes: stakesText(s.stakes),
+  });
+  return {
+    year,
+    week,
+    a: side(a),
+    b: side(b),
+    wins: preview.h2h.wins,
+    losses: preview.h2h.losses,
+    ties: preview.h2h.ties,
+    note: preview.h2h.streak ?? preview.onTheLine[0],
+    preview,
   };
 };

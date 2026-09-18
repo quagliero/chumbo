@@ -50,14 +50,43 @@ interface UserScenario {
   picks: UserPick[];
 }
 
+/** A source of uniform numbers in [0, 1), like `Math.random`. */
+export type Random = () => number;
+
+/**
+ * A seeded `Random` (mulberry32). The same seed gives the same sequence, so a
+ * simulation run for a page and for its link preview agree to the decimal,
+ * which two runs of `Math.random` do not (K1).
+ */
+export const seededRandom = (seed: number): Random => {
+  let state = seed | 0;
+  return () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
 /**
  * Generate a random number from a normal distribution using Box-Muller transform
  */
-function randomNormal(): number {
-  const u1 = Math.random();
-  const u2 = Math.random();
+function randomNormal(random: Random): number {
+  // 1 - u: Box-Muller takes the log of the first draw, and a seeded source
+  // can return exactly 0.
+  const u1 = 1 - random();
+  const u2 = random();
   return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
 }
+
+/** Told about every simulated game, for a caller that needs more than the table. */
+type GameObserver = (
+  week: number,
+  team1: number,
+  team2: number,
+  team1Score: number,
+  team2Score: number
+) => void;
 
 const getMean = (scores: number[]): number =>
   scores.length > 0
@@ -73,11 +102,24 @@ const getStdDev = (scores: number[], mean: number): number =>
     : 0;
 
 /**
- * Calculate team statistics from completed regular season games.
- * There is no minimum number of games: a team without enough games to have
- * its own spread (fewer than 2) uses the league-wide spread of scores, and a
- * team with no games uses the league-wide mean, so early-season simulations
- * still produce varied outcomes.
+ * How many games at the league average every team is assumed to have played
+ * before its first real one.
+ *
+ * Without it a team's simulated mean was its actual mean, and after week 1
+ * that is one score: the week-1 top scorer went into the playoffs in 100% of
+ * simulations and the bottom scorer in under 1%, and K1 printed those as the
+ * stakes. One game says very little about a fantasy team; a weekly score
+ * varies about 2.5 times more than the gap between good and bad teams, which
+ * puts the honest weight of the league average at a handful of games. Four
+ * dominates in September and barely matters by December — thirteen real
+ * games against four notional ones — which is the behaviour wanted.
+ */
+export const PRIOR_GAMES = 4;
+
+/**
+ * Calculate team statistics from completed regular season games, each team's
+ * mean and spread pulled towards the league's by `PRIOR_GAMES`. A team with no
+ * games uses the league's, so early-season simulations still vary.
  */
 export function calculateTeamStats(
   seasonData: SeasonData,
@@ -107,8 +149,16 @@ export function calculateTeamStats(
 
   return seasonData.rosters.map((roster) => {
     const scores = scoresByRoster.get(roster.roster_id) ?? [];
-    const mean = scores.length > 0 ? getMean(scores) : leagueMean;
-    const stdDev = scores.length > 1 ? getStdDev(scores, mean) : leagueStdDev;
+    const n = scores.length;
+    const mean =
+      (scores.reduce((sum, score) => sum + score, 0) + PRIOR_GAMES * leagueMean) /
+      (n + PRIOR_GAMES);
+    // The same blend for the spread, on variances, by degrees of freedom.
+    const ownVariance = n > 1 ? getStdDev(scores, getMean(scores)) ** 2 : 0;
+    const stdDev = Math.sqrt(
+      (Math.max(0, n - 1) * ownVariance + PRIOR_GAMES * leagueStdDev ** 2) /
+        (Math.max(0, n - 1) + PRIOR_GAMES)
+    );
 
     return {
       rosterId: roster.roster_id,
@@ -195,7 +245,9 @@ function simulateSeason(
   seasonData: SeasonData,
   teamStats: TeamStats[],
   completedWeek: number,
-  userScenario?: UserScenario
+  userScenario: UserScenario | undefined,
+  random: Random,
+  observe?: GameObserver
 ): SimulationResult[] {
   const playoffWeekStart = getPlayoffWeekStart(seasonData);
   const results: SimulationResult[] = [];
@@ -261,9 +313,11 @@ function simulateSeason(
 
         if (!team1Stats || !team2Stats) return;
 
-        team1Score = team1Stats.mean + team1Stats.stdDev * randomNormal();
-        team2Score = team2Stats.mean + team2Stats.stdDev * randomNormal();
+        team1Score = team1Stats.mean + team1Stats.stdDev * randomNormal(random);
+        team2Score = team2Stats.mean + team2Stats.stdDev * randomNormal(random);
       }
+
+      observe?.(week, team1.roster_id, team2.roster_id, team1Score, team2Score);
 
       // Update results
       const team1Result = results.find((r) => r.rosterId === team1.roster_id)!;
@@ -310,7 +364,8 @@ function rankTeamsByRecord(results: SimulationResult[]): number[] {
  */
 export function calculatePlayoffOdds(
   seasonData: SeasonData,
-  userScenario?: UserScenario
+  userScenario?: UserScenario,
+  random: Random = Math.random
 ): PlayoffOddsResult[] {
   if (!seasonData.matchups || !seasonData.rosters || !seasonData.league) {
     return [];
@@ -352,7 +407,8 @@ export function calculatePlayoffOdds(
       seasonData,
       teamStats,
       completedWeek,
-      userScenario
+      userScenario,
+      random
     );
     const rankings = rankTeamsByRecord(results);
 
@@ -407,4 +463,100 @@ export function calculatePlayoffOdds(
   });
 
   return playoffOddsResults;
+}
+
+/** What one week's game is worth to a team, in playoff odds (K1). */
+export interface WeekStakes {
+  rosterId: number;
+  /** Playoff odds now, as a percentage. */
+  now: number;
+  /** ...in the simulations where this team won that week's game. */
+  ifWin: number;
+  /** ...and where it lost. */
+  ifLose: number;
+}
+
+/**
+ * "Win and jay's playoff odds go to 71%; lose and they are 38%."
+ *
+ * One pass of the same simulation `calculatePlayoffOdds` runs, remembering how
+ * each team's game in `week` went: the odds given a win are the share of the
+ * simulations a team won that game in AND made the playoffs. That is the same
+ * answer as re-running the season with the game fixed each way, in one run
+ * rather than twenty-four.
+ *
+ * Seeded by the season and week, so a preview page and its link preview built
+ * at a different time from the same data print the same numbers.
+ *
+ * Empty unless `week` is a regular-season week still to be played, with
+ * `seasonData.matchups` including the fixtures to come (merge the schedule in
+ * with `mergeScheduledMatchups`, as the Playoff Odds page does).
+ */
+export function calculateWeekStakes(
+  seasonData: SeasonData,
+  week: number,
+  {
+    simulations = 10000,
+    seed = week,
+  }: { simulations?: number; seed?: number } = {}
+): WeekStakes[] {
+  if (!seasonData.matchups || !seasonData.rosters || !seasonData.league) {
+    return [];
+  }
+  const completedWeek = getCompletedWeek(seasonData.league);
+  if (completedWeek === null) return [];
+  const playoffWeekStart = getPlayoffWeekStart(seasonData);
+  if (week <= completedWeek || week >= playoffWeekStart) return [];
+  if (!seasonData.matchups[String(week)]?.length) return [];
+
+  const playoffTeams = seasonData.league.settings?.playoff_teams || 6;
+  const teamStats = calculateTeamStats(seasonData, completedWeek);
+  const random = seededRandom(seed);
+
+  const tally = new Map(
+    seasonData.rosters.map((roster) => [
+      roster.roster_id,
+      { made: 0, won: 0, wonMade: 0, lost: 0, lostMade: 0 },
+    ])
+  );
+
+  for (let i = 0; i < simulations; i++) {
+    const result = new Map<number, "W" | "L">();
+    const results = simulateSeason(
+      seasonData,
+      teamStats,
+      completedWeek,
+      undefined,
+      random,
+      (gameWeek, team1, team2, score1, score2) => {
+        if (gameWeek !== week || score1 === score2) return;
+        result.set(team1, score1 > score2 ? "W" : "L");
+        result.set(team2, score2 > score1 ? "W" : "L");
+      }
+    );
+    const made = new Set(rankTeamsByRecord(results).slice(0, playoffTeams));
+
+    for (const [rosterId, counts] of tally) {
+      const inPlayoffs = made.has(rosterId);
+      if (inPlayoffs) counts.made++;
+      const outcome = result.get(rosterId);
+      if (outcome === "W") {
+        counts.won++;
+        if (inPlayoffs) counts.wonMade++;
+      } else if (outcome === "L") {
+        counts.lost++;
+        if (inPlayoffs) counts.lostMade++;
+      }
+    }
+  }
+
+  const percent = (part: number, whole: number) =>
+    whole === 0 ? 0 : (part / whole) * 100;
+
+  return [...tally].map(([rosterId, counts]) => ({
+    rosterId,
+    now: percent(counts.made, simulations),
+    ifWin: percent(counts.wonMade, counts.won),
+    ifLose: percent(counts.lostMade, counts.lost),
+  }));
 }

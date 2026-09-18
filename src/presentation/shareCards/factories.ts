@@ -110,6 +110,48 @@ export const h2hShare =
     });
   };
 
+/** One week's recap (J2). `note` is the page's own E7 sentence, if any. */
+export const weekRecapShare =
+  (year: number, week: number, note?: CardNote) =>
+  async (): Promise<ShareCard> => {
+    const [templates, { embedImage }, data] = await load();
+    const recap = data.weekRecapData(year, week);
+    if (!recap) throw new Error(`No recap for ${year} week ${week}`);
+    return templates.weekRecapCard({
+      year,
+      week,
+      playoffs: recap.playoffs,
+      rows: recap.rows,
+      crest: await embedImage(CREST),
+      note,
+    });
+  };
+
+/** A game not yet played (K1). */
+export const matchupPreviewShare =
+  (year: number, week: number, matchupId: number) =>
+  async (): Promise<ShareCard> => {
+    const [templates, { embedImage }, data] = await load();
+    const preview = data.matchupPreviewData(year, week, matchupId);
+    if (!preview) throw new Error(`No preview for ${year} week ${week} #${matchupId}`);
+    const [crest, avatarA, avatarB] = await Promise.all([
+      embedImage(CREST),
+      embedImage(preview.a.avatarUrl),
+      embedImage(preview.b.avatarUrl),
+    ]);
+    return templates.matchupPreviewCard({
+      year,
+      week,
+      a: { ...preview.a, avatar: avatarA },
+      b: { ...preview.b, avatar: avatarB },
+      wins: preview.wins,
+      losses: preview.losses,
+      ties: preview.ties,
+      crest,
+      note: preview.note ? { text: preview.note } : undefined,
+    });
+  };
+
 /* ------------------------------------------------------------------ *
  * Players. The page already holds the numbers (`usePlayerStats`), so these
  * take them rather than walking history a second time.

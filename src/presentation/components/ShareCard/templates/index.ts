@@ -15,6 +15,8 @@
  * | `h2hRecordCard` | the H2H matrix | two managers, all time |
  * | `draftPickCard` | the draft board | one pick |
  * | `recordBrokenCard` | a record, the stats explorer | a league best |
+ * | `weekRecapCard` | a week's matchups (J2) | one week, in four lines |
+ * | `matchupPreviewCard` | a game not yet played (K1) | two managers, before |
  *
  * ## What a caller assembles
  *
@@ -96,6 +98,19 @@ export {
   recordBrokenCard,
   type RecordBrokenCardProps,
 } from "./recordBroken";
+
+export {
+  WEEK_RECAP_ROWS,
+  weekRecapCard,
+  type WeekRecapCardProps,
+  type WeekRecapRow,
+} from "./weekRecap";
+
+export {
+  matchupPreviewCard,
+  type MatchupPreviewCardProps,
+  type PreviewCardSide,
+} from "./matchupPreview";
 
 export {
   managerCareerCard,

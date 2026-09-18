@@ -189,6 +189,26 @@ describe("what a first visit loads", () => {
     });
   });
 
+  it("/seasons/2014/matchups/7 — a week's recap reads only its own season", async () => {
+    // J2. The recap is built from one season on purpose: the archive is 300 kB
+    // of matchups that a week page has no need of.
+    const { loaded, errors, html } = await visit(
+      "/seasons/:year/:tab/:week",
+      "/seasons/2014/matchups/7",
+      () => import("@/presentation/pages/history")
+    );
+
+    expect(errors).toEqual([]);
+    expect(html).toContain("Closest game");
+    expect(loaded).toEqual({
+      core: [2014],
+      draft: [2014],
+      matchups: [2014],
+      transactions: [2014],
+      players: true,
+    });
+  });
+
   it("/seasons/2014/draft — 2014 and the player dictionary", async () => {
     const { loaded, errors } = await visit(
       "/seasons/:year/:tab",
@@ -235,6 +255,7 @@ describe("every route renders from a cold loader", () => {
     ["/seasons/:year/:tab", "/seasons/2021/breakdown", history, "League History"],
     ["/seasons/:year/:tab", "/seasons/2023/schedule-comparison", history, "League History"],
     ["/seasons/:year/:tab", "/seasons/2026/playoff-odds", history, "League History"],
+    ["/seasons/:year/:tab/:week", "/seasons/2025/matchups/7", history, "Closest game"],
     [
       "/seasons/:year/:tab/:week/:matchupId",
       "/seasons/2014/matchups/3/1",
