@@ -238,7 +238,7 @@
       "3208",
       "2334",
       "118",
-      "Steven Hauschka",
+      "775",
       "PIT",
       "SEA"
     ],
@@ -257,11 +257,11 @@
       "2391": 30.5,
       "2477": 20.5,
       "3208": 0.5,
-      "Steven Hauschka": 0,
+      "775": 0,
       "PIT": 7,
       "SEA": 0
     },
-    "unmatched_players": { "Steven Hauschka": "K" }
+    "unmatched_players": { "775": "K" }
   },
   {
     "matchup_id": 3,

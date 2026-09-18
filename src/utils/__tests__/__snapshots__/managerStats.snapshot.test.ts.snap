@@ -1448,7 +1448,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
   "managerName": "brock",
   "mostCappedPlayers": {
     "count": 181,
-    "digest": "4775-13302e9b6092c2-9c0c643cefb52",
+    "digest": "476a-cfa09cc60cd06-1b4d724f09ecd5",
     "head": [
       {
         "averageScore": 15.124,
@@ -1554,7 +1554,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 107,
-    "digest": "34c3-1fed7d4f9a0507-719b24991d3bc",
+    "digest": "34b8-1dad8afce64774-3eb65d994256e",
     "head": [
       {
         "bestPick": {
@@ -1836,7 +1836,7 @@ exports[`getManagerStats > dataMode: combined > brock 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 882,
-    "digest": "1f1d5-2d889648621dd-14ced5121b4d42",
+    "digest": "1f17d-b40b219a8385-f8083eccf543b",
     "head": [
       {
         "matchup_id": 4,
@@ -2436,8 +2436,8 @@ exports[`getManagerStats > dataMode: combined > chris 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 67,
-    "digest": "20fa-106db25799f832-f8f2449d54377",
+    "count": 66,
+    "digest": "2077-17b41636508a5a-fc50c685794c2",
     "head": [
       {
         "bestPick": {
@@ -2447,6 +2447,20 @@ exports[`getManagerStats > dataMode: combined > chris 1`] = `
         },
         "playerId": "676",
         "playerName": "LeSean McCoy",
+        "timesDrafted": 2,
+        "years": [
+          2015,
+          2018,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 13,
+          "year": 2018,
+        },
+        "playerId": "2399",
+        "playerName": "Ty Montgomery",
         "timesDrafted": 2,
         "years": [
           2015,
@@ -2559,19 +2573,6 @@ exports[`getManagerStats > dataMode: combined > chris 1`] = `
         },
         "playerId": "4035",
         "playerName": "Alvin Kamara",
-        "timesDrafted": 1,
-        "years": [
-          2018,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 2,
-          "year": 2018,
-        },
-        "playerId": "1479",
-        "playerName": "Keenan Allen",
         "timesDrafted": 1,
         "years": [
           2018,
@@ -4306,8 +4307,8 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "managerId": "fin",
   "managerName": "fin",
   "mostCappedPlayers": {
-    "count": 256,
-    "digest": "66eb-1dca10cc0c517e-68b4bace5ef2f",
+    "count": 255,
+    "digest": "6686-d6cc6f0b83226-60433f7902a44",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -4832,7 +4833,7 @@ exports[`getManagerStats > dataMode: combined > fin 1`] = `
   "thirdPlace": 1,
   "topPerformances": {
     "count": 1745,
-    "digest": "3dca7-11875f5a61cfed-720512713a9a5",
+    "digest": "3dc9c-5cef71d4c68e0-1ed6594acb942d",
     "head": [
       {
         "matchup_id": 6,
@@ -5393,7 +5394,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 252,
-    "digest": "6573-1cbb06aa915036-ac78b561d4fa7",
+    "digest": "6568-1e5ea6489d015c-174dfafac7e6ec",
     "head": [
       {
         "averageScore": 6.704878048780487,
@@ -5467,8 +5468,8 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
       },
       {
         "averageScore": 8.555555555555555,
-        "playerId": "Steven Hauschka",
-        "playerName": "Steven Hauschka",
+        "playerId": "775",
+        "playerName": "Stephen Hauschka",
         "starts": 27,
         "years": [
           2013,
@@ -5510,7 +5511,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "58f9-17d046fff74e30-2879dbb12823b",
+    "digest": "58ee-db63741b20129-27b3559b93d7f",
     "head": [
       {
         "bestPick": {
@@ -5912,7 +5913,7 @@ exports[`getManagerStats > dataMode: combined > hadkiss 1`] = `
   "thirdPlace": 1,
   "topPerformances": {
     "count": 1809,
-    "digest": "3fed6-1052e1e302c2f9-1ec57fa8b740d4",
+    "digest": "3fdad-1ef17b9c2b5e2c-19195af8a27ecb",
     "head": [
       {
         "matchup_id": 3,
@@ -6431,7 +6432,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 295,
-    "digest": "7557-1d2e13f9e127da-830578bb56b58",
+    "digest": "754c-5043b7f573fc7-15d5525aad542c",
     "head": [
       {
         "averageScore": 23.150958904109594,
@@ -6931,7 +6932,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1746,
-    "digest": "3de11-117021c6a78aec-8a7edcc2bc853",
+    "digest": "3ddc4-188d7fbf6002e9-a11f48691d295",
     "head": [
       {
         "matchup_id": 1,
@@ -7491,8 +7492,8 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
-    "count": 347,
-    "digest": "8c59-13a778ee01162d-3631d54d6714b",
+    "count": 346,
+    "digest": "8bf6-b8e97666008ea-de51592ab2c22",
     "head": [
       {
         "averageScore": 10.804255319148934,
@@ -7619,7 +7620,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 181,
-    "digest": "59bf-45c10352180b9-ac3515473426f",
+    "digest": "59b4-c00de283b06bb-c299812930180",
     "head": [
       {
         "bestPick": {
@@ -8021,7 +8022,7 @@ exports[`getManagerStats > dataMode: combined > jay 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1836,
-    "digest": "40b3d-abe15159d4e4e-7d5d3f9c4edfa",
+    "digest": "40b12-4ae6b74b1a7bb-160589036bf427",
     "head": [
       {
         "matchup_id": 3,
@@ -12520,7 +12521,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "managerName": "rich",
   "mostCappedPlayers": {
     "count": 285,
-    "digest": "7274-be0c8117229a3-3997b24a478de",
+    "digest": "7269-14cf5ab51aad0d-15ac7c0b2d1a",
     "head": [
       {
         "averageScore": 14.609230769230768,
@@ -13036,7 +13037,7 @@ exports[`getManagerStats > dataMode: combined > rich 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1809,
-    "digest": "3f7ae-1894784b54458d-1f706cafc80561",
+    "digest": "3f76c-f08bcf65117da-fe426030ed542",
     "head": [
       {
         "matchup_id": 6,
@@ -15475,8 +15476,8 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
-    "count": 364,
-    "digest": "923d-6bdd8877c5a22-1f139f2e4e53c0",
+    "count": 363,
+    "digest": "91cd-865cc07c3f101-ca3fb446bf61",
     "head": [
       {
         "averageScore": 21.451162790697673,
@@ -16000,7 +16001,7 @@ exports[`getManagerStats > dataMode: combined > thd 1`] = `
   "thirdPlace": 3,
   "topPerformances": {
     "count": 1862,
-    "digest": "415ea-141498fc5ab956-1b1e693f1659f3",
+    "digest": "415d5-100b725456d035-24c718202d463",
     "head": [
       {
         "matchup_id": 6,
@@ -17211,7 +17212,7 @@ exports[`getManagerStats > dataMode: playoffs > brock 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 107,
-    "digest": "34c3-1fed7d4f9a0507-719b24991d3bc",
+    "digest": "34b8-1dad8afce64774-3eb65d994256e",
     "head": [
       {
         "bestPick": {
@@ -17846,8 +17847,8 @@ exports[`getManagerStats > dataMode: playoffs > chris 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 67,
-    "digest": "20fa-106db25799f832-f8f2449d54377",
+    "count": 66,
+    "digest": "2077-17b41636508a5a-fc50c685794c2",
     "head": [
       {
         "bestPick": {
@@ -17857,6 +17858,20 @@ exports[`getManagerStats > dataMode: playoffs > chris 1`] = `
         },
         "playerId": "676",
         "playerName": "LeSean McCoy",
+        "timesDrafted": 2,
+        "years": [
+          2015,
+          2018,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 13,
+          "year": 2018,
+        },
+        "playerId": "2399",
+        "playerName": "Ty Montgomery",
         "timesDrafted": 2,
         "years": [
           2015,
@@ -17969,19 +17984,6 @@ exports[`getManagerStats > dataMode: playoffs > chris 1`] = `
         },
         "playerId": "4035",
         "playerName": "Alvin Kamara",
-        "timesDrafted": 1,
-        "years": [
-          2018,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 2,
-          "year": 2018,
-        },
-        "playerId": "1479",
-        "playerName": "Keenan Allen",
         "timesDrafted": 1,
         "years": [
           2018,
@@ -19980,8 +19982,8 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
       "player": {
         "averagePoints": 6.25,
         "games": 4,
-        "playerId": "Steven Hauschka",
-        "playerName": "Steven Hauschka",
+        "playerId": "775",
+        "playerName": "Stephen Hauschka",
         "totalPoints": 25,
       },
       "position": "K",
@@ -20142,12 +20144,12 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 68,
-    "digest": "1959-1c6409da943fc7-d907ce9dea5c3",
+    "digest": "194e-9763fcd246cff-1349a628863f3e",
     "head": [
       {
         "averageScore": 6.25,
-        "playerId": "Steven Hauschka",
-        "playerName": "Steven Hauschka",
+        "playerId": "775",
+        "playerName": "Stephen Hauschka",
         "starts": 4,
         "years": [
           2013,
@@ -20241,7 +20243,7 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "58f9-17d046fff74e30-2879dbb12823b",
+    "digest": "58ee-db63741b20129-27b3559b93d7f",
     "head": [
       {
         "bestPick": {
@@ -20643,7 +20645,7 @@ exports[`getManagerStats > dataMode: playoffs > hadkiss 1`] = `
   "thirdPlace": 1,
   "topPerformances": {
     "count": 99,
-    "digest": "3747-3afe687c02559-1a891bcae829e0",
+    "digest": "371b-1b450a7e890b79-db7b8241175ba",
     "head": [
       {
         "matchup_id": 3,
@@ -21036,7 +21038,7 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 85,
-    "digest": "2086-6928d8c8cb788-17bf4b5e62885a",
+    "digest": "207b-1b5010ff770ff6-1c5bddf39eb786",
     "head": [
       {
         "averageScore": 18.515,
@@ -21526,7 +21528,7 @@ exports[`getManagerStats > dataMode: playoffs > htc 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 162,
-    "digest": "5c26-1ac15a24ccf03d-624a70bd97f77",
+    "digest": "5c05-110750ba8dc7bf-306394dc07977",
     "head": [
       {
         "matchup_id": 1,
@@ -22047,7 +22049,7 @@ exports[`getManagerStats > dataMode: playoffs > jay 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 181,
-    "digest": "59bf-45c10352180b9-ac3515473426f",
+    "digest": "59b4-c00de283b06bb-c299812930180",
     "head": [
       {
         "bestPick": {
@@ -29441,7 +29443,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
   "managerName": "brock",
   "mostCappedPlayers": {
     "count": 179,
-    "digest": "46a4-1aa08f1f60dace-5a252b2fb674c",
+    "digest": "4699-113417089d361-1b9b62e768e12c",
     "head": [
       {
         "averageScore": 15.124,
@@ -29547,7 +29549,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 107,
-    "digest": "34c3-1fed7d4f9a0507-719b24991d3bc",
+    "digest": "34b8-1dad8afce64774-3eb65d994256e",
     "head": [
       {
         "bestPick": {
@@ -29829,7 +29831,7 @@ exports[`getManagerStats > dataMode: regular > brock 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 873,
-    "digest": "1ece4-15025f62dff1d4-1851f1bd621c06",
+    "digest": "1ec8c-436249c2629d5-f7915920ae706",
     "head": [
       {
         "matchup_id": 4,
@@ -30431,8 +30433,8 @@ exports[`getManagerStats > dataMode: regular > chris 1`] = `
     ],
   },
   "mostDraftedPlayers": {
-    "count": 67,
-    "digest": "20fa-106db25799f832-f8f2449d54377",
+    "count": 66,
+    "digest": "2077-17b41636508a5a-fc50c685794c2",
     "head": [
       {
         "bestPick": {
@@ -30442,6 +30444,20 @@ exports[`getManagerStats > dataMode: regular > chris 1`] = `
         },
         "playerId": "676",
         "playerName": "LeSean McCoy",
+        "timesDrafted": 2,
+        "years": [
+          2015,
+          2018,
+        ],
+      },
+      {
+        "bestPick": {
+          "pick": 4,
+          "round": 13,
+          "year": 2018,
+        },
+        "playerId": "2399",
+        "playerName": "Ty Montgomery",
         "timesDrafted": 2,
         "years": [
           2015,
@@ -30554,19 +30570,6 @@ exports[`getManagerStats > dataMode: regular > chris 1`] = `
         },
         "playerId": "4035",
         "playerName": "Alvin Kamara",
-        "timesDrafted": 1,
-        "years": [
-          2018,
-        ],
-      },
-      {
-        "bestPick": {
-          "pick": 4,
-          "round": 2,
-          "year": 2018,
-        },
-        "playerId": "1479",
-        "playerName": "Keenan Allen",
         "timesDrafted": 1,
         "years": [
           2018,
@@ -32301,8 +32304,8 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "managerId": "fin",
   "managerName": "fin",
   "mostCappedPlayers": {
-    "count": 254,
-    "digest": "65f3-1f645d9a518743-801556ce716dc",
+    "count": 253,
+    "digest": "658e-15c9f94834fb1a-16e4a34f27437b",
     "head": [
       {
         "averageScore": 11.302127659574467,
@@ -32827,7 +32830,7 @@ exports[`getManagerStats > dataMode: regular > fin 1`] = `
   "thirdPlace": 1,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c7b7-1508e88cd85df4-f46369bd11724",
+    "digest": "3c7ac-101b160b45d513-c15500b7a884",
     "head": [
       {
         "matchup_id": 6,
@@ -33388,7 +33391,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "managerName": "hadkiss",
   "mostCappedPlayers": {
     "count": 249,
-    "digest": "6431-182290741f3572-17eda10290081a",
+    "digest": "6426-142acaa8a1edf5-1e4fb5217110f",
     "head": [
       {
         "averageScore": 6.653846153846154,
@@ -33473,8 +33476,8 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
       },
       {
         "averageScore": 8.956521739130435,
-        "playerId": "Steven Hauschka",
-        "playerName": "Steven Hauschka",
+        "playerId": "775",
+        "playerName": "Stephen Hauschka",
         "starts": 23,
         "years": [
           2013,
@@ -33505,7 +33508,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 180,
-    "digest": "58f9-17d046fff74e30-2879dbb12823b",
+    "digest": "58ee-db63741b20129-27b3559b93d7f",
     "head": [
       {
         "bestPick": {
@@ -33907,7 +33910,7 @@ exports[`getManagerStats > dataMode: regular > hadkiss 1`] = `
   "thirdPlace": 1,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c790-178eaf2344a059-103dcbea4f39e0",
+    "digest": "3c693-19c5c60317c780-1d82e9cbc452c7",
     "head": [
       {
         "matchup_id": 5,
@@ -34426,7 +34429,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 283,
-    "digest": "70a4-2fa674b781e15-8f017880497dd",
+    "digest": "7099-15570e0539b156-172423645efb6",
     "head": [
       {
         "averageScore": 23.72153846153845,
@@ -34925,7 +34928,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1584,
-    "digest": "381ec-1a32904aa1d8a2-17c736e86b07ae",
+    "digest": "381c0-2ca9b3969e854-b11c1edffdc59",
     "head": [
       {
         "matchup_id": 1,
@@ -35485,8 +35488,8 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "managerId": "jay",
   "managerName": "jay",
   "mostCappedPlayers": {
-    "count": 339,
-    "digest": "8896-1d4b0bf90a4725-64ca7c499decd",
+    "count": 338,
+    "digest": "8833-66d78703d38d9-51e73975b2d8e",
     "head": [
       {
         "averageScore": 22.006,
@@ -35611,7 +35614,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   },
   "mostDraftedPlayers": {
     "count": 181,
-    "digest": "59bf-45c10352180b9-ac3515473426f",
+    "digest": "59b4-c00de283b06bb-c299812930180",
     "head": [
       {
         "bestPick": {
@@ -36013,7 +36016,7 @@ exports[`getManagerStats > dataMode: regular > jay 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1710,
-    "digest": "3c499-16ba443a222814-3c3c260d1aae7",
+    "digest": "3c46e-b3c1ca0c701cf-16a6464ed03b3e",
     "head": [
       {
         "matchup_id": 3,
@@ -40513,7 +40516,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "managerName": "rich",
   "mostCappedPlayers": {
     "count": 277,
-    "digest": "6f5e-281274ec54424-161c1a59324da3",
+    "digest": "6f53-20b05b8448a01-f4c9d31b56188",
     "head": [
       {
         "averageScore": 14.315135135135135,
@@ -41026,7 +41029,7 @@ exports[`getManagerStats > dataMode: regular > rich 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1710,
-    "digest": "3bf11-82ea94c6ecf36-612010e1afce0",
+    "digest": "3becf-8f7b2ad96da43-1ce13f852de708",
     "head": [
       {
         "matchup_id": 6,
@@ -43465,8 +43468,8 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "managerId": "thd",
   "managerName": "thd",
   "mostCappedPlayers": {
-    "count": 352,
-    "digest": "8d39-a6308636129c8-6774d311a9dbb",
+    "count": 351,
+    "digest": "8cc9-785469b62dd49-2c9af6f66c105",
     "head": [
       {
         "averageScore": 21.503783783783778,
@@ -43988,7 +43991,7 @@ exports[`getManagerStats > dataMode: regular > thd 1`] = `
   "thirdPlace": 3,
   "topPerformances": {
     "count": 1709,
-    "digest": "3bf47-181971b073d368-1a332588f36433",
+    "digest": "3bf32-17269c06701331-c5979820cfab9",
     "head": [
       {
         "matchup_id": 6,

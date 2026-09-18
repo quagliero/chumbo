@@ -424,7 +424,7 @@
       "128",
       "23",
       "1567",
-      "Steven Hauschka",
+      "775",
       "BUF"
     ],
     "players": [
@@ -441,7 +441,7 @@
       "2088",
       "2391",
       "421",
-      "Steven Hauschka",
+      "775",
       "BUF"
     ],
     "user_id": "704708035829895168",
@@ -460,10 +460,10 @@
       "2320": 7.4,
       "2359": 0.5,
       "2391": 12.6,
-      "Steven Hauschka": 6,
+      "775": 6,
       "BUF": 8
     },
-    "unmatched_players": { "Steven Hauschka": "K" }
+    "unmatched_players": { "775": "K" }
   },
   {
     "matchup_id": 5,

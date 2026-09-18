@@ -296,7 +296,7 @@
       "201",
       "58",
       "904",
-      "Steven Hauschka",
+      "775",
       "DET"
     ],
     "players": [
@@ -312,7 +312,7 @@
       "814",
       "169",
       "1559",
-      "Steven Hauschka",
+      "775",
       "DET",
       "DAL"
     ],
@@ -331,11 +331,11 @@
       "904": 23.1,
       "1234": 9.52,
       "1559": 4.62,
-      "Steven Hauschka": 4,
+      "775": 4,
       "DET": 9,
       "DAL": 2
     },
-    "unmatched_players": { "Steven Hauschka": "K" }
+    "unmatched_players": { "775": "K" }
   },
   {
     "matchup_id": 1,

@@ -1222,9 +1222,12 @@ Found along the way and worth their own tasks:
 - **Mid-season handovers** — settled, and smaller than it looked. The record
   belongs to whoever built the team, so nothing needs re-attributing; the
   `weeks` field should surface as a "managed by" note instead. Now `I5`.
-- **Five legacy players exist twice**, once under a name and once under a
-  Sleeper id, so each has two pages holding half a career.
-  `scripts/fix-player-ids.js` is the home for it.
+- ~~**Five legacy players exist twice.**~~ ✅ Four did — Ty Montgomery,
+  Terrelle Pryor, Dexter McCluster and Stephen Hauschka (the last missed by the
+  original exact-name search: "Steven" vs "Stephen") — and are merged by
+  `fix-player-ids.js`. Two of the original five were false: Sleeper's "Kevin
+  Smith" is a different player, and Jackie Battle's id never scores. An
+  invariant test now fails on the next exact-name split.
 - **`PerformanceTable`'s row click** can build a matchup URL that does not
   resolve; `PlayerStatsCardLink`'s `gameHref` is importable.
 - **No dark mode.** `index.css` now declares `color-scheme: light` because

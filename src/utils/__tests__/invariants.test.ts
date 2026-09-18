@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { seasons } from "@/data";
+import { players, seasons } from "@/data";
+import { legacyPlayers } from "@/data/legacyPlayers";
 import managers from "@/data/managers.json";
-import { CURRENT_YEAR, YEARS } from "@/domain/constants";
+import { CURRENT_YEAR, YEAR_NUMBERS, YEARS } from "@/domain/constants";
 import { ExtendedLeague } from "@/types/league";
 import { ExtendedMatchup } from "@/types/matchup";
 import { getAllTimeH2HRecord } from "@/utils/h2h";
@@ -539,5 +540,41 @@ describe("points reconciliation", () => {
     });
 
     expect(violations).toEqual([]);
+  });
+});
+
+describe("legacy name keys", () => {
+  /**
+   * A player the NFL.com-era scrapes could not match lives under his bare
+   * name. If the same name ALSO scores under a Sleeper id, one person has two
+   * player pages and half a career on each — Ty Montgomery, Terrelle Pryor,
+   * Dexter McCluster and Stephen Hauschka all did until `fix-player-ids.js`
+   * merged them. This fails on the next one, whenever a season is re-imported.
+   *
+   * Exact names only, so it cannot catch a spelling variant (Hauschka was
+   * "Steven" on one side and "Stephen" on the other, and was found by hand).
+   */
+  it("never has a name key and a scoring Sleeper id for the same player", () => {
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "");
+    const scoring = new Set<string>();
+    for (const year of YEAR_NUMBERS) {
+      for (const week of Object.values(seasons[year]?.matchups ?? {})) {
+        for (const matchup of week ?? []) {
+          for (const id of Object.keys(matchup.players_points ?? {})) scoring.add(id);
+        }
+      }
+    }
+    const idsByName = new Map<string, string[]>();
+    for (const [id, player] of Object.entries(players)) {
+      const key = norm(player.full_name ?? "");
+      if (key) idsByName.set(key, [...(idsByName.get(key) ?? []), id]);
+    }
+
+    const split = Object.keys(legacyPlayers).flatMap((name) =>
+      (idsByName.get(norm(name)) ?? [])
+        .filter((id) => scoring.has(id))
+        .map((id) => `${name} / ${id}`)
+    );
+    expect(split).toEqual([]);
   });
 });

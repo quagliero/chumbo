@@ -11,7 +11,7 @@
       "201",
       "58",
       "904",
-      "Steven Hauschka",
+      "775",
       "DEN"
     ],
     "players": [
@@ -28,7 +28,7 @@
       "1559",
       "1567",
       "1500",
-      "Steven Hauschka",
+      "775",
       "DEN"
     ],
     "user_id": "337210029620883456",
@@ -47,10 +47,10 @@
       "1500": 0,
       "1559": 13.16,
       "1567": 0,
-      "Steven Hauschka": 11,
+      "775": 11,
       "DEN": 2
     },
-    "unmatched_players": { "Steven Hauschka": "K" }
+    "unmatched_players": { "775": "K" }
   },
   {
     "matchup_id": 3,

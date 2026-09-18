@@ -40,11 +40,70 @@ const CORRECTIONS = [
       "2019 onward already use 4068. He is never a starter in either season, " +
       "so no team score depends on this.",
   },
+
+  /*
+   * The legacy name keys. The NFL.com-era scrapes stored a player they could
+   * not match to a Sleeper id under his bare name ("Ty Montgomery"), so a
+   * player whose career straddled the migration has two keys: his early
+   * seasons under the name, his later ones under the id — two player pages,
+   * half a career on each. Found by matching every legacy name against the
+   * dictionary and keeping only those whose id ALSO scores in the matchups.
+   *
+   * Position survives the merge. The same files carry `unmatched_players`,
+   * `{ name: position }`, recording the slot each name-keyed player actually
+   * filled that week; it is rewritten with the rest, and `getPlayerPosition`
+   * looks it up by id first. So Pryor stays a 2013 QB and Montgomery a 2015
+   * WR rather than taking the dictionary's position today.
+   *
+   * Considered and NOT merged: "Kevin Smith" (2012) is the Lions running back;
+   * Sleeper's 2295 is a different, later receiver. "Jackie Battle" has a
+   * Sleeper id (47) that never appears in the data, so nothing is split.
+   */
+  {
+    from: "Ty Montgomery",
+    to: "2399",
+    years: [2015],
+    player: "Ty Montgomery",
+    why:
+      "Scored 2015 under his name (as a WR, his position that year) and " +
+      "2016-2019 under 2399 (as an RB, after the Packers moved him). One " +
+      "player; the name key was only ever the scrape failing to match him.",
+  },
+  {
+    from: "Terrelle Pryor",
+    to: "1020",
+    years: [2013],
+    player: "Terrelle Pryor",
+    why:
+      "2013 under his name, at QB for Oakland; 2016-2018 under 1020 as a WR " +
+      "after his conversion. Same person — the position change is exactly " +
+      "why the scrape could not match him.",
+  },
+  {
+    from: "Dexter McCluster",
+    to: "564",
+    years: [2012],
+    player: "Dexter McCluster",
+    why: "2012 under his name, 2014 and 2016 under 564. One player.",
+  },
+  {
+    from: "Steven Hauschka",
+    to: "775",
+    years: [2013, 2014, 2015, 2016],
+    player: "Stephen Hauschka",
+    why:
+      "Four Seattle seasons and three draft picks under 'Steven Hauschka', " +
+      "then 2017 under 775, which Sleeper spells 'Stephen'. The spelling is " +
+      "why an exact-name search missed him; the position (K) and the " +
+      "unbroken run of seasons are why it is one career.",
+  },
 ];
 
 /** Where a player id can appear. Anything not listed here is left alone. */
 const ID_ARRAYS = ["players", "starters", "reserve", "taxi"];
-const ID_MAPS = ["players_points", "adds", "drops"];
+// `unmatched_players` is `{ name: position }` on the NFL.com-era matchups —
+// see the legacy corrections above for why it has to move with the id.
+const ID_MAPS = ["players_points", "adds", "drops", "unmatched_players"];
 const ID_SCALARS = ["player_id"];
 
 const jsonFiles = (dir) =>

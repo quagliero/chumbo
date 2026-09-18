@@ -380,7 +380,7 @@
       "1067",
       "200",
       "1984",
-      "Steven Hauschka",
+      "775",
       "SEA"
     ],
     "players": [
@@ -397,7 +397,7 @@
       "2382",
       "3208",
       "2334",
-      "Steven Hauschka",
+      "775",
       "SEA"
     ],
     "user_id": "337210029620883456",
@@ -416,10 +416,10 @@
       "2391": 17.1,
       "2477": 0,
       "3208": -0.1,
-      "Steven Hauschka": 5,
+      "775": 5,
       "SEA": 13
     },
-    "unmatched_players": { "Steven Hauschka": "K" }
+    "unmatched_players": { "775": "K" }
   },
   {
     "matchup_id": 3,

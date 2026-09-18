@@ -239,7 +239,7 @@
     "roster_id": 1,
     "points": 106.84,
     "starters": [
-      "Terrelle Pryor",
+      "1020",
       "507",
       "811",
       "175",
@@ -250,7 +250,7 @@
       "BAL"
     ],
     "players": [
-      "Terrelle Pryor",
+      "1020",
       "507",
       "811",
       "175",
@@ -282,10 +282,10 @@
       "904": 7.4,
       "1244": 0,
       "1263": 11.5,
-      "Terrelle Pryor": 10.04,
+      "1020": 10.04,
       "BAL": 12
     },
-    "unmatched_players": { "Terrelle Pryor": "QB" }
+    "unmatched_players": { "1020": "QB" }
   },
   {
     "matchup_id": 4,

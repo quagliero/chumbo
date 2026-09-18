@@ -97,7 +97,7 @@
       "1219",
       "1466",
       "1892",
-      "Steven Hauschka",
+      "775",
       "GB"
     ],
     "players": [
@@ -114,7 +114,7 @@
       "1880",
       "2161",
       "1992",
-      "Steven Hauschka",
+      "775",
       "GB"
     ],
     "user_id": "77140390129844224",
@@ -133,10 +133,10 @@
       "1892": 6.9,
       "1992": 5.1,
       "2161": 4.6,
-      "Steven Hauschka": 9,
+      "775": 9,
       "GB": 22
     },
-    "unmatched_players": { "Steven Hauschka": "K" }
+    "unmatched_players": { "775": "K" }
   },
   {
     "matchup_id": 6,

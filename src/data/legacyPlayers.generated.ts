@@ -13,7 +13,6 @@ export const legacyPlayerPositions: Record<string, string> = {
   "Davone Bess": "WR",
   "Dennis Johnson": "RB",
   "Devery Henderson": "WR",
-  "Dexter McCluster": "WR",
   "EJ Manuel": "QB",
   "Isaac Redman": "RB",
   "Jabar Gaffney": "WR",
@@ -33,12 +32,9 @@ export const legacyPlayerPositions: Record<string, string> = {
   "Nate Kaeding": "K",
   "Randy Moss": "WR",
   "Rob Bironas": "K",
-  "Steven Hauschka": "K",
   "T.J. Graham": "WR",
-  "Terrelle Pryor": "QB",
   "Titus Young": "WR",
   "Todd Heap": "TE",
   "Tony Gonzalez": "TE",
-  "Ty Montgomery": "WR",
   "William Powell": "RB"
 };
