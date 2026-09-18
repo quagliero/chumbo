@@ -449,7 +449,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 299,
-    "digest": "7923-e5d5dfd183a80-b3f164560e750",
+    "digest": "7923-3fcf71af59fa3-131d7e719dd396",
     "head": [
       {
         "averageScore": 10.981578947368419,
@@ -971,7 +971,7 @@ exports[`getManagerStats > dataMode: combined > ant 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1817,
-    "digest": "3fd83-129f913524bdf1-1b25633a689529",
+    "digest": "3fd83-1fd177461de872-19b4186993ef8a",
     "head": [
       {
         "matchup_id": 6,
@@ -3230,7 +3230,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 325,
-    "digest": "82f1-157b1704bf7293-73090413c43cf",
+    "digest": "82f1-18390c14b83d98-1af2a2e6668d4b",
     "head": [
       {
         "averageScore": 12.211111111111112,
@@ -3747,7 +3747,7 @@ exports[`getManagerStats > dataMode: combined > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1845,
-    "digest": "41867-14aaef859c4978-51ee801553ec1",
+    "digest": "41867-1cb0df562cefb0-1aa9489570c1d6",
     "head": [
       {
         "matchup_id": 5,
@@ -9921,7 +9921,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 341,
-    "digest": "8895-6ae8d12de021c-a5d36364656d7",
+    "digest": "8895-1b5551f8371b18-1bb7f8c17e709e",
     "head": [
       {
         "averageScore": 21.71352941176471,
@@ -10439,7 +10439,7 @@ exports[`getManagerStats > dataMode: combined > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1754,
-    "digest": "3e03d-18775be74a7ef-14c684e3edc716",
+    "digest": "3e03d-ebbb97507f634-f7f9eb5d3482d",
     "head": [
       {
         "matchup_id": 4,
@@ -28444,7 +28444,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "managerName": "ant",
   "mostCappedPlayers": {
     "count": 290,
-    "digest": "7514-5b88f69d317b2-13721992493257",
+    "digest": "7514-ced4a70b9f85d-1b82e99bf906b1",
     "head": [
       {
         "averageScore": 20.70470588235294,
@@ -28966,7 +28966,7 @@ exports[`getManagerStats > dataMode: regular > ant 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c06b-b3b1254030782-9093c4a26e0ac",
+    "digest": "3c06b-1ce526bd3dffec-af7d3c79f7b0",
     "head": [
       {
         "matchup_id": 6,
@@ -31227,7 +31227,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "managerName": "dix",
   "mostCappedPlayers": {
     "count": 317,
-    "digest": "7f64-1837b4ed68d1ff-1f538173aca84b",
+    "digest": "7f64-a3da570b040b2-11e7108e2ab6c6",
     "head": [
       {
         "averageScore": 11.93939393939394,
@@ -31744,7 +31744,7 @@ exports[`getManagerStats > dataMode: regular > dix 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1710,
-    "digest": "3cc39-12b6847b1e254-fe8694448c72c",
+    "digest": "3cc39-b7433a143f678-4ceded569aa99",
     "head": [
       {
         "matchup_id": 5,
@@ -37915,7 +37915,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "managerName": "kitch",
   "mostCappedPlayers": {
     "count": 337,
-    "digest": "869c-114d5ef2fe2bfe-c1f6d25b8496e",
+    "digest": "869c-19daeb1e5d356a-7ec107bac4e4a",
     "head": [
       {
         "averageScore": 21.866875,
@@ -38433,7 +38433,7 @@ exports[`getManagerStats > dataMode: regular > kitch 1`] = `
   "thirdPlace": 0,
   "topPerformances": {
     "count": 1709,
-    "digest": "3c6f1-1e0efeed8bf64f-11cead40f696c6",
+    "digest": "3c6f1-8e418ecad80a3-f4a75bada393c",
     "head": [
       {
         "matchup_id": 4,

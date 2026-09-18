@@ -90,10 +90,15 @@ const BUDGET_KB = {
   // Sleeper season is 67-85. Catches a season that ships something it should
   // not -- picks.json untrimmed, a raw 6 MB players dump left in its folder.
   season: 100,
+  // One week's box scores (L1), fetched by that week's matchup pages alone.
+  // About 2 kB each; there are ~230 of them, so they are held to a ceiling
+  // each rather than a total that grows with every week played.
+  gameday: 5,
 };
 
 const SEASON_CHUNK = /^(core|draft|matchups|transactions)-(\d{4})-/;
 const PLAYERS_CHUNK = /^players-/;
+const GAMEDAY_CHUNK = /^gameday-(\d{4})-(\d+)-/;
 
 // D0's +40 kB chart allowance and G1's +25 kB share allowance are enforced by
 // `initial` and `total` above rather than by per-chunk lines. The per-chunk
@@ -117,8 +122,13 @@ const sizes = js
 const total = sizes.reduce((sum, s) => sum + s.kb, 0);
 const sum = (list) => list.reduce((acc, s) => acc + s.kb, 0);
 const code = sum(
-  sizes.filter(({ file }) => !SEASON_CHUNK.test(file) && !PLAYERS_CHUNK.test(file))
+  sizes.filter(
+    ({ file }) =>
+      !SEASON_CHUNK.test(file) && !PLAYERS_CHUNK.test(file) && !GAMEDAY_CHUNK.test(file)
+  )
 );
+const gamedays = sizes.filter(({ file }) => GAMEDAY_CHUNK.test(file));
+const [biggestGameday] = [...gamedays].sort((a, b) => b.kb - a.kb);
 const players = sum(sizes.filter(({ file }) => PLAYERS_CHUNK.test(file)));
 const bySeason = new Map();
 for (const { file, kb } of sizes) {
@@ -168,6 +178,9 @@ console.log(`  ${fmt(players).padStart(9)}  player dictionary     (budget ${BUDG
 console.log(
   `  ${fmt(biggestSeason).padStart(9)}  largest season, ${biggestYear}  (budget ${BUDGET_KB.season} kB each, ${bySeason.size} seasons)`
 );
+console.log(
+  `  ${fmt(biggestGameday?.kb ?? 0).padStart(9)}  largest week of box scores  (budget ${BUDGET_KB.gameday} kB each, ${gamedays.length} weeks)`
+);
 console.log(`  ${fmt(total).padStart(9)}  total, for the record`);
 console.log("");
 
@@ -178,6 +191,10 @@ if (code > BUDGET_KB.code)
   failures.push(`code ${fmt(code)} exceeds ${BUDGET_KB.code} kB`);
 if (players > BUDGET_KB.players)
   failures.push(`player dictionary ${fmt(players)} exceeds ${BUDGET_KB.players} kB`);
+for (const { file, kb } of gamedays) {
+  if (kb > BUDGET_KB.gameday)
+    failures.push(`${file} box scores ${fmt(kb)} exceed ${BUDGET_KB.gameday} kB`);
+}
 for (const [year, kb] of bySeason) {
   if (kb > BUDGET_KB.season)
     failures.push(`${year}'s season data ${fmt(kb)} exceeds ${BUDGET_KB.season} kB`);

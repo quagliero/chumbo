@@ -28,6 +28,19 @@ const DRY = process.argv.includes("--dry");
  */
 const CORRECTIONS = [
   {
+    from: "171",
+    to: "749",
+    years: [2015, 2016, 2017],
+    player: "Zach Miller (Bears)",
+    why:
+      "Two tight ends called Zach Miller. 171 (gsis 00-0025425, born 1985) " +
+      "is the Raiders/Seahawks one, who retired after 2014; 749 (gsis " +
+      "00-0027125, born 1984) is the Bears one, who played 2014-2017. Every " +
+      "appearance of 171 is 2015 or later, and the play-by-play rebuild (L1) " +
+      "scores his weeks to the hundredth for 749 and to nothing for 171 — " +
+      "eleven weeks of 2015-16 flagged in one pass. 749 appears nowhere else.",
+  },
+  {
     from: "1771",
     to: "3650",
     years: [2018],

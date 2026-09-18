@@ -1438,7 +1438,25 @@ land within a point of Sleeper's; draw the curve. Go/no-go on L1–L3.
 > **Verdict: go on L1–L3.** The numbers match to the hundredth, the ids join,
 > the timeline is honest, and the stories are there.
 
-### L1 · Box scores `M`
+### L1 · Box scores `M` ✅
+
+> **Done (2026-09-18).** Every rostered player's real stat line and NFL team,
+> every week of 2012–2025, under his name on the matchup page ("LAC · 37/55,
+> 420 yds, 3 TD, 2 INT · 6 car, 31 yds"), from `yarn build-gamedays`. The
+> builder rebuilds every starter's points as it goes: **20,960 of 20,996
+> player-starts exact** across fourteen seasons. Finding the last of them
+> took three more scoring facts (2012–16 never scored a returner's TD;
+> 2020–21 scored kicks by the yard, points allowed by the point, and a sack
+> as a tackle for loss) and two plays-with-two-fumbles rules, and turned up a
+> second wrong player: 2015–17's "Zach Miller" was the retired Seahawk, not
+> the Bear (fixed, 36 references). The misses left are Sleeper stat
+> corrections and the abandoned 2022 Bills–Bengals game. D/ST totals in
+> 2020–21 run a point or two apart on tackles for loss, which the sources
+> count differently; their box scores are unaffected. The weekly update
+> builds the live season's too. **A1d is closed**: each season's teams now
+> come from the play-by-play, so old draft picks and player pages show the
+> team a player was on that year — for most retired players they showed no
+> team at all.
 
 Every starter's real stat line on the matchup page — "22 car, 104 yds, 1 TD ·
 4 rec, 31 yds". As a by-product, each player's **NFL team for that week**:

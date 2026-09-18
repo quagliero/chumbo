@@ -16,6 +16,8 @@ import { ShareButton } from "@/presentation/components/ShareButton";
 import { isWeekCompleted } from "@/utils/weekUtils";
 import { interimManager } from "@/utils/interimManagers";
 import { avatarDataUri } from "./shareAvatar";
+import { StatLine } from "./StatLine";
+import { useGameday } from "@/hooks/useGameday";
 import { getManagerAccent } from "@/domain/managerColors";
 
 interface MatchupDetailProps {
@@ -38,6 +40,8 @@ const MatchupDetail = ({
   users,
 }: MatchupDetailProps) => {
   const { number } = useFormatter();
+  // L1: the real box scores, loaded beside the page rather than before it.
+  const gameday = useGameday(year, week);
   const [team1Data, team2Data] = matchup;
 
   // Helper function to get player nickname from roster metadata
@@ -410,6 +414,11 @@ const MatchupDetail = ({
                             })()}
                           </Link>
                         )}
+                        <StatLine
+                          gameday={gameday}
+                          playerId={player.playerId}
+                          position={player.position}
+                        />
                       </td>
                       <td className="py-2 text-right font-semibold">
                         {player.playerId === 0 || player.playerId === "0"
@@ -494,6 +503,11 @@ const MatchupDetail = ({
                               })()}
                             </Link>
                           )}
+                          <StatLine
+                            gameday={gameday}
+                            playerId={player.playerId}
+                            position={player.position}
+                          />
                         </td>
                         <td className="py-2 text-right">
                           {number(player.points, { maximumFractionDigits: 2 })}
@@ -507,6 +521,22 @@ const MatchupDetail = ({
           </div>
         ))}
       </div>
+
+      {/* nflverse's data is CC-BY: the credit goes wherever it is shown. */}
+      {gameday && (
+        <p className="text-xs text-ink-faint">
+          Stat lines and NFL teams from the{" "}
+          <a
+            href="https://github.com/nflverse/nflverse-data"
+            className="underline decoration-dotted underline-offset-2"
+            target="_blank"
+            rel="noreferrer"
+          >
+            nflverse
+          </a>{" "}
+          play-by-play (CC-BY 4.0). Fantasy points are Sleeper's.
+        </p>
+      )}
 
       {/* E2: where to go next, as opposed to E7's what-was-notable at the top.
           It sits BELOW the score sheets on purpose — the scores are what the

@@ -81,6 +81,10 @@ export default defineConfig({
           // does anything else in those folders, such as the week-18 file and
           // the `transactions/all.json` that `--all-transactions` writes,
           // which the loader skips but the glob still imports.
+          // L1's box scores: one chunk per week, because a matchup page
+          // wants one week and nothing else does. See src/data/gamedays.ts.
+          const gameday = id.match(/\/src\/data\/(\d{4})\/gamedays\/(\d+)\.json$/);
+          if (gameday) return `gameday-${gameday[1]}-${gameday[2]}`;
           const season = id.match(
             /\/src\/data\/(\d{4})\/([^/.]+)(?:\/[^/]+)?\.json$/
           );

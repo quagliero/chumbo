@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Downloaded play-by-play for yarn build-gamedays (~20 MB a season)
+.cache/

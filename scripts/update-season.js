@@ -9,6 +9,7 @@
  *   3. refresh the player dictionary, but only if a player on a roster, in a
  *      lineup or in a transaction is missing from it — a practice-squad
  *      call-up picked up on waivers would otherwise show as a number
+ *   4. rebuild the season's box scores from nflverse's play-by-play (L1)
  *
  * Writes the commit message to $GITHUB_OUTPUT when there is one.
  *
@@ -100,6 +101,16 @@ if (missing.length > 0) {
     // Not fatal: the page falls back to the id, which is what it did before.
     console.warn(`⚠️  Still not in the dictionary: ${still.join(", ")}`);
   }
+}
+
+// L1: the week's box scores, from the NFL's play-by-play. Not fatal: they
+// decorate the matchup pages, and a failed download or a season that does not
+// rebuild cleanly leaves the committed box scores as they were rather than
+// holding back the results.
+try {
+  run("build-gamedays.js", "--year", String(year), "--download", "--refresh");
+} catch {
+  console.warn("⚠️  Box scores not updated this run; the results still are.");
 }
 
 const league = readJson(leaguePath);

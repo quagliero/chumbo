@@ -20,6 +20,7 @@
     "fetch-season": "node scripts/fetch-sleeper-data.js --end-of-season",
     "fetch-matchup": "node scripts/fetch-matchup.js",
     "update-season": "node scripts/update-season.js",
+    "build-gamedays": "node scripts/build-gamedays.js",
     "fix-player-ids": "node scripts/fix-player-ids.js",
     "build-aggregates": "vite-node scripts/build-aggregates.ts",
     "check-aggregates": "vite-node scripts/build-aggregates.ts --check",

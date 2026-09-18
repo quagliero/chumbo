@@ -66,6 +66,10 @@ const EXTERNAL_ID_FIELDS = [
 
 const ID_MAP_PATH = path.join(projectRoot, "scripts/data/player-id-map.json");
 const ARCHIVE_DIR = path.join(projectRoot, "scripts/data/season-players");
+/** Each season's teams from the play-by-play (L1), for seasons with no dump. */
+const SEASON_TEAMS_DIR = path.join(projectRoot, "scripts/data/season-teams");
+/** Seasons whose state came from SEASON_TEAMS_DIR: they get no archive. */
+const derivedYears = new Set();
 
 // --- helpers -------------------------------------------------------------------
 
@@ -225,7 +229,40 @@ for (const year of years) {
   }
 
   const archived = readJson(path.join(ARCHIVE_DIR, `${year}.json`));
-  if (!archived) continue;
+  if (!archived) {
+    // L1: a season with neither a dump nor an archive still knows, from the
+    // NFL's play-by-play, which team each of its rostered players played for
+    // (`yarn build-gamedays` writes it). Only the team: the position stays
+    // whatever that season's overlay already said (trim-picks salvaged a few)
+    // or the base. And it never touches the base, which is today — a player
+    // who retired in 2016 is not made a 2013 Jaguar again by it.
+    const teams = readJson(path.join(SEASON_TEAMS_DIR, `${year}.json`));
+    if (!teams) continue;
+    const overlay =
+      readJson(path.join(dataRoot, String(year), "players.delta.json")) ?? {};
+    const state = {};
+    for (const [playerId, teamCode] of Object.entries(teams)) {
+      if (!base[playerId]) continue;
+      state[playerId] = {
+        team: normalise(teamCode),
+        position: normalise(overlay[playerId]?.p ?? base[playerId].position),
+      };
+    }
+    // Positions trim-picks salvaged for players the play-by-play did not see.
+    for (const [playerId, entry] of Object.entries(overlay)) {
+      if (state[playerId] || !base[playerId]) continue;
+      state[playerId] = {
+        team: normalise(entry.t ?? base[playerId].team),
+        position: normalise(entry.p ?? base[playerId].position),
+      };
+    }
+    seasonState.set(year, state);
+    derivedYears.add(year);
+    console.log(
+      `  ${year} ${String(Object.keys(state).length).padStart(5)} from the play-by-play`
+    );
+    continue;
+  }
 
   const state = {};
   for (const [playerId, entry] of Object.entries(archived)) {
@@ -281,7 +318,11 @@ for (const year of years) {
   for (const [playerId, entry] of Object.entries(state)) {
     archive[playerId] = { t: entry.team, p: entry.position };
   }
-  writeJson(path.join(ARCHIVE_DIR, `${year}.json`), archive);
+  // A derived season is not an archive: it knows teams for rostered players
+  // only, and an archive is read back as the season's whole truth.
+  if (!derivedYears.has(year)) {
+    writeJson(path.join(ARCHIVE_DIR, `${year}.json`), archive);
+  }
 
   const overlay = {};
   let teamChanges = 0;

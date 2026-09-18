@@ -33,6 +33,7 @@ yarn prerender-og   # per-route HTML + OG images into dist/ (runs in `yarn build
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn update-season                             # what the weekly Action runs (J1)
+NFLVERSE_DIR=… yarn build-gamedays [--year 2025] [--download]  # box scores (L1)
 yarn fetch-data      -- --year 2026            # draft+picks+rosters+users+league + latest week
 yarn fetch-latest    -- --year 2026            # latest completed week only
 yarn fetch-week      -- --year 2026 --week 3   # specific week(s)
@@ -80,6 +81,7 @@ scripts/
 | `transactions/<week>.json` | `/league/{id}/transactions/{week}` | **2020+ only.** 2012–2019 used a single legacy `transactions.json` (grouped by `leg`). |
 | `winners_bracket.json` / `losers_bracket.json` | `/league/{id}/winners_bracket` etc. | End of season. |
 | `schedule.json` | `/league/{id}/matchups/{week}` for every regular season week | `{week: [{matchup_id, roster_id}]}`. Written by any fetch while the season is in progress. Only Playoff Odds reads it, to simulate unplayed weeks (so other pages never see 0-point future games). |
+| `gamedays/<week>.json` | derived by `yarn build-gamedays` from nflverse play-by-play | Box scores (L1): every rostered player's stat line and NFL team that week, keyed by Sleeper id. Not a part of `seasons` — `src/data/gamedays.ts` loads one week at a time, each its own ~2 kB chunk. |
 | `players.delta.json` (optional) | derived by `yarn build-players` | Per-season overlay: `{playerId: {t: team, p: position}}` for players whose team or position that year differed from the base dictionary. ~8KB. A season without one resolves entirely to the base. |
 
 ### How data is loaded
@@ -260,6 +262,35 @@ only — the playoffs' fixtures are the bracket's, not `schedule.json`'s.
 The simulation pulls every team towards the league average by `PRIOR_GAMES`
 (four games' worth). Without it the week-1 top scorer made the playoffs in 100%
 of simulations after one game.
+
+## Box scores (L1)
+
+`yarn build-gamedays` reads nflverse's play-by-play (CC-BY 4.0, credited on
+the matchup page), ~18 MB a season, from `NFLVERSE_DIR` (or `.cache/nflverse`
+with `--download`; never committed), and writes each week's box scores to
+`src/data/<year>/gamedays/`. It also rebuilds every starter's fantasy points
+play by play with that season's scoring and compares them with Sleeper's:
+99.8% of 20,996 player-starts across 2012–2025 match to the hundredth. It
+writes a season only if its players pass 97%, so a broken join cannot be
+published, and it lists every starter it cannot match — which is how two
+wrong players from the NFL.com years were found (2018's "M Harris", 2015–17's
+Zach Miller) and fixed in `fix-player-ids.js`. The scoring rules the
+comparison uncovered are commented where they are applied; the notable ones:
+points allowed leaves out defensive touchdowns and safeties; 2012–16 scored
+a returner nothing for a return touchdown, whatever the saved settings say
+(`SCORING_AS_PLAYED`); 2020–21 scored field goals by the yard and points
+allowed by the point.
+
+It also writes `scripts/data/season-teams/<year>.json`, each rostered
+player's team that season, which `yarn build-players` turns into that
+season's overlay where no raw dump exists — so a 2016 draft pick shows his
+2016 team, not today's (the old A1d gap). Run `build-players` after it.
+
+The weekly update (J1) runs it for the live season, non-fatally.
+`gamedays.test.ts` re-adds every skill player's line into points and checks
+them against Sleeper's, so the committed files stay honest without the raw
+data. The 2022 week 17 Bills–Bengals game, abandoned after Damar Hamlin's
+collapse, has no play-by-play and so no box scores.
 
 ## The automatic update (J1)
 
