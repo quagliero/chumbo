@@ -18,6 +18,19 @@ export default defineConfig({
       "@/constants": "/src/constants",
     },
   },
+  json: {
+    // One `JSON.parse` of the whole file rather than a JS object literal per
+    // top-level key. With named exports on, Vite only stringifies values over
+    // 10 kB, and no single player is — so the 665 kB dictionary shipped as
+    // 4,389 object literals for the JS parser to chew through. Nothing
+    // imports a JSON file by name; everything takes the default export.
+    //
+    // Measured on the dictionary (A2b): evaluating it drops from 6.7 ms to
+    // 3.9 ms (median, Node, an M-series laptop — several times that on a
+    // phone), for 3.9 kB more gzip, because the escaped quotes in a string
+    // literal compress slightly worse than bare object syntax.
+    namedExports: false,
+  },
   css: {
     postcss: {
       plugins: [tailwindcss()],
