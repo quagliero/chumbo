@@ -36,6 +36,11 @@ interface ChartProps {
   fallback?: ReactNode;
   className?: string;
   children: (frame: ChartFrame) => ReactNode;
+  /**
+   * HTML laid over the drawing, positioned in the same pixels — for the I2
+   * popover, which needs real links and so cannot live inside the SVG.
+   */
+  overlay?: (frame: ChartFrame) => ReactNode;
 }
 
 /**
@@ -57,6 +62,7 @@ export const Chart = ({
   fallback,
   className,
   children,
+  overlay,
 }: ChartProps) => {
   const margin = { ...DEFAULT_MARGIN, ...overrides };
   const { ref, width } = useChartWidth<HTMLDivElement>();
@@ -66,19 +72,24 @@ export const Chart = ({
   return (
     <div ref={ref} className={className}>
       {width !== null && inner > 0 && (
-        <svg
-          width={width}
-          height={height + margin.top + margin.bottom}
-          role="img"
-          aria-label={label}
-          // The marks are decorative to a screen reader; `aria-label` above
-          // carries the summary and `fallback` carries the detail.
-          focusable="false"
-        >
-          <g transform={`translate(${margin.left},${margin.top})`}>
-            {children({ width: inner, height, margin })}
-          </g>
-        </svg>
+        <div className="relative">
+          <svg
+            width={width}
+            height={height + margin.top + margin.bottom}
+            // Static, the marks are decorative to a screen reader:
+            // `aria-label` carries the summary and `fallback` the detail. With
+            // a popover the marks are buttons, and `img` would hide them —
+            // its children are presentational — so it becomes a group.
+            role={overlay ? "group" : "img"}
+            aria-label={label}
+            focusable="false"
+          >
+            <g transform={`translate(${margin.left},${margin.top})`}>
+              {children({ width: inner, height, margin })}
+            </g>
+          </svg>
+          {overlay?.({ width: inner, height, margin })}
+        </div>
       )}
       {fallback && <div className="sr-only">{fallback}</div>}
     </div>

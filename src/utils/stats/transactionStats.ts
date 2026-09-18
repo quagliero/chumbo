@@ -435,6 +435,8 @@ export interface PlayerTrade {
   from: string;
   /** Manager who received him. */
   to: string;
+  /** Rosters in the deal. Above two, "who won" has more than one answer. */
+  teams: number;
   /** What `from` got back, with each player's points from `week` on. */
   received: Array<{ playerId: string; name: string; points: number }>;
   /** Draft picks `from` got back, as "2021 round 3". */
@@ -516,6 +518,7 @@ export const playerTrades = (
       week,
       from,
       to,
+      teams: transaction.roster_ids.length,
       received: moves
         .filter((move) => move.to === mine.from)
         .map((move) => ({

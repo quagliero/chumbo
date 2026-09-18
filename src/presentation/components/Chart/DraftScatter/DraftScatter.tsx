@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { Chart } from "../Chart";
 import { XAxis, YAxis } from "../Axis";
 import { linearScale, linePath, niceTicks } from "../scale";
 import { useChartWidth } from "../useChartWidth";
+import { ChartPopover, useChartPopover } from "../Popover";
+import { DraftPickPopover } from "./DraftPickPopover";
 import { useDraftScatter, type DraftScatterPoint } from "./useDraftScatter";
 
 /**
@@ -82,12 +83,9 @@ const shortLabel = (point: DraftScatterPoint) => {
   return `${parts[parts.length - 1]} ’${String(point.year).slice(2)}`;
 };
 
-/** Name-keyed ids exist pre-2016 ("Michael Turner"), so encode. */
-const playerHref = (playerId: string) =>
-  `/players/${encodeURIComponent(playerId)}`;
-
 export const DraftScatter = ({ className }: { className?: string }) => {
   const { points, positions, years } = useDraftScatter();
+  const popover = useChartPopover<DraftScatterPoint>();
   const [position, setPosition] = useState<string | null>(null);
 
   const { ref, width } = useChartWidth<HTMLDivElement>();
@@ -182,6 +180,16 @@ export const DraftScatter = ({ className }: { className?: string }) => {
             `the points that player scored that season`
           }
           fallback={<DraftTable points={shown} />}
+          overlay={(frame) => (
+            <ChartPopover
+              popover={popover}
+              frame={frame}
+              label="Draft pick"
+              render={(point, pinned) => (
+                <DraftPickPopover point={point} pinned={pinned} />
+              )}
+            />
+          )}
         >
           {(frame) => {
             const scaleX = linearScale(x.domain, [0, frame.width]);
@@ -216,35 +224,30 @@ export const DraftScatter = ({ className }: { className?: string }) => {
                     );
                   }
 
+                  const key = `${point.year}-${point.pickNo}`;
                   return (
-                    <Link
-                      key={`${point.year}-${point.pickNo}`}
-                      to={playerHref(point.playerId)}
-                      aria-label={describe(point)}
-                    >
-                      {/* 2019's per-player scoring is a reconstruction, good
-                          enough to plot but not to pass off as recorded — so
-                          its picks are drawn hollow and the legend says why,
-                          rather than being mixed in or dropped. */}
-                      <circle
-                        cx={cx}
-                        cy={cy}
-                        r={radius}
-                        fill={point.approximate ? "none" : colour}
-                        fillOpacity={0.45}
-                        stroke={colour}
-                        strokeOpacity={point.approximate ? 0.85 : 0.35}
-                        strokeWidth={point.approximate ? 1.1 : 0.6}
-                        className="text-ink-muted"
-                        // Without this the 2019 marks are only clickable on
-                        // their one-pixel ring: an unfilled shape takes no
-                        // pointer events inside it, so the hollow treatment
-                        // would quietly cost 180 picks their link.
-                        pointerEvents="all"
-                      >
-                        <title>{describe(point)}</title>
-                      </circle>
-                    </Link>
+                    // 2019's per-player scoring is a reconstruction, good
+                    // enough to plot but not to pass off as recorded — so its
+                    // picks are drawn hollow and the legend says why, rather
+                    // than being mixed in or dropped.
+                    <circle
+                      key={key}
+                      cx={cx}
+                      cy={cy}
+                      r={radius}
+                      fill={point.approximate ? "none" : colour}
+                      fillOpacity={0.45}
+                      stroke={colour}
+                      strokeOpacity={point.approximate ? 0.85 : 0.35}
+                      strokeWidth={point.approximate ? 1.1 : 0.6}
+                      className="text-ink-muted"
+                      // Without this the 2019 marks are only hoverable on
+                      // their one-pixel ring: an unfilled shape takes no
+                      // pointer events inside it, so the hollow treatment
+                      // would quietly cost 180 picks their popover.
+                      pointerEvents="all"
+                      {...popover.mark(key, point, cx, cy, describe(point))}
+                    />
                   );
                 })}
 
@@ -340,7 +343,7 @@ export const DraftScatter = ({ className }: { className?: string }) => {
                   className="text-ink-muted"
                   aria-hidden="true"
                 >
-                  Points for the drafter
+                  Points that season
                 </text>
               </>
             );
@@ -382,7 +385,9 @@ export const DraftScatter = ({ className }: { className?: string }) => {
         season has been played, so {years[years.length - 1]} is the last one
         here. 2019&rsquo;s per-player scores are a reconstruction rather than a
         record — good enough to plot, so they are drawn hollow rather than
-        quietly mixed in. Every dot is a link to that player.
+        quietly mixed in. Hover a dot for the pick; click it to keep it open,
+        with the trade if there was one and links to the player, the manager
+        and that draft.
       </p>
     </div>
   );
