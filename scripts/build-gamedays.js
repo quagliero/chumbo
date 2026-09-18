@@ -4,7 +4,8 @@
  *
  * For every week of a season, every player on a Chumbo roster that week gets
  * his real stat line — "22/31, 287 yds, 2 TD, 1 INT · 3 car, 12 yds" — and the
- * NFL team he played for, written to `src/data/<year>/gamedays/<week>.json`.
+ * NFL team he played for, written to `src/data/<year>/weeks/<week>.json`,
+ * with the week's scoring timelines (L2) beside them.
  *
  * The source is nflverse's play-by-play (github.com/nflverse/nflverse-data,
  * CC-BY 4.0, credited on the site), ~18 MB a season, read from NFLVERSE_DIR
@@ -180,11 +181,22 @@ const scoreWeek = (plays, scoring) => {
     teams.set(teamCode, (teams.get(teamCode) ?? 0) + 1);
   };
   const points = new Map();
-  const events = [];
+  // L2: every scoring moment, one per player per play — a 40-yard touchdown
+  // catch is one moment worth 10, not a 4 and a 6 — with the play it came
+  // from, for the week's timelines.
+  const moments = new Map();
+  let current = null;
   const add = (time, key, pts, why) => {
     if (!key || !pts) return;
     points.set(key, (points.get(key) ?? 0) + pts);
-    events.push([time, key, pts, why]);
+    const id = `${current?.id ?? time}|${key}`;
+    const moment = moments.get(id);
+    if (moment) {
+      moment.pts += pts;
+      moment.whys.push(why);
+    } else {
+      moments.set(id, { time, key, pts, whys: [why], play: current });
+    }
   };
 
   const finals = new Map();
@@ -197,7 +209,7 @@ const scoreWeek = (plays, scoring) => {
 
   const ordered = [...plays].sort(
     (a, b) =>
-      (a.time_of_day || "9").localeCompare(b.time_of_day || "9") ||
+      (Date.parse(a.time_of_day) || Infinity) - (Date.parse(b.time_of_day) || Infinity) ||
       a.game_id.localeCompare(b.game_id) ||
       num(a.play_id) - num(b.play_id)
   );
@@ -205,6 +217,12 @@ const scoreWeek = (plays, scoring) => {
   for (const p of ordered) {
     const t = p.time_of_day;
     const game = p.game_id;
+    current = {
+      id: `${game}|${p.play_id}`,
+      desc: p.desc,
+      game: `${team(p.away_team)} @ ${team(p.home_team)}`,
+      quarter: p.qtr,
+    };
     finals.set(game, {
       home: team(p.home_team),
       away: team(p.away_team),
@@ -411,6 +429,12 @@ const scoreWeek = (plays, scoring) => {
       [f.away, f.homeScore, f.home],
     ]) {
       const allowed = opponentScore - (notAllowed.get(`${game}|${opponent}`) ?? 0);
+      current = {
+        id: `${game}|final|${side}`,
+        desc: `Final: ${f.away} ${f.awayScore}, ${f.home} ${f.homeScore}. ${side} allowed ${allowed} for fantasy.`,
+        game: `${f.away} @ ${f.home}`,
+        quarter: "final",
+      };
       line(`DEF:${side}`).stats.pa = allowed;
       playedFor(`DEF:${side}`, side);
       // Bands in most seasons; 2020-21 took a tenth of a point per point.
@@ -423,7 +447,7 @@ const scoreWeek = (plays, scoring) => {
     }
   }
 
-  return { lines, points, events };
+  return { lines, points, moments: [...moments.values()] };
 };
 
 /* ---------------------------------------------------------------- output */
@@ -488,7 +512,7 @@ const buildSeason = (year, weeksWanted, ids) => {
     const found = byShortName.get(shortName(full));
     return found?.size === 1 ? [...found][0] : null;
   };
-  const outDir = path.join(seasonDir, "gamedays");
+  const outDir = path.join(seasonDir, "weeks");
   // Held until the season has passed its check: a season that fails leaves
   // the files already committed exactly as they were.
   const pending = new Map();
@@ -519,11 +543,13 @@ const buildSeason = (year, weeksWanted, ids) => {
     const matchups = readJson(matchupFile);
     if (!matchups.some((m) => (m.points ?? 0) > 0)) continue;
 
-    const { lines, points } = scoreWeek(plays.get(week), scoring);
+    const { lines, points, moments } = scoreWeek(plays.get(week), scoring);
     const players = {};
+    const timelines = {};
 
     for (const matchup of matchups) {
       const starters = new Set((matchup.starters ?? []).map(String));
+      timelines[matchup.roster_id] = timelineFor(matchup, moments, keyFor);
       for (const playerId of matchup.players ?? []) {
         const pid = String(playerId);
         if (!pid || pid === "0") continue;
@@ -576,7 +602,11 @@ const buildSeason = (year, weeksWanted, ids) => {
     const sorted = Object.fromEntries(
       Object.entries(players).sort(([a], [b]) => a.localeCompare(b))
     );
-    pending.set(week, JSON.stringify({ v: 1, players: sorted }) + "\n");
+    // One file a week (L1 + L2): the matchup page wants both, together.
+    pending.set(
+      week,
+      JSON.stringify({ v: 1, players: sorted, ...encodeTimelines(timelines) }) + "\n"
+    );
     report.weeks++;
   }
   report.write = () => {
@@ -595,6 +625,112 @@ const buildSeason = (year, weeksWanted, ids) => {
     }
   };
   return report;
+};
+
+/* ------------------------------------------------------------- timelines */
+
+/** A key play: a touchdown, or anything worth more than 5 to one starter. */
+const isKey = (moment) =>
+  moment.pts > 5 || moment.whys.some((why) => /TD$/.test(why));
+
+/** "(8:24) (Shotgun) 7-J.Brissett sacked…" → the clock, and the rest. */
+const splitDesc = (desc = "") => {
+  const match = desc.match(/^\((\d{1,2}:\d{2})\)\s*(.*)$/);
+  const text = (match ? match[2] : desc).replace(/^\((?:No Huddle, )?Shotgun\)\s*/, "");
+  return { clock: match?.[1] ?? "", text: text.length > 220 ? `${text.slice(0, 217)}…` : text };
+};
+
+/**
+ * One team's week (L2): its starters' scoring moments in order, each starter
+ * reconciled to Sleeper's number. Whatever the rebuild missed — a stat
+ * correction, the abandoned 2022 Bills–Bengals game — goes in after that
+ * starter's last moment as a correction, so the line ends exactly on the
+ * official score, and a correction is never drawn as a play.
+ */
+const timelineFor = (matchup, moments, keyFor) => {
+  const starters = (matchup.starters ?? []).map(String).filter((pid) => pid !== "0");
+  const events = [];
+  const lastTime = moments.reduce(
+    (latest, m) => (!latest || Date.parse(m.time) > Date.parse(latest) ? m.time : latest),
+    ""
+  );
+  starters.forEach((pid, index) => {
+    const key = keyFor(pid);
+    const mine = key ? moments.filter((m) => m.key === key) : [];
+    let total = 0;
+    for (const moment of mine) {
+      total += moment.pts;
+      events.push({ moment, index });
+    }
+    const official = matchup.players_points?.[pid] ?? 0;
+    const residual = round(official - total);
+    if (Math.abs(residual) >= 0.01) {
+      const at = mine.length ? mine[mine.length - 1].time : lastTime;
+      events.push({ moment: { time: at, pts: residual, whys: ["correction"] }, index, correction: true });
+    }
+  });
+  // By the clock, not the text: "…27Z" and "…27.5Z" sort the wrong way round
+  // as strings.
+  events.sort(
+    (a, b) => Date.parse(a.moment.time) - Date.parse(b.moment.time) || a.index - b.index
+  );
+  // Sixteen NFL.com-era team scores are not quite the sum of their starters.
+  // The team score is the official one, so it gets the last word: a team
+  // correction (starter -1) at the end of the week.
+  const startersTotal = starters.reduce(
+    (sum, pid) => sum + (matchup.players_points?.[pid] ?? 0),
+    0
+  );
+  const teamResidual = round((matchup.points ?? 0) - startersTotal);
+  if (Math.abs(teamResidual) >= 0.01) {
+    events.push({
+      moment: { time: lastTime, pts: teamResidual, whys: ["correction"] },
+      index: -1,
+      correction: true,
+    });
+  }
+  return { starters, events };
+};
+
+/**
+ * The week's timelines. Times are seconds from the week's first moment,
+ * points in hundredths — integers, so the file is small and the sums exact:
+ *
+ *   { t0, teams: { [rosterId]: { s: [starter ids], e: [[dt, starter, pts100, extra?]] } } }
+ *
+ * `starter` is -1 for a team-level correction (see `timelineFor`).
+ * `extra` is 1 for a correction, or a key play's details:
+ * { w: what scored, d: the play, g: "LV @ KC", q: quarter, c: clock }.
+ */
+const encodeTimelines = (timelines) => {
+  const times = Object.values(timelines).flatMap((t) => t.events.map((e) => e.moment.time));
+  const t0 = times.length ? Math.min(...times.map((t) => Date.parse(t))) : 0;
+  const teams = {};
+  for (const [rosterId, { starters, events }] of Object.entries(timelines)) {
+    teams[rosterId] = {
+      s: starters,
+      e: events.map(({ moment, index, correction }) => {
+        const row = [
+          Math.round((Date.parse(moment.time) - t0) / 1000),
+          index,
+          Math.round(moment.pts * 100),
+        ];
+        if (correction) row.push(1);
+        else if (isKey(moment)) {
+          const { clock, text } = splitDesc(moment.play?.desc);
+          row.push({
+            w: [...new Set(moment.whys)].join(", "),
+            d: text,
+            g: moment.play?.game ?? "",
+            q: moment.play?.quarter ?? "",
+            c: clock,
+          });
+        }
+        return row;
+      }),
+    };
+  }
+  return { t0: Math.round(t0 / 1000), teams };
 };
 
 /* ------------------------------------------------------------------ main */

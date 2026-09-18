@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
-import type { GamedayFile } from "@/data/gamedays";
+import type { WeekFile } from "@/data/gamedays";
 import { PINNED_THROUGH } from "@/utils/__tests__/helpers";
 import { isWeekCompleted } from "@/utils/weekUtils";
 
@@ -16,13 +16,13 @@ import { isWeekCompleted } from "@/utils/weekUtils";
  * stop adding up here, on every machine, without anyone downloading 250 MB.
  */
 
-const files = import.meta.glob<GamedayFile>("../*/gamedays/*.json", {
+const files = import.meta.glob<WeekFile>("../*/weeks/*.json", {
   eager: true,
   import: "default",
 });
 
 const weekFile = (year: number, week: number) =>
-  files[`../${year}/gamedays/${week}.json`];
+  files[`../${year}/weeks/${week}.json`];
 
 const sides = (year: number, week: number) =>
   (seasons[year].matchups as Record<string, typeof seasons[number]["matchups"]["1"]>)[
@@ -62,7 +62,7 @@ describe("the box scores", () => {
 
   it("are only about players on a Chumbo roster that week", () => {
     for (const [file, gameday] of Object.entries(files)) {
-      const [, year, week] = file.match(/\/(\d{4})\/gamedays\/(\d+)\.json$/)!;
+      const [, year, week] = file.match(/\/(\d{4})\/weeks\/(\d+)\.json$/)!;
       const rostered = new Set(
         sides(Number(year), Number(week)).flatMap((s) => (s.players ?? []).map(String))
       );
@@ -81,7 +81,7 @@ describe("the box scores", () => {
     let exact = 0;
     for (const year of finished) {
       for (const [file, gameday] of Object.entries(files)) {
-        const match = file.match(/\/(\d{4})\/gamedays\/(\d+)\.json$/)!;
+        const match = file.match(/\/(\d{4})\/weeks\/(\d+)\.json$/)!;
         if (Number(match[1]) !== year) continue;
         for (const side of sides(year, Number(match[2]))) {
           (side.starters ?? []).forEach((playerId, index) => {
@@ -99,5 +99,30 @@ describe("the box scores", () => {
     }
     expect(starters).toBeGreaterThan(15000);
     expect(exact / starters).toBeGreaterThan(0.995);
+  });
+});
+
+const timelines = files;
+
+describe("the timelines (L2)", () => {
+  it("end every team exactly on Sleeper's score, in order, key plays described", () => {
+    for (const [file, timeline] of Object.entries(timelines)) {
+      const [, year, week] = file.match(/\/(\d{4})\/weeks\/(\d+)\.json$/)!;
+      for (const side of sides(Number(year), Number(week))) {
+        const team = timeline.teams[String(side.roster_id)];
+        expect(team, `${file} ${side.roster_id}`).toBeDefined();
+        const total = team.e.reduce((sum, [, , pts]) => sum + pts, 0) / 100;
+        expect(total, `${file} ${side.roster_id}`).toBeCloseTo(side.points ?? 0, 1);
+        for (let i = 1; i < team.e.length; i++) {
+          expect(team.e[i][0]).toBeGreaterThanOrEqual(team.e[i - 1][0]);
+        }
+        for (const event of team.e) {
+          const extra = event[3];
+          if (typeof extra === "object") {
+            expect(extra.d.length, `${file} key play`).toBeGreaterThan(0);
+          }
+        }
+      }
+    }
   });
 });

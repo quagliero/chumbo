@@ -1,37 +1,31 @@
 import { useEffect, useState } from "react";
-import {
-  getGameday,
-  loadGameday,
-  type GamedayFile,
-} from "@/data/gamedays";
+import { getWeek, loadWeek, type WeekFile } from "@/data/gamedays";
 
 /**
- * A week's box scores (L1), without suspending: `undefined` while they load,
+ * A week of the NFL (L1, L2) without suspending: `undefined` while it loads,
  * `null` for a week that has none, the file once it is here.
  *
- * Not Suspense on purpose. The stat lines decorate a score sheet that is
- * already complete without them, so the page renders at once and the lines
- * arrive a moment later; a failed download leaves the page as it always was
- * rather than taking it down.
+ * Not Suspense on purpose. The stat lines and the chart decorate a score sheet
+ * that is complete without them, so the page renders at once and they arrive
+ * a moment later; a failed download leaves the page as it always was rather
+ * than taking it down. The box scores and the timeline are one file, so the
+ * two callers on a matchup page share one download.
  */
-export const useGameday = (
-  year: number,
-  week: number
-): GamedayFile | null | undefined => {
-  const [file, setFile] = useState(() => getGameday(year, week));
+export const useWeek = (year: number, week: number): WeekFile | null | undefined => {
+  const [file, setFile] = useState(() => getWeek(year, week));
 
   useEffect(() => {
     let live = true;
-    const ready = getGameday(year, week);
+    const ready = getWeek(year, week);
     if (ready !== undefined) {
       setFile(ready);
       return;
     }
     setFile(undefined);
-    loadGameday(year, week)
+    loadWeek(year, week)
       .then((loaded) => live && setFile(loaded))
       .catch((error) => {
-        console.warn("Box scores unavailable:", error);
+        console.warn("The week's box scores are unavailable:", error);
         if (live) setFile(null);
       });
     return () => {
@@ -41,3 +35,8 @@ export const useGameday = (
 
   return file;
 };
+
+/** The box scores (L1). */
+export const useGameday = useWeek;
+/** The scoring timelines (L2). */
+export const useTimeline = useWeek;

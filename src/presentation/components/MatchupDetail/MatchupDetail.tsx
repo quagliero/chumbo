@@ -1,3 +1,4 @@
+import { lazy, Suspense, useMemo } from "react";
 import { useFormatter } from "use-intl";
 import { Link } from "react-router-dom";
 import { ExtendedMatchup } from "@/types/matchup";
@@ -18,6 +19,8 @@ import { interimManager } from "@/utils/interimManagers";
 import { avatarDataUri } from "./shareAvatar";
 import { StatLine } from "./StatLine";
 import { useGameday } from "@/hooks/useGameday";
+
+const GameFlowSection = lazy(() => import("./GameFlowSection"));
 import { getManagerAccent } from "@/domain/managerColors";
 
 interface MatchupDetailProps {
@@ -124,6 +127,16 @@ const MatchupDetail = ({
       streak: team2Streak,
     },
   ];
+
+  // L2's chart speaks in managers' names, the way the week recap does.
+  const rosterIds = useMemo(
+    () => [team1Data.roster_id, team2Data.roster_id] as const,
+    [team1Data.roster_id, team2Data.roster_id]
+  );
+  const flowNames = [
+    teams[0].manager?.name ?? teams[0].name,
+    teams[1].manager?.name ?? teams[1].name,
+  ] as const;
 
   return (
     <div className="container mx-auto space-y-6">
@@ -326,6 +339,17 @@ const MatchupDetail = ({
           </div>
         </div>
       </div>
+
+      {/* L2: both scores through the week, with the key plays. Lazy, so the
+          chart code only arrives with a matchup that has a timeline. */}
+      <Suspense fallback={null}>
+        <GameFlowSection
+          year={year}
+          week={week}
+          rosterIds={rosterIds}
+          names={flowNames}
+        />
+      </Suspense>
 
       {/* Score sheets */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

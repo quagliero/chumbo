@@ -1463,7 +1463,27 @@ Every starter's real stat line on the matchup page — "22 car, 104 yds, 1 TD ·
 the old A1d gap (players shown on today's team in old draft boards) closes
 without a separate job.
 
-### L2 · How the game unfolded `L`
+### L2 · How the game unfolded `L` — chart done; records and card to come
+
+> **The chart (2026-09-18).** Every matchup page from 2012 on has "How the
+> week unfolded": both scores Thursday night to Monday night, one step per
+> scoring moment, on a clock with the dead hours squeezed out and the week
+> named in the NFL's own slots (Thursday night, Sunday early and late, Sunday
+> night, Monday night; TNF/Sun/Late/SNF/MNF on a phone). Above it, one line:
+> the lead changes and when, and through whom, the winner went ahead for good
+> ("Four lead changes. sol went ahead for good on Monday night, when Davante
+> Adams scored."). **Key plays** — a touchdown, or anything worth more than 5
+> to one starter — are dots that open the play on hover or tap: the player
+> and his points, the slot, the game and clock, the NFL's own description,
+> what scored and the score after it. The timelines come from
+> `build-gamedays` with the box scores, one file per week (~10 kB gzipped),
+> every team ending exactly on Sleeper's score: a starter's stat correction
+> goes in after his last play, and sixteen NFL.com-era team scores that are
+> not quite their starters' sum get a team correction, never drawn as a play.
+>
+> **Still to do:** the records ("biggest comeback", "won it on Monday night",
+> "latest decisive play" — `buildGameFlow` already measures the comeback) and
+> the share card.
 
 On every matchup page: both teams' scores through the weekend, lead changes
 marked, the play that decided it named ("won it at 21:42 on Monday, Kelce

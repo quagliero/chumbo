@@ -81,7 +81,7 @@ scripts/
 | `transactions/<week>.json` | `/league/{id}/transactions/{week}` | **2020+ only.** 2012–2019 used a single legacy `transactions.json` (grouped by `leg`). |
 | `winners_bracket.json` / `losers_bracket.json` | `/league/{id}/winners_bracket` etc. | End of season. |
 | `schedule.json` | `/league/{id}/matchups/{week}` for every regular season week | `{week: [{matchup_id, roster_id}]}`. Written by any fetch while the season is in progress. Only Playoff Odds reads it, to simulate unplayed weeks (so other pages never see 0-point future games). |
-| `gamedays/<week>.json` | derived by `yarn build-gamedays` from nflverse play-by-play | Box scores (L1): every rostered player's stat line and NFL team that week, keyed by Sleeper id. Not a part of `seasons` — `src/data/gamedays.ts` loads one week at a time, each its own ~2 kB chunk. |
+| `weeks/<week>.json` | derived by `yarn build-gamedays` from nflverse play-by-play | Box scores (L1) — every rostered player's stat line and NFL team that week, by Sleeper id — and each team's scoring timeline (L2). Not a part of `seasons`: `src/data/gamedays.ts` loads one week at a time, each its own ~10 kB chunk. |
 | `players.delta.json` (optional) | derived by `yarn build-players` | Per-season overlay: `{playerId: {t: team, p: position}}` for players whose team or position that year differed from the base dictionary. ~8KB. A season without one resolves entirely to the base. |
 
 ### How data is loaded
@@ -268,7 +268,8 @@ of simulations after one game.
 `yarn build-gamedays` reads nflverse's play-by-play (CC-BY 4.0, credited on
 the matchup page), ~18 MB a season, from `NFLVERSE_DIR` (or `.cache/nflverse`
 with `--download`; never committed), and writes each week's box scores to
-`src/data/<year>/gamedays/`. It also rebuilds every starter's fantasy points
+`src/data/<year>/weeks/`, with each team's scoring timeline beside them
+(L2, below). It also rebuilds every starter's fantasy points
 play by play with that season's scoring and compares them with Sleeper's:
 99.8% of 20,996 player-starts across 2012–2025 match to the hundredth. It
 writes a season only if its players pass 97%, so a broken join cannot be
@@ -285,6 +286,18 @@ It also writes `scripts/data/season-teams/<year>.json`, each rostered
 player's team that season, which `yarn build-players` turns into that
 season's overlay where no raw dump exists — so a 2016 draft pick shows his
 2016 team, not today's (the old A1d gap). Run `build-players` after it.
+
+**Timelines (L2).** The same pass keeps every scoring moment — one per player
+per play, with its wall-clock time — and writes each team's starters' moments
+into the week's file, reconciled to Sleeper: a starter's leftover (a stat
+correction) goes in after his last moment, and a team whose official score is
+not quite its starters' sum (sixteen NFL.com-era weeks) gets a team correction
+at the end, so every line ends exactly on the official score. Key plays — a
+touchdown, or anything worth more than 5 to one starter — carry the play's
+description. `utils/gameFlow.ts` turns a file into the chart on the matchup
+page ("How the week unfolded"): both scores through the week on a clock with
+the dead hours squeezed out, slots named in US Eastern time, lead changes, the
+moment the winner went ahead for good, and a dot per key play that opens it.
 
 The weekly update (J1) runs it for the live season, non-fatally.
 `gamedays.test.ts` re-adds every skill player's line into points and checks
