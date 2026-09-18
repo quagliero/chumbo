@@ -1377,10 +1377,42 @@ so each team's score across the weekend, Thursday night to Monday night.
   like matchups. The raw files are never committed. nflverse data is CC-BY,
   so the site credits it.
 
-### L0 · Spike `S`
+### L0 · Spike `S` — 2025 done: **go**; 2018 waiting on its download
 
 Rebuild one 2025 matchup and one 2018 matchup play by play; check the totals
 land within a point of Sleeper's; draw the curve. Go/no-go on L1–L3.
+
+> **2025 (2026-09-18).** Every starter of every regular-season week, not one
+> matchup: **1,828 of 1,834 rebuilt to the hundredth of a point, 1,831 within
+> a point**, using the season's own `scoring_settings` and the nflverse
+> play-by-play (`scripts/spikes/l0/rebuild.py`). The ids join completely:
+> Sleeper → gsis through DynastyProcess, backed by `player-id-map.json`, with
+> nothing unmapped. The rules that had to be found, all now in the script:
+>
+> - **Points allowed is not the final score.** Sleeper subtracts 6 for each
+>   defensive touchdown the opponent scored (not the conversion after it) and
+>   2 for each safety. Kick and punt return touchdowns, a blocked field goal
+>   run back included, still count. This was all six points-allowed misses.
+> - **A muffed kick recovered by the kicking team** is a special-teams fumble
+>   recovery for that team's D/ST. nflverse records the kicking side as the
+>   offence on a punt, so it has to be looked for separately.
+> - **The last three are not rules**: nflverse's own weekly stat lines agree
+>   with the rebuild and Sleeper differs by a correction (Benson 10 yards,
+>   Williams 12.5 passing yards, Hurts one point). Reconciliation absorbs
+>   them — each starter's residual goes in at the end of their game, so every
+>   curve ends exactly on the official score.
+>
+> **The curves work** (`scripts/spikes/l0/curve.py`): each play's UTC wall
+> clock, dead hours squeezed out, the week labelled in the NFL's own slots
+> (Thursday night, Sun early/late, Sunday night, Monday night). What it
+> finds in 2025 alone: 13 games not decided until Monday night; week 1's
+> htc game with 17 lead changes; week 2's hadkiss–fin with 14, settled by
+> Mayfield on Monday night. Size, for L1: about 900 scoring events a week
+> for 108 starters — well under 1 MB a season once gzipped.
+>
+> **2018** needs `play_by_play_2018.csv.gz` (17.9 MB). Its scoring is a real
+> test of the rules above: no forced-fumble points, 2 a fumble recovery, 3
+> for a 40–49-yard field goal.
 
 ### L1 · Box scores `M`
 
