@@ -42,7 +42,24 @@ with gzip.open(f"{HERE}/play_by_play_{year}.csv.gz", "rt") as f:
     for row in csv.DictReader(f):
         if row["week"] == str(week) and row["season_type"] == "REG":
             plays.append(row)
-plays.sort(key=lambda r: (r["time_of_day"] or "9", r["game_id"], float(r["order_sequence"] or 0)))
+# About 1% of 2018's plays have no wall-clock time (2025 has none missing), 64
+# of them scoring. Dropping them lost whole field goals, so a play without a
+# time takes the time of the play before it in the same game — or after it,
+# at the start of a game.
+def seq(r):
+    try: return float(r["play_id"])
+    except: return 0.0
+plays.sort(key=lambda r: (r["game_id"], seq(r)))
+for i, r in enumerate(plays):
+    if r["time_of_day"] in ("", "NA"):
+        r["time_of_day"] = ""
+        if i and plays[i - 1]["game_id"] == r["game_id"]:
+            r["time_of_day"] = plays[i - 1]["time_of_day"]
+for i in range(len(plays) - 2, -1, -1):
+    r = plays[i]
+    if not r["time_of_day"] and plays[i + 1]["game_id"] == r["game_id"]:
+        r["time_of_day"] = plays[i + 1]["time_of_day"]
+plays.sort(key=lambda r: (r["time_of_day"] or "9", r["game_id"], seq(r)))
 
 def num(v):
     try: return float(v)
@@ -123,19 +140,21 @@ for p in plays:
     if d:
         if yes(p["sack"]): add(t, d, sc("sack"), "sack")
         if yes(p["interception"]): add(t, d, sc("int"), "INT")
-        if yes(p["fumble_lost"]) and fix(p["fumble_recovery_1_team"]) == defteam:
-            add(t, d, sc("fum_rec"), "fumble rec")
         if p["forced_fumble_player_1_team"] and fix(p["forced_fumble_player_1_team"]) == defteam:
             add(t, d, sc("ff"), "forced fumble")
         if yes(p["safety"]): add(t, d, sc("safe"), "safety")
         if yes(p["punt_blocked"]) or p["field_goal_result"] == "blocked" or p["extra_point_result"] == "blocked":
             add(t, d, sc("blk_kick"), "blocked kick")
         if yes(p["defensive_two_point_conv"]): add(t, d, sc("def_2pt"), "def 2pt")
-    # A muffed punt or kick recovered by the kicking side: nflverse has the
-    # kicking side in possession, so it is not the defteam above.
-    if (p["play_type"] in ("punt", "kickoff") and yes(p["fumble_lost"])
-            and fix(p["fumble_recovery_1_team"]) == posteam):
-        add(t, f"DEF:{posteam}", sc("def_st_fum_rec") or sc("fum_rec"), "muff recovered")
+    # A fumble recovery goes to whoever recovered, if it was not the side that
+    # fumbled. Not "the defteam": on a punt nflverse has the kicking side in
+    # possession, and a defender can fumble an interception back to the
+    # offence — Sleeper credits both recoveries to the recovering D/ST, and a
+    # team falling on its own muff is no recovery at all.
+    fumbler, recoverer = fix(p["fumbled_1_team"]), fix(p["fumble_recovery_1_team"])
+    if fumbler not in ("", "NA") and recoverer not in ("", "NA") and fumbler != recoverer:
+        kick = p["play_type"] in ("punt", "kickoff")
+        add(t, f"DEF:{recoverer}", (sc("def_st_fum_rec") if kick else 0) or sc("fum_rec"), "fumble rec")
     if yes(p["touchdown"]) and p["td_team"]:
         scorer = fix(p["td_team"])
         if p["play_type"] in ("kickoff", "punt") and scorer != fix(p["posteam"]) :

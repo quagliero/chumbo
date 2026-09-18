@@ -6432,7 +6432,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 295,
-    "digest": "754c-5043b7f573fc7-15d5525aad542c",
+    "digest": "7552-1b7dfc3ca3f9-10602cdcc57916",
     "head": [
       {
         "averageScore": 23.150958904109594,
@@ -6932,7 +6932,7 @@ exports[`getManagerStats > dataMode: combined > htc 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1746,
-    "digest": "3ddc4-188d7fbf6002e9-a11f48691d295",
+    "digest": "3ddca-19d66e769915b6-87de1f6d72f58",
     "head": [
       {
         "matchup_id": 1,
@@ -34429,7 +34429,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "managerName": "htc",
   "mostCappedPlayers": {
     "count": 283,
-    "digest": "7099-15570e0539b156-172423645efb6",
+    "digest": "709f-11123694b7a81e-156e21cc4fa45b",
     "head": [
       {
         "averageScore": 23.72153846153845,
@@ -34928,7 +34928,7 @@ exports[`getManagerStats > dataMode: regular > htc 1`] = `
   "thirdPlace": 2,
   "topPerformances": {
     "count": 1584,
-    "digest": "381c0-2ca9b3969e854-b11c1edffdc59",
+    "digest": "381c6-1af9e7d6851f06-164ce41e5581a3",
     "head": [
       {
         "matchup_id": 1,

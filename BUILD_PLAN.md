@@ -1377,7 +1377,7 @@ so each team's score across the weekend, Thursday night to Monday night.
   like matchups. The raw files are never committed. nflverse data is CC-BY,
   so the site credits it.
 
-### L0 · Spike `S` — 2025 done: **go**; 2018 waiting on its download
+### L0 · Spike `S` ✅ — **go**
 
 Rebuild one 2025 matchup and one 2018 matchup play by play; check the totals
 land within a point of Sleeper's; draw the curve. Go/no-go on L1–L3.
@@ -1410,9 +1410,33 @@ land within a point of Sleeper's; draw the curve. Go/no-go on L1–L3.
 > Mayfield on Monday night. Size, for L1: about 900 scoring events a week
 > for 108 starters — well under 1 MB a season once gzipped.
 >
-> **2018** needs `play_by_play_2018.csv.gz` (17.9 MB). Its scoring is a real
-> test of the rules above: no forced-fumble points, 2 a fumble recovery, 3
-> for a 40–49-yard field goal.
+> **2018 (2026-09-18): 1,403 of 1,404 starters exact**, all 13 regular-season
+> weeks, on 2018's own scoring (no forced-fumble points, 2 a fumble
+> recovery, 3 for a 40–49-yard field goal). Two more rules, and one data fix:
+>
+> - **About 1% of 2018's plays have no wall-clock time** (2025 has none
+>   missing), 64 of them scoring. Dropped, they took whole field goals with
+>   them; a timeless play now takes the time of the play before it.
+> - **A fumble recovery is the recovering team's**, whoever had the ball: a
+>   defender fumbling an interception back to the offence is a recovery for
+>   the offence's D/ST, and a team falling on its own muff is none.
+> - **"M Harris" in 2018 was the wrong player.** The NFL.com-era import
+>   matched him to Marcus Harris (1771), who did not play; the receiver in
+>   weeks 10–11 was Maurice Harris (3650). His points rebuild to the
+>   hundredth for Maurice and to 0 for Marcus. Corrected in
+>   `fix-player-ids.js` — the rebuild doubles as an audit of every lineup
+>   the NFL.com years imported, and L1 should report any starter that
+>   rebuilds to 0.
+> - The one miss left is Agholor (7 yards), unconfirmed without 2018's
+>   weekly stat file; 2025's three were Sleeper corrections.
+>
+> The 2018 curve reads as well as 2025's: week 6, sol 118.68–118.60 dix —
+> sol ahead all Sunday, level by Sunday night, three lead changes on Monday
+> night, settled by Davante Adams's last catch. The same week chris beat fin
+> 55.42–55.34, also on Monday night. Seven 2018 games were decided then.
+>
+> **Verdict: go on L1–L3.** The numbers match to the hundredth, the ids join,
+> the timeline is honest, and the stories are there.
 
 ### L1 · Box scores `M`
 

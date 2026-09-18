@@ -28,6 +28,19 @@ const DRY = process.argv.includes("--dry");
  */
 const CORRECTIONS = [
   {
+    from: "1771",
+    to: "3650",
+    years: [2018],
+    player: "Maurice Harris",
+    why:
+      "The NFL.com-era import matched \"M Harris\" to 1771, Marcus Harris " +
+      "(NYG, gsis 00-0028627), who did not play in 2018. The Washington " +
+      "receiver who did is Maurice Harris, 3650 (gsis 00-0032362). Found by " +
+      "L0's play-by-play rebuild: in 2018 week 10 the lineup's 5.6 points " +
+      "rebuild to exactly 5.6 for Maurice and to 0 for Marcus. Weeks 10 and " +
+      "11 are the only appearances.",
+  },
+  {
     from: "748",
     to: "4068",
     years: [2017, 2018],

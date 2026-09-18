@@ -17,7 +17,7 @@ players = json.load(open(f"{REPO}/src/data/players.json"))
 teams = [(name, v) for name, v in tl.items() if v["matchup_id"] == mid]
 assert len(teams) == 2, teams
 
-UK = timezone(timedelta(hours=1))  # BST during the early season
+UK = timezone.utc  # printed times are UTC; the chart uses the NFL slots below
 def when(iso):
     return datetime.fromisoformat(iso.replace("Z", "+00:00"))
 
@@ -73,7 +73,7 @@ print(f"{len(lead_changes)} lead changes")
 for t, who, sid, why in lead_changes:
     print(f"  {t.astimezone(UK):%a %H:%M} {who} ahead — {label(sid) if sid != 'adj' else 'correction'}, {why}")
 decided_at, who, sid, why, sa, sb = took_lead_for_good
-print(f"decided: {who} took the lead for good, {slot(decided_at)} ({decided_at.astimezone(UK):%a %H:%M} UK) — {label(sid)}, {why} ({sa:.1f}–{sb:.1f})")
+print(f"decided: {who} took the lead for good, {slot(decided_at)} ({decided_at.astimezone(UK):%a %H:%M} UTC) — {label(sid)}, {why} ({sa:.1f}–{sb:.1f})")
 
 # --- SVG: time axis with the dead hours squeezed out ---------------------------
 W, H, PAD = 1100, 420, 56
