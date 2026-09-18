@@ -52,7 +52,8 @@ src/
   data/                  # ALL league data lives here as committed JSON
     managers.json        # canonical manager identities (see below)
     players.json         # base NFL player dictionary (~670KB, 8 fields, minified)
-    index.ts             # aggregates every season via import.meta.glob (KEY FILE)
+    index.ts             # loads every season on demand via import.meta.glob (KEY FILE)
+    parts.ts             # which file is in which lazily-loaded part
     2012/ ... 2025/      # one folder per season
   domain/constants.ts    # YEARS[] and CURRENT_YEAR  <-- edit to add a season
   constants/fantasy.ts   # ValidYear union type      <-- edit to add a season
@@ -82,12 +83,55 @@ scripts/
 
 ### How data is loaded
 
-`src/data/index.ts` uses `import.meta.glob("./**/*.json", { eager: true })` to
-**auto-discover** every season JSON — there is **no manual import per season**.
-It only accepts years where `year >= 2012 && year <= CURRENT_YEAR`, so a season
-is invisible until `CURRENT_YEAR`/`YEARS` include it.
+`src/data/index.ts` **auto-discovers** every season's JSON with
+`import.meta.glob` — there is **no manual import per season**, and a season is
+invisible until `YEARS` includes it. Nothing is eager except `managers.json`
+(A2): every other file is a dynamic import, grouped by `manualChunks` into one
+chunk per season per **part**, and loaded when something asks for it.
 
-`leagueRules.ts` similarly globs `../data/*/league.json` and `../data/*/draft.json`.
+| Part | Chunk | Files |
+| ---- | ----- | ----- |
+| `core` | `core-<year>` | league, rosters, users, both brackets, schedule |
+| `draft` | `draft-<year>` | draft, picks |
+| `matchups` | `matchups-<year>` | `matchups/*.json` |
+| transactions | `transactions-<year>` | `transactions/*.json`, legacy `transactions.json` |
+| players | `players` | `players.json` + every `players.delta.json` |
+
+`src/data/parts.ts` is the one list of which file is in which part; the loader
+and `vite.config.ts` both read it. A new kind of per-season file has to go in
+it — `loader.test.ts` fails on a file no part claims. The files stay where the
+fetch scripts write them, so `yarn fetch-latest` needs no extra step: the next
+build picks the new week up, and only the 2026 chunks change name.
+
+**Reading data.** `seasons[year]` is a synchronous view whose every field
+(except `transactions`, which A2a left unguarded) THROWS `DataNotLoadedError`
+until its part has loaded — and so do `getPlayer` / `getPlayers`. It never
+answers with an empty array: that would render a plausible, wrong page. The
+error is also a thenable, so a read during render suspends to the route's
+`<Suspense>`; outside render (a click handler, a script) it fails with the name
+of the field. So:
+
+- **In a component**, ask for what the page reads with `useDataLoaded` (or
+  `useSeasonData` / `useAllSeasons`) in `src/hooks/useSeasonData.ts`, all in one
+  call so it arrives in one round trip. A read you forgot suspends and loads
+  that part for every season — correct, one step slower.
+- **Outside render**, `await loadSeasons(years)` / `loadSeasonParts` /
+  `loadTransactions` / `loadPlayers` first. Node consumers (the test setup,
+  `build-aggregates`, `prerender-og`) `await loadAllSeasons()`.
+- **Never read season data at module top level.** It throws at import and takes
+  the route with it. `importTime.test.ts` imports every module cold to catch it.
+- **Never wrap a read in a try/catch** that could swallow the error — that is
+  a silently missing season.
+
+`routeLoads.test.ts` server-renders pages from a cold loader and asserts which
+parts they load: `/` loads every season's `core` and nothing else,
+`/seasons/2014/standings` loads 2014 plus 2012-13's `core` (the champion card
+counts earlier titles). Update it deliberately if a page's needs change.
+
+**Caching.** Chunk names are content hashes, and `public/_headers` gives
+`/assets/*` a one-year immutable `Cache-Control` at Netlify, so a returning
+visitor fetches only what changed. Do not put season data under `public/`:
+unhashed files cannot be cached like that.
 
 ### managers.json
 
@@ -206,6 +250,9 @@ Three things to know:
   the app at runtime; these PNGs are only ever fetched by crawlers, `dist/` is
   gitignored, and every `fetch-latest` would rewrite them — tens of MB of binary
   churn for no reader.
+- **`public/_redirects` also 404s a missing `/assets/*` file** (a stale
+  tab asking for an old deploy's chunk). Without it the catch-all answered
+  with `index.html` and a 200, which `_headers` would cache for a year.
 - **It works because `public/_redirects` has no `!`.** The rule is
   `/*  /index.html  200`, and Netlify serves an existing file in preference to a
   non-forced redirect, so `/managers/thd` gets its own prerendered page while

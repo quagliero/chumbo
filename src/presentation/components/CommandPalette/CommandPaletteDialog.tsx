@@ -9,6 +9,8 @@ import {
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useRandomMatchup } from "@/presentation/components/RandomMatchup/useRandomMatchup";
+import { YEAR_NUMBERS } from "@/domain/constants";
+import { useDataLoaded } from "@/hooks/useSeasonData";
 import { CommandItem, CommandKind, searchCommands } from "./commands";
 import { fuzzyPositions, normalize, tokenize } from "./fuzzy";
 
@@ -76,6 +78,11 @@ interface CommandPaletteDialogProps {
 }
 
 const CommandPaletteDialog = ({ onClose }: CommandPaletteDialogProps) => {
+  // The index is every season's week count (from each league file, part of
+  // its core) and every player, built on the first search. Neither is in the
+  // bundle since A2b, so fetch both at once, now, rather than let the index
+  // discover them one after the other.
+  useDataLoaded({ years: YEAR_NUMBERS, parts: ["core"], players: true });
   const navigate = useNavigate();
   const { roll } = useRandomMatchup();
   const [query, setQuery] = useState("");

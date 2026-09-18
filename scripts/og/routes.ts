@@ -178,8 +178,16 @@ const noteFor = (
 /** A card about one manager in one season takes a note about either. */
 const SEASON_SCOPES = ["manager", "season"];
 
-/** Seasons that have actually been completed, per the winners bracket. */
-const completed = new Set(completedSeasons());
+/**
+ * Seasons that have actually been completed, per the winners bracket.
+ *
+ * Worked out on first use, not at import: the brackets are loaded on demand
+ * (A2b), and at import time `prerender-og.ts` has not yet awaited
+ * `loadAllSeasons()`.
+ */
+let completed: Set<number> | null = null;
+const isCompleted = (year: number): boolean =>
+  (completed ??= new Set(completedSeasons())).has(year);
 
 /** Weeks with a scored game, which is what "has this season started" means. */
 const hasPlayedGames = (year: number): boolean =>
@@ -215,7 +223,7 @@ const seasonRoutes = (): OgRoute[] =>
   [...YEARS]
     .sort((a, b) => b - a)
     .map((year) => {
-      const isComplete = completed.has(year);
+      const isComplete = isCompleted(year);
       const played = hasPlayedGames(year);
       const leaderRosterId = played
         ? getFinalStandings(year).find((s) => s.position === 1)?.rosterId

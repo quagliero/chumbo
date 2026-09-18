@@ -251,6 +251,7 @@ export const buildScoreHeatmap = (managerId: string): ScoreHeatmap => {
 
 /** The grid, suspended until every season's matchups have loaded (A2a). */
 export const useScoreHeatmap = (managerId: string): ScoreHeatmap => {
-  useAllSeasons();
+  // Names no players, so it does not wait for the dictionary (A2b).
+  useAllSeasons({ players: false });
   return useMemo(() => buildScoreHeatmap(managerId), [managerId]);
 };

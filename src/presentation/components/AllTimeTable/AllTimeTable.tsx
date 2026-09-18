@@ -2,22 +2,23 @@ import { useFormatter } from "use-intl";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "@/data";
-import { useAllSeasons } from "@/hooks/useSeasonData";
+import { getActiveOwnerIds } from "@/utils/activeOwners";
+import { useDataLoaded } from "@/hooks/useSeasonData";
+import { YEAR_NUMBERS } from "@/domain/constants";
 import { getCumulativeStandings, TeamStats } from "@/utils/standings";
 import { DataTable } from "../Table";
 import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
-// Get the most recent season's active teams
-const mostRecentSeason = Object.entries(seasons).sort(
-  (a, b) => Number(b[0]) - Number(a[0])
-)[0][1];
-const activeTeamIds = new Set(
-  mostRecentSeason.rosters.map((roster) => roster.owner_id)
-);
-
 const AllTimeTable = () => {
-  // A2a: the matchups are a lazy chunk now; suspend until they are in.
-  useAllSeasons();
+  // The landing page. Cumulative standings read every season's rosters,
+  // users, brackets and league status — the "core" part — and nothing else:
+  // not a matchup, not a pick, not a player (A2b). Asking for exactly that is
+  // 107 kB of data gzipped on a first visit, where it was 562 kB: the whole
+  // base-data chunk, the player dictionary and every season's matchups. If
+  // something below ever does read a matchup, the read suspends and fetches
+  // it (see `DataNotLoadedError`), so getting this wrong costs a round trip,
+  // never a wrong table.
+  useDataLoaded({ years: YEAR_NUMBERS, parts: ["core"] });
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const [showTiers, setShowTiers] = useState(false);
@@ -45,7 +46,7 @@ const AllTimeTable = () => {
   const filteredData = useMemo(() => {
     const data =
       showOnlyActiveTeams || showTiers
-        ? stats.filter((team) => activeTeamIds.has(team.owner_id))
+        ? stats.filter((team) => getActiveOwnerIds().has(team.owner_id))
         : stats;
 
     // Sort by points for for tier coloring

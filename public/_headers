@@ -1,0 +1,15 @@
+# Netlify response headers. See CLAUDE.md, "How data is loaded".
+#
+# Everything under /assets/ is Vite's build output and is named by a hash of
+# its content, so a file at a given URL never changes: a new build that
+# changes a file gives it a new name. That makes it safe to cache for a year
+# without revalidating, which is what lets a second visit load a season's
+# data with no network request at all (A2b). Netlify's default is
+# `max-age=0, must-revalidate` — a round trip per file per visit, even when
+# the answer is always "not modified".
+#
+# Nothing else gets this. index.html and the prerendered pages must be
+# revalidated so a deploy is seen, and public/data/all-time.json is not
+# hashed and changes with every fetch.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

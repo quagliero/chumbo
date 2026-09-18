@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { players, seasons } from "@/data";
+import { getPlayers, seasons } from "@/data";
 import { legacyPlayers } from "@/data/legacyPlayers";
 import managers from "@/data/managers.json";
 import { CURRENT_YEAR, YEAR_NUMBERS, YEARS } from "@/domain/constants";
@@ -565,7 +565,7 @@ describe("legacy name keys", () => {
       }
     }
     const idsByName = new Map<string, string[]>();
-    for (const [id, player] of Object.entries(players)) {
+    for (const [id, player] of Object.entries(getPlayers())) {
       const key = norm(player.full_name ?? "");
       if (key) idsByName.set(key, [...(idsByName.get(key) ?? []), id]);
     }

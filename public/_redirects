@@ -1,2 +1,11 @@
-/*    /index.html   200
+# A missing build asset is a 404, never the app shell. Only a stale tab asks
+# for one — an old deploy's chunk name — and without this line the catch-all
+# below answered it with index.html and a 200, which `_headers` then told the
+# browser to keep for a year under a JavaScript URL. Not forced (no `!`), so
+# every asset that exists is still served first.
+/assets/*  /404.html  404
 
+# The SPA fallback. Deliberately NOT forced: Netlify serves an existing file in
+# preference to a non-forced rule, which is what lets the prerendered link
+# preview pages (G6) exist at all. See CLAUDE.md, "Link previews (G6)".
+/*    /index.html   200

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
+import { useDataLoaded } from "@/hooks/useSeasonData";
 import { getFinalStandings } from "@/utils/finalStandings";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import managers from "@/data/managers.json";
@@ -33,6 +34,9 @@ export interface RibbonSeries {
  * line sloping in from a season they did not play.
  */
 export const usePowerRibbon = (years: readonly number[] = YEAR_NUMBERS) => {
+  // Final standings are brackets and rosters: every season's core, fetched in
+  // one go rather than discovered a season at a time by the reads (A2b).
+  useDataLoaded({ years, parts: ["core"] });
   return useMemo(() => {
     const byManager = new Map<string, (RibbonPoint | null)[]>();
     for (const manager of managers) byManager.set(manager.id, years.map(() => null));

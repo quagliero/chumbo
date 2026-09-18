@@ -11,7 +11,7 @@
  * first use rather than at import time.
  */
 
-import { managers, players, seasons } from "@/data";
+import { getPlayers, managers, seasons } from "@/data";
 import { CURRENT_YEAR, YEARS } from "@/domain/constants";
 import { getCompletedWeek } from "@/utils/weekUtils";
 import { fuzzyScore, normalize, tokenize } from "./fuzzy";
@@ -237,7 +237,7 @@ const buildH2H = (): IndexedItem[] => {
 };
 
 const buildPlayers = (): IndexedItem[] =>
-  Object.entries(players).map(([playerId, player]) => {
+  Object.entries(getPlayers()).map(([playerId, player]) => {
     const name =
       player.full_name ||
       `${player.first_name ?? ""} ${player.last_name ?? ""}`.trim() ||

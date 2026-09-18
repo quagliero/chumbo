@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
-import { players } from "@/data";
+import { getPlayers } from "@/data";
 import { legacyPlayers } from "@/data/legacyPlayers";
 import { PlayerSearchResult } from "@/presentation/components/Players";
 
@@ -29,7 +29,7 @@ export const searchPlayers = (term: string): PlayerSearchResult[] => {
   // The base dictionary is the union of every snapshot we have ever held, so it
   // is already the full search corpus. Search has no season context, so results
   // carry each player's most recent team.
-  Object.entries(players).forEach(([playerId, player]) => {
+  Object.entries(getPlayers()).forEach(([playerId, player]) => {
     const fullName =
       player.full_name ||
       `${player.first_name || ""} ${player.last_name || ""}`.trim();

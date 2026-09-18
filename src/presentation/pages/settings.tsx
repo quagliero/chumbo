@@ -7,8 +7,13 @@ import {
   getScoringChanges,
 } from "../../utils/leagueRules";
 import { Card } from "@/presentation/components/Card";
+import { YEAR_NUMBERS } from "@/domain/constants";
+import { useDataLoaded } from "@/hooks/useSeasonData";
 
 const Settings = () => {
+  // Every season's league file (its core) and draft file, and nothing else:
+  // no matchups, no players (A2b).
+  useDataLoaded({ years: YEAR_NUMBERS, parts: ["core", "draft"] });
   const rules = getLeagueRules();
   const commonScoringSettings = getCommonScoringSettings(rules);
   const manualChanges = getManualHistoricalChanges();

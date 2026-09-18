@@ -2,6 +2,7 @@ import { useFormatter } from "use-intl";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useState, useMemo } from "react";
 import { seasons } from "@/data";
+import { getActiveOwnerIds } from "@/utils/activeOwners";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup } from "@/types/matchup";
@@ -17,14 +18,6 @@ import { CURRENT_YEAR } from "@/domain/constants";
 import { DataTable } from "../Table";
 import { ManagerIdentity } from "@/presentation/components/ManagerIdentity";
 
-// Get the most recent season's active teams
-const mostRecentSeason = Object.entries(seasons).sort(
-  (a, b) => Number(b[0]) - Number(a[0])
-)[0][1];
-const activeTeamIds = new Set(
-  mostRecentSeason.rosters.map((roster) => roster.owner_id.toString())
-);
-
 interface AllTimeBreakdownStats {
   owner_id: string;
   team_name: string;
@@ -37,7 +30,8 @@ interface AllTimeBreakdownStats {
 
 const AllTimeBreakdown = () => {
   // A2a: the matchups are a lazy chunk now; suspend until they are in.
-  useAllSeasons();
+  // Names no players, so it does not wait for the dictionary (A2b).
+  useAllSeasons({ players: false });
   const [showOnlyActiveTeams, setShowOnlyActiveTeams] = useState(false);
   const [selectedYears, setSelectedYears] = useState<number[]>([]);
   const { number } = useFormatter();
@@ -133,7 +127,7 @@ const AllTimeBreakdown = () => {
 
   const filteredData = useMemo(() => {
     const data = showOnlyActiveTeams
-      ? stats.filter((team) => activeTeamIds.has(team.owner_id))
+      ? stats.filter((team) => getActiveOwnerIds().has(team.owner_id))
       : stats;
 
     return data;

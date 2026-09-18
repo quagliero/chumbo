@@ -66,9 +66,13 @@ export const getChampionshipHistory = (
     .filter(([year, season]) => {
       const yearNum = parseInt(year);
       // Only include years up to and including the current year
+      // Test the year BEFORE touching the season (A2b): the history page
+      // loads exactly the seasons up to this one for this card, and reading a
+      // later season's bracket is a read of data nobody asked for — since A2b
+      // a guarded one, which would fetch it.
       return (
-        season?.winners_bracket &&
-        (!currentYear || yearNum <= currentYear)
+        (!currentYear || yearNum <= currentYear) &&
+        season?.winners_bracket
       );
     })
     .map(([year, season]) => {

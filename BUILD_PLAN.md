@@ -181,7 +181,7 @@ there is a real net on the modern seasons meanwhile.
 **Acceptance:** the 2018 draft board shows 2018 teams · optimal >= actual across
 all seasons, not just 2020+.
 
-- [ ] A1d
+- [ ] A1d — **not doing**: the commissioner decided against downloading the nflverse rosters (2026-09-18). Old draft boards keep showing players' current teams.
 
 ### A1e · Trim `picks.json` `S`
 **Done.** Every pick carried a 13-field `metadata` block duplicating the player
@@ -248,8 +248,45 @@ long-lived `Cache-Control` for `/data/` at the host.
 season older than the current year · navigating to a 2014 page fetches exactly
 one season file · a second visit to that page issues no network request.
 
+**A2b landed as lazy chunks, not `public/data/` + `fetch()`.** Every season
+file stays in `src/data/` and is a dynamic import, grouped into one chunk per
+season per part — `core-<year>` (league, rosters, users, brackets, schedule),
+`draft-<year>`, and A2a's matchups and transactions — plus one lazy `players`
+chunk for the dictionary and overlays. `public/_headers` makes `/assets/*`
+immutable for a year. Chosen over `public/data/` because a hashed chunk can be
+cached forever and an unhashed file only as long as last week's 2026 standings
+are acceptable; and the fetch scripts, tests and build scripts keep reading the
+same files. The JSON.parse argument is kept too: `json.namedExports: false`
+makes Vite emit one `JSON.parse` per file (dictionary: 6.7 → 3.9 ms to
+evaluate, +3.9 kB gzip).
+
+The safety net is the part that matters: every field of `seasons[year]` bar
+`transactions`, and `getPlayer`, throws `DataNotLoadedError` until loaded — a
+thenable, so a read in render suspends and a read anywhere else fails loudly.
+Nothing can silently see an empty season.
+
+Measured (static-import closure of the route plus the data it loads, gzip):
+
+| First visit | Before | After |
+| --- | --- | --- |
+| `/` | 668 kB — `data` 141, `players` 104, all 15 `matchups` 318 | **228 kB** — 15 × `core` 107, no draft, matchups or players |
+| `/seasons/2014/standings` | 412 kB — `data` 141, `players` 104, `matchups-2014` 22 | **180 kB** — `core` 2012-14, `draft-2014`, `matchups-2014` |
+
+`/` never read a matchup; it had been waiting on all of them since A2a. 2014's
+standings read 2012-13's core because the champion card counts earlier titles.
+`routeLoads.test.ts` pins both down by server-rendering the pages from a cold
+loader. After a simulated `fetch-latest`, only 2026's data chunks (14 kB)
+change name; 2012-2025 and the dictionary stay cached.
+
+Against the original acceptance: initial JS is 77 kB (it already was) · `/`
+fetches every season's core, which the all-time standings genuinely read; the
+way below that is precomputing per-season standings rows, which A4 declined ·
+a 2014 page fetches 2014, plus 5 kB of earlier cores on the standings tab ·
+a second visit makes no request for anything under `/assets/`; it still
+revalidates `index.html` and the unhashed `all-time.json`, which it must.
+
 - [x] A2a
-- [ ] A2b
+- [x] A2b
 
 ### A3 · Memoise the history scans `M`
 **Blocked by:** H1
@@ -267,7 +304,7 @@ runtime so there is no invalidation problem. Roughly 20 lines.
 **Acceptance:** second navigation to a manager page does zero recomputation
 (assert via a call counter in a test) · numbers identical to pre-change snapshots.
 
-- [ ] A3
+- [x] A3 *(done in `4e24694`: `utils/cache.ts`, with a call-counter test)*
 
 ### A4 · Precompute all-time aggregates at build time `L`
 **Blocked by:** A2, C1
@@ -813,7 +850,7 @@ the whole plan has a net under it. An afternoon's work that de-risks the rest.
 `managerStats.ts` is where `A3`'s three redundant full-history passes are hiding,
 so this and `A3` are best done together.
 
-- [ ] H2
+- [x] H2 *(managerStats split in `3f9fb60`; the four components split and verified byte-for-byte against their rendered HTML)*
 
 ### H3 · Type the data loader `M`
 **Blocked by:** A2
@@ -821,7 +858,7 @@ so this and `A3` are best done together.
 `src/data/index.ts` uses `any` behind an eslint-disable and reimplements "ensure
 initialised" three times. A loader typed on file pattern is shorter and safer.
 
-- [ ] H3
+- [x] H3 *(the `any` went in A2a; the loader was rewritten and typed in A2b)*
 
 ### H6 · Stop `getCumulativeStandings` mutating shared data `XS`
 **Blocked by:** H1 · **Found by:** `H1` invariant test
@@ -1204,41 +1241,34 @@ The "get lost in it" payoff, once there's something worth getting lost in.
 
 ## Where this stands
 
-M0-M6 are done. What is left splits in two: **Workstream I**, which is the
-league's own feedback on the shipped site and is where the next work should go,
-and the seven leftovers below, none of which is a milestone.
+**Everything that is going to be built is built.** M0–M6, Workstream I and
+the leftovers are done; what remains is the league's to write, not code.
 
-| | |
-|---|---|
-| `F4a` | **Yours.** Fifteen Hall of Fame citations — and the champion of each year picks that year's inductee, so they are the champions' to write, not the commissioner's. Plus portraits at `public/images/hof/<year>-icon.jpg`; that directory has never existed, so the page degrades to an initials medallion. |
-| `F1e` | Unblocked now that E7 ships. One line per manager on the Managers page. |
-| `A2b` | Deferred on purpose — see the risks table. `A2a` got the payload from 2.89 MB to a 77 kB critical path, which was the point. |
-| `A3`+`H2` | `managerStats.ts` is still 1,200 lines with one exported function. |
-| `H3` | `src/data/index.ts` still uses `any` behind an eslint-disable. `src/types/manager.ts` was the narrow half of this and is done. |
-| `A1d` | Historical teams from nflverse. |
+- `F4a` — **the champions'.** Fifteen Hall of Fame citations, each written by
+  that year's champion, plus portraits at `public/images/hof/<year>-icon.jpg`
+  (the page degrades to an initials medallion until they exist).
+- `A1d` — **not doing**, by decision: no nflverse download, so seasons before
+  2025 resolve players against today's dictionary (wrong NFL team on old
+  draft boards; positions are right, from `unmatched_players`).
+- **Dark mode — not wanted.** The site declares `color-scheme: light`.
+- **Player link previews** — deferred by decision. `playerCareerCard` exists;
+  the blocker is that per-player stats live in a React hook the prerender
+  cannot call, and it would be ~4,400 more pages.
 
-Found along the way and worth their own tasks:
+Found by the H2 split and left alone deliberately (a refactor that also
+changes behaviour cannot be reviewed as one), each small:
 
-- **Mid-season handovers** — settled, and smaller than it looked. The record
-  belongs to whoever built the team, so nothing needs re-attributing; the
-  `weeks` field should surface as a "managed by" note instead. Now `I5`.
-- ~~**Five legacy players exist twice.**~~ ✅ Four did — Ty Montgomery,
-  Terrelle Pryor, Dexter McCluster and Stephen Hauschka (the last missed by the
-  original exact-name search: "Steven" vs "Stephen") — and are merged by
-  `fix-player-ids.js`. Two of the original five were false: Sleeper's "Kevin
-  Smith" is a different player, and Jackie Battle's id never scores. An
-  invariant test now fails on the next exact-name split.
-- ~~**`PerformanceTable`'s row click**~~ ✅ Goes through `gameHref`, as does
-  the stats explorer's, and `DataTable` rows that have no real game are no
-  longer clickable. Fixing it found a real stats bug behind the explorer's copy:
-  with playoffs included it paired the 48 unpaired team-weeks with each other
-  (`null === null`) and counted them in every win rate.
-- **No dark mode.** `index.css` now declares `color-scheme: light` because
-  leaving it unset rendered dark text on the browser's dark ground. A real one
-  means a second palette and a pass over every hardcoded colour.
-- **Two share-card features were cut for bytes** before the budget was raised:
-  the streak pill on the H2H card and a manager badge that distinguishes Triple
-  Crown from Scumbo. Both fit now. Folded into `I4`.
+- Schedule comparison's "How it works" says active teams are "2025
+  participants"; the filter uses the latest season, now 2026.
+- The by-team schedule table lists never-met teams as 0-0-0 rows.
+- `Standings` sorts the array it is given in place when a season has no
+  divisions; its win-percentage sort would give NaN for a team with no games.
+- The strength-of-schedule colour scale divides by 11, assuming 12 teams.
+- A debug `console.log` for jay vs rich survives in `H2HContent/h2hGames.ts`.
+- H2H playoff matching ignores the round, so a semi and a consolation game
+  between the same two teams would both count; its streak is always shown
+  as manager A's (a losing run reads "A L3" in A's colour).
+- H2H groups player scores by name, merging two players who share one.
 
 ## Risks
 

@@ -198,7 +198,8 @@ export const buildScoreDistribution = (): ScoreDistribution => {
 
 /** The distributions, suspended until every season's matchups have loaded. */
 export const useScoreDistribution = (): ScoreDistribution => {
-  useAllSeasons();
+  // Names no players, so it does not wait for the dictionary (A2b).
+  useAllSeasons({ players: false });
   // Nothing below reads a prop or state, and once the hook returns at all the
   // seasons are loaded and will not change again for the life of the page.
   return useMemo(buildScoreDistribution, []);
