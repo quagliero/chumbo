@@ -77,9 +77,12 @@ export default defineConfig({
           //
           // The parts are defined once, in src/data/parts.ts, which the
           // loader reads too. `matchups/3.json` and the legacy whole-season
-          // `transactions.json` both match on their folder or file name.
+          // `transactions.json` both match on their folder or file name — as
+          // does anything else in those folders, such as the week-18 file and
+          // the `transactions/all.json` that `--all-transactions` writes,
+          // which the loader skips but the glob still imports.
           const season = id.match(
-            /\/src\/data\/(\d{4})\/([^/.]+)(?:\/\d+)?\.json$/
+            /\/src\/data\/(\d{4})\/([^/.]+)(?:\/[^/]+)?\.json$/
           );
           if (season && season[2] in SEASON_FILE_PARTS) {
             const part =

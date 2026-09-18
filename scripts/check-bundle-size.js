@@ -25,8 +25,11 @@ const dist = path.join(__dirname, "../dist/assets");
 // Gzipped kilobytes. Set just above the current figures so a regression is
 // caught rather than absorbed, and RATCHETED DOWN as the payload improves --
 // A2a (matchups and transactions loaded on demand) took the critical path from
-// 1132 kB to 398 kB, so these came down with it. A2b (serving the season JSON
-// as static files rather than JS modules) should take it lower again.
+// 1132 kB to 398 kB, so these came down with it. A2b (the rest of the season
+// data on demand) did not move `initial`: that data was never preloaded, it
+// arrived with the first route. What A2b changed is that route's download --
+// 668 kB to 228 kB for `/` -- which `src/data/__tests__/routeLoads.test.ts`
+// pins down part by part, since no size budget can see it.
 //
 // Update deliberately, never to make a build pass.
 const BUDGET_KB = {
@@ -39,8 +42,10 @@ const BUDGET_KB = {
   // old figure over-counted by ~267 kB while simultaneously missing the 24 kB
   // of charts that genuinely was preloaded.
   //
-  // 120 leaves room for vendor to grow and still fails if either data (145) or
-  // the player dictionary (104) is ever pulled onto the critical path again.
+  // 120 leaves room for vendor to grow and still fails if the player
+  // dictionary (108) is ever pulled onto the critical path again. A single
+  // season's data is smaller than the headroom, so that has a check of its
+  // own, by name, below.
   initial: 120,
   // Every JS chunk together, including the lazily-loaded routes and the
   // per-season matchup (305) and transaction (243) chunks. Currently 966.
@@ -62,6 +67,10 @@ const BUDGET_KB = {
   // onto the critical path (see vite.config.ts) -- and it is not the figure
   // that matters to a visitor, which is `initial` above. A 200 kB charting
   // library or a moment.js still cannot hide from it at 1080.
+  //
+  // Currently 1056. A2b added 12 kB, knowingly and not moved for: the season
+  // base data compresses 7 kB worse as thirty per-season chunks than as one,
+  // and the dictionary 4 kB worse as a JSON.parse string (see vite.config.ts).
   total: 1080,
 };
 
@@ -127,6 +136,18 @@ if (initial > BUDGET_KB.initial)
   failures.push(`critical path ${fmt(initial)} exceeds ${BUDGET_KB.initial} kB`);
 if (total > BUDGET_KB.total)
   failures.push(`total ${fmt(total)} exceeds ${BUDGET_KB.total} kB`);
+
+// Season data is loaded per season, on demand (A2b), and must never be on the
+// critical path. One season's chunk is 2-20 kB -- inside the headroom above --
+// so the kB check alone would let one slip in. The names come from
+// manualChunks in vite.config.ts.
+const preloadedSeasons = preloaded.filter((file) =>
+  /^(core|draft|matchups|transactions)-\d{4}-/.test(file)
+);
+if (preloadedSeasons.length)
+  failures.push(
+    `season data on the critical path: ${preloadedSeasons.join(", ")}`
+  );
 
 
 if (failures.length) {
