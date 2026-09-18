@@ -306,7 +306,8 @@ const loadPart = (part: PartCache, years: readonly number[]): Promise<void> =>
 
 /**
  * Give every field whose file a season lacks its stand-in, once the rest of
- * its part is in — 2013 has no losers bracket, a live season has no brackets.
+ * its part is in: a live season has no brackets, and only a live season has
+ * a schedule.
  */
 const fillMissing = (part: SeasonPart) => (year: number) => {
   // A year that is not a season — `/seasons/1999/standings` — has nothing to
