@@ -1529,7 +1529,30 @@ marked, the play that decided it named ("won it at 21:42 on Monday, Kelce
 comeback**, **won it on Monday night**, **latest decisive play**. A share
 card — the most shareable thing on the site, probably.
 
-### L3 · Weekly, automatically
+### L3 · Weekly, automatically ✅
+
+> **Done (2026-09-21).** J1's job already rebuilt the live season's
+> play-by-play; what it did not do was say whether that worked. The rebuild
+> must not hold back the week's results, so it is wrapped in a try/catch —
+> which is how a thing breaks in October and is noticed in January. Now every
+> run works out which scored weeks actually came out with box scores, prints
+> it, puts it in the commit message and the run's summary, and the workflow
+> opens **The play-by-play is behind** when a week that is not the newest one
+> is missing, or the rebuild fell over. The newest week is allowed to lag —
+> the NFL publishes Monday night a few hours after it ends — and because every
+> run rebuilds the whole season, the next one catches up and closes the issue
+> by itself. A second Tuesday run at 15:00 UTC means that catching up happens
+> the same day rather than on Wednesday; nflverse had Sunday's games the same
+> evening when this was checked.
+>
+> Two bugs found by building it. Nothing may be rebuilt before the first week
+> is scored, because a season that has not started has no play-by-play file to
+> download and the run would fail every day of September. And the precomputed
+> records have to be regenerated **after** the rebuild as well as before it:
+> the fetch script refreshes them, then the play-by-play runs, so L2's records
+> would have been a week behind the data committed beside them — and
+> `precomputed.test.ts` compares the two, so the whole update would have
+> failed on the first Tuesday a new week landed.
 
 J1's job also pulls the week's play-by-play, so each week's timelines appear
 the morning after with everything else.

@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { checkWeek, completedWeek, weeksToFetch } from "../season-weeks.js";
+import {
+  checkWeek,
+  completedWeek,
+  describeCoverage,
+  gamedayCoverage,
+  weeksToFetch,
+} from "../season-weeks.js";
 
 /**
  * What the automatic update (J1) fetches. The league objects are cut down to
@@ -75,5 +81,49 @@ describe("checkWeek", () => {
 
   it("refuses a scored week of zeroes", () => {
     expect(() => checkWeek(3, [team(0), team(0)], 2)).toThrow(/0 points/);
+  });
+});
+
+describe("gamedayCoverage (L3)", () => {
+  it("is happy when every scored week has box scores", () => {
+    const coverage = gamedayCoverage(4, ["1", "2", "3", "4"]);
+    expect(coverage.missing).toEqual([]);
+    expect(coverage.behind).toEqual([]);
+    expect(describeCoverage(coverage)).toBe("Box scores: weeks 1–4.");
+  });
+
+  it("lets the newest week lag, because the NFL publishes it later", () => {
+    // Tuesday morning: Monday night is scored on Sleeper, and the play-by-play
+    // for it may be hours away. Wednesday's run picks it up.
+    const coverage = gamedayCoverage(4, ["1", "2", "3"]);
+    expect(coverage.behind).toEqual([]);
+    expect(describeCoverage(coverage)).toContain(
+      "Week 4's play-by-play has not been published yet"
+    );
+  });
+
+  it("calls out a week that is genuinely missing", () => {
+    // Week 3 never arrived and week 4 did: that is not the NFL being slow.
+    const coverage = gamedayCoverage(4, ["1", "2", "4"]);
+    expect(coverage.behind).toEqual([3]);
+    expect(describeCoverage(coverage)).toBe(
+      "Box scores MISSING for week 3; have 1, 2, 4."
+    );
+  });
+
+  it("says nothing is due before the first week is scored", () => {
+    const coverage = gamedayCoverage(0, []);
+    expect(coverage.behind).toEqual([]);
+    expect(describeCoverage(coverage)).toBe("No week has been scored yet.");
+  });
+
+  it("reports the whole season missing as every week but the newest", () => {
+    // A season that stopped rebuilding — the case that must not read as "the
+    // NFL is a bit slow".
+    const coverage = gamedayCoverage(9, []);
+    expect(coverage.behind).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(describeCoverage(coverage)).toBe(
+      "Box scores MISSING for weeks 1–8."
+    );
   });
 });

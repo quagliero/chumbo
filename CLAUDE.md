@@ -333,7 +333,8 @@ collapse, has no play-by-play and so no box scores.
 `.github/workflows/update-season.yml` keeps the live season current with
 nobody touching it: 10:00 UTC on Tuesdays, Wednesdays and Fridays from
 September to January (after Monday night, after waivers, after stat
-corrections), and on demand with **Run workflow**. It runs `yarn update-season`
+corrections), again at 15:00 on Tuesdays for the play-by-play (L3, below),
+and on demand with **Run workflow**. It runs `yarn update-season`
 (`scripts/update-season.js`): every week Sleeper has scored
 (`fetch-sleeper-data --completed`, which reads `last_scored_leg` and never
 commits a half-played week), `trim-picks`, and a player-dictionary refresh only
@@ -352,6 +353,25 @@ diff. A test that only makes sense while the season is being played is
 `it.runIf(...)`. And a season is settled when its final has a winner
 (`isSeasonSettled` in `utils/playoffUtils.ts`), never when it merely has
 brackets: the update writes those the week the playoffs start.
+
+**The play-by-play has its own report (L3).** The rebuild is not allowed to
+hold back the week's results, so it is wrapped in a try/catch — which is
+exactly how a thing breaks for a month without anyone noticing. So every run
+works out which scored weeks actually have box scores
+(`gamedayCoverage`/`describeCoverage` in `scripts/season-weeks.js`), prints it,
+writes it into the commit message and the run's summary, and the workflow
+opens an issue, **The play-by-play is behind**, when a week that is not the
+newest one is still missing or the rebuild fell over. The newest week is
+allowed to lag; the next run rebuilds the whole season and closes the issue by
+itself. Nothing is built before the first week is scored — there is no
+play-by-play file for a season that has not started, and asking for it 404s.
+
+One ordering rule this brought out: `update-season` regenerates
+`all-time.json` **again** after the rebuild. The fetch script already
+regenerates it, but that happens before the play-by-play runs, so L2's records
+(comebacks, Monday nights, latest decisive plays) would be a week behind the
+data committed beside them — and `precomputed.test.ts` would fail the whole
+update over it, on the first Tuesday a new week's play-by-play landed.
 
 Scheduled workflows are switched off by GitHub after 60 days without a commit,
 which the off-season always is. Re-enable it on the Actions tab when the new

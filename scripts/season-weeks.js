@@ -62,3 +62,49 @@ export function checkWeek(week, matchups, rosterCount) {
     throw new Error(`Week ${week}: scored, but every team has 0 points`);
   }
 }
+
+/**
+ * Which completed weeks have box scores, and which do not (L3).
+ *
+ * The weekly update rebuilds the live season's play-by-play every run, so a
+ * week that was not ready on Tuesday arrives on Wednesday by itself. That is
+ * the good case, and it is indistinguishable in a log from the bad one — a
+ * join that has broken, or a season that stopped rebuilding cleanly — which
+ * is why the two are separated here rather than left to whoever reads the
+ * run.
+ *
+ * `behind` is the part worth telling someone about: a completed week, not the
+ * newest one, that still has no box scores after a run that was supposed to
+ * build it. The newest week is allowed to lag — the NFL's play-by-play for
+ * Monday night lands some hours after the game, and the next run picks it up.
+ */
+export function gamedayCoverage(completed, present) {
+  const have = new Set(present.map(Number));
+  const weeks = range(1, completed);
+  const missing = weeks.filter((week) => !have.has(week));
+  return {
+    completed,
+    covered: weeks.filter((week) => have.has(week)),
+    missing,
+    behind: missing.filter((week) => week < completed),
+  };
+}
+
+const list = (weeks) =>
+  weeks.length > 2 && weeks[weeks.length - 1] - weeks[0] === weeks.length - 1
+    ? `${weeks[0]}–${weeks[weeks.length - 1]}`
+    : weeks.join(", ");
+
+/** One line for the commit message and the run's summary. */
+export function describeCoverage({ completed, covered, missing, behind }) {
+  if (completed === 0) return "No week has been scored yet.";
+  if (missing.length === 0) {
+    return `Box scores: ${covered.length === 1 ? "week" : "weeks"} ${list(covered)}.`;
+  }
+  if (behind.length === 0) {
+    return `Box scores: ${covered.length ? `${covered.length === 1 ? "week" : "weeks"} ${list(covered)}` : "none"}. Week ${completed}'s play-by-play has not been published yet; the next run will pick it up.`;
+  }
+  return `Box scores MISSING for ${behind.length === 1 ? "week" : "weeks"} ${list(
+    behind
+  )}${covered.length ? `; have ${list(covered)}` : ""}.`;
+}

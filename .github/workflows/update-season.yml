@@ -9,6 +9,12 @@ on:
     # 10:00 UTC, September to January: Tuesday (Monday night is over and
     # scored), Wednesday (waivers have run) and Friday (stat corrections).
     - cron: "0 10 * 1,9-12 2,3,5"
+    # And again on Tuesday afternoon, for the play-by-play (L3). The 10:00 run
+    # is 5am in New York, about five hours after Monday night ends; nflverse
+    # publishes Sunday's games the same day, but a game that has just finished
+    # is a coin flip. This one lands the week's charts on Tuesday rather than
+    # Wednesday, and commits nothing when the morning run already had them.
+    - cron: "0 15 * 1,9-12 2"
   workflow_dispatch:
 
 permissions:
@@ -21,6 +27,13 @@ concurrency:
 
 env:
   FAILURE_TITLE: The automatic season update failed
+  # L3: the play-by-play is a separate thing that can go wrong, and a separate
+  # thing to say about it. A week's box scores are allowed to be a day late —
+  # the NFL publishes Monday night some hours after it ends — so they are
+  # never allowed to hold back the week's results. This issue is how "it will
+  # sort itself out on Wednesday" stops being indistinguishable from "it has
+  # been broken since October".
+  GAMEDAY_TITLE: The play-by-play is behind
 
 jobs:
   update:
@@ -67,11 +80,12 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         env:
           MESSAGE: ${{ steps.fetch.outputs.message }}
+          BOX_SCORES: ${{ steps.fetch.outputs.box_scores }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898798+github-actions[bot]@users.noreply.github.com"
           git add -A src/data public/data scripts/data ':(glob)**/__snapshots__/**'
-          git commit -m "$MESSAGE" -m "Fetched and published by the Update the season workflow."
+          git commit -m "$MESSAGE" -m "$BOX_SCORES" -m "Fetched and published by the Update the season workflow."
           # Someone may have pushed while this ran. The data files are only
           # ever written here, so a rebase onto their work cannot conflict.
           git pull --rebase
@@ -86,6 +100,35 @@ jobs:
           for n in $(gh issue list --state open --search "\"$FAILURE_TITLE\" in:title" --json number --jq '.[].number'); do
             gh issue close "$n" --comment "Working again: $RUN"
           done
+
+      # Runs whether or not anything changed: a week whose play-by-play never
+      # arrived changes no file, and that is exactly the case worth catching.
+      - name: The play-by-play's state
+        if: steps.fetch.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEHIND: ${{ steps.fetch.outputs.behind }}
+          REBUILD: ${{ steps.fetch.outputs.rebuild }}
+          BOX_SCORES: ${{ steps.fetch.outputs.box_scores }}
+        run: |
+          RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          EXISTING=$(gh issue list --state open --search "\"$GAMEDAY_TITLE\" in:title" --json number --jq '.[0].number // empty')
+          if [ -z "$BEHIND" ] && [ "$REBUILD" = "ok" ]; then
+            if [ -n "$EXISTING" ]; then
+              gh issue close "$EXISTING" --comment "Caught up: $BOX_SCORES ($RUN)"
+            fi
+            exit 0
+          fi
+          BODY="$BOX_SCORES
+
+          The week's results were published as usual — only the box scores and the \"How the week unfolded\" charts are missing, and only for those weeks. Every run rebuilds the whole season, so if the NFL simply had not published yet, the next run fixes it and closes this.
+
+          If it does not: $RUN"
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "Still behind: $BOX_SCORES ($RUN)"
+          else
+            gh issue create --title "$GAMEDAY_TITLE" --body "$BODY"
+          fi
 
       - name: Report the failure
         if: failure()
