@@ -19,6 +19,7 @@ import Trades from "@/presentation/components/Trades";
 import TradeCard from "@/presentation/components/TradeCard";
 import PlayoffOdds from "@/presentation/components/PlayoffOdds/PlayoffOdds";
 import { WeekRecap } from "@/presentation/components/WeekRecap";
+import { RecordsWatch } from "@/presentation/components/RecordsWatch";
 import {
   MatchupPreviewDetail,
   WeekPreview,
@@ -40,6 +41,9 @@ const SeasonArc = lazy(() =>
 );
 
 /** Holds the space while a recap or a preview loads, so the page does not jump. */
+/** The week page has room for more of the watch than the home page's rail. */
+const WATCH_LIMIT = 6;
+
 const LoadingPanel = () => (
   <div className="h-40 animate-pulse rounded-card bg-surface-sunk" aria-hidden="true" />
 );
@@ -549,13 +553,18 @@ const History = () => {
                   selectedWeek={selectedWeek}
                   onWeekChange={handleWeekChange}
                   intro={
-                    <Suspense fallback={<LoadingPanel />}>
-                      {selectedWeek === upcomingWeek ? (
-                        <WeekPreview year={selectedYear} week={selectedWeek} />
-                      ) : (
-                        <WeekRecap year={selectedYear} week={selectedWeek} />
-                      )}
-                    </Suspense>
+                    <>
+                      <Suspense fallback={<LoadingPanel />}>
+                        {selectedWeek === upcomingWeek ? (
+                          <WeekPreview year={selectedYear} week={selectedWeek} />
+                        ) : (
+                          <WeekRecap year={selectedYear} week={selectedWeek} />
+                        )}
+                      </Suspense>
+                      {/* J3: under the week, and only for the season being
+                          played — a 2014 week has nothing left to do. */}
+                      <RecordsWatch year={selectedYear} limit={WATCH_LIMIT} />
+                    </>
                   }
                   rosters={seasonData.rosters}
                   getTeamName={getTeamName}

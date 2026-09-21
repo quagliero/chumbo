@@ -6,6 +6,7 @@ import "./draftStats";
 import "./transactionStats";
 import "./identityStats";
 import "./gamedayStats";
+import "./watchStat";
 
 export {
   defineStat,

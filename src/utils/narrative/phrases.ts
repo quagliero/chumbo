@@ -46,6 +46,11 @@ export const PHRASES: Record<string, string> = {
   // what the detail names.
   "latest-decisive-play": "latest decisive play",
   "monday-night-wins": "most games won on Monday night",
+  // J3's foundations. "Most points, ever" is a column heading; in a sentence
+  // it has to be a noun phrase, which is the whole reason this file exists.
+  "most-points-season": "highest-scoring season",
+  "career-points": "most points scored",
+  "career-wins": "most wins",
 };
 
 /**

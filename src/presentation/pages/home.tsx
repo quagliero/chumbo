@@ -8,6 +8,7 @@ import AllTimeScheduleComparison from "@/presentation/components/AllTimeSchedule
 import AllTimeTrades from "@/presentation/components/AllTimeTrades";
 import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import { OnThisDay } from "@/presentation/components/OnThisDay";
+import { RecordsWatch } from "@/presentation/components/RecordsWatch";
 
 // D2 lives in the `charts` chunk (see vite.config.ts). Lazy so that landing on
 // the standings tab -- which is most visits -- does not download the chart code
@@ -66,8 +67,12 @@ const Home = () => {
           a cumulative-totals table is a poor first thing to meet. It carries
           its own Suspense and error boundary, so a missing all-time.json costs
           the module and not the page. */}
-      <div className="container mx-auto">
+      <div className="container mx-auto space-y-4">
         <OnThisDay />
+        {/* J3, under it: the archive reaching forward, then the live season
+            reaching for the archive. Renders nothing when there is nothing
+            on pace, which is most of the off-season. */}
+        <RecordsWatch />
       </div>
 
       {/* Tab Navigation */}

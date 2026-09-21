@@ -423,3 +423,153 @@ export const revengeGames = defineStat({
     }));
   },
 });
+
+/* --------------------------------------------- seasons and careers (J3) */
+
+/**
+ * The three totals the league quotes at each other, which the registry did
+ * not have until the records watch needed something to watch (J3).
+ *
+ * All three are **regular season only**, and say so. Playoff games are not
+ * available to everyone — a team that missed the playoffs cannot add to them —
+ * so a career total that counted them would rank partly on how often somebody
+ * made the cut, and a season total would be comparing thirteen games with
+ * sixteen. It is also the basis K1's previews already use ("their 100th
+ * regular-season win"), and two numbers for one fact is how a site starts
+ * disagreeing with itself.
+ */
+export const seasonTotals = (games: Game[]) => {
+  const byTeam = new Map<
+    string,
+    { year: number; managerId: string | null; rosterId: number; points: number; played: number }
+  >();
+  for (const game of games) {
+    if (!game.isRegularSeason) continue;
+    const key = `${game.year}|${game.rosterId}`;
+    const team = byTeam.get(key);
+    if (team) {
+      team.points = round2(team.points + game.points);
+      team.played += 1;
+    } else {
+      byTeam.set(key, {
+        year: game.year,
+        managerId: game.managerId,
+        rosterId: game.rosterId,
+        points: round2(game.points),
+        played: 1,
+      });
+    }
+  }
+  return [...byTeam.values()];
+};
+
+/**
+ * How long a season's regular season was, as it was actually played: the most
+ * games any team in it played. It is 13 in 2014–2020 and 14 elsewhere, which
+ * is why the list prints it — 1,534.9 in thirteen games is the better season
+ * than the same total in fourteen, and a bare list of totals hides that.
+ */
+export const seasonLengths = (totals: ReturnType<typeof seasonTotals>) => {
+  const length = new Map<number, number>();
+  for (const team of totals) {
+    length.set(team.year, Math.max(length.get(team.year) ?? 0, team.played));
+  }
+  return length;
+};
+
+/**
+ * Season totals from seasons that finished their regular season.
+ *
+ * A season in progress is not a season: its totals belong to the records
+ * watch (J3), which is about what might still happen, not to a list of what
+ * has. Shared with the watch so the record it names and the list it links to
+ * are the same number.
+ */
+export const completeSeasonTotals = (games: Game[]) => {
+  const totals = seasonTotals(games);
+  const lengths = seasonLengths(totals);
+  return totals.filter((team) => team.played === lengths.get(team.year));
+};
+
+export const mostPointsSeason = defineStat({
+  id: "most-points-season",
+  label: "Most points in a season",
+  description:
+    "The highest regular-season total anyone has scored. The number of games is given with each one: the league played thirteen from 2014 to 2020 and fourteen either side of that, so the totals are not all over the same distance.",
+  scope: "season",
+  format: "points",
+  direction: "high",
+  compute: ({ games }) =>
+    completeSeasonTotals(games).map((team) => ({
+    value: team.points,
+    subject: team.managerId ?? String(team.rosterId),
+    href: `/seasons/${team.year}/standings`,
+    detail: `${team.year}, ${team.played} games`,
+    year: team.year,
+  })),
+});
+
+/** Every manager's regular-season games, for the two career lists. */
+export const careerTotals = (games: Game[]) => {
+  const byManager = new Map<
+    string,
+    { wins: number; losses: number; ties: number; points: number; played: number; years: Set<number> }
+  >();
+  for (const game of games) {
+    if (!game.isRegularSeason || !game.managerId) continue;
+    const career =
+      byManager.get(game.managerId) ??
+      { wins: 0, losses: 0, ties: 0, points: 0, played: 0, years: new Set<number>() };
+    career[game.result === "win" ? "wins" : game.result === "loss" ? "losses" : "ties"] += 1;
+    career.points = round2(career.points + game.points);
+    career.played += 1;
+    career.years.add(game.year);
+    byManager.set(game.managerId, career);
+  }
+  return byManager;
+};
+
+const span = (years: Set<number>) => {
+  const sorted = [...years].sort((a, b) => a - b);
+  const first = sorted[0];
+  const last = sorted[sorted.length - 1];
+  return first === last ? `${first}` : `${first}–${last}`;
+};
+
+export const careerPoints = defineStat({
+  id: "career-points",
+  label: "Most points, ever",
+  description:
+    "Every point a manager has scored in a regular season, across every season they have played.",
+  scope: "manager",
+  format: "points",
+  direction: "high",
+  compute: ({ games }) =>
+    [...careerTotals(games)].map(([managerId, career]) => ({
+      value: career.points,
+      subject: managerId,
+      href: managerHref(managerId),
+      detail: `${span(career.years)} · ${career.played} games, ${round2(
+        career.points / career.played
+      )} a game`,
+    })),
+});
+
+export const careerWins = defineStat({
+  id: "career-wins",
+  label: "Most wins, ever",
+  description:
+    "Regular-season wins, across every season a manager has played. The league has had managers for one season and for all fifteen, so the record and the win percentage are different questions.",
+  scope: "manager",
+  format: "count",
+  direction: "high",
+  compute: ({ games }) =>
+    [...careerTotals(games)].map(([managerId, career]) => ({
+      value: career.wins,
+      subject: managerId,
+      href: managerHref(managerId),
+      detail: `${career.wins}–${career.losses}${
+        career.ties ? `–${career.ties}` : ""
+      } across ${span(career.years)}`,
+    })),
+});

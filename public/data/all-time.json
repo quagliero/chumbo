@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-21T11:19:29.876Z",
+  "generatedAt": "2026-09-21T12:26:05.001Z",
   "years": [
     2012,
     2013,
@@ -1634,6 +1634,424 @@
           "subject": "brock",
           "href": "/managers/brock",
           "detail": "3–8 in rematches after a 40+ point loss"
+        }
+      ]
+    },
+    {
+      "id": "most-points-season",
+      "label": "Most points in a season",
+      "description": "The highest regular-season total anyone has scored. The number of games is given with each one: the league played thirteen from 2014 to 2020 and fourteen either side of that, so the totals are not all over the same distance.",
+      "scope": "season",
+      "format": "points",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 176,
+      "entries": [
+        {
+          "value": 1588.36,
+          "subject": "dix",
+          "href": "/seasons/2013/standings",
+          "detail": "2013, 14 games",
+          "year": 2013
+        },
+        {
+          "value": 1566.44,
+          "subject": "jay",
+          "href": "/seasons/2013/standings",
+          "detail": "2013, 14 games",
+          "year": 2013
+        },
+        {
+          "value": 1534.94,
+          "subject": "thd",
+          "href": "/seasons/2020/standings",
+          "detail": "2020, 13 games",
+          "year": 2020
+        },
+        {
+          "value": 1526.04,
+          "subject": "jay",
+          "href": "/seasons/2021/standings",
+          "detail": "2021, 14 games",
+          "year": 2021
+        },
+        {
+          "value": 1506.84,
+          "subject": "jay",
+          "href": "/seasons/2024/standings",
+          "detail": "2024, 14 games",
+          "year": 2024
+        },
+        {
+          "value": 1499.24,
+          "subject": "dix",
+          "href": "/seasons/2022/standings",
+          "detail": "2022, 14 games",
+          "year": 2022
+        },
+        {
+          "value": 1483.08,
+          "subject": "jay",
+          "href": "/seasons/2018/standings",
+          "detail": "2018, 13 games",
+          "year": 2018
+        },
+        {
+          "value": 1478.54,
+          "subject": "htc",
+          "href": "/seasons/2025/standings",
+          "detail": "2025, 14 games",
+          "year": 2025
+        },
+        {
+          "value": 1466.06,
+          "subject": "rich",
+          "href": "/seasons/2024/standings",
+          "detail": "2024, 14 games",
+          "year": 2024
+        },
+        {
+          "value": 1457.58,
+          "subject": "dix",
+          "href": "/seasons/2012/standings",
+          "detail": "2012, 14 games",
+          "year": 2012
+        },
+        {
+          "value": 1450.52,
+          "subject": "rich",
+          "href": "/seasons/2012/standings",
+          "detail": "2012, 14 games",
+          "year": 2012
+        },
+        {
+          "value": 1450.52,
+          "subject": "dix",
+          "href": "/seasons/2023/standings",
+          "detail": "2023, 14 games",
+          "year": 2023
+        },
+        {
+          "value": 1448.78,
+          "subject": "ant",
+          "href": "/seasons/2012/standings",
+          "detail": "2012, 14 games",
+          "year": 2012
+        },
+        {
+          "value": 1445.14,
+          "subject": "dix",
+          "href": "/seasons/2021/standings",
+          "detail": "2021, 14 games",
+          "year": 2021
+        },
+        {
+          "value": 1445.14,
+          "subject": "ryan",
+          "href": "/seasons/2023/standings",
+          "detail": "2023, 14 games",
+          "year": 2023
+        },
+        {
+          "value": 1438.44,
+          "subject": "ant",
+          "href": "/seasons/2022/standings",
+          "detail": "2022, 14 games",
+          "year": 2022
+        },
+        {
+          "value": 1431.16,
+          "subject": "rich",
+          "href": "/seasons/2018/standings",
+          "detail": "2018, 13 games",
+          "year": 2018
+        },
+        {
+          "value": 1429.46,
+          "subject": "htc",
+          "href": "/seasons/2021/standings",
+          "detail": "2021, 14 games",
+          "year": 2021
+        },
+        {
+          "value": 1423.78,
+          "subject": "thd",
+          "href": "/seasons/2012/standings",
+          "detail": "2012, 14 games",
+          "year": 2012
+        },
+        {
+          "value": 1423.38,
+          "subject": "ant",
+          "href": "/seasons/2025/standings",
+          "detail": "2025, 14 games",
+          "year": 2025
+        },
+        {
+          "value": 1418.78,
+          "subject": "hadkiss",
+          "href": "/seasons/2025/standings",
+          "detail": "2025, 14 games",
+          "year": 2025
+        },
+        {
+          "value": 1415.44,
+          "subject": "jay",
+          "href": "/seasons/2016/standings",
+          "detail": "2016, 13 games",
+          "year": 2016
+        },
+        {
+          "value": 1410.38,
+          "subject": "thd",
+          "href": "/seasons/2018/standings",
+          "detail": "2018, 13 games",
+          "year": 2018
+        },
+        {
+          "value": 1409.58,
+          "subject": "nick",
+          "href": "/seasons/2019/standings",
+          "detail": "2019, 13 games",
+          "year": 2019
+        },
+        {
+          "value": 1409.04,
+          "subject": "hadkiss",
+          "href": "/seasons/2024/standings",
+          "detail": "2024, 14 games",
+          "year": 2024
+        }
+      ]
+    },
+    {
+      "id": "career-points",
+      "label": "Most points, ever",
+      "description": "Every point a manager has scored in a regular season, across every season they have played.",
+      "scope": "manager",
+      "format": "points",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 17,
+      "entries": [
+        {
+          "value": 19125.12,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "2012–2026 · 190 games, 100.66 a game"
+        },
+        {
+          "value": 18946.18,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "2012–2026 · 190 games, 99.72 a game"
+        },
+        {
+          "value": 18408.5,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "2012–2026 · 190 games, 96.89 a game"
+        },
+        {
+          "value": 18162.18,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "2012–2026 · 190 games, 95.59 a game"
+        },
+        {
+          "value": 18032.64,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "2012–2026 · 190 games, 94.91 a game"
+        },
+        {
+          "value": 17507.72,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "2012–2026 · 190 games, 92.15 a game"
+        },
+        {
+          "value": 17074.28,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "2012–2026 · 190 games, 89.86 a game"
+        },
+        {
+          "value": 16730.64,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "2013–2026 · 176 games, 95.06 a game"
+        },
+        {
+          "value": 16658.64,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "2012–2026 · 190 games, 87.68 a game"
+        },
+        {
+          "value": 14717.7,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2014–2026 · 162 games, 90.85 a game"
+        },
+        {
+          "value": 8929.96,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "2019–2026 · 97 games, 92.06 a game"
+        },
+        {
+          "value": 8718.02,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "2013–2026 · 97 games, 89.88 a game"
+        },
+        {
+          "value": 6716.86,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "2017–2021 · 66 games, 101.77 a game"
+        },
+        {
+          "value": 5686.08,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "2014–2018 · 65 games, 87.48 a game"
+        },
+        {
+          "value": 1336.96,
+          "subject": "jimmie",
+          "href": "/managers/jimmie",
+          "detail": "2012 · 14 games, 95.5 a game"
+        },
+        {
+          "value": 1273.14,
+          "subject": "karsten",
+          "href": "/managers/karsten",
+          "detail": "2012 · 14 games, 90.94 a game"
+        },
+        {
+          "value": 1174.54,
+          "subject": "phil",
+          "href": "/managers/phil",
+          "detail": "2016 · 13 games, 90.35 a game"
+        }
+      ]
+    },
+    {
+      "id": "career-wins",
+      "label": "Most wins, ever",
+      "description": "Regular-season wins, across every season a manager has played. The league has had managers for one season and for all fifteen, so the record and the win percentage are different questions.",
+      "scope": "manager",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 17,
+      "entries": [
+        {
+          "value": 113,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "113–77 across 2012–2026"
+        },
+        {
+          "value": 105,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "105–84–1 across 2012–2026"
+        },
+        {
+          "value": 105,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "105–84–1 across 2012–2026"
+        },
+        {
+          "value": 101,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "101–89 across 2012–2026"
+        },
+        {
+          "value": 98,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "98–92 across 2012–2026"
+        },
+        {
+          "value": 89,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "89–101 across 2012–2026"
+        },
+        {
+          "value": 88,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "88–88 across 2013–2026"
+        },
+        {
+          "value": 84,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "84–106 across 2012–2026"
+        },
+        {
+          "value": 78,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "78–112 across 2012–2026"
+        },
+        {
+          "value": 76,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "76–86 across 2014–2026"
+        },
+        {
+          "value": 44,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "44–53 across 2019–2026"
+        },
+        {
+          "value": 43,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "43–54 across 2013–2026"
+        },
+        {
+          "value": 42,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "42–24 across 2017–2021"
+        },
+        {
+          "value": 28,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "28–37 across 2014–2018"
+        },
+        {
+          "value": 7,
+          "subject": "jimmie",
+          "href": "/managers/jimmie",
+          "detail": "7–7 across 2012"
+        },
+        {
+          "value": 6,
+          "subject": "phil",
+          "href": "/managers/phil",
+          "detail": "6–7 across 2016"
+        },
+        {
+          "value": 4,
+          "subject": "karsten",
+          "href": "/managers/karsten",
+          "detail": "4–10 across 2012"
         }
       ]
     },
@@ -4731,6 +5149,26 @@
           "subject": "jimmie",
           "href": "/seasons/2012/matchups/6/1",
           "detail": "Most recently 2012 Week 6 vs thd"
+        }
+      ]
+    },
+    {
+      "id": "records-watch",
+      "label": "The records watch",
+      "description": "What this season could still do: who is on pace for a season record, whose run is nearly the longest the league has seen, and who is a win or a week from a round number. Paces are straight-line arithmetic over the games that are left, and nothing appears before a team has played four.",
+      "scope": "league",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 1,
+      "entries": [
+        {
+          "value": 60,
+          "subject": "thd",
+          "href": "/records/career-wins",
+          "detail": "is two wins from 100 regular-season wins.",
+          "year": 2026
         }
       ]
     }

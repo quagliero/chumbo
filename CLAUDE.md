@@ -198,7 +198,7 @@ Four things sit between the committed JSON and the pages. Each exists so the
 same fact cannot be computed two different ways in two places.
 
 - **`src/utils/stats/`** — the stat registry (C1). One flattened pass over
-  history, twenty-eight statistics reading it. `defineStat` registers one;
+  history, thirty-two statistics reading it. `defineStat` registers one;
   `computeStat(id)` runs it. Three lists, and the differences matter: `games` is
   paired matchups only (for anything about winning), `teamWeeks` is EVERY
   team-week that scored (for anything about lineups), because an eliminated
@@ -245,6 +245,36 @@ Three data-quality rules these all obey:
   regular-season order. The two brackets use different conventions — pre-2020
   the losers bracket numbers the league, 2020+ it restarts at 1 — so reading
   `p` straight off makes the consolation winner joint champion.
+
+## The records watch (J3)
+
+`utils/recordsWatch.ts` is the one thing on the site that talks about what has
+NOT happened: who is on pace for the season points record, whose run is nearly
+the longest the league has seen, who is a win or a week from a round number
+(every 25th win, every 5,000th point — the same milestones K1's previews count
+down to, from the same module, so the two cannot disagree). It is a **registry
+stat** (`stats/watchStat.ts`), so the answers are in `all-time.json` and the
+weekly update refreshes them with the week's results; the rail on the home
+page and under each week of the live season works nothing out. Like
+`on-this-day` it is in `NOT_RECORDS`: it ranks what might happen, and "the
+3rd-most on-pace season in Chumbo history" is not a fact.
+
+Its restraint is the design. Nothing before a team has played four games (a
+pace from two is a coin toss printed as a forecast); nothing outside 3% of the
+record, two of the longest run, or the games a milestone actually has left;
+and no card at all when there is nothing — which is most of the off-season.
+Every line says how many games it is from and how many remain, quotes the
+record to the hundredth the records page shows while rounding its own pace to
+a tenth, and links to the list it is measured against.
+
+It needed three records the registry did not have, all of them regular season
+only and all now on `/records`: **most points in a season** (which prints the
+number of games, because the league played thirteen from 2014 to 2020 and
+fourteen either side), **most points, ever** and **most wins, ever**. The
+career pair come from the registry's own games rather than `getManagerStats`,
+which in "regular" mode trusts Sleeper's roster totals — the two differ by a
+point or two over fifteen seasons, and a sentence has to quote the list it
+links to.
 
 ## The week: recaps and previews (J2, K1)
 

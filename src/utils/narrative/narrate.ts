@@ -89,9 +89,12 @@ const MANAGER_IDS = new Set(managers.map((m) => m.id));
  * Stats in the file that are not rankings of anything, so "the 2nd-most X in
  * Chumbo history" would be false. `on-this-day` is the week of the season
  * the data has reached, in every earlier year — its order is by date, and it
- * moves every time a week is fetched. It has its own rail (E6).
+ * moves every time a week is fetched. `records-watch` (J3) is what MIGHT
+ * happen, ranked by how close it is; a note calling a pace the third-most
+ * anything would be inventing a record out of a projection. Both have their
+ * own rails.
  */
-export const NOT_RECORDS = new Set(["on-this-day"]);
+export const NOT_RECORDS = new Set(["on-this-day", "records-watch"]);
 
 /**
  * Where a note's list lives: the stat's page on /records, at the note's row.

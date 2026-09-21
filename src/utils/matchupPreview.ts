@@ -10,6 +10,9 @@ import {
   type WeekStakes,
 } from "@/utils/playoffOdds";
 import { getPlayoffWeekStart } from "@/utils/playoffUtils";
+// The same round numbers the records watch (J3) counts down to, so a preview
+// and the watch cannot disagree about the milestone they are both naming.
+import { nextPointsMilestone, nextWinMilestone } from "@/utils/recordsWatch";
 import { mergeScheduledMatchups } from "@/utils/scheduleUtils";
 import { getStatContext } from "@/utils/stats/traverse";
 import type { Game } from "@/utils/stats/types";
@@ -216,8 +219,6 @@ export const streakRecords = () => {
   return { current, longest };
 };
 
-const WIN_MILESTONE = 25;
-const POINTS_MILESTONE = 5000;
 
 /**
  * What a result would change, as sentences. Only facts one game can decide:
@@ -272,14 +273,13 @@ const onTheLineFor = (
     if (!career) continue;
 
     const nextWins = career.totalWins + 1;
-    if (nextWins % WIN_MILESTONE === 0) {
+    if (nextWins === nextWinMilestone(career.totalWins)) {
       lines.push(
         `A win would be ${side.name}'s ${ordinal(nextWins)} regular-season win.`
       );
     }
 
-    const nextPoints =
-      Math.floor(career.totalPointsFor / POINTS_MILESTONE + 1) * POINTS_MILESTONE;
+    const nextPoints = nextPointsMilestone(career.totalPointsFor);
     const short = nextPoints - career.totalPointsFor;
     // Within an ordinary week's reach: less than their average this season,
     // or the league's usual 100 before they have one.

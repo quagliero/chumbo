@@ -50,6 +50,9 @@ export const RECORD_VALUE_STATS = new Set([
   "roster-churn",
   "biggest-comeback",
   "monday-night-wins",
+  "most-points-season",
+  "career-points",
+  "career-wins",
   // `latest-decisive-play` is deliberately absent: its value is minutes since
   // Thursday morning, so a card would lead with "6,942" under the words
   // CHUMBO RECORD. Its magnitude is a time, and the detail says it.

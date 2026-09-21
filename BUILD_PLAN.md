@@ -1314,7 +1314,34 @@ matchups tab for that week, with its own share card and a prerendered link
 preview, so the Tuesday-morning message to the group is one paste. Works for
 every past week too, which is 225 recaps of back catalogue for free.
 
-### J3 · Records watch `M`
+### J3 · Records watch `M` ✅
+
+> **Done (2026-09-21).** A rail on the home page and under each week of the
+> live season: who is on pace for the season points record, whose run is
+> nearly the longest there has been, who is a win or a week from a round
+> number. It is a registry stat, so it costs the browser nothing and the
+> weekly update refreshes it with the week's results, and it is in
+> `NOT_RECORDS` — a pace is not a ranking.
+>
+> The work was mostly in what it refuses to say. No pace before four games; no
+> record that is not within 3%, no run that is not within two, no milestone
+> the remaining games cannot reach; no card at all when there is nothing,
+> which is most of the off-season. Every line carries the games played and the
+> games left. Today, with one week played, the whole watch is one line — "thd
+> is two wins from 100 regular-season wins" — which is the point.
+>
+> It needed three records the registry did not have, now on `/records` in
+> their own right: **most points in a season** (printing the number of games,
+> because the league played thirteen from 2014 to 2020 and fourteen either
+> side, and a bare list of totals hides that), **most points, ever** and
+> **most wins, ever**. The career pair are computed from the registry's games,
+> not `getManagerStats` — in "regular" mode that trusts Sleeper's roster
+> totals, which differ by a point or two over a fifteen-season career, and the
+> watch quotes the list it links to. K1's previews now take their milestones
+> from the same module for the same reason.
+>
+> **Not done:** all-play pace, which needs the breakdown machinery, and a
+> share card for the watch.
 
 Who is on pace for a season record (points, all-play, win streak) and who is
 near a career milestone (100th win, 20,000 points), with the pace honest about
