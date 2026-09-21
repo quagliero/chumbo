@@ -1463,7 +1463,7 @@ Every starter's real stat line on the matchup page — "22 car, 104 yds, 1 TD ·
 the old A1d gap (players shown on today's team in old draft boards) closes
 without a separate job.
 
-### L2 · How the game unfolded `L` — chart and records done; card to come
+### L2 · How the game unfolded `L` ✅
 
 > **The chart (2026-09-18).** Every matchup page from 2012 on has "How the
 > week unfolded": both scores Thursday night to Monday night, one step per
@@ -1507,7 +1507,21 @@ without a separate job.
 > never hold the last two records; it has no player and its time is borrowed
 > from the last real play.
 >
-> **Still to do:** the share card.
+> **The card (2026-09-21).** "Copy chart" at the end of the chart's heading.
+> It is the only card in the set that is a picture rather than a list: the two
+> lines, the parts of the week under them, a dot per key play, a ring and a
+> dotted rule where the winner went ahead for good, and each name and final
+> score at the end of its own line — which is also the legend. The sentence
+> from the page runs above it. The moments are positioned by the same
+> `squeezedTime` the page uses, in `cardData`, so the card cannot draw a
+> different shape from the chart the sharer was looking at. The lines keep the
+> chart's blue and orange rather than the two managers' accents (F2: one
+> accent per card, and it is the winner's — the top rule and the ring).
+>
+> The geometry took two goes. Clamping each end label into the plot and THEN
+> pushing the pair apart put the winner's name above the plot and into the
+> sentence on a game decided by 0.68 points; it pushes them apart first and
+> moves the pair back inside now, and a test holds it.
 
 On every matchup page: both teams' scores through the weekend, lead changes
 marked, the play that decided it named ("won it at 21:42 on Monday, Kelce

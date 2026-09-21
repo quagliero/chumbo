@@ -1,5 +1,5 @@
 /**
- * The five card templates (G2).
+ * The card templates (G2).
  *
  * A template is a pure function from a fact to a `ShareCard`. It does no
  * fetching, no computing and no deciding what is notable — the caller has
@@ -17,6 +17,7 @@
  * | `recordBrokenCard` | a record, the stats explorer | a league best |
  * | `weekRecapCard` | a week's matchups (J2) | one week, in four lines |
  * | `matchupPreviewCard` | a game not yet played (K1) | two managers, before |
+ * | `gameFlowCard` | a game's chart (L2) | one game, as the week unfolded |
  *
  * ## What a caller assembles
  *
@@ -105,6 +106,16 @@ export {
   type WeekRecapCardProps,
   type WeekRecapRow,
 } from "./weekRecap";
+
+export {
+  FLOW_COLOURS,
+  GAME_FLOW_LABEL_BOX,
+  GAME_FLOW_PLOT,
+  gameFlowCard,
+  type GameFlowCardPoint,
+  type GameFlowCardProps,
+  type GameFlowCardSide,
+} from "./gameFlow";
 
 export {
   matchupPreviewCard,

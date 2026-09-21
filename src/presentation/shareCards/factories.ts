@@ -2,6 +2,7 @@ import { loadPlayers, loadSeasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import type { CardNote } from "@/presentation/components/ShareCard/templates";
 import type { ShareCard } from "@/presentation/components/ShareCard";
+import type { TimelineFile } from "@/data/gamedays";
 
 /**
  * Card factories for the share buttons (I4).
@@ -122,6 +123,39 @@ export const weekRecapShare =
       week,
       playoffs: recap.playoffs,
       rows: recap.rows,
+      crest: await embedImage(CREST),
+      note,
+    });
+  };
+
+/**
+ * A game, as the week unfolded (L2).
+ *
+ * Takes the week's timeline file, which the chart on the page has already
+ * loaded — so sharing what you are looking at costs no download.
+ */
+export const gameFlowShare =
+  (
+    file: TimelineFile,
+    year: number,
+    week: number,
+    rosterIds: readonly [number, number],
+    names: readonly [string, string],
+    managerIds: readonly [string | undefined, string | undefined],
+    note?: CardNote
+  ) =>
+  async (): Promise<ShareCard> => {
+    const [templates, { embedImage }, data] = await load();
+    const flow = data.gameFlowData(file, year, rosterIds, names, managerIds);
+    if (!flow) throw new Error(`No timeline for ${year} week ${week}`);
+    return templates.gameFlowCard({
+      year,
+      week,
+      teams: flow.teams,
+      story: flow.story,
+      decided: flow.decided,
+      slots: flow.slots,
+      accent: flow.accent,
       crest: await embedImage(CREST),
       note,
     });

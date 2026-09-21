@@ -145,7 +145,7 @@ export {
 } from "./raster";
 
 /**
- * The five templates (G2), and the shared chrome they are built from.
+ * The templates (G2), and the shared chrome they are built from.
  *
  * Re-exported here so a call site has one import for "make me a card", and so
  * G3/G4 never need to know which file a template lives in. `templates/index.ts`
@@ -164,6 +164,7 @@ export {
   draftPickCard,
   finalScoreCard,
   formatPickLabel,
+  gameFlowCard,
   formatPoints,
   formatRecord,
   formatScore,
@@ -177,6 +178,9 @@ export {
   type DraftPickCardProps,
   type FinalScoreCardProps,
   type FinalScoreSide,
+  type GameFlowCardPoint,
+  type GameFlowCardProps,
+  type GameFlowCardSide,
   type H2HRecordCardProps,
   type ManagerSeasonCardProps,
   type RecordBrokenCardProps,

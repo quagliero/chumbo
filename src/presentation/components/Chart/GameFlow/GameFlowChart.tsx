@@ -12,7 +12,9 @@ import {
   useChartPopover,
 } from "../Popover";
 import {
+  shortSlot,
   slotOf,
+  slotStarts,
   squeezedTime,
   type FlowStep,
   type GameFlow,
@@ -28,7 +30,8 @@ import {
  * two accents on one chart is what the F2 note rules out.
  */
 
-const COLOURS = ["#2a78d6", "#eb6834"] as const;
+/** Exported so the section's legend cannot drift from the lines. */
+export const COLOURS = ["#2a78d6", "#eb6834"] as const;
 const MARGIN = { top: 14, right: 64, bottom: 30, left: 34 };
 const HEIGHT = 230;
 const DOT = 4.5;
@@ -63,22 +66,6 @@ const whatScored = (w: string) =>
     )
     .join(" + ");
 
-/** What a slot is called when its full name will not fit — on a phone, mostly. */
-const SHORT: Record<string, string> = {
-  "Thursday night": "TNF",
-  "Sunday morning": "Sun am",
-  "Sunday early": "Sun",
-  "Sunday late": "Late",
-  "Sunday night": "SNF",
-  "Monday night": "MNF",
-  // Not "TNF": Thursday has that. The two Tuesday games of 2020 get "Tue".
-  "Tuesday night": "Tue",
-  "Wednesday night": "Wed",
-  Wednesday: "Wed",
-  Saturday: "Sat",
-  Friday: "Fri",
-};
-
 /** Rough width of an 11px label, for deciding whether it fits. */
 const labelWidth = (text: string) => text.length * 6.2 + 8;
 
@@ -108,14 +95,10 @@ export const GameFlowChart = ({
   }, [flow]);
 
   /** Where each part of the week starts, for the dividers and their labels. */
-  const slots = useMemo(() => {
-    const starts: { at: number; slot: string }[] = [];
-    for (const step of flow.steps) {
-      const slot = slotOf(step.at);
-      if (starts[starts.length - 1]?.slot !== slot) starts.push({ at: step.at, slot });
-    }
-    return starts;
-  }, [flow]);
+  const slots = useMemo(
+    () => slotStarts(flow.steps.map((step) => step.at)),
+    [flow]
+  );
 
   const describe = (step: FlowStep) =>
     `${playerName(step.starterId)}, ${signed(step.pts)} for ${names[step.side]}, ` +
@@ -195,7 +178,7 @@ export const GameFlowChart = ({
                   />
                   {/* The full name if it fits before the next, else the short
                       one, else nothing. */}
-                  {(next - px > labelWidth(SHORT[slot] ?? slot)) && (
+                  {(next - px > labelWidth(shortSlot(slot))) && (
                     <text
                       x={px + 3}
                       y={frame.height + 18}
@@ -203,7 +186,7 @@ export const GameFlowChart = ({
                       fill="currentColor"
                       className="text-ink-muted"
                     >
-                      {next - px > labelWidth(slot) ? slot : SHORT[slot] ?? slot}
+                      {next - px > labelWidth(slot) ? slot : shortSlot(slot)}
                     </text>
                   )}
                 </g>

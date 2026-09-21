@@ -4,7 +4,7 @@
  * Reachable at
  * `/src/presentation/components/ShareCard/templates/__harness__/harness.html`
  * under `yarn dev`. Separate from G1's harness, which exercises the renderer
- * with throwaway sketches; this one renders the five real templates with the
+ * with throwaway sketches; this one renders the real templates with the
  * worst real strings the league has, because the failure modes that matter
  * here — a name that overflows, a caveat that is invisible, a number that is
  * not the biggest thing on the card — are all invisible to a unit test.
@@ -20,6 +20,7 @@ import {
   draftPickCard,
   embedImages,
   finalScoreCard,
+  gameFlowCard,
   h2hRecordCard,
   managerSeasonCard,
   recordBrokenCard,
@@ -51,6 +52,53 @@ interface Case {
   name: string;
   card: ShareCard;
 }
+
+/** [where in the week, points scored, key play?] — a week, moment by moment. */
+type Moment = [number, number, boolean?];
+
+const run = (moments: readonly Moment[], scale = 1) => {
+  let score = 0;
+  return moments.map(([at, points, key]) => {
+    score = Math.round((score + points * scale) * 100) / 100;
+    return { at, score, key };
+  });
+};
+
+/** jay: a lineup that had finished by teatime. */
+const JAY: Moment[] = [
+  [0.02, 8.6],
+  [0.2, 9.6, true],
+  [0.24, 6.2, true],
+  [0.3, 10.9, true],
+  [0.34, 7.4, true],
+  [0.38, 22.4],
+  [0.44, 12.1],
+  [0.52, 18.2],
+  [0.62, 9.4],
+  [0.72, 11.8],
+];
+
+/** rich: three players left on Sunday night, one of them a kicker. */
+const RICH: Moment[] = [
+  [0.06, 2.1],
+  [0.28, 4.4],
+  [0.4, 6.5],
+  [0.55, 12.2, true],
+  [0.6, 8.4],
+  [0.68, 14.6, true],
+  [0.8, 26.6, true],
+  [0.88, 18.5, true],
+  [0.93, 12.98],
+  [0.97, 11.0, true],
+];
+
+const SLOTS = [
+  { at: 0, label: "TNF" },
+  { at: 0.18, label: "Sun" },
+  { at: 0.5, label: "Late" },
+  { at: 0.75, label: "SNF" },
+  { at: 0.9, label: "MNF" },
+];
 
 const cases: Case[] = [
   {
@@ -162,6 +210,41 @@ const cases: Case[] = [
         text: "The most points left on the bench in Chumbo history.",
         approximate: true,
       },
+    }),
+  },
+  {
+    // 2024 week 8, the biggest comeback in league history: jay's lineup all
+    // played early, rich's did not, and rich led for the first time when a
+    // kicker scored on Monday night.
+    name: "8. How the week unfolded — the shape a comeback makes",
+    card: gameFlowCard({
+      year: 2024,
+      week: 8,
+      teams: [
+        { name: "jay", score: 116.6, points: run(JAY) },
+        { name: "rich", score: 117.28, points: run(RICH) },
+      ],
+      story:
+        "One lead change. rich went ahead for good, from 77.4 down, on Monday night, when Chris Boswell scored.",
+      decided: { at: 0.97, side: 1 },
+      slots: SLOTS,
+      accent: ORANGE,
+      crest,
+      note: { text: "The biggest comeback in Chumbo history." },
+    }),
+  },
+  {
+    name: "8b. How the week unfolded — level scores, so the two labels collide",
+    card: gameFlowCard({
+      year: 2017,
+      week: 3,
+      teams: [
+        { name: "Zaragoza's Zooting Zorro", score: 104.2, points: run(JAY, 104.2 / 116.6) },
+        { name: "Salt & Pepper", score: 104.2, points: run(RICH, 104.2 / 117.28) },
+      ],
+      story: "Level at the end, 104.20 apiece.",
+      slots: SLOTS,
+      crest,
     }),
   },
   {

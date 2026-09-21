@@ -1,5 +1,10 @@
 import { useMemo } from "react";
-import { GameFlowChart } from "@/presentation/components/Chart/GameFlow/GameFlowChart";
+import {
+  COLOURS,
+  GameFlowChart,
+} from "@/presentation/components/Chart/GameFlow/GameFlowChart";
+import { ShareButton } from "@/presentation/components/ShareButton";
+import { gameFlowShare } from "@/presentation/shareCards/factories";
 import { useTimeline } from "@/hooks/useGameday";
 import { buildGameFlow, describeFlow } from "@/utils/gameFlow";
 import { getPlayerName } from "@/utils/playerDataUtils";
@@ -15,28 +20,42 @@ export const GameFlowSection = ({
   week,
   rosterIds,
   names,
+  managerIds = [undefined, undefined],
 }: {
   year: number;
   week: number;
   rosterIds: readonly [number, number];
   names: readonly [string, string];
+  /** For the card's one accent: the winner's. */
+  managerIds?: readonly [string | undefined, string | undefined];
 }) => {
   const timeline = useTimeline(year, week);
   const flow = useMemo(
     () => (timeline ? buildGameFlow(timeline, rosterIds) : null),
     [timeline, rosterIds]
   );
-  if (!flow || flow.steps.length === 0) return null;
+  if (!timeline || !flow || flow.steps.length === 0) return null;
 
   const playerName = (id: string) => getPlayerName(id, year);
 
   return (
     <section aria-labelledby="game-flow" className="rounded-lg bg-white p-4 shadow">
-      <div className="mb-2 flex flex-wrap items-baseline gap-x-3">
-        <h3 id="game-flow" className="font-bold">
-          How the week unfolded
-        </h3>
-        <p className="text-sm text-ink-muted">{describeFlow(flow, names, playerName)}</p>
+      <div className="mb-2 flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-baseline gap-x-3">
+          <h3 id="game-flow" className="font-bold">
+            How the week unfolded
+          </h3>
+          <p className="text-sm text-ink-muted">
+            {describeFlow(flow, names, playerName)}
+          </p>
+        </div>
+        {/* I4: a share control ends the heading of the thing it shares. The
+            card is the chart, and the file it is drawn from is already here. */}
+        <ShareButton
+          what="chart"
+          className="flex-none"
+          card={gameFlowShare(timeline, year, week, rosterIds, names, managerIds)}
+        />
       </div>
       <div className="mb-1 flex flex-wrap gap-x-4 text-xs text-ink-muted">
         {names.map((name, side) => (
@@ -44,7 +63,7 @@ export const GameFlowSection = ({
             <span
               aria-hidden="true"
               className="inline-block h-0.5 w-4"
-              style={{ background: side === 0 ? "#2a78d6" : "#eb6834" }}
+              style={{ background: COLOURS[side] }}
             />
             {name}
           </span>

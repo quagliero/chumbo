@@ -267,6 +267,44 @@ export const whenSlot = (slot: string) =>
     Wednesday: "on Wednesday",
   })[slot] ?? `on ${slot}`;
 
+/**
+ * What a slot is called where its full name will not fit: a phone's axis, a
+ * card's divider. The league's own shorthand, so "Late" means the 4pm games
+ * to anyone who has ever watched one.
+ */
+const SHORT_SLOT: Record<string, string> = {
+  "Thursday night": "TNF",
+  "Sunday morning": "Sun am",
+  "Sunday early": "Sun",
+  "Sunday late": "Late",
+  "Sunday night": "SNF",
+  "Monday night": "MNF",
+  // Not "TNF": Thursday has that. 2020's two Tuesday games get "Tue".
+  "Tuesday night": "Tue",
+  "Wednesday night": "Wed",
+  Wednesday: "Wed",
+  Saturday: "Sat",
+  Friday: "Fri",
+};
+
+export const shortSlot = (slot: string): string => SHORT_SLOT[slot] ?? slot;
+
+/**
+ * Where each part of the week starts, from moments in order: one entry per
+ * run of moments in the same slot, so a week reads
+ * Thursday → Sunday → late → Sunday night → Monday.
+ */
+export const slotStarts = (
+  times: readonly number[]
+): { at: number; slot: string }[] => {
+  const starts: { at: number; slot: string }[] = [];
+  for (const at of times) {
+    const slot = slotOf(at);
+    if (starts[starts.length - 1]?.slot !== slot) starts.push({ at, slot });
+  }
+  return starts;
+};
+
 const count = (n: number) =>
   ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"][n] ??
   String(n);

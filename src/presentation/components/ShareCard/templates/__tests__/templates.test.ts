@@ -28,6 +28,9 @@ import {
   SITE_URL,
   draftPickCard,
   finalScoreCard,
+  GAME_FLOW_LABEL_BOX,
+  GAME_FLOW_PLOT,
+  gameFlowCard,
   formatPickLabel,
   formatPoints,
   formatRecord,
@@ -174,8 +177,16 @@ const textExtents = (markup: string) => {
 
 const person = (name: string) => ({ name, avatar: null });
 
+/** A believable week: ten moments, a couple of them key plays. */
+const flowPoints = (total: number, side: 0 | 1) =>
+  Array.from({ length: 10 }, (_, index) => ({
+    at: (index + 1) / 10,
+    score: (total * (index + 1)) / 10,
+    key: index % (side === 0 ? 3 : 4) === 0,
+  }));
+
 /** One of each card, with the same nasty name in every name-shaped slot. */
-const allFive = (name: string) => ({
+const allCards = (name: string) => ({
   finalScore: finalScoreCard({
     year: 2025,
     week: 14,
@@ -234,6 +245,25 @@ const allFive = (name: string) => ({
     ],
     note: { text: "The 3rd-highest score in Chumbo history." },
   }),
+  gameFlow: gameFlowCard({
+    year: 2024,
+    week: 8,
+    teams: [
+      { name, score: 116.6, points: flowPoints(116.6, 0) },
+      { name: `${name} II`, score: 117.28, points: flowPoints(117.28, 1) },
+    ],
+    story: `Four lead changes. ${name} II went ahead for good, from 77.4 down, on Monday night, when Chris Boswell scored.`,
+    decided: { at: 0.94, side: 1 },
+    slots: [
+      { at: 0, label: "TNF" },
+      { at: 0.22, label: "Sun" },
+      { at: 0.55, label: "Late" },
+      { at: 0.78, label: "SNF" },
+      { at: 0.9, label: "MNF" },
+    ],
+    accent: "#eb6834",
+    note: { text: "The biggest comeback in Chumbo history." },
+  }),
   matchupPreview: matchupPreviewCard({
     year: 2026,
     week: 3,
@@ -250,7 +280,7 @@ const NAMES = ["Norm", LONG, PUNCTUATED, HOSTILE];
 
 describe("every template, with every name the league can throw at it", () => {
   for (const name of NAMES) {
-    const cards = allFive(name);
+    const cards = allCards(name);
     for (const [key, card] of Object.entries(cards)) {
       it(`${key} is well-formed with ${JSON.stringify(name.slice(0, 24))}`, () => {
         expect(() => scan(card.content)).not.toThrow();
@@ -274,8 +304,8 @@ describe("hostile input cannot change a card's shape", () => {
   // produce the same NUMBER of elements as a team name that is a word. One
   // extra element means the name broke out of its `<text>` and the card is
   // whatever the attacker (or the joker) wrote.
-  const benign = allFive("Norm");
-  const hostile = allFive(HOSTILE);
+  const benign = allCards("Norm");
+  const hostile = allCards(HOSTILE);
 
   for (const key of Object.keys(benign) as (keyof typeof benign)[]) {
     it(`${key} has the same element count either way`, () => {
@@ -377,7 +407,7 @@ describe("the 2019 caveat", () => {
 
 describe("the card says where it came from", () => {
   it("carries the wordmark and the address on all five", () => {
-    for (const card of Object.values(allFive("Norm"))) {
+    for (const card of Object.values(allCards("Norm"))) {
       expect(card.content).toContain(SITE_NAME);
       // An image pasted into WhatsApp carries no link, so if the URL is not
       // drawn on the card it does not exist.
@@ -543,5 +573,144 @@ describe("number formatting", () => {
   it("uses en dashes in a record, because a hyphen at 130px is a minus sign", () => {
     expect(formatRecord(9, 5)).toBe("9–5");
     expect(formatRecord(6, 7, 1)).toBe("6–7–1");
+  });
+});
+
+describe("the game-flow card's picture", () => {
+  /** Every point a step path visits. `M x,y` then runs of `H x` / `V y`. */
+  const pathPoints = (d: string): { x: number; y: number }[] => {
+    const start = /^M(-?[\d.]+),(-?[\d.]+)/.exec(d);
+    if (!start) throw new Error(`not a path: ${d.slice(0, 20)}`);
+    let x = Number(start[1]);
+    let y = Number(start[2]);
+    const points = [{ x, y }];
+    for (const move of d.slice(start[0].length).matchAll(/([HV])(-?[\d.]+)/g)) {
+      if (move[1] === "H") x = Number(move[2]);
+      else y = Number(move[2]);
+      points.push({ x, y });
+    }
+    return points;
+  };
+
+  const paths = (markup: string) =>
+    scan(markup)
+      .filter((element) => element.name === "path")
+      .map((element) => pathPoints(element.attrs.d));
+
+  const week = (
+    overrides: Partial<Parameters<typeof gameFlowCard>[0]> = {}
+  ) =>
+    gameFlowCard({
+      year: 2022,
+      week: 13,
+      teams: [
+        { name: "dix", score: 131.2, points: flowPoints(131.2, 0) },
+        { name: "sol", score: 129.9, points: flowPoints(129.9, 1) },
+      ],
+      story: "Three lead changes.",
+      slots: [{ at: 0, label: "TNF" }],
+      ...overrides,
+    });
+
+  it("keeps both lines inside the plot", () => {
+    for (const points of paths(week().content)) {
+      for (const point of points) {
+        expect(point.x).toBeGreaterThanOrEqual(GAME_FLOW_PLOT.left - 0.01);
+        expect(point.x).toBeLessThanOrEqual(GAME_FLOW_PLOT.right + 0.01);
+        expect(point.y).toBeGreaterThanOrEqual(GAME_FLOW_PLOT.top - 0.01);
+        expect(point.y).toBeLessThanOrEqual(GAME_FLOW_PLOT.bottom + 0.01);
+      }
+    }
+  });
+
+  it("keeps a lineup that went below zero inside it too", () => {
+    // An interception and a fumble in the first hour is a real Thursday.
+    const card = week({
+      teams: [
+        {
+          name: "dix",
+          score: 90,
+          points: [
+            { at: 0.05, score: -6 },
+            { at: 0.5, score: 40 },
+            { at: 1, score: 90 },
+          ],
+        },
+        { name: "sol", score: 88, points: flowPoints(88, 1) },
+      ],
+    });
+    for (const points of paths(card.content)) {
+      for (const point of points) {
+        expect(point.y).toBeLessThanOrEqual(GAME_FLOW_PLOT.bottom + 0.01);
+        expect(point.y).toBeGreaterThanOrEqual(GAME_FLOW_PLOT.top - 0.01);
+      }
+    }
+  });
+
+  it("ends each line on that team's official score", () => {
+    // The scores are stated, not summed: a stat correction is in the official
+    // number and a card that drew its own total would disagree with the page.
+    const [first, second] = paths(week().content).map(
+      (points) => points[points.length - 1].y
+    );
+    // dix scored more, so dix's line ends higher up the card.
+    expect(first).toBeLessThan(second);
+  });
+
+  it("marks the moment it was decided, and marks nothing when nobody won", () => {
+    const decided = week({ decided: { at: 0.8, side: 1 } });
+    const dashed = scan(decided.content).filter(
+      (element) => element.attrs["stroke-dasharray"]
+    );
+    expect(dashed).toHaveLength(1);
+    expect(
+      scan(week().content).filter((element) => element.attrs["stroke-dasharray"])
+    ).toHaveLength(0);
+  });
+
+  it("says the score and the story in its title, for the reader with no picture", () => {
+    const card = week({ decided: { at: 0.8, side: 0 } });
+    expect(card.title).toContain("131.2");
+    expect(card.title).toContain("129.9");
+    expect(card.title).toContain("Three lead changes.");
+    expect(card.title).toContain("2022");
+  });
+});
+
+describe("the game-flow card's end labels", () => {
+  const labelYs = (card: { content: string }) =>
+    scan(card.content)
+      .filter(
+        (element) =>
+          element.name === "text" &&
+          Number(element.attrs.x) === GAME_FLOW_LABEL_BOX.x
+      )
+      .map((element) => Number(element.attrs.y));
+
+  const game = (a: number, b: number) =>
+    gameFlowCard({
+      year: 2024,
+      week: 8,
+      teams: [
+        { name: "jay", score: a, points: [{ at: 1, score: a }] },
+        { name: "rich", score: b, points: [{ at: 1, score: b }] },
+      ],
+      story: "One lead change. rich went ahead for good on Monday night.",
+    });
+
+  it("keeps a name out of the sentence when the winner finishes at the top", () => {
+    // 0.68 points in it, both lines at the top of the plot: the labels are
+    // pushed apart, and the pair has to come back down into the plot rather
+    // than the higher one climbing into the story above it.
+    for (const y of labelYs(game(116.6, 117.28))) {
+      expect(y).toBeGreaterThan(220);
+      expect(y).toBeLessThan(500);
+    }
+  });
+
+  it("keeps two names apart when the game was a tie", () => {
+    const ys = labelYs(game(104.2, 104.2)).sort((x, y) => x - y);
+    // Two names and two scores: the two names must not share a baseline.
+    expect(ys[0]).toBeLessThan(ys[2] - 40);
   });
 });

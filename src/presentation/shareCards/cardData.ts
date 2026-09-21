@@ -17,6 +17,16 @@ import {
 } from "@/utils/matchupPreview";
 import type { WeekStakes } from "@/utils/playoffOdds";
 import { buildWeekRecap, recapLines, type RecapLine } from "@/utils/weekRecap";
+import {
+  buildGameFlow,
+  describeFlow,
+  shortSlot,
+  slotStarts,
+  squeezedTime,
+} from "@/utils/gameFlow";
+import { getPlayerName } from "@/utils/playerDataUtils";
+import type { TimelineFile } from "@/data/gamedays";
+import type { GameFlowCardSide } from "@/presentation/components/ShareCard/templates";
 
 /**
  * What goes on a card, decided once (I4).
@@ -295,5 +305,80 @@ export const matchupPreviewData = (
     ties: preview.h2h.ties,
     note: preview.h2h.streak ?? preview.onTheLine[0],
     preview,
+  };
+};
+
+/* ------------------------------------------------------------------ *
+ * A game, as the week unfolded (L2)
+ * ------------------------------------------------------------------ */
+
+export interface GameFlowCardData {
+  teams: [GameFlowCardSide, GameFlowCardSide];
+  /** `describeFlow`'s sentence — the same words the page prints. */
+  story: string;
+  decided?: { at: number; side: 0 | 1 };
+  slots: { at: number; label: string }[];
+  /** The winner's, for the top rule and the ring. Undefined for a tie. */
+  accent?: string;
+}
+
+/**
+ * The chart on the matchup page, as a card.
+ *
+ * Takes the week's file rather than loading it: the caller is a click handler
+ * that has already awaited it, and `cardData` stays synchronous.
+ *
+ * The moments are positioned here, once, on the SAME squeezed clock the page's
+ * chart uses — so the card cannot draw a different picture from the one the
+ * sharer was looking at. That is the whole reason this lives beside the other
+ * card data instead of inside the template.
+ */
+export const gameFlowData = (
+  file: TimelineFile,
+  year: number,
+  rosterIds: readonly [number, number],
+  names: readonly [string, string],
+  managerIds: readonly [string | undefined, string | undefined] = [
+    undefined,
+    undefined,
+  ]
+): GameFlowCardData | null => {
+  const flow = buildGameFlow(file, rosterIds);
+  if (!flow || flow.steps.length === 0) return null;
+
+  const { position, span } = squeezedTime(flow.steps.map((step) => step.at));
+  const at = (time: number) => (span > 0 ? position(time) / span : 0);
+
+  const sideData = (side: 0 | 1): GameFlowCardSide => ({
+    name: names[side],
+    score: flow.final[side],
+    points: flow.steps
+      .filter((step) => step.side === side)
+      .map((step) => ({
+        at: at(step.at),
+        score: step.score[side],
+        // A correction is not a play, and a dot on one invites a reader to ask
+        // which play it was.
+        key: Boolean(step.key),
+      })),
+  });
+  const teams: [GameFlowCardSide, GameFlowCardSide] = [sideData(0), sideData(1)];
+
+  const winner = flow.decided?.side;
+
+  return {
+    teams,
+    story: describeFlow(flow, names, (id) => getPlayerName(id, year)),
+    decided: flow.decided
+      ? { at: at(flow.decided.at), side: flow.decided.side }
+      : undefined,
+    slots: slotStarts(flow.steps.map((step) => step.at)).map((start) => ({
+      at: at(start.at),
+      label: shortSlot(start.slot),
+    })),
+    accent:
+      winner !== undefined && managerIds[winner]
+        ? getManagerAccent(managerIds[winner])
+        : undefined,
   };
 };

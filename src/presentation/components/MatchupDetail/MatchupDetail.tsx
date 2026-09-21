@@ -137,6 +137,7 @@ const MatchupDetail = ({
     teams[0].manager?.name ?? teams[0].name,
     teams[1].manager?.name ?? teams[1].name,
   ] as const;
+  const flowManagerIds = [teams[0].manager?.id, teams[1].manager?.id] as const;
 
   return (
     <div className="container mx-auto space-y-6">
@@ -348,6 +349,7 @@ const MatchupDetail = ({
           week={week}
           rosterIds={rosterIds}
           names={flowNames}
+          managerIds={flowManagerIds}
         />
       </Suspense>
 

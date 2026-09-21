@@ -218,7 +218,7 @@ same fact cannot be computed two different ways in two places.
   precomputed file, so a share card and a page cannot disagree about what was
   notable.
 - **`src/presentation/components/ShareCard/`** — hand-rolled SVG to a canvas
-  (G1), five templates (G2) plus the profile cards (I4). Every template is a pure function of flat
+  (G1), eight templates (G2) plus the profile cards (I4). Every template is a pure function of flat
   primitives, deliberately: no `managers.json` import and no season loader, so
   the same code can render an OG image in Node. `ShareButton/` is the flow —
   native share sheet on a phone, clipboard on desktop.
@@ -316,6 +316,11 @@ not season data, so `build-aggregates` and the test setup call
 does, and nothing should — the browser reads the answers out of
 `all-time.json`. A moment that is a correction rather than a play can never
 hold the last two: it has no player and its time is borrowed.
+
+**The card** is "Copy chart", at the end of the chart's heading
+(`gameFlowCard`): the same two lines, the same squeezed clock — `cardData`
+positions the moments with the same `squeezedTime`, so a shared card and the
+page it came from cannot be different pictures.
 
 The weekly update (J1) runs it for the live season, non-fatally.
 `gamedays.test.ts` re-adds every skill player's line into points and checks
