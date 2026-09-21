@@ -60,7 +60,7 @@
     "daily_waivers_base": 4,
     "reserve_slots": 0,
     "reserve_allow_cov": 1,
-    "daily_waivers_last_ran": 17
+    "daily_waivers_last_ran": 20
   },
   "avatar": "4a8d92eee8aea7b5eba43c4b98e667a7",
   "company_id": null,
@@ -206,6 +206,8 @@
   "bracket_id": null,
   "bracket_overrides_id": null,
   "group_id": null,
+  "loser_bracket_id": null,
+  "loser_bracket_overrides_id": null,
   "roster_positions": [
     "QB",
     "RB",
@@ -223,7 +225,5 @@
     "BN",
     "BN"
   ],
-  "loser_bracket_id": null,
-  "loser_bracket_overrides_id": null,
   "total_rosters": 12
 }
