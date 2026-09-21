@@ -71,6 +71,10 @@ const SHORT: Record<string, string> = {
   "Sunday late": "Late",
   "Sunday night": "SNF",
   "Monday night": "MNF",
+  // Not "TNF": Thursday has that. The two Tuesday games of 2020 get "Tue".
+  "Tuesday night": "Tue",
+  "Wednesday night": "Wed",
+  Wednesday: "Wed",
   Saturday: "Sat",
   Friday: "Fri",
 };

@@ -30,6 +30,7 @@ import {
   caveatSeasons,
   excludedSeasons,
 } from "@/utils/stats";
+import { loadTimelines } from "@/utils/stats/loadTimelines";
 import {
   PRECOMPUTED_VERSION,
   type PrecomputedStat,
@@ -56,6 +57,9 @@ const CHECK = process.argv.includes("--check");
 const OUT = path.resolve(process.cwd(), "public/data/all-time.json");
 
 await loadAllSeasons();
+// The L2 records read the weeks' play-by-play timelines, which are not season
+// data and are never loaded by a page. Here, all of them at once.
+await loadTimelines();
 
 const years = Object.keys(seasons)
   .map(Number)

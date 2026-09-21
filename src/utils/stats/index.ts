@@ -5,6 +5,7 @@ import "./lineupStats";
 import "./draftStats";
 import "./transactionStats";
 import "./identityStats";
+import "./gamedayStats";
 
 export {
   defineStat,
@@ -14,8 +15,10 @@ export {
   excludedSeasons,
   caveatSeasons,
 } from "./registry";
-export { getStatContext } from "./traverse";
+export { getStatContext, provideTimelines } from "./traverse";
+export type { TimelineSource } from "./traverse";
 export type {
+  FlowGame,
   Game,
   StatContext,
   StatDefinition,

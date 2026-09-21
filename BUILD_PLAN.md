@@ -1463,7 +1463,7 @@ Every starter's real stat line on the matchup page — "22 car, 104 yds, 1 TD ·
 the old A1d gap (players shown on today's team in old draft boards) closes
 without a separate job.
 
-### L2 · How the game unfolded `L` — chart done; records and card to come
+### L2 · How the game unfolded `L` — chart and records done; card to come
 
 > **The chart (2026-09-18).** Every matchup page from 2012 on has "How the
 > week unfolded": both scores Thursday night to Monday night, one step per
@@ -1481,9 +1481,33 @@ without a separate job.
 > goes in after his last play, and sixteen NFL.com-era team scores that are
 > not quite their starters' sum get a team correction, never drawn as a play.
 >
-> **Still to do:** the records ("biggest comeback", "won it on Monday night",
-> "latest decisive play" — `buildGameFlow` already measures the comeback) and
-> the share card.
+> **The records (2026-09-21).** Three lists the league has never been able to
+> see, on `/records` with all the others:
+>
+> - **Biggest comeback** — the largest deficit a winner ever faced. rich, 77.4
+>   down to jay in 2024 week 8, and ahead only when Chris Boswell kicked on
+>   Monday night. It is part heroics and part scheduling (a lineup that plays
+>   late spends Sunday behind), so the description says so and every entry
+>   names when the low point was.
+> - **Latest decisive play** — nick, 2020 week 5, Tuesday 9:22 pm, Cole
+>   Beasley: the game COVID moved off Sunday. The top of the list is the
+>   Tuesday games of 2020 and 2021, then the Monday nights that ran past
+>   midnight in the east. Ordering them needed the NFL week to start on
+>   **Wednesday**, not Thursday — 2012 opened on one and 2024 played Christmas
+>   on one, and a week that began on Thursday made the first game in Chumbo
+>   history the latest-decided game in Chumbo history.
+> - **Won it on Monday night** — hadkiss 27, sol 25, ant 20.
+>
+> The timelines are not season data, so they are handed to the registry
+> (`provideTimelines`) by whoever wants them — `build-aggregates` and the test
+> setup, never a page — and a stat that reads them declares
+> `requiresTimelines`, so the registry throws instead of answering that the
+> league has no comebacks. 2019 is excluded: its lineups are a reconstruction,
+> which makes its timelines a guess at the shape of a game. A correction can
+> never hold the last two records; it has no player and its time is borrowed
+> from the last real play.
+>
+> **Still to do:** the share card.
 
 On every matchup page: both teams' scores through the weekend, lead changes
 marked, the play that decided it named ("won it at 21:42 on Monday, Kelce

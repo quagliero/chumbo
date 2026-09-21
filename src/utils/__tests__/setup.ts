@@ -1,4 +1,5 @@
 import { loadAllSeasons } from "@/data";
+import { loadTimelines } from "@/utils/stats/loadTimelines";
 
 /**
  * A2a moved matchups and transactions behind dynamic imports, so
@@ -11,3 +12,10 @@ import { loadAllSeasons } from "@/data";
  * assertion to become async, or the snapshots stop being a safety net.
  */
 await loadAllSeasons();
+
+/**
+ * And the weeks' timelines (L2), which are not season data: the registry's
+ * timeline records refuse to answer without them, and `precomputed.test.ts`
+ * recomputes every stat to check the committed answers.
+ */
+await loadTimelines();

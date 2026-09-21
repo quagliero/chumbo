@@ -4,8 +4,13 @@ import { hasApproximateLineups } from "@/domain/dataQuality";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
 import { memoiseOverSeasons } from "@/utils/cache";
+import { buildGameFlow } from "@/utils/gameFlow";
 import type { ExtendedMatchup } from "@/types/matchup";
-import type { Game, StatContext } from "./types";
+// Type-only, so the stats never pull the weeks' 229-entry lookup table into a
+// page that only wants a record. The files themselves arrive through
+// `provideTimelines` below.
+import type { TimelineFile } from "@/data/gamedays";
+import type { FlowGame, Game, StatContext } from "./types";
 
 /**
  * Flatten every season into one list of team-weeks.
@@ -73,7 +78,59 @@ const toGame = ({
   };
 };
 
-const buildContext = (): StatContext => {
+/* ------------------------------------------------------- the week's timelines */
+
+/** A week's scoring timeline, or null where none was built. */
+export type TimelineSource = (year: number, week: number) => TimelineFile | null;
+
+let timelines: TimelineSource | null = null;
+let timelineVersion = 0;
+
+/**
+ * Hand the registry the weekly timelines (L2).
+ *
+ * They are not season data: each week is its own file, loaded one at a time by
+ * the matchup page, and making the stats import them would put a lookup table
+ * for 229 weeks in front of every page that shows a record. So whoever wants
+ * the timeline records — `build-aggregates` at build time, the test setup —
+ * loads them and says so here.
+ *
+ * Bumps a version so the memoised context below is rebuilt rather than served
+ * from before the timelines arrived.
+ */
+export const provideTimelines = (source: TimelineSource | null): void => {
+  timelines = source;
+  timelineVersion += 1;
+};
+
+/** Which set of timelines is in force. Part of every cache key that uses them. */
+export const getTimelineVersion = (): number => timelineVersion;
+
+/**
+ * Every decided game whose week has a timeline, the winner's half first.
+ *
+ * Only games are walked, so a team with no opponent cannot appear, and only
+ * the winner's half of each, so a game is counted once and `flow`'s side 0 is
+ * always the team that won.
+ */
+const buildFlows = (games: Game[]): FlowGame[] => {
+  if (!timelines) return [];
+  const flows: FlowGame[] = [];
+  for (const game of games) {
+    if (game.result !== "win") continue;
+    const file = timelines(game.year, game.week);
+    if (!file) continue;
+    const flow = buildGameFlow(file, [game.rosterId, game.opponentRosterId]);
+    // No `decided` means the timelines end level — a week whose file is
+    // missing a team, or a game the corrections tied. Nothing to rank.
+    if (!flow?.decided) continue;
+    flows.push({ game, flow });
+  }
+  return flows;
+};
+
+/** `version` is the timeline version: it is the memo key, not an input. */
+const buildContext = (_version: number): StatContext => {
   const games: Game[] = [];
   const teamWeeks: Game[] = [];
 
@@ -178,13 +235,20 @@ const buildContext = (): StatContext => {
     }
   }
 
-  return { games, teamWeeks, years: [...YEAR_NUMBERS] };
+  return {
+    games,
+    teamWeeks,
+    years: [...YEAR_NUMBERS],
+    flows: buildFlows(games),
+  };
 };
 
-/** Every team-week in league history. Memoised and version-checked. */
-export const getStatContext = memoiseOverSeasons(
+const memoisedContext = memoiseOverSeasons(
   "getStatContext",
   buildContext,
-  // One entry: there are no arguments, so a second would never be reached.
-  1
+  // Two: the one built before the timelines were provided, and the one after.
+  2
 );
+
+/** Every team-week in league history. Memoised and version-checked. */
+export const getStatContext = (): StatContext => memoisedContext(timelineVersion);

@@ -1,6 +1,6 @@
 import { hasApproximateLineups } from "@/domain/dataQuality";
 import { memoiseOverSeasons } from "@/utils/cache";
-import { getStatContext } from "./traverse";
+import { getStatContext, getTimelineVersion } from "./traverse";
 import type { StatDefinition, StatEntry } from "./types";
 
 /**
@@ -46,8 +46,12 @@ export const getStat = (id: string): StatDefinition | undefined =>
  *      "worst start/sit in Chumbo history".
  *   2. Sorting by the stat's own `direction`, so a stat's `compute` returns
  *      entries and does not also have to remember which end is interesting.
+ *
+ * The third argument is the timeline version, and it is there for the cache
+ * key alone: `memoiseOverSeasons` keys on the season data's version, which
+ * does not move when the weekly timelines are provided or withdrawn.
  */
-const runStat = (id: string, limit?: number): StatEntry[] => {
+const runStat = (id: string, limit?: number, _timelines?: number): StatEntry[] => {
   const definition = definitions.get(id);
   if (!definition) return [];
 
@@ -58,10 +62,21 @@ const runStat = (id: string, limit?: number): StatEntry[] => {
   const keep = (game: { lineupsApproximate: boolean }) =>
     !definition.requiresLineups || !game.lineupsApproximate;
 
+  // A stat about the play-by-play cannot be answered from season data alone,
+  // and an empty list is indistinguishable from "the league has no comebacks".
+  // Say what is missing instead — see `provideTimelines` in `./traverse`.
+  if (definition.requiresTimelines && context.flows.length === 0) {
+    throw new Error(
+      `${definition.id} needs the weekly timelines: call provideTimelines() ` +
+        `after loadAllWeeks() before computing it.`
+    );
+  }
+
   const computed = definition.compute({
     ...context,
     games: context.games.filter(keep),
     teamWeeks: context.teamWeeks.filter(keep),
+    flows: context.flows.filter((flow) => keep(flow.game)),
   });
 
   // A stat that tolerates a reconstruction still has to say which of its
@@ -83,7 +98,10 @@ const runStat = (id: string, limit?: number): StatEntry[] => {
 };
 
 /** Memoised: the records pages ask for the same stats on every render. */
-export const computeStat = memoiseOverSeasons("computeStat", runStat, 64);
+const memoisedStat = memoiseOverSeasons("computeStat", runStat, 64);
+
+export const computeStat = (id: string, limit?: number): StatEntry[] =>
+  memoisedStat(id, limit, getTimelineVersion());
 
 const approximateSeasons = (): number[] =>
   getStatContext()

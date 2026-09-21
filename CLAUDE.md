@@ -198,11 +198,16 @@ Four things sit between the committed JSON and the pages. Each exists so the
 same fact cannot be computed two different ways in two places.
 
 - **`src/utils/stats/`** — the stat registry (C1). One flattened pass over
-  history, twenty-five statistics reading it. `defineStat` registers one;
-  `computeStat(id)` runs it. Two lists, and the difference matters: `games` is
+  history, twenty-eight statistics reading it. `defineStat` registers one;
+  `computeStat(id)` runs it. Three lists, and the differences matter: `games` is
   paired matchups only (for anything about winning), `teamWeeks` is EVERY
   team-week that scored (for anything about lineups), because an eliminated
   team still sets a lineup and there are 48 such team-weeks worth 4,287 points.
+  `flows` is every decided game as it unfolded through the NFL week (L2), the
+  winner always side 0 — and it is empty unless someone has called
+  `provideTimelines`, which is why a stat that reads it declares
+  `requiresTimelines` and the registry throws rather than reporting a league
+  with no comebacks.
 - **`public/data/all-time.json`** — those answers, precomputed at build time by
   `yarn build-aggregates` and committed. 19 kB gzip against the ~550 kB of
   matchups and transactions the registry needs, so a page can carry a record
@@ -298,6 +303,19 @@ description. `utils/gameFlow.ts` turns a file into the chart on the matchup
 page ("How the week unfolded"): both scores through the week on a clock with
 the dead hours squeezed out, slots named in US Eastern time, lead changes, the
 moment the winner went ahead for good, and a dot per key play that opens it.
+
+**Three records only this data can see**, in `utils/stats/gamedayStats.ts`:
+the **biggest comeback** (the largest deficit a winner ever faced — part
+heroics, part scheduling, so every entry names when the low point was), the
+**latest decisive play** (ordered by `minutesIntoWeek`, which runs Wednesday
+to Tuesday, because 2012 opened on a Wednesday and 2024 played Christmas on
+one; the top of the list is the games COVID pushed to a Tuesday night), and
+**won it on Monday night** per manager. They read the week files, which are
+not season data, so `build-aggregates` and the test setup call
+`loadTimelines()` (`utils/stats/loadTimelines.ts`) first; nothing in the app
+does, and nothing should — the browser reads the answers out of
+`all-time.json`. A moment that is a correction rather than a play can never
+hold the last two: it has no player and its time is borrowed.
 
 The weekly update (J1) runs it for the live season, non-fatally.
 `gamedays.test.ts` re-adds every skill player's line into points and checks

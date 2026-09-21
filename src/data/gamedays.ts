@@ -94,6 +94,22 @@ export const getWeek = (year: number, week: number): WeekFile | null | undefined
   return loaded.get(path);
 };
 
+/**
+ * Every committed week, loaded, and then readable with `getWeek`.
+ *
+ * For Node only — the build-time precompute and the test setup, which ask
+ * questions of all of history at once (L2's records). Nothing in the app
+ * should call it: that is 229 files to render one page.
+ */
+export const loadAllWeeks = async (): Promise<void> => {
+  await Promise.all(
+    Object.keys(files).map((path) => {
+      const [, year, week] = /\.\/(\d{4})\/weeks\/(\d+)\.json$/.exec(path)!;
+      return loadWeek(Number(year), Number(week));
+    })
+  );
+};
+
 /** Load a week's file. Resolves `null` for a week that has none. */
 export const loadWeek = (year: number, week: number): Promise<WeekFile | null> => {
   const path = pathFor(year, week);

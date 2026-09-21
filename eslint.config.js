@@ -25,6 +25,13 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      // A leading underscore means "deliberately unused". The stat registry
+      // has two: a parameter that exists only to vary a memo key (L2's
+      // timelines), where dropping it would silently serve a stale answer.
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
 )

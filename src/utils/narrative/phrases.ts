@@ -41,6 +41,11 @@ export const PHRASES: Record<string, string> = {
   "on-this-day": "most notable week on this date",
   "manager-archetypes": "most distinctive manager profile",
   "championship-inevitability": "most inevitable championship",
+  "biggest-comeback": "biggest comeback",
+  // Not "latest-decided game": the sentence is about the play, and the play is
+  // what the detail names.
+  "latest-decisive-play": "latest decisive play",
+  "monday-night-wins": "most games won on Monday night",
 };
 
 /**
