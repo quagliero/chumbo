@@ -31,7 +31,6 @@ yarn own-avatars    # save every Sleeper team logo locally, point the data at it
 yarn build-aggregates  # regenerate public/data/all-time.json (runs in `yarn build`)
 yarn check-aggregates  # fail if that file is stale, without rewriting it
 yarn prerender-og   # per-route HTML + OG images into dist/ (runs in `yarn build`)
-yarn preview-blurbs [--year 2026 --week 3]  # the week's previews as WhatsApp text (K1)
 
 # Data fetching (Sleeper API) — see scripts/fetch-sleeper-data.js
 yarn update-season                             # what the weekly Action runs (J1)
@@ -346,17 +345,6 @@ reads the archive (a rivalry is fifteen seasons long) and the stakes come from
 simulation that remembers each team's result that week, so "win and your odds
 go to 71%" is the same number on the page and in its preview. Regular season
 only — the playoffs' fixtures are the bracket's, not `schedule.json`'s.
-
-**The blurbs.** `yarn preview-blurbs` writes the same previews as text for
-the group chat (`utils/previewBlurb.ts`): the series, the real playoff
-meetings, the three most notable other facts (`previewTidbits.ts`, which the
-cards show too, plus trades, benches and what a big game's player cost), and
-the odds. It reads every season's trades, drafts and benches, so it runs in
-Node, never in the browser. The weekly update puts them in an issue,
-"Preview blurbs: <year> week <n>", rewritten by every run until the week is
-played. A "playoff meeting" anywhere in a preview or blurb is an elimination
-game or the final (`isMeaningfulPlayoffGame`) — never a consolation game,
-where lineups go unset, or the game for third.
 
 The simulation pulls every team towards the league average by `PRIOR_GAMES`
 (four games' worth). Without it the week-1 top scorer made the playoffs in 100%

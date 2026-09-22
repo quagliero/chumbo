@@ -43,7 +43,6 @@ env:
   # sort itself out on Wednesday" stops being indistinguishable from "it has
   # been broken since October".
   GAMEDAY_TITLE: The play-by-play is behind
-  PREVIEW_TITLE: Preview blurbs
 
 jobs:
   # Which of the two morning schedules is 9am in the UK today. Everything else
@@ -126,34 +125,6 @@ jobs:
           # ever written here, so a rebase onto their work cannot conflict.
           git pull --rebase
           git push
-
-      # K1: the week to come, as text for the group chat, in an issue per week
-      # (so it arrives as a notification). Rewritten by every run until the
-      # week is played — Wednesday's and Friday's have the odds after waivers
-      # and corrections — and last week's is closed when the next one opens.
-      # Never fails the update: the results are published either way.
-      - name: The week's preview blurbs
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          yarn -s preview-blurbs --out blurbs.txt --issue blurbs.md
-          if [ ! -s blurbs.txt ]; then
-            echo "No week to preview."
-            exit 0
-          fi
-          # "2026 week 3", from the body's first line.
-          TITLE="$PREVIEW_TITLE: $(head -1 blurbs.md | grep -o '[0-9]\{4\} week [0-9]\{1,2\}')"
-          cat blurbs.md >> "$GITHUB_STEP_SUMMARY"
-          EXISTING=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number,title --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
-          if [ -n "$EXISTING" ]; then
-            gh issue edit "$EXISTING" --body-file blurbs.md
-          else
-            for n in $(gh issue list --state open --search "\"$PREVIEW_TITLE\" in:title" --json number --jq '.[].number'); do
-              gh issue close "$n" --comment "The week has been played."
-            done
-            gh issue create --title "$TITLE" --body-file blurbs.md
-          fi
 
       - name: Close the last failure's issue
         if: success()
