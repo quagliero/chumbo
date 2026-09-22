@@ -768,3 +768,48 @@ export const rosterChurn = defineStat({
     });
   },
 });
+
+/* ------------------------------------------------------------------ *
+ * Two managers' trades with each other (K1's blurbs)
+ * ------------------------------------------------------------------ */
+
+export interface TradeBetween {
+  year: number;
+  /** Sleeper's `leg`. */
+  week: number;
+  /** What each side received: player names and picks ("2026 round 8"). */
+  got: Record<string, string[]>;
+}
+
+/**
+ * Every two-team trade between `a` and `b`, oldest first. What each got is
+ * named, not scored — the ledger above is where a trade is judged.
+ */
+export const tradesBetween = (
+  context: StatContext,
+  a: string,
+  b: string
+): TradeBetween[] => {
+  const index = indexSeasons(context.games);
+  const trades: TradeBetween[] = [];
+  for (const { year, week, transaction } of completedTransactions(context.years)) {
+    if (transaction.type !== "trade" || transaction.roster_ids.length !== 2) continue;
+    const season = index.get(year);
+    if (!season) continue;
+    const managers = transaction.roster_ids.map((r) => season.managerByRoster.get(r));
+    if (!managers.includes(a) || !managers.includes(b)) continue;
+    const got: Record<string, string[]> = { [a]: [], [b]: [] };
+    for (const [id, to] of Object.entries(transaction.adds ?? {})) {
+      const manager = season.managerByRoster.get(to);
+      if (manager) got[manager].push(playerName(id, year));
+    }
+    for (const pick of transaction.draft_picks ?? []) {
+      const manager = season.managerByRoster.get(pick.owner_id);
+      if (manager) got[manager].push(`${pick.season} round ${pick.round}`);
+    }
+    // Entered and undone in the same week leaves nothing moved.
+    if (got[a].length + got[b].length === 0) continue;
+    trades.push({ year, week, got });
+  }
+  return trades.sort((x, y) => x.year - y.year || x.week - y.week);
+};

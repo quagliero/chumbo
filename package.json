@@ -25,7 +25,8 @@
     "own-avatars": "node scripts/own-avatars.js",
     "build-aggregates": "vite-node scripts/build-aggregates.ts",
     "check-aggregates": "vite-node scripts/build-aggregates.ts --check",
-    "prerender-og": "vite-node scripts/prerender-og.ts"
+    "prerender-og": "vite-node scripts/prerender-og.ts",
+    "preview-blurbs": "vite-node scripts/preview-blurbs.ts"
   },
   "dependencies": {
     "@tanstack/react-table": "^8.20.6",
