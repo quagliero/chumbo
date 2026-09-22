@@ -27,7 +27,7 @@
     "playoff_type": 0,
     "taxi_slots": 0,
     "sub_start_time_eligibility": 0,
-    "last_scored_leg": 1,
+    "last_scored_leg": 2,
     "daily_waivers_days": 2816,
     "sub_lock_if_starter_active": 0,
     "playoff_week_start": 15,
@@ -60,14 +60,10 @@
     "daily_waivers_base": 4,
     "reserve_slots": 0,
     "reserve_allow_cov": 1,
-    "daily_waivers_last_ran": 20
+    "daily_waivers_last_ran": 21
   },
   "avatar": "4a8d92eee8aea7b5eba43c4b98e667a7",
   "company_id": null,
-  "shard": 306,
-  "season": "2026",
-  "season_type": "regular",
-  "sport": "nfl",
   "scoring_settings": {
     "sack": 1,
     "qb_hit": 0,
@@ -200,6 +196,10 @@
     "pts_allow_7_13": 4,
     "st_ff": 1
   },
+  "sport": "nfl",
+  "season": "2026",
+  "season_type": "regular",
+  "shard": 306,
   "draft_id": "1353841403951587328",
   "league_id": "1353841403939033088",
   "previous_league_id": "1221557942864596992",

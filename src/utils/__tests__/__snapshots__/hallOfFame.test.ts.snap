@@ -2,13 +2,13 @@
 
 exports[`the ring of shame > names today's holders 1`] = `
 {
-  "bench-points": "kitch · 2949.3 points benched",
+  "bench-points": "kitch · 2954.1 points benched",
   "longest-loss-streak": "thd · 10 straight defeats",
   "manager-efficiency": "brock · 85.3% efficient",
   "most-scumbos": "fin · 3 full Scumbos",
   "reigning-scumbo": "rich · 47-107 all-play (30.5%)",
   "roster-churn": "sol · 248 moves in one season",
-  "waiver-hit-rate": "sol · 5.24 points per pickup",
+  "waiver-hit-rate": "sol · 5.35 points per pickup",
   "worst-start-sit": "chris · 47.7 points thrown away",
 }
 `;

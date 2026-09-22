@@ -10632,5 +10632,53 @@ exports[`getOptimalLineup > 2026 — every matchup 1`] = `
     "optimalTotal": 117.74,
     "pointsLeftOnBench": 22.19999999999999,
   },
+  "w2 r1": {
+    "optimalTotal": 89.89999999999999,
+    "pointsLeftOnBench": 7.799999999999997,
+  },
+  "w2 r10": {
+    "optimalTotal": 79.69999999999999,
+    "pointsLeftOnBench": 10.799999999999983,
+  },
+  "w2 r11": {
+    "optimalTotal": 122.08,
+    "pointsLeftOnBench": 7.599999999999994,
+  },
+  "w2 r12": {
+    "optimalTotal": 103.76,
+    "pointsLeftOnBench": 3.200000000000003,
+  },
+  "w2 r2": {
+    "optimalTotal": 96.91999999999999,
+    "pointsLeftOnBench": 13.699999999999989,
+  },
+  "w2 r3": {
+    "optimalTotal": 80.66,
+    "pointsLeftOnBench": 9.200000000000003,
+  },
+  "w2 r4": {
+    "optimalTotal": 101.62,
+    "pointsLeftOnBench": 12.600000000000009,
+  },
+  "w2 r5": {
+    "optimalTotal": 126.58000000000001,
+    "pointsLeftOnBench": 1.4210854715202004e-14,
+  },
+  "w2 r6": {
+    "optimalTotal": 100.58,
+    "pointsLeftOnBench": 1.5,
+  },
+  "w2 r7": {
+    "optimalTotal": 96.22,
+    "pointsLeftOnBench": 6,
+  },
+  "w2 r8": {
+    "optimalTotal": 89.94,
+    "pointsLeftOnBench": 8.399999999999991,
+  },
+  "w2 r9": {
+    "optimalTotal": 95.08,
+    "pointsLeftOnBench": 4.799999999999997,
+  },
 }
 `;

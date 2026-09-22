@@ -3,9 +3,9 @@
 exports[`getAllTimeH2HRecord > covers every manager pairing 1`] = `
 {
   "ant vs brock": {
-    "team1AvgPoints": 101.86666666666666,
-    "team1Wins": 6,
-    "team2AvgPoints": 85.16666666666667,
+    "team1AvgPoints": 100.702,
+    "team1Wins": 7,
+    "team2AvgPoints": 83.53999999999999,
     "team2Wins": 3,
     "ties": 0,
   },
@@ -339,9 +339,9 @@ exports[`getAllTimeH2HRecord > covers every manager pairing 1`] = `
     "ties": 0,
   },
   "hadkiss vs dix": {
-    "team1AvgPoints": 90.05624999999999,
-    "team1Wins": 7,
-    "team2AvgPoints": 88.82749999999999,
+    "team1AvgPoints": 89.65411764705881,
+    "team1Wins": 8,
+    "team2AvgPoints": 88.39882352941174,
     "team2Wins": 9,
     "ties": 0,
   },
@@ -444,10 +444,10 @@ exports[`getAllTimeH2HRecord > covers every manager pairing 1`] = `
     "ties": 0,
   },
   "htc vs sol": {
-    "team1AvgPoints": 99.55857142857143,
+    "team1AvgPoints": 98.856,
     "team1Wins": 8,
-    "team2AvgPoints": 88.27428571428571,
-    "team2Wins": 6,
+    "team2AvgPoints": 88.99466666666666,
+    "team2Wins": 7,
     "ties": 0,
   },
   "jay vs ant": {
@@ -514,10 +514,10 @@ exports[`getAllTimeH2HRecord > covers every manager pairing 1`] = `
     "ties": 0,
   },
   "jay vs kitch": {
-    "team1AvgPoints": 97.32888888888891,
+    "team1AvgPoints": 95.96736842105265,
     "team1Wins": 12,
-    "team2AvgPoints": 89.48111111111112,
-    "team2Wins": 6,
+    "team2AvgPoints": 89.52315789473684,
+    "team2Wins": 7,
     "ties": 0,
   },
   "jay vs nick": {
@@ -801,10 +801,10 @@ exports[`getAllTimeH2HRecord > covers every manager pairing 1`] = `
     "ties": 0,
   },
   "rich vs ryan": {
-    "team1AvgPoints": 99.935,
+    "team1AvgPoints": 101.55111111111111,
     "team1Wins": 4,
-    "team2AvgPoints": 100.63250000000001,
-    "team2Wins": 4,
+    "team2AvgPoints": 103.51555555555557,
+    "team2Wins": 5,
     "ties": 0,
   },
   "rich vs sol": {
@@ -871,10 +871,10 @@ exports[`getAllTimeH2HRecord > covers every manager pairing 1`] = `
     "ties": 0,
   },
   "thd vs fin": {
-    "team1AvgPoints": 96.35764705882355,
+    "team1AvgPoints": 95.56555555555558,
     "team1Wins": 10,
-    "team2AvgPoints": 87.7164705882353,
-    "team2Wins": 7,
+    "team2AvgPoints": 88.43,
+    "team2Wins": 8,
     "ties": 0,
   },
   "thd vs hadkiss": {
@@ -7218,10 +7218,10 @@ exports[`getH2HRecordForSeason > 2026 — every roster pairing 1`] = `
     "ties": 0,
   },
   "roster 1 vs roster 12": {
-    "team1AvgPoints": 0,
+    "team1AvgPoints": 82.1,
     "team1Wins": 0,
-    "team2AvgPoints": 0,
-    "team2Wins": 0,
+    "team2AvgPoints": 100.56,
+    "team2Wins": 1,
     "ties": 0,
   },
   "roster 1 vs roster 2": {
@@ -7358,9 +7358,9 @@ exports[`getH2HRecordForSeason > 2026 — every roster pairing 1`] = `
     "ties": 0,
   },
   "roster 2 vs roster 8": {
-    "team1AvgPoints": 0,
-    "team1Wins": 0,
-    "team2AvgPoints": 0,
+    "team1AvgPoints": 83.22,
+    "team1Wins": 1,
+    "team2AvgPoints": 81.54,
     "team2Wins": 0,
     "ties": 0,
   },
@@ -7428,10 +7428,10 @@ exports[`getH2HRecordForSeason > 2026 — every roster pairing 1`] = `
     "ties": 0,
   },
   "roster 3 vs roster 9": {
-    "team1AvgPoints": 0,
+    "team1AvgPoints": 71.46,
     "team1Wins": 0,
-    "team2AvgPoints": 0,
-    "team2Wins": 0,
+    "team2AvgPoints": 90.28,
+    "team2Wins": 1,
     "ties": 0,
   },
   "roster 4 vs roster 10": {
@@ -7463,10 +7463,10 @@ exports[`getH2HRecordForSeason > 2026 — every roster pairing 1`] = `
     "ties": 0,
   },
   "roster 4 vs roster 6": {
-    "team1AvgPoints": 0,
+    "team1AvgPoints": 89.02,
     "team1Wins": 0,
-    "team2AvgPoints": 0,
-    "team2Wins": 0,
+    "team2AvgPoints": 99.08,
+    "team2Wins": 1,
     "ties": 0,
   },
   "roster 4 vs roster 7": {
@@ -7498,9 +7498,9 @@ exports[`getH2HRecordForSeason > 2026 — every roster pairing 1`] = `
     "ties": 0,
   },
   "roster 5 vs roster 11": {
-    "team1AvgPoints": 0,
-    "team1Wins": 0,
-    "team2AvgPoints": 0,
+    "team1AvgPoints": 126.58,
+    "team1Wins": 1,
+    "team2AvgPoints": 114.48,
     "team2Wins": 0,
     "ties": 0,
   },
@@ -7582,9 +7582,9 @@ exports[`getH2HRecordForSeason > 2026 — every roster pairing 1`] = `
     "ties": 0,
   },
   "roster 7 vs roster 10": {
-    "team1AvgPoints": 0,
-    "team1Wins": 0,
-    "team2AvgPoints": 0,
+    "team1AvgPoints": 90.22,
+    "team1Wins": 1,
+    "team2AvgPoints": 68.9,
     "team2Wins": 0,
     "ties": 0,
   },
