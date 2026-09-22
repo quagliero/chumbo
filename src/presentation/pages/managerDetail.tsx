@@ -25,6 +25,7 @@ import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 import { narrate } from "@/utils/narrative/narrate";
 import { useNarrativeStats } from "@/presentation/components/Narrative";
 import { ShareButton } from "@/presentation/components/ShareButton";
+import { ManagerWeekByWeek } from "@/presentation/components/WeekByWeek/WeekByWeek";
 import {
   managerCareerShare,
   managerSeasonShare,
@@ -285,6 +286,10 @@ const ManagerDetail = () => {
             />
           )}
         />
+      )}
+
+      {currentTab === "summary" && managerStats && (
+        <ManagerWeekByWeek managerId={managerStats.managerId} />
       )}
 
       {currentTab === "seasons" && managerStats && (

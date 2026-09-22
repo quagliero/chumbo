@@ -19,19 +19,24 @@ const DraftExplorer = lazy(
   () => import("@/presentation/components/DraftExplorer/DraftExplorer")
 );
 
+const WeekByWeekExplorer = lazy(
+  () => import("@/presentation/components/WeekByWeek/WeekByWeek")
+);
+
 const TABS = [
   { id: "points", label: "Points" },
   { id: "draft", label: "Draft" },
+  { id: "weeks", label: "Weeks" },
 ] as const;
 
 /**
- * The Explorer: two tools with nothing in common but the word "explore", so
- * each has its own address — `/explorer/points` (the default, and what
- * `/explorer` has always been) and `/explorer/draft`.
+ * The Explorer: tools with nothing in common but the word "explore", so each
+ * has its own address — `/explorer/points` (the default, and what `/explorer`
+ * has always been), `/explorer/draft` and `/explorer/weeks`.
  */
 const Stats: React.FC = () => {
   const { section } = useParams<{ section?: string }>();
-  const active = section === "draft" ? "draft" : "points";
+  const active = section === "draft" || section === "weeks" ? section : "points";
 
   return (
     <div className="space-y-6">
@@ -61,6 +66,10 @@ const Stats: React.FC = () => {
         {active === "draft" ? (
           <Suspense fallback={<div className="h-96" />}>
             <DraftExplorer />
+          </Suspense>
+        ) : active === "weeks" ? (
+          <Suspense fallback={<div className="h-96" />}>
+            <WeekByWeekExplorer />
           </Suspense>
         ) : (
           <PointsExplorer />
