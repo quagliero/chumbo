@@ -346,6 +346,11 @@ simulation that remembers each team's result that week, so "win and your odds
 go to 71%" is the same number on the page and in its preview. Regular season
 only — the playoffs' fixtures are the bracket's, not `schedule.json`'s.
 
+A "playoff meeting" anywhere in a preview is an elimination game or the
+final (`isMeaningfulPlayoffGame`) — never a consolation game, where lineups
+go unset, or the game for third. The week's WhatsApp blurbs are written by
+hand in conversation, from `scripts/generate-h2h-preview.mjs`'s numbers.
+
 The simulation pulls every team towards the league average by `PRIOR_GAMES`
 (four games' worth). Without it the week-1 top scorer made the playoffs in 100%
 of simulations after one game.
