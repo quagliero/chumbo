@@ -9,10 +9,12 @@ import {
   fixturesFor,
   formStreak,
   formatOdds,
+  lastMeetingOf,
   previewWeek,
   stakesFor,
   streakRecords,
 } from "@/utils/matchupPreview";
+import { getPlayoffWeekStart, isMeaningfulPlayoffGame } from "@/utils/playoffUtils";
 import allTime from "../../../public/data/all-time.json";
 import {
   PRIOR_GAMES,
@@ -220,5 +222,30 @@ describe.runIf(upcoming !== null)("the week to come", () => {
 
   it("does not preview a week already played", () => {
     expect(buildMatchupPreview(CURRENT_YEAR, 1, fixturesFor(CURRENT_YEAR, 1)[0]?.[0] ?? 1)).toBeNull();
+  });
+});
+
+describe("the last meeting", () => {
+  it("is never a consolation game", () => {
+    // Every pair of 2025's owners: a playoff meeting counts only if it was in
+    // the winners bracket for real — an elimination game or the final.
+    const owners = seasons[2025].rosters.map((r) => r.owner_id);
+    let playoffMeetings = 0;
+    for (const a of owners) {
+      for (const b of owners) {
+        if (a >= b) continue;
+        const last = lastMeetingOf(a, b);
+        if (!last?.playoffs) continue;
+        playoffMeetings++;
+        const season = seasons[last.year];
+        const start = getPlayoffWeekStart(season);
+        const rosterA = season.rosters.find((r) => r.owner_id === a)!;
+        const side = (season.matchups as Record<string, ExtendedMatchup[]>)[
+          String(last.week)
+        ].find((m) => m.roster_id === rosterA.roster_id)!;
+        expect(isMeaningfulPlayoffGame(side, season, last.week, start)).toBe(true);
+      }
+    }
+    expect(playoffMeetings).toBeGreaterThan(0);
   });
 });

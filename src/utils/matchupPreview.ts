@@ -9,7 +9,7 @@ import {
   calculateWeekStakes,
   type WeekStakes,
 } from "@/utils/playoffOdds";
-import { getPlayoffWeekStart } from "@/utils/playoffUtils";
+import { getPlayoffWeekStart, isMeaningfulPlayoffGame } from "@/utils/playoffUtils";
 // The same round numbers the records watch (J3) counts down to, so a preview
 // and the watch cannot disagree about the milestone they are both naming.
 import { nextPointsMilestone, nextWinMilestone } from "@/utils/recordsWatch";
@@ -148,11 +148,11 @@ const resultsBefore = (year: number, week: number, rosterId: number) => {
 };
 
 /**
- * The most recent game between two owners, playoffs included — a final is the
- * meeting everybody remembers, and the all-time record (regular season only)
- * would skip it.
+ * The most recent game between two owners, real playoff games included — a
+ * final is the meeting everybody remembers, and the all-time record (regular
+ * season only) would skip it. Consolation games are not included.
  */
-const lastMeetingOf = (ownerA: string, ownerB: string): PreviewMeeting | undefined => {
+export const lastMeetingOf = (ownerA: string, ownerB: string): PreviewMeeting | undefined => {
   for (const year of [...YEARS].sort((a, b) => b - a)) {
     const season = seasons[year];
     const rosterA = season?.rosters?.find((r) => r.owner_id === ownerA);
@@ -167,6 +167,11 @@ const lastMeetingOf = (ownerA: string, ownerB: string): PreviewMeeting | undefin
       const a = sides.find((s) => s.roster_id === rosterA.roster_id);
       const b = sides.find((s) => s.roster_id === rosterB.roster_id);
       if (!a || !b || a.matchup_id === null || a.matchup_id !== b.matchup_id) continue;
+      // A consolation game is not a meeting anyone remembers — half the
+      // league has logged off by then and lineups go unset — so it is
+      // skipped, and the meeting before it is the last one.
+      const start = getPlayoffWeekStart(season);
+      if (week >= start && !isMeaningfulPlayoffGame(a, season, week, start)) continue;
       return {
         year,
         week,
