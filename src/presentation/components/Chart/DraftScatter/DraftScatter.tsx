@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Chart } from "../Chart";
 import { XAxis, YAxis } from "../Axis";
 import { linearScale, linePath, niceTicks } from "../scale";
 import { useChartWidth } from "../useChartWidth";
 import { ChartPopover, useChartPopover } from "../Popover";
 import { DraftPickPopover } from "./DraftPickPopover";
-import { useDraftScatter, type DraftScatterPoint } from "./useDraftScatter";
+import type { DraftScatterData, DraftScatterPoint } from "./useDraftScatter";
 
 /**
  * The draft value scatter (D6).
@@ -83,8 +83,18 @@ const shortLabel = (point: DraftScatterPoint) => {
   return `${parts[parts.length - 1]} ’${String(point.year).slice(2)}`;
 };
 
-export const DraftScatter = ({ className }: { className?: string }) => {
-  const { points, positions, years } = useDraftScatter();
+export const DraftScatter = ({
+  className,
+  data,
+  managers,
+}: {
+  className?: string;
+  /** From `useDraftScatter`, which the page calls once for everything it shows. */
+  data: DraftScatterData;
+  /** Only these managers' picks, when any are chosen; the rest stay as context. */
+  managers?: ReadonlySet<string>;
+}) => {
+  const { points, positions, years } = data;
   const popover = useChartPopover<DraftScatterPoint>();
   const [position, setPosition] = useState<string | null>(null);
 
@@ -116,13 +126,15 @@ export const DraftScatter = ({ className }: { className?: string }) => {
     return [...byPick.entries()].sort(([a], [b]) => a - b);
   }, [points]);
 
-  const shown = useMemo(
-    () =>
-      position === null
-        ? points
-        : points.filter((point) => point.position === position),
-    [points, position]
+  // A pick is shown when it passes both filters; the rest are dimmed, not
+  // removed, so a team's picks are read against the whole league's.
+  const visible = useCallback(
+    (point: DraftScatterPoint) =>
+      (position === null || point.position === position) &&
+      (!managers?.size || managers.has(point.managerId)),
+    [position, managers]
   );
+  const shown = useMemo(() => points.filter(visible), [points, visible]);
 
   // Named from the visible set, so filtering to tight ends names the tight
   // ends rather than leaving six labels pointing at faded dots.
@@ -201,7 +213,7 @@ export const DraftScatter = ({ className }: { className?: string }) => {
                 <XAxis ticks={x.ticks} scale={scaleX} length={frame.height} />
 
                 {points.map((point) => {
-                  const dim = position !== null && point.position !== position;
+                  const dim = !visible(point);
                   const cx = scaleX(point.pickNo);
                   const cy = scaleY(point.total);
                   const colour = colourFor(point.value);

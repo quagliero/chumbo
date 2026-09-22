@@ -95,6 +95,7 @@ function App() {
                   element={<H2HDetail />}
                 />
                 <Route path="/explorer" element={<Stats />} />
+                <Route path="/explorer/:section" element={<Stats />} />
                 <Route path="/hof" element={<HallOfFame />} />
                 <Route path="/records" element={<Records />} />
                 <Route path="/records/:statId" element={<Records />} />

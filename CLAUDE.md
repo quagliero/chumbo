@@ -282,6 +282,26 @@ which in "regular" mode trusts Sleeper's roster totals — the two differ by a
 point or two over fifteen seasons, and a sentence has to quote the list it
 links to.
 
+## Records by season, and the Draft explorer
+
+Each `/records/:statId` page ends with **Season by season**: that list's top
+three in every season. A season's best is mostly not in the all-time top 25,
+so it comes from its own file, `public/data/records-by-season.json`
+(`buildSeasonTops` in `utils/stats/seasonTops.ts`, written by
+`build-aggregates`, checked by `precomputed.test.ts`), fetched only by the
+record pages. Only lists whose entries belong to a season are in it.
+
+The Explorer has two addresses: `/explorer/points` (the filter builder, and
+what `/explorer` shows) and `/explorer/draft`. The Draft page is one
+computation (`useDraftScatter`, then `utils/draftReport.ts`) behind the chart
+and every table, with a team filter kept in the URL (`?teams=rich,thd`). A
+draft is one manager's picks in one season, valued as the sum of the D6 pick
+values (what each player scored against what that pick number usually
+returns), ranked within its season and set against how that season finished
+(`finalStandings.ts`, settled seasons only). "Does a good draft win?" and the
+strategies table are league-wide on purpose and print their sample sizes: a
+strategy five managers tried is an anecdote, and the page fades those rows.
+
 ## The week: recaps and previews (J2, K1)
 
 A week of matchups has an address, `/seasons/:year/matchups/:week`, and the

@@ -1,4 +1,6 @@
 import React, { lazy, Suspense, useState, useMemo } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import ScrollableTabs from "@/presentation/components/ScrollableTabs/ScrollableTabs";
 import {
   FilterBuilder,
   StatsResults,
@@ -11,17 +13,65 @@ import {
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { Card } from "@/presentation/components/Card";
 
-// D6 lives in the `charts` chunk (see vite.config.ts), lazy like the charts on
-// the home page: the Explorer's own job is the filter builder below, and a
-// reader who came here to ask about RB scoring should not download the chart
-// code before the page paints.
-const DraftScatter = lazy(() =>
-  import("@/presentation/components/Chart/DraftScatter/DraftScatter").then(
-    (m) => ({ default: m.DraftScatter })
-  )
+// Lazy, so the points explorer — the default tab — never downloads the draft
+// analysis, or the matchups for every season that it needs.
+const DraftExplorer = lazy(
+  () => import("@/presentation/components/DraftExplorer/DraftExplorer")
 );
 
+const TABS = [
+  { id: "points", label: "Points" },
+  { id: "draft", label: "Draft" },
+] as const;
+
+/**
+ * The Explorer: two tools with nothing in common but the word "explore", so
+ * each has its own address — `/explorer/points` (the default, and what
+ * `/explorer` has always been) and `/explorer/draft`.
+ */
 const Stats: React.FC = () => {
+  const { section } = useParams<{ section?: string }>();
+  const active = section === "draft" ? "draft" : "points";
+
+  return (
+    <div className="space-y-6">
+      <div className="container mx-auto pt-6">
+        <h1 className="text-2xl font-bold text-ink">Explorer</h1>
+      </div>
+      <div className="border-b border-gray-200">
+        <div className="container mx-auto">
+          <ScrollableTabs className="gap-8">
+            {TABS.map((tab) => (
+              <NavLink
+                key={tab.id}
+                to={`/explorer/${tab.id}`}
+                className={`py-2 px-1 font-medium transition-colors ${
+                  active === tab.id
+                    ? "border-b-2 border-blue-800 text-blue-800"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {tab.label}
+              </NavLink>
+            ))}
+          </ScrollableTabs>
+        </div>
+      </div>
+      <div className="container mx-auto pb-6">
+        {active === "draft" ? (
+          <Suspense fallback={<div className="h-96" />}>
+            <DraftExplorer />
+          </Suspense>
+        ) : (
+          <PointsExplorer />
+        )}
+      </div>
+    </div>
+  );
+};
+
+/** Positional scoring against win rates: the filter builder. */
+const PointsExplorer: React.FC = () => {
   // A2a: the explorer walks every season's matchups, a lazy chunk now.
   useAllSeasons();
   const [filters, setFilters] = useState<PositionalFilter[]>([]);
@@ -70,32 +120,11 @@ const Stats: React.FC = () => {
   const availableYears = getAvailableYears();
 
   return (
-    <div className="container mx-auto space-y-6 py-6">
-      {/* Header */}
-      <Card>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Stats Explorer
-        </h1>
-        <p className="text-gray-600">
-          Explore correlations between positional scoring and win rates. Add
-          filters to analyze specific scenarios.
-        </p>
-      </Card>
-
-      {/* D6: every pick the league has ever made, against what it returned. */}
-      <Card>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
-          Draft value — every pick, every draft
-        </h2>
-        <p className="mb-4 text-sm text-gray-600">
-          Where the steals and the busts actually were, measured against what
-          this league&rsquo;s own picks return rather than somebody else&rsquo;s
-          ADP.
-        </p>
-        <Suspense fallback={<div className="h-80" />}>
-          <DraftScatter />
-        </Suspense>
-      </Card>
+    <div className="space-y-6">
+      <p className="text-gray-600">
+        Positional scoring against win rates. Add filters to analyse specific
+        scenarios.
+      </p>
 
       {/* Year Selection */}
       <Card>

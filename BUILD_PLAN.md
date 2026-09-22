@@ -1619,6 +1619,13 @@ the morning after with everything else.
   through a chain of deals.
 - **M2 Drafts:** a **redraft** of every year (who should have gone first) and
   a draft grade per manager per year, from the D6 values.
+  > **The grade is done (2026-09-22, commissioner's request):** the Draft
+  > explorer (`/explorer/draft`) ranks every manager's draft in every season,
+  > sets it against how the season finished, and breaks the league down by
+  > drafter and by early-round strategy, with a team filter on the chart.
+  > The season's best draft made the playoffs 11 times in 14 and won once;
+  > the worst made them 3 times and never won; draft rank and finish
+  > correlate at 0.29. The redraft is still to do.
 - **M3 What-ifs:** your season with the optimal lineup every week; your record
   with someone else's schedule (the schedule comparison, in narrative form).
 

@@ -80,9 +80,15 @@ const BUDGET_KB = {
   // Split, each number measures one thing and can stay tight:
   //
   // Every chunk that is code: everything but season data and the dictionary.
-  // Currently 254. This is the one that catches a dependency nobody meant to
-  // add, and its 26 kB of headroom is no longer eaten by each week of data.
-  code: 280,
+  // This is the one that catches a dependency nobody meant to add.
+  //
+  // 280 -> 300 on 2026-09-22, decided with the commissioner: Round 3's
+  // features (J2/K1/J3, L1/L2's timelines, charts and records, the Draft
+  // explorer) took it from 254 to 282, all of it page code loaded when a page
+  // is opened — the `initial` budget, which every visit pays, is untouched at
+  // 78 of 120. 300 leaves room for Chumbo Wrapped; it is not headroom for a
+  // dependency, which is still what this number is here to catch.
+  code: 300,
   // The player dictionary. Currently 109; it grows by a handful of players
   // when the update refreshes it for a waiver pickup it did not know.
   players: 125,
