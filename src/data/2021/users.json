@@ -38,7 +38,7 @@
       "mascot_message_emotion_leg_1": "taunting",
       "team_name": "King of Wishful Tinkering",
       "mascot_item_type_id_leg_8": "lilly-lilly",
-      "avatar": "https://sleepercdn.com/uploads/79633a17ef4f14c3126b469ffb58e696.jpg",
+      "avatar": "/avatars/sleeper/79633a17ef4f14c3126b469ffb58e696.jpg",
       "mascot_item_type_id_leg_16": "lilly-lilly",
       "transaction_trade": "on",
       "mascot_message_emotion_leg_3": "taunting"
@@ -76,7 +76,8 @@
       "mascot_message_emotion_leg_1": "dancing",
       "mascot_message_emotion_leg_2": "dancing",
       "mention_pn": "on",
-      "team_name": "The Roaches"
+      "team_name": "The Roaches",
+      "avatar": "/avatars/sleeper/7d72403617ed442b25d0ccbc7c58ccab.jpg"
     },
     "settings": null,
     "user_id": "77361676378587136"
@@ -101,7 +102,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/b84c2724c213dddd42c116f39b8cde53.jpg"
     },
     "settings": null,
     "user_id": "337210029620883456"
@@ -135,7 +137,8 @@
       "mascot_message_emotion_leg_1": "idle",
       "mascot_message_emotion_leg_15": "idle",
       "mention_pn": "on",
-      "team_name": "Si2on"
+      "team_name": "Si2on",
+      "avatar": "/avatars/sleeper/a40a15dce0a9cc8f286975f4bac61735.jpg"
     },
     "settings": null,
     "user_id": "337221174670938112"
@@ -178,7 +181,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "off",
       "transaction_waiver": "off",
-      "user_message_pn": "off"
+      "user_message_pn": "off",
+      "avatar": "/avatars/sleeper/d2a8e6aa2be9d3ca61aa740d4c67bd2d.png"
     },
     "settings": null,
     "user_id": "337222928615612416"
@@ -194,7 +198,8 @@
       "mascot_message_leg_15": "",
       "mention_pn": "on",
       "show_mascots": "off",
-      "team_name": "21st and Hine"
+      "team_name": "21st and Hine",
+      "avatar": "/avatars/sleeper/ff3ff500ebff182172513f70a41fec5f.jpg"
     },
     "settings": null,
     "user_id": "337226046606704640"
@@ -227,7 +232,8 @@
       "mascot_item_type_id_leg_9": "furrari",
       "mascot_message_emotion_leg_1": "idle",
       "mention_pn": "on",
-      "team_name": "Wolverhampton Wasters"
+      "team_name": "Wolverhampton Wasters",
+      "avatar": "/avatars/sleeper/fdbed03e0c7152f2d3abba3e21d955e1.jpg"
     },
     "settings": null,
     "user_id": "337297176361201664"
@@ -240,7 +246,7 @@
     "league_id": "651106865610084352",
     "metadata": {
       "allow_pn": "off",
-      "avatar": "https://sleepercdn.com/uploads/34df5d72f07a63eb94305d8f56b85df4.jpg",
+      "avatar": "/avatars/sleeper/34df5d72f07a63eb94305d8f56b85df4.jpg",
       "join_voice_pn": "off",
       "mascot_message": "off",
       "mention_pn": "on",
@@ -298,7 +304,8 @@
       "team_name": "Saved Private Derrick",
       "mascot_item_type_id_leg_8": "dawg-pound",
       "mascot_item_type_id_leg_16": "dawg-pound",
-      "transaction_trade": "off"
+      "transaction_trade": "off",
+      "avatar": "/avatars/sleeper/2f0e82c6801e7de07b0a49d0766c6da3.jpg"
     },
     "settings": null,
     "user_id": "411186928751230976"
@@ -336,7 +343,8 @@
       "mascot_message_emotion_leg_9": "idle",
       "mascot_message_leg_15": "Paedo",
       "mention_pn": "on",
-      "team_name": "Kansas City Chumps 🏆🏆"
+      "team_name": "Kansas City Chumps 🏆🏆",
+      "avatar": "/avatars/sleeper/c2ee5e2e6f3475fd842ac87cb0f0a72e.png"
     },
     "settings": null,
     "user_id": "428943291145265152"
@@ -349,7 +357,7 @@
     "league_id": "651106865610084352",
     "metadata": {
       "allow_pn": "on",
-      "avatar": "https://sleepercdn.com/uploads/cdd74155fa1511e9b84b0326d5107543.jpg",
+      "avatar": "/avatars/sleeper/cdd74155fa1511e9b84b0326d5107543.jpg",
       "mascot_item_type_id_leg_10": "pizza",
       "mascot_item_type_id_leg_11": "pizza",
       "mascot_item_type_id_leg_12": "pizza",
@@ -401,7 +409,8 @@
       "mascot_item_type_id_leg_9": "titan-up",
       "mascot_message_emotion_leg_1": "victory",
       "mention_pn": "on",
-      "team_name": "Tha Dollar"
+      "team_name": "Tha Dollar",
+      "avatar": "/avatars/sleeper/2ae1e831eec95a9228cc0fdd50fa50ee.jpg"
     },
     "settings": null,
     "user_id": "438629899490553856"
@@ -415,7 +424,8 @@
     "metadata": {
       "allow_pn": "on",
       "allow_sms": "on",
-      "mention_pn": "on"
+      "mention_pn": "on",
+      "avatar": "/avatars/sleeper/15d7cf259bc30eab8f6120f45f652fb6.webp"
     },
     "settings": null,
     "user_id": "704708035829895168"

@@ -40,7 +40,7 @@
       "team_name": "King of Wishful Tinkering",
       "league_report_pn": "on",
       "mascot_item_type_id_leg_8": "lilly-lilly",
-      "avatar": "https://sleepercdn.com/uploads/ef0fc55dd99c470362814773382307fa.jpg",
+      "avatar": "/avatars/sleeper/ef0fc55dd99c470362814773382307fa.jpg",
       "mascot_item_type_id_leg_16": "lilly-lilly",
       "transaction_trade": "on",
       "mascot_message_emotion_leg_3": "taunting"
@@ -57,7 +57,7 @@
     "metadata": {
       "allow_pn": "on",
       "archived": "off",
-      "avatar": "https://sleepercdn.com/uploads/95329531f6042b708e870f1764aa2f89.jpg",
+      "avatar": "/avatars/sleeper/95329531f6042b708e870f1764aa2f89.jpg",
       "mascot_item_type_id_leg_1": "steel-man",
       "mascot_item_type_id_leg_10": "steel-man",
       "mascot_item_type_id_leg_11": "steel-man",
@@ -106,7 +106,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "off",
-      "user_message_pn": "off"
+      "user_message_pn": "off",
+      "avatar": "/avatars/sleeper/b84c2724c213dddd42c116f39b8cde53.jpg"
     },
     "settings": null,
     "user_id": "337210029620883456"
@@ -120,7 +121,7 @@
     "metadata": {
       "allow_pn": "on",
       "archived": "off",
-      "avatar": "https://sleepercdn.com/uploads/302c7f0560c87530e29f5144f920ea45.jpg",
+      "avatar": "/avatars/sleeper/302c7f0560c87530e29f5144f920ea45.jpg",
       "mascot_item_type_id_leg_1": "owl",
       "mascot_item_type_id_leg_10": "owl",
       "mascot_item_type_id_leg_11": "owl",
@@ -186,7 +187,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "off",
       "transaction_waiver": "off",
-      "user_message_pn": "off"
+      "user_message_pn": "off",
+      "avatar": "/avatars/sleeper/d2a8e6aa2be9d3ca61aa740d4c67bd2d.png"
     },
     "settings": null,
     "user_id": "337222928615612416"
@@ -213,7 +215,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/ff3ff500ebff182172513f70a41fec5f.jpg"
     },
     "settings": null,
     "user_id": "337226046606704640"
@@ -246,7 +249,8 @@
       "mascot_item_type_id_leg_9": "furrari",
       "mascot_message_emotion_leg_1": "idle",
       "mention_pn": "on",
-      "team_name": "Wolverhampton Wasters🏆🏆"
+      "team_name": "Wolverhampton Wasters🏆🏆",
+      "avatar": "/avatars/sleeper/fdbed03e0c7152f2d3abba3e21d955e1.jpg"
     },
     "settings": null,
     "user_id": "337297176361201664"
@@ -260,7 +264,7 @@
     "metadata": {
       "allow_pn": "on",
       "archived": "off",
-      "avatar": "https://sleepercdn.com/uploads/31ebc748048b9a13b957f84b16a0f200.jpg",
+      "avatar": "/avatars/sleeper/31ebc748048b9a13b957f84b16a0f200.jpg",
       "join_voice_pn": "off",
       "mascot_message": "off",
       "mention_pn": "on",
@@ -318,7 +322,7 @@
       "mascot_message_emotion_leg_1": "victory",
       "team_name": "Walrus Killer 🦄🌽",
       "mascot_item_type_id_leg_8": "dawg-pound",
-      "avatar": "https://sleepercdn.com/uploads/73a4573bf5716b30446dbc6142c223bd.jpg",
+      "avatar": "/avatars/sleeper/73a4573bf5716b30446dbc6142c223bd.jpg",
       "mascot_item_type_id_leg_16": "dawg-pound",
       "transaction_trade": "off"
     },
@@ -372,7 +376,8 @@
       "league_report_pn": "off",
       "mascot_item_type_id_leg_8": "philly-special",
       "mascot_item_type_id_leg_16": "philly-special",
-      "transaction_trade": "on"
+      "transaction_trade": "on",
+      "avatar": "/avatars/sleeper/c2ee5e2e6f3475fd842ac87cb0f0a72e.png"
     },
     "settings": null,
     "user_id": "428943291145265152"
@@ -405,7 +410,8 @@
       "mascot_item_type_id_leg_9": "titan-up",
       "mascot_message_emotion_leg_1": "victory",
       "mention_pn": "on",
-      "team_name": "Tha Dollar"
+      "team_name": "Tha Dollar",
+      "avatar": "/avatars/sleeper/2ae1e831eec95a9228cc0fdd50fa50ee.jpg"
     },
     "settings": null,
     "user_id": "438629899490553856"
@@ -419,7 +425,7 @@
     "metadata": {
       "allow_pn": "on",
       "allow_sms": "on",
-      "avatar": "https://sleepercdn.com/uploads/22281927ff4be83ebefaa8d5e8bc7e66.jpg",
+      "avatar": "/avatars/sleeper/22281927ff4be83ebefaa8d5e8bc7e66.jpg",
       "mention_pn": "on",
       "team_name": "Disciples of Juan Carlos"
     },

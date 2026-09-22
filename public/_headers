@@ -8,8 +8,14 @@
 # `max-age=0, must-revalidate` — a round trip per file per visit, even when
 # the answer is always "not modified".
 #
+# The team logos get it too. Every one is named by a content hash — Sleeper's
+# own for /avatars/sleeper/, the original NFL.com one for /avatars/nfl/ — so a
+# logo that changes is a new file, and an old one is never rewritten.
+#
 # Nothing else gets this. index.html and the prerendered pages must be
 # revalidated so a deploy is seen, and public/data/all-time.json is not
 # hashed and changes with every fetch.
 /assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/avatars/*
   Cache-Control: public, max-age=31536000, immutable

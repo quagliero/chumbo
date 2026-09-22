@@ -22,6 +22,7 @@
     "update-season": "node scripts/update-season.js",
     "build-gamedays": "node scripts/build-gamedays.js",
     "fix-player-ids": "node scripts/fix-player-ids.js",
+    "own-avatars": "node scripts/own-avatars.js",
     "build-aggregates": "vite-node scripts/build-aggregates.ts",
     "check-aggregates": "vite-node scripts/build-aggregates.ts --check",
     "prerender-og": "vite-node scripts/prerender-og.ts"

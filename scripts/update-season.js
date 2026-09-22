@@ -9,7 +9,8 @@
  *   3. refresh the player dictionary, but only if a player on a roster, in a
  *      lineup or in a transaction is missing from it — a practice-squad
  *      call-up picked up on waivers would otherwise show as a number
- *   4. rebuild the season's box scores and scoring timelines from nflverse's
+ *   4. keep our own copy of any new team logo (`own-avatars`)
+ *   5. rebuild the season's box scores and scoring timelines from nflverse's
  *      play-by-play (L1, L2), and report which weeks came out with them (L3)
  *
  * Writes the commit message, the box-score line and any weeks whose
@@ -108,6 +109,17 @@ if (missing.length > 0) {
     // Not fatal: the page falls back to the id, which is what it did before.
     console.warn(`⚠️  Still not in the dictionary: ${still.join(", ")}`);
   }
+}
+
+// Our own copy of any team logo the league has not had before. The fetch has
+// just written Sleeper's URLs back into users.json; for every logo already
+// saved this only puts the local path back, so it changes nothing, and a new
+// one is downloaded once. Not fatal, and neither is a logo that will not
+// download: it keeps its Sleeper URL, which still works, until a run that can.
+try {
+  run("own-avatars.js");
+} catch {
+  console.warn("⚠️  Team logos not checked this run; the results still are.");
 }
 
 // L1/L2/L3: the week's box scores and timelines, from the NFL's play-by-play.

@@ -27,6 +27,7 @@ yarn test:run       # vitest (single run)
 yarn build-players  # rebuild players.json + per-season overlays
 yarn trim-picks     # strip duplicated player metadata from picks.json
 yarn fix-player-ids # apply the committed player-id corrections (idempotent)
+yarn own-avatars    # save every Sleeper team logo locally, point the data at it
 yarn build-aggregates  # regenerate public/data/all-time.json (runs in `yarn build`)
 yarn check-aggregates  # fail if that file is stale, without rewriting it
 yarn prerender-og   # per-route HTML + OG images into dist/ (runs in `yarn build`)
@@ -379,8 +380,9 @@ corrections), again at 15:00 on Tuesdays for the play-by-play (L3, below),
 and on demand with **Run workflow**. It runs `yarn update-season`
 (`scripts/update-season.js`): every week Sleeper has scored
 (`fetch-sleeper-data --completed`, which reads `last_scored_leg` and never
-commits a half-played week), `trim-picks`, and a player-dictionary refresh only
-when a rostered or transacted player is missing from it. Then `yarn test:run -u`
+commits a half-played week), `trim-picks`, a player-dictionary refresh only
+when a rostered or transacted player is missing from it, and `own-avatars` for
+any team logo the league has not had before (it commits `public/avatars` too). Then `yarn test:run -u`
 and `yarn build`, and only if both pass does `github-actions[bot]` commit and
 push, which Netlify deploys. A failure commits nothing and opens (or comments
 on) an issue titled "The automatic season update failed"; the next good run
@@ -519,6 +521,23 @@ budget, because it is still trusted.
   `FF D9` after the start — the last one is somewhere in the cache's own
   trailing metadata, and taking it appends about 5 kB of HTTP response headers
   to every image. That decodes fine, which is exactly why it went unnoticed.
+- **We keep our own copy of every team logo.** The lesson of the NFL.com
+  shutdown, applied to Sleeper before it is needed: `yarn own-avatars`
+  downloads each team logo in every season's `users.json` (a custom upload, or
+  the account avatar) and the division logos in `league.json`, once, into
+  `public/avatars/sleeper/<Sleeper's content hash>.<ext>`, and points the data
+  at the local file — the same root-relative shape as the NFL-era logos, so
+  `getUserAvatarUrl` and the link previews needed no change. Logos under 100 kB
+  are kept byte for byte; bigger ones (one was a 2 MB photo) are re-drawn at
+  256×256 through resvg, which CI already has. Sources are recorded in
+  `scripts/data/sleeper-avatar-sources.json`. The weekly update runs it after
+  every fetch: the fetch writes Sleeper's URLs back, `own-avatars` puts the
+  local paths back, so an unchanged logo is no diff and a new one is saved
+  once. A logo that will not download keeps its Sleeper URL (it still works)
+  and is retried next run; `avatars.test.ts` fails if any path points at a
+  missing file, or if a FINISHED season still points at Sleeper. `/avatars/*`
+  is cached for a year (`public/_headers`): every file is named by its content.
+  Player headshots still come from Sleeper — they are not team logos.
 - **After any `fetch-data` / `fetch-season` run, re-run `yarn trim-picks`** —
   Sleeper returns the fat pick objects every time.
 - **Two players can share a name.** Sleeper gives them separate ids and the

@@ -37,7 +37,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/fcdc3a33c535bc458ef19c8cfba04035.png"
     },
     "settings": null,
     "user_id": "77140390129844224"
@@ -83,7 +84,8 @@
       "mascot_item_type_id_leg_8": "steel-man",
       "mascot_message_emotion_leg_13": "idle_happy",
       "mascot_item_type_id_leg_16": "steel-man",
-      "transaction_trade": "on"
+      "transaction_trade": "on",
+      "avatar": "/avatars/sleeper/7d72403617ed442b25d0ccbc7c58ccab.jpg"
     },
     "settings": null,
     "user_id": "77361676378587136"
@@ -109,7 +111,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/1d538540976713a2a93c687c112b5c70.png"
     },
     "settings": null,
     "user_id": "337210029620883456"
@@ -143,7 +146,8 @@
       "mascot_message_emotion_leg_2": "action_hurt02",
       "mascot_message_leg_1": "",
       "mention_pn": "on",
-      "team_name": "The Big Dog"
+      "team_name": "The Big Dog",
+      "avatar": "/avatars/sleeper/a40a15dce0a9cc8f286975f4bac61735.jpg"
     },
     "settings": null,
     "user_id": "337221174670938112"
@@ -158,7 +162,8 @@
       "allow_pn": "on",
       "mascot_message_emotion_leg_1": "idle_sad",
       "mascot_message_leg_1": "Praying to all 12,000 known Gods for a high scoring Texans win",
-      "mention_pn": "on"
+      "mention_pn": "on",
+      "avatar": "/avatars/sleeper/d2a8e6aa2be9d3ca61aa740d4c67bd2d.png"
     },
     "settings": null,
     "user_id": "337222928615612416"
@@ -199,7 +204,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "off",
       "transaction_waiver": "off",
-      "user_message_pn": "off"
+      "user_message_pn": "off",
+      "avatar": "/avatars/sleeper/28c10cc8e49e9adaf274d5a0dcdbd767.png"
     },
     "settings": null,
     "user_id": "337226046606704640"
@@ -222,7 +228,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "off",
       "transaction_waiver": "off",
-      "user_message_pn": "off"
+      "user_message_pn": "off",
+      "avatar": "/avatars/sleeper/e3f5bb3324e54bc1809df948efd6344b.png"
     },
     "settings": null,
     "user_id": "337297176361201664"
@@ -245,7 +252,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "off",
       "transaction_waiver": "off",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/e2538dbebdd2bcccf234964910eb8dff.png"
     },
     "settings": null,
     "user_id": "359110473351696384"
@@ -299,7 +307,8 @@
       "transaction_trade": "on",
       "mascot_message_leg_5": "FOR YOU",
       "mascot_message_emotion_leg_5": "idle",
-      "mascot_message_emotion_leg_3": "idle_happy"
+      "mascot_message_emotion_leg_3": "idle_happy",
+      "avatar": "/avatars/sleeper/c8de9e651b19331f6eae4f9f26164107.png"
     },
     "settings": null,
     "user_id": "411186928751230976"
@@ -348,7 +357,8 @@
       "mascot_item_type_id_leg_16": "andie-luck",
       "transaction_trade": "on",
       "mascot_message_emotion_leg_16": "idle_happy",
-      "mascot_message_emotion_leg_3": "action_joy02"
+      "mascot_message_emotion_leg_3": "action_joy02",
+      "avatar": "/avatars/sleeper/078a6f566c8eab8c75ca51511cfdfd76.jpg"
     },
     "settings": null,
     "user_id": "428943291145265152"
@@ -391,7 +401,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/1d5722b1429bebb7a3f905e1ee2d3782.png"
     },
     "settings": null,
     "user_id": "429243125446230016"
@@ -406,7 +417,8 @@
       "allow_pn": "on",
       "mascot_message_leg_11": "",
       "mascot_message_leg_4": "",
-      "mention_pn": "on"
+      "mention_pn": "on",
+      "avatar": "/avatars/sleeper/2ae1e831eec95a9228cc0fdd50fa50ee.jpg"
     },
     "settings": null,
     "user_id": "438629899490553856"

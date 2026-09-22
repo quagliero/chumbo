@@ -38,7 +38,7 @@
       "mascot_message_emotion_leg_1": "taunting",
       "team_name": "EZ’s Revenge",
       "mascot_item_type_id_leg_8": "lilly-lilly",
-      "avatar": "https://sleepercdn.com/uploads/a416074b5580d4e12c4559f26673c8c4.jpg",
+      "avatar": "/avatars/sleeper/a416074b5580d4e12c4559f26673c8c4.jpg",
       "mascot_item_type_id_leg_16": "lilly-lilly",
       "transaction_trade": "on",
       "mascot_message_emotion_leg_3": "taunting"
@@ -76,7 +76,8 @@
       "mascot_message_emotion_leg_1": "dancing",
       "mascot_message_emotion_leg_2": "dancing",
       "mention_pn": "on",
-      "team_name": "The Roaches"
+      "team_name": "The Roaches",
+      "avatar": "/avatars/sleeper/7d72403617ed442b25d0ccbc7c58ccab.jpg"
     },
     "settings": null,
     "user_id": "77361676378587136"
@@ -101,7 +102,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/b84c2724c213dddd42c116f39b8cde53.jpg"
     },
     "settings": null,
     "user_id": "337210029620883456"
@@ -137,7 +139,8 @@
       "mascot_message_emotion_leg_15": "idle",
       "mascot_message_emotion_leg_2": "dancing",
       "mention_pn": "on",
-      "team_name": "I am become vengeance"
+      "team_name": "I am become vengeance",
+      "avatar": "/avatars/sleeper/a40a15dce0a9cc8f286975f4bac61735.jpg"
     },
     "settings": null,
     "user_id": "337221174670938112"
@@ -180,7 +183,8 @@
       "transaction_free_agent": "off",
       "transaction_trade": "off",
       "transaction_waiver": "off",
-      "user_message_pn": "off"
+      "user_message_pn": "off",
+      "avatar": "/avatars/sleeper/d2a8e6aa2be9d3ca61aa740d4c67bd2d.png"
     },
     "settings": null,
     "user_id": "337222928615612416"
@@ -207,7 +211,8 @@
       "transaction_free_agent": "on",
       "transaction_trade": "on",
       "transaction_waiver": "on",
-      "user_message_pn": "on"
+      "user_message_pn": "on",
+      "avatar": "/avatars/sleeper/ff3ff500ebff182172513f70a41fec5f.jpg"
     },
     "settings": null,
     "user_id": "337226046606704640"
@@ -240,7 +245,8 @@
       "mascot_item_type_id_leg_9": "furrari",
       "mascot_message_emotion_leg_1": "idle",
       "mention_pn": "on",
-      "team_name": "Wolverhampton Wasters🏆🏆"
+      "team_name": "Wolverhampton Wasters🏆🏆",
+      "avatar": "/avatars/sleeper/fdbed03e0c7152f2d3abba3e21d955e1.jpg"
     },
     "settings": null,
     "user_id": "337297176361201664"
@@ -253,7 +259,7 @@
     "league_id": "802312943839580160",
     "metadata": {
       "allow_pn": "off",
-      "avatar": "https://sleepercdn.com/uploads/85cab5489ea0b779bd30e8a7a044482c.jpg",
+      "avatar": "/avatars/sleeper/85cab5489ea0b779bd30e8a7a044482c.jpg",
       "join_voice_pn": "off",
       "mascot_message": "off",
       "mention_pn": "on",
@@ -311,7 +317,7 @@
       "mascot_message_emotion_leg_1": "victory",
       "team_name": "Money Manziels",
       "mascot_item_type_id_leg_8": "dawg-pound",
-      "avatar": "https://sleepercdn.com/uploads/ab7c59304fabb50ec99bdb9556e361c3.jpg",
+      "avatar": "/avatars/sleeper/ab7c59304fabb50ec99bdb9556e361c3.jpg",
       "mascot_item_type_id_leg_16": "dawg-pound",
       "transaction_trade": "off"
     },
@@ -363,7 +369,8 @@
       "mascot_message_emotion_leg_11": "victory",
       "mascot_item_type_id_leg_8": "philly-special",
       "mascot_item_type_id_leg_16": "philly-special",
-      "transaction_trade": "on"
+      "transaction_trade": "on",
+      "avatar": "/avatars/sleeper/c2ee5e2e6f3475fd842ac87cb0f0a72e.png"
     },
     "settings": null,
     "user_id": "428943291145265152"
@@ -396,7 +403,8 @@
       "mascot_item_type_id_leg_9": "titan-up",
       "mascot_message_emotion_leg_1": "victory",
       "mention_pn": "on",
-      "team_name": "Tha Dollar"
+      "team_name": "Tha Dollar",
+      "avatar": "/avatars/sleeper/2ae1e831eec95a9228cc0fdd50fa50ee.jpg"
     },
     "settings": null,
     "user_id": "438629899490553856"
@@ -410,7 +418,7 @@
     "metadata": {
       "allow_pn": "on",
       "allow_sms": "on",
-      "avatar": "https://sleepercdn.com/uploads/1ef873f2f885bde7a364a12699fd9d82.jpg",
+      "avatar": "/avatars/sleeper/1ef873f2f885bde7a364a12699fd9d82.jpg",
       "mention_pn": "on",
       "team_name": "Disciples of Juan Carlos"
     },
