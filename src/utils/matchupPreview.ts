@@ -17,6 +17,7 @@ import { mergeScheduledMatchups } from "@/utils/scheduleUtils";
 import { getStatContext } from "@/utils/stats/traverse";
 import type { Game } from "@/utils/stats/types";
 import { getTeamName } from "@/utils/teamName";
+import { seriesTidbits } from "@/utils/previewTidbits";
 import { getCompletedWeek, isWeekCompleted } from "@/utils/weekUtils";
 
 /**
@@ -41,8 +42,11 @@ export interface PreviewSide {
   rosterId: number;
   ownerId: string;
   managerId: string | null;
+  /** What the preview calls the side: its team name that season. */
   name: string;
   teamName: string;
+  /** The manager behind it, or the team name when the owner is unknown. */
+  managerName: string;
   /** This season, before the game. */
   wins: number;
   losses: number;
@@ -76,6 +80,8 @@ export interface MatchupPreview {
   lastMeeting?: PreviewMeeting;
   /** Sentences about what this game could change. */
   onTheLine: string[];
+  /** The series in sentences, most notable first (`previewTidbits.ts`). */
+  tidbits: string[];
 }
 
 /** One week's sides. The season type keys weeks by literal "1".."17". */
@@ -342,8 +348,9 @@ export const buildMatchupPreview = (
       rosterId,
       ownerId,
       managerId,
-      name: (managerId && managerNames.get(managerId)) || teamName,
+      name: teamName,
       teamName,
+      managerName: (managerId && managerNames.get(managerId)) || teamName,
       wins: tally("W"),
       losses: tally("L"),
       ties: tally("T"),
@@ -374,6 +381,7 @@ export const buildMatchupPreview = (
     h2h,
     lastMeeting: lastMeetingOf(a.ownerId, b.ownerId),
     onTheLine: onTheLineFor(a, b, h2h, record.games.length),
+    tidbits: seriesTidbits(a, b, week).map((tidbit) => tidbit.text),
   };
 };
 

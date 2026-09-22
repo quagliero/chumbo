@@ -117,6 +117,20 @@ export const MatchupPreviewDetail = ({
         </section>
       )}
 
+      {preview.tidbits.length > 0 && (
+        <section className={cardClassName({ padding: "sm" })}>
+          <h2 className="mb-2 font-semibold text-ink">In the series</h2>
+          <ul className="space-y-1.5 text-sm text-ink">
+            {preview.tidbits.map((line) => (
+              <li key={line} className="flex gap-2">
+                <span aria-hidden="true" className="text-ink-faint">·</span>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {(preview.onTheLine.length > 0 || last) && (
         <section className={cardClassName({ padding: "sm" })}>
           <h2 className="mb-2 font-semibold text-ink">On the line</h2>
@@ -171,7 +185,7 @@ const SidePanel = ({ year, side }: { year: number; side: PreviewSide }) => {
               side.name
             )}
           </h2>
-          <div className="truncate text-xs text-ink-muted">{side.teamName}</div>
+          <div className="truncate text-xs text-ink-muted">{side.managerName}</div>
         </div>
       </div>
       <dl className="mt-3 grid grid-cols-2 gap-y-1 text-sm">

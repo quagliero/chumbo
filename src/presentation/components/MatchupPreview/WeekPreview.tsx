@@ -54,6 +54,9 @@ const SideRow = ({ year, side }: { year: number; side: PreviewSide }) => (
   </div>
 );
 
+/** The series' most notable facts on each card; the game's page has them all. */
+const CARD_TIDBITS = 2;
+
 const PreviewCard = ({ preview }: { preview: MatchupPreview }) => {
   const [a, b] = preview.sides;
   const line = preview.h2h.streak ?? preview.onTheLine[0];
@@ -69,6 +72,11 @@ const PreviewCard = ({ preview }: { preview: MatchupPreview }) => {
       <div className="mt-3 border-t border-line pt-2 text-xs text-ink-muted">
         <div className="font-medium text-ink">{seriesText(a, b, preview.h2h)}</div>
         {line && <div className="mt-0.5">{line}</div>}
+        {preview.tidbits.slice(0, CARD_TIDBITS).map((tidbit) => (
+          <div key={tidbit} className="mt-0.5">
+            {tidbit}
+          </div>
+        ))}
       </div>
     </Link>
   );
