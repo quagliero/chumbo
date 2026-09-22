@@ -27,7 +27,7 @@ export interface RailItem {
   /** The fact that earns the click. Plain text, never a second link. */
   detail?: string;
   /**
-   * True when the fact rests on 2019's reconstructed per-player data. Marked,
+   * True when the fact rests on 2019's incomplete bench scores. Marked,
    * never hidden — a caveated fact presented flat is worse than no fact.
    */
   approximate?: boolean;

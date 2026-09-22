@@ -15,7 +15,7 @@
  * reach: the draft board he last went in, the game he had his best week in, and
  * the most-capped list of the manager who played him most.
  */
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import type { RailItem, RailSection } from "./rail";
 import { clean, compactSections, points } from "./rail";
 
@@ -92,10 +92,10 @@ export const draftItem = (picks: RailPick[]): RailItem | null => {
 /**
  * His best week, pointing at the game it happened in.
  *
- * 2019's per-player scores are a reconstruction, so a best week from that
- * season is marked rather than dropped: the team totals are correct and the
- * lineup breakdown is inferred, which is a caveat, not a reason to hide the
- * biggest week a player ever had.
+ * 2019's bench scores are incomplete, so a best week from that season spent
+ * on the bench is marked rather than dropped — a caveat, not a reason to hide
+ * the biggest week a player ever had. A started week is not marked: 2019's
+ * starters and their scores are right.
  */
 export const bestWeekItem = (input: PlayerRailInput): RailItem | null => {
   const best = input.bestWeek;
@@ -110,7 +110,7 @@ export const bestWeekItem = (input: PlayerRailInput): RailItem | null => {
     detail:
       `${clean(best.teamName)}, ${best.year} Week ${best.week}` +
       (best.wasStarted ? "" : " — and it was on the bench"),
-    approximate: hasApproximateLineups(best.year),
+    approximate: hasIncompleteBench(best.year) && !best.wasStarted,
   };
 };
 

@@ -1,35 +1,34 @@
 /**
- * Seasons whose lineup-level data is known to be approximate.
+ * Seasons whose BENCH scores are incomplete. Just the bench.
  *
  * 2012-2019 were played on NFL.com and scraped into Sleeper's shape. For 2019
- * specifically, the original scrape was later replaced with data re-entered by
- * hand into Sleeper, and the per-player scores did not survive intact:
+ * the scrape was later replaced with data re-entered by hand into Sleeper, and
+ * `scripts/rebuild-2019.js` put it back together: the NFL.com record for every
+ * score, result and starting lineup, with Sleeper's per-player points grafted
+ * on. What did not survive is the bench. Waiver pickups never reached the
+ * rebuilt rosters, so 65 bench players have no score at all.
  *
- *   - 29 starters had no score at all: waiver pickups that never reached the
- *     Sleeper rosters, which were rebuilt from draft and trades only. Their
- *     score has been restored from the gap between the lineup and the recorded
- *     team total, but it is inferred, not recorded.
- *   - 33 team-weeks were short or long purely through scoring drift
- *     (`st_fum_rec` 2 -> 0, `def_kr_td` / `def_pr_td` 6 -> 0, while
- *     `def_st_fum_rec` stayed at 2). All of it is defensive, so the difference
- *     was folded back into the starting defence's score.
- *   - 3 team-weeks had two or more unscored starters and could not be split by
- *     arithmetic; those were resolved by looking the players up in the real
- *     2019 box scores. Every team-week now reconciles, and no
- *     `points_adjustment` remains.
+ * The starters are right, and that is measured rather than assumed: the NFL's
+ * own play-by-play (L1) rebuilds 1,284 of 2019's 1,290 skill-position starts to
+ * the hundredth — 99.5%, in line with 2018 and 2020 — against 93.7% of its
+ * bench (99.9% either side). The 29 starters whose scores were once inferred
+ * from the team total check out against the real box scores.
  *
- * Team scores, records, standings and head-to-head are CORRECT for 2019 - they
- * come from the NFL.com record and reconcile exactly. It is only the per-player
- * breakdown that is incomplete.
+ * So 2019 is in everything built on scores, results or who started — records,
+ * streaks, the play-by-play timelines, On this day — and out of, or marked in,
+ * only what reads a bench score:
  *
- * So: anything derived from individual lineup slots - optimal lineup, points left
- * on the bench, manager efficiency, best/worst start-sit - should exclude these
- * seasons rather than let an incomplete reconstruction win a league record.
+ *   - `requiresBench` stats sit it out: points left on the bench, efficiency
+ *     against the optimal lineup, the worst start/sit, the bench bandit, the
+ *     trade ledger and waiver hit rate (a player's points on a roster count his
+ *     bench weeks, and 2019's lost waiver pickups are exactly the missing ones).
+ *   - `allowsIncompleteBench` stats keep it, marked: the draft stats, which rank
+ *     a player's whole season, bench weeks included.
  *
  * See scripts/rebuild-2019.js and BUILD_PLAN.md task H8.
  */
-export const APPROXIMATE_LINEUP_SEASONS: readonly number[] = [2019];
+export const INCOMPLETE_BENCH_SEASONS: readonly number[] = [2019];
 
-/** True when `year`'s per-player scoring is incomplete (see above). */
-export const hasApproximateLineups = (year: number): boolean =>
-  APPROXIMATE_LINEUP_SEASONS.includes(year);
+/** True when `year`'s bench scores are incomplete (see above). */
+export const hasIncompleteBench = (year: number): boolean =>
+  INCOMPLETE_BENCH_SEASONS.includes(year);

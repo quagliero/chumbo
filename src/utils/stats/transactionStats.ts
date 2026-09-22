@@ -66,7 +66,7 @@ const indexSeasons = (games: Game[]): Map<number, SeasonIndex> => {
   const byYear = new Map<number, SeasonIndex>();
 
   // `context.games` decides which seasons are in scope — the registry has
-  // already dropped the ones a `requiresLineups` stat may not see — and it is
+  // already dropped the ones a `requiresBench` stat may not see — and it is
   // also where the roster -> manager mapping comes from.
   for (const game of games) {
     let season = byYear.get(game.year);
@@ -187,7 +187,7 @@ interface DatedTransaction {
  *
  * Suspends if the transaction chunks have not been fetched yet — see the note
  * at the top of the file. Seasons absent from `years` (2019, for the stats
- * that declare `requiresLineups`) are skipped entirely rather than reported as
+ * that declare `requiresBench`) are skipped entirely rather than reported as
  * seasons in which nobody did anything.
  */
 const completedTransactions = (years: number[]): DatedTransaction[] => {
@@ -553,7 +553,7 @@ export const tradeLedger = defineStat({
   scope: "league",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: (context) =>
     scoreTrades(context).flatMap((trade) =>
       trade.sides.map((side): StatEntry => {
@@ -668,7 +668,7 @@ export const waiverHitRate = defineStat({
   scope: "manager",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: (context) =>
     [...scoreWaivers(context)].map(([managerId, record]): StatEntry => {
       const best = record.best

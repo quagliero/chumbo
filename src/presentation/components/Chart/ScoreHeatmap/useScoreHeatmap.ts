@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { seasons } from "@/data";
 import managers from "@/data/managers.json";
 import { YEAR_NUMBERS } from "@/domain/constants";
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import type { ExtendedMatchup } from "@/types/matchup";
 import type { ExtendedRoster } from "@/types/roster";
@@ -231,7 +231,7 @@ export const buildScoreHeatmap = (managerId: string): ScoreHeatmap => {
         played.reduce((total, cell) => total + cell.points, 0) / played.length,
       best: played.reduce((a, b) => (b.points > a.points ? b : a)),
       worst: played.reduce((a, b) => (b.points < a.points ? b : a)),
-      approximateLineups: hasApproximateLineups(year),
+      approximateLineups: hasIncompleteBench(year),
     };
   });
 

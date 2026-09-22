@@ -92,10 +92,10 @@ describe("on this day", () => {
     expect(new Set(hrefs).size).toBe(hrefs.length);
   });
 
-  it("marks 2019, whose lineups — and so whose finishing times — are inferred", () => {
+  it("takes 2019 as it is: its starters, and so when its games were over, are right", () => {
     const from2019 = computeStat("on-this-day").filter((entry) => entry.year === 2019);
     expect(from2019.length).toBeGreaterThan(0);
-    expect(from2019.every((entry) => entry.approximate)).toBe(true);
+    expect(from2019.some((entry) => entry.approximate)).toBe(false);
   });
 });
 

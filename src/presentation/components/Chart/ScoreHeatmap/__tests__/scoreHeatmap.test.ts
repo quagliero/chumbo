@@ -251,7 +251,7 @@ describe("buildScoreHeatmap", () => {
     );
   });
 
-  it("flags the season whose lineups are a reconstruction, and only that one", () => {
+  it("flags the season whose bench scores are incomplete, and only that one", () => {
     for (const row of LONG.rows) {
       expect(row.approximateLineups).toBe(row.year === 2019);
     }

@@ -14,9 +14,8 @@ import type { FlowGame, Game, StatEntry } from "./types";
  *
  * They read `flows` (see `./traverse`), so they declare `requiresTimelines`
  * and the registry refuses to answer them with an empty list when the week
- * files have not been provided. They also declare `requiresLineups`: a
- * timeline is built from who started, so 2019's reconstructed lineups would be
- * guessing at the shape of the game, not just at a total.
+ * files have not been provided. A timeline is built from who started and what
+ * they scored play by play, never from the bench, so 2019 is in.
  */
 
 const round2 = (value: number) => Math.round(value * 100) / 100;
@@ -71,7 +70,6 @@ export const biggestComeback = defineStat({
   scope: "league",
   format: "points",
   direction: "high",
-  requiresLineups: true,
   requiresTimelines: true,
   compute: ({ flows }) =>
     flows
@@ -96,7 +94,6 @@ export const latestDecisivePlay = defineStat({
   scope: "league",
   format: "count",
   direction: "high",
-  requiresLineups: true,
   requiresTimelines: true,
   compute: ({ flows }) =>
     flows.flatMap((flowGame) => {
@@ -118,7 +115,6 @@ export const mondayNightWins = defineStat({
   scope: "manager",
   format: "count",
   direction: "high",
-  requiresLineups: true,
   requiresTimelines: true,
   compute: ({ flows }) => {
     const byManager = new Map<string, FlowGame[]>();

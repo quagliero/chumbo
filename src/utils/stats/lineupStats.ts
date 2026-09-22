@@ -16,12 +16,11 @@ import type { Game, StatEntry } from "./types";
  * them walks the seasons
  * itself.
  *
- * Every stat here reads `starters` / `playersPoints`, so every one of them sets
- * `requiresLineups`. 2019's team scores are correct but its per-player
- * breakdown was reconstructed from the gap between a lineup and its recorded
- * total (see `src/domain/dataQuality.ts`), and an inferred score must not be
- * allowed to win "worst start/sit in Chumbo history". The registry does the
- * excluding; the flag is what asks it to.
+ * Every stat here reads bench players' points, so every one of them sets
+ * `requiresBench`. 2019's scores and starters are right, but 65 of its bench
+ * players have no score at all (see `src/domain/dataQuality.ts`), and a
+ * missing score must not be allowed to win "worst start/sit in Chumbo
+ * history". The registry does the excluding; the flag is what asks it to.
  */
 
 const matchupHref = (game: Game) =>
@@ -168,7 +167,7 @@ export const benchPointsAllTime = defineStat({
   scope: "manager",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
@@ -217,7 +216,7 @@ export const benchPointsSeason = defineStat({
   scope: "season",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
@@ -264,7 +263,7 @@ export const managerEfficiency = defineStat({
   scope: "manager",
   format: "percent",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,
@@ -311,7 +310,7 @@ export const worstStartSit = defineStat({
   scope: "league",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: ({ teamWeeks: games }) =>
     gradable(games).flatMap(({ game, read }): StatEntry[] => {
       const swap = read.worstStartSit;
@@ -337,7 +336,7 @@ export const benchBandit = defineStat({
   scope: "player",
   format: "points",
   direction: "high",
-  requiresLineups: true,
+  requiresBench: true,
   compute: ({ teamWeeks: games }) => {
     const totals = new Map<
       string,

@@ -40,13 +40,13 @@ export interface Game {
   players: string[];
 
   /**
-   * True where the per-player data is a reconstruction rather than a record
-   * (2019 — see `src/domain/dataQuality.ts`). Team scores are still correct;
-   * it is only the lineup breakdown that is inferred. Any stat that reads
-   * `starters` or `playersPoints` must set `requiresLineups` so these are
-   * excluded, or an inferred score can win a league record.
+   * True where the BENCH scores are incomplete (2019 — see
+   * `src/domain/dataQuality.ts`). Scores, results, starters and starters'
+   * points are all correct. Any stat that reads a bench player's points — a
+   * `playersPoints` entry that is not in `starters` — must set `requiresBench`
+   * or `allowsIncompleteBench`, or a missing score can win a league record.
    */
-  lineupsApproximate: boolean;
+  benchIncomplete: boolean;
 
   /**
    * False for a team-week with no opponent — an eliminated team in a playoff
@@ -128,8 +128,8 @@ export interface StatEntry {
   /** The context that makes it a story: "2019 Week 6 vs htc". */
   detail?: string;
   /**
-   * True when this entry's value rests on reconstructed per-player data — set
-   * by the registry for stats that declare `allowsApproximateLineups`. The UI
+   * True when this entry's value rests on 2019's incomplete bench scores — set
+   * by the registry for stats that declare `allowsIncompleteBench`. The UI
    * should mark these rather than hide them.
    */
   approximate?: boolean;
@@ -151,25 +151,26 @@ export interface StatDefinition {
   /** Whether a bigger number is the more notable one. Drives default sorting. */
   direction: "high" | "low";
   /**
-   * Set when the stat reads `starters` or `playersPoints`. Seasons whose lineup
-   * data is a reconstruction are then excluded before `compute` sees them, so
-   * an inferred score cannot win "worst start/sit in Chumbo history".
+   * Set when the stat reads bench players' points. Seasons whose bench scores
+   * are incomplete are then excluded before `compute` sees them, so a missing
+   * score cannot win "worst start/sit in Chumbo history". A stat that reads
+   * only starters does not need it: 2019's starters are right.
    */
-  requiresLineups?: boolean;
+  requiresBench?: boolean;
   /**
-   * Set when the stat reads lineup data but a reconstruction is good enough for
-   * what it measures. Those seasons are included, and every entry from one is
-   * marked `approximate` so the UI can caveat it.
+   * Set when the stat reads bench points but an incomplete bench is good enough
+   * for what it measures. Those seasons are included, and every entry from one
+   * is marked `approximate` so the UI can caveat it.
    *
    * The distinction is what the stat ranks. "Worst start/sit" ranks a single
-   * lineup decision, so one inferred score decides the record and 2019 must sit
+   * bench decision, so one missing score decides the record and 2019 must sit
    * out. The draft stats rank a player's whole season on a roster, where 2019
    * is within the normal spread of every season around it, and excluding it
    * loses a whole draft to protect a number it would not have changed.
    *
-   * Mutually exclusive with `requiresLineups`.
+   * Mutually exclusive with `requiresBench`.
    */
-  allowsApproximateLineups?: boolean;
+  allowsIncompleteBench?: boolean;
   /**
    * Set when the stat reads `flows` — the week's play-by-play timelines, which
    * are not part of the season data and have to be provided (`provideTimelines`).

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { getPlayer, seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import { getStatContext } from "@/utils/stats/traverse";
@@ -102,7 +102,7 @@ export const useDraftScatter = () => {
         name: playerName(pick.playerId, pick.year),
         position: extra?.position ?? "UNK",
         managerId: extra?.managerId ?? "",
-        approximate: hasApproximateLineups(pick.year),
+        approximate: hasIncompleteBench(pick.year),
       };
     });
 

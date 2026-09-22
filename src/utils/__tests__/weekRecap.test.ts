@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import {
   RECAP_MIN_STREAK,
   buildWeekRecap,
@@ -77,7 +77,7 @@ describe("every recap of every finished season", () => {
     }
 
     // 2019's lineups are reconstructed; a benching claim would rest on them.
-    if (hasApproximateLineups(year)) expect(recap.benching).toBeUndefined();
+    if (hasIncompleteBench(year)) expect(recap.benching).toBeUndefined();
 
     if (recap.playoffs) {
       expect(recap.luckiest).toBeUndefined();

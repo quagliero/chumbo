@@ -1547,8 +1547,9 @@ without a separate job.
 > (`provideTimelines`) by whoever wants them — `build-aggregates` and the test
 > setup, never a page — and a stat that reads them declares
 > `requiresTimelines`, so the registry throws instead of answering that the
-> league has no comebacks. 2019 is excluded: its lineups are a reconstruction,
-> which makes its timelines a guess at the shape of a game. A correction can
+> league has no comebacks. (2019 was excluded at first as "reconstructed";
+> it is in since 2026-09-22 — its starters are right, and only its bench scores
+> are incomplete. See `dataQuality.ts`.) A correction can
 > never hold the last two records; it has no player and its time is borrowed
 > from the last real play.
 >

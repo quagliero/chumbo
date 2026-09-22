@@ -25,9 +25,9 @@ export interface PrecomputedStat
     StatDefinition,
     "id" | "label" | "description" | "scope" | "format" | "direction"
   > {
-  /** Seasons this stat cannot see at all (`requiresLineups`). */
+  /** Seasons this stat cannot see at all (`requiresBench`). */
   excluded: number[];
-  /** Seasons it includes, but whose per-player data is reconstructed. */
+  /** Seasons it includes, but whose bench scores are incomplete. */
   caveat: number[];
   /**
    * How many entries the stat has in full, before the cap. Kept so a page can

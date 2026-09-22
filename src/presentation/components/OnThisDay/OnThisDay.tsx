@@ -47,7 +47,7 @@ const Module = () => {
         stopped scoring, US Eastern time.
         {view.total > view.entries.length &&
           ` ${view.total} seasons had one on ${view.date}; the newest ${view.entries.length} are above.`}
-        {view.approximate && " Entries marked ~ rest on reconstructed lineup data."}
+        {view.approximate && " Entries marked ~ rest on 2019's incomplete bench scores."}
       </p>
     </Card>
   );

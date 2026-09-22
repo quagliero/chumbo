@@ -160,7 +160,7 @@ export const DraftPickPopover = ({
       )}
       {point.approximate && (
         <PopoverNote>
-          2019&rsquo;s per-player scores are reconstructed, not recorded.
+          2019&rsquo;s bench scores are incomplete, and a season total counts bench weeks.
         </PopoverNote>
       )}
 

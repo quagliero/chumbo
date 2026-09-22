@@ -43,7 +43,7 @@ export interface Note {
   weight: number;
   href?: string;
   /**
-   * True when the fact rests on 2019's reconstructed per-player data. The UI
+   * True when the fact rests on 2019's incomplete bench scores. The UI
    * must mark it; a caveated fact presented flat is worse than no fact.
    */
   approximate?: boolean;

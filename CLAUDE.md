@@ -233,12 +233,17 @@ same fact cannot be computed two different ways in two places.
 
 Three data-quality rules these all obey:
 
-- **2019's per-player data is a reconstruction** (`src/domain/dataQuality.ts`).
-  Team scores are correct; the lineup breakdown is inferred. A stat that ranks a
-  single lineup decision sets `requiresLineups` and 2019 is excluded before it
-  runs; a stat that ranks a whole season sets `allowsApproximateLineups` and its
-  2019 entries arrive flagged `approximate`. Anything that shows a flagged fact
-  must say so — a caveated fact presented flat is worse than no fact.
+- **2019's bench scores are incomplete — only its bench** (`src/domain/dataQuality.ts`).
+  Its scores, results, starting lineups and starters' points are right: the
+  NFL's play-by-play rebuilds 99.5% of its starts to the hundredth, like the
+  seasons either side. But 65 bench players (waiver pickups the rebuild lost)
+  have no score. So 2019 is in everything built on scores, results or who
+  started, and only a stat that reads bench points is affected: one that ranks
+  a single bench decision sets `requiresBench` and 2019 is excluded before it
+  runs; one that ranks a whole season, bench weeks included (the draft stats),
+  sets `allowsIncompleteBench` and its 2019 entries arrive flagged
+  `approximate`. Anything that shows a flagged fact must say so — a caveated
+  fact presented flat is worse than no fact.
 - **The Scumbo is the worst BREAKDOWN, not last place** (`seasonBreakdown.ts`).
   They disagree in five of fourteen completed seasons. `crowns.ts` models it and
   the Triple Crown as three legs each.

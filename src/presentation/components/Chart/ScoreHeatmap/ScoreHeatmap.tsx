@@ -251,9 +251,8 @@ export const ScoreHeatmap = ({
         on this site draws the same line.{" "}
         {grid.rows.some((row) => row.approximateLineups) && (
           <>
-            2019 was rebuilt from the NFL.com archive, but only its per-player
-            breakdown is approximate — the team scores shaded here reconcile
-            exactly.{" "}
+            2019 was rebuilt from the NFL.com archive; only its bench scores are
+            incomplete, and the team scores shaded here are exact.{" "}
           </>
         )}
         Tap a square for the game, or a year for that season.

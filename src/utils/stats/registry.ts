@@ -1,4 +1,4 @@
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import { memoiseOverSeasons } from "@/utils/cache";
 import { getStatContext, getTimelineVersion } from "./traverse";
 import type { StatDefinition, StatEntry } from "./types";
@@ -19,9 +19,9 @@ export const defineStat = (definition: StatDefinition): StatDefinition => {
   if (definitions.has(definition.id)) {
     throw new Error(`Duplicate stat id: ${definition.id}`);
   }
-  if (definition.requiresLineups && definition.allowsApproximateLineups) {
+  if (definition.requiresBench && definition.allowsIncompleteBench) {
     throw new Error(
-      `${definition.id}: requiresLineups and allowsApproximateLineups are opposites`
+      `${definition.id}: requiresBench and allowsIncompleteBench are opposites`
     );
   }
   definitions.set(definition.id, definition);
@@ -40,9 +40,9 @@ export const getStat = (id: string): StatDefinition | undefined =>
  * Two things happen here rather than in each stat, so that neither can be
  * forgotten twenty times over:
  *
- *   1. Seasons with reconstructed lineups are filtered out for any stat that
- *      declares `requiresLineups`. 2019's team scores are correct but its
- *      per-player breakdown is inferred, and an inferred score must not win
+ *   1. Seasons with an incomplete bench are filtered out for any stat that
+ *      declares `requiresBench`. 2019's scores and starters are correct but 65
+ *      of its bench players have no score, and a missing score must not win
  *      "worst start/sit in Chumbo history".
  *   2. Sorting by the stat's own `direction`, so a stat's `compute` returns
  *      entries and does not also have to remember which end is interesting.
@@ -59,8 +59,8 @@ const runStat = (id: string, limit?: number, _timelines?: number): StatEntry[] =
   // Filter BOTH lists. `teamWeeks` is a superset of `games`, so filtering only
   // one lets the excluded seasons back in through the other — which is exactly
   // what happened when teamWeeks was introduced, and what the C2 test caught.
-  const keep = (game: { lineupsApproximate: boolean }) =>
-    !definition.requiresLineups || !game.lineupsApproximate;
+  const keep = (game: { benchIncomplete: boolean }) =>
+    !definition.requiresBench || !game.benchIncomplete;
 
   // A stat about the play-by-play cannot be answered from season data alone,
   // and an empty list is indistinguishable from "the league has no comebacks".
@@ -82,9 +82,9 @@ const runStat = (id: string, limit?: number, _timelines?: number): StatEntry[] =
   // A stat that tolerates a reconstruction still has to say which of its
   // entries rest on one. Doing it here rather than in each stat means an entry
   // cannot be presented as a flat fact just because its stat forgot to mark it.
-  const entries = definition.allowsApproximateLineups
+  const entries = definition.allowsIncompleteBench
     ? computed.map((entry) =>
-        entry.year !== undefined && hasApproximateLineups(entry.year)
+        entry.year !== undefined && hasIncompleteBench(entry.year)
           ? { ...entry, approximate: true }
           : entry
       )
@@ -105,17 +105,17 @@ export const computeStat = (id: string, limit?: number): StatEntry[] =>
 
 const approximateSeasons = (): number[] =>
   getStatContext()
-    .years.filter(hasApproximateLineups)
+    .years.filter(hasIncompleteBench)
     .sort((a, b) => a - b);
 
-/** The seasons a `requiresLineups` stat cannot see, for showing as a caveat. */
+/** The seasons a `requiresBench` stat cannot see, for showing as a caveat. */
 export const excludedSeasons = (definition: StatDefinition): number[] =>
-  definition.requiresLineups ? approximateSeasons() : [];
+  definition.requiresBench ? approximateSeasons() : [];
 
 /**
- * The seasons a stat includes but whose per-player data is reconstructed, for
+ * The seasons a stat includes but whose bench scores are incomplete, for
  * showing as a caveat. The counterpart to `excludedSeasons`: one names what is
- * missing, the other what is present but inferred.
+ * missing, the other what is present but incomplete.
  */
 export const caveatSeasons = (definition: StatDefinition): number[] =>
-  definition.allowsApproximateLineups ? approximateSeasons() : [];
+  definition.allowsIncompleteBench ? approximateSeasons() : [];

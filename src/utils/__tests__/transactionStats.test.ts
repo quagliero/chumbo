@@ -102,7 +102,7 @@ describe("trade ledger", () => {
   });
 
   it("excludes 2019, whose per-player scores are a reconstruction", () => {
-    // The stat declares `requiresLineups`, so the registry filters 2019 out
+    // The stat declares `requiresBench`, so the registry filters 2019 out
     // before compute sees it. 2019 has 43 trades; none may appear here.
     expect(entries.filter((entry) => entry.year === 2019)).toEqual([]);
   });

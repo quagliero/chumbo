@@ -88,7 +88,7 @@ export const SITE_URL = "chumbo.netlify.app";
 export interface CardNote {
   /** "The biggest margin of victory in Chumbo history." */
   text: string;
-  /** True when the fact rests on 2019's reconstructed per-player data. */
+  /** True when the fact rests on 2019's incomplete bench scores. */
   approximate?: boolean;
 }
 
@@ -100,7 +100,7 @@ export interface CardNote {
  * ways — somebody will have both open.
  */
 export const CAVEAT_SHORT = "reconstructed";
-export const CAVEAT_LONG = "2019 lineup data is reconstructed, not recorded";
+export const CAVEAT_LONG = "2019 bench scores are incomplete";
 
 /** Somebody on a card: a team, or a manager. */
 export interface CardPerson {

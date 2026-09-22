@@ -257,7 +257,7 @@ export interface ShameEntry {
   href?: string;
   /** Seasons the underlying stat cannot see at all. */
   excluded: number[];
-  /** True when this number rests on reconstructed per-player data. */
+  /** True when this number rests on 2019's incomplete bench scores. */
   approximate?: boolean;
 }
 

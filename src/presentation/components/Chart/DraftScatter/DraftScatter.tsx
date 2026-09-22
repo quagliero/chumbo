@@ -75,7 +75,7 @@ const describe = (point: DraftScatterPoint) =>
   (point.pointsElsewhere > 0
     ? `, ${point.pointsElsewhere.toFixed(1)} of them for other teams`
     : "") +
-  (point.approximate ? " (2019 — reconstructed lineup data)" : "");
+  (point.approximate ? " (2019 — incomplete bench scores)" : "");
 
 /** "Justin Jefferson" in a 10px label is too wide; "Jefferson ’20" is not. */
 const shortLabel = (point: DraftScatterPoint) => {

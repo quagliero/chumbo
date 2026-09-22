@@ -146,14 +146,14 @@ const RecordList = ({ stat }: { stat: PrecomputedStat }) => {
         <p className="mt-1 max-w-3xl text-ink-muted">{stat.description}</p>
         {stat.excluded.length > 0 && (
           <p className="mt-1 text-sm text-ink-faint">
-            {stat.excluded.join(", ")} left out: that season's lineups are
-            reconstructed, not recorded.
+            {stat.excluded.join(", ")} left out: that season's bench scores are
+            incomplete.
           </p>
         )}
         {stat.caveat.length > 0 && (
           <p className="mt-1 text-sm text-ink-faint">
-            Entries from {stat.caveat.join(", ")} rest on reconstructed lineups
-            and are marked.
+            Entries from {stat.caveat.join(", ")} count bench weeks whose scores
+            are incomplete, and are marked.
           </p>
         )}
       </div>

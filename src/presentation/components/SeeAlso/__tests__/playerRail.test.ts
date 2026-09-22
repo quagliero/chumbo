@@ -131,9 +131,14 @@ describe("bestWeekItem", () => {
     expect(item?.detail).toContain("on the bench");
   });
 
-  it("marks 2019, whose per-player scores are reconstructed", () => {
-    const item = bestWeekItem(input({ bestWeek: { ...best, year: 2019 } }));
-    expect(item?.approximate).toBe(true);
+  it("marks a 2019 week on the bench, whose score may be incomplete", () => {
+    const benched = bestWeekItem(
+      input({ bestWeek: { ...best, year: 2019, wasStarted: false } })
+    );
+    expect(benched?.approximate).toBe(true);
+    // A week he started is not: 2019's starters and their scores are right.
+    const started = bestWeekItem(input({ bestWeek: { ...best, year: 2019 } }));
+    expect(started?.approximate).toBe(false);
   });
 
   it("drops a week with no game behind it", () => {

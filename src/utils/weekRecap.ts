@@ -1,6 +1,6 @@
 import { seasons } from "@/data";
 import managers from "@/data/managers.json";
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import type { ExtendedMatchup } from "@/types/matchup";
 import { getOptimalLineup } from "@/utils/lineupAnalysis";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
@@ -79,7 +79,7 @@ export interface WeekRecap {
   bottom: { team: RecapTeam; game: RecapGame };
   closest: RecapGame;
   blowout: RecapGame;
-  /** Absent for 2019, whose lineups are reconstructed (`dataQuality.ts`). */
+  /** Absent for 2019, whose bench scores are incomplete (`dataQuality.ts`). */
   benching?: RecapBenching;
   /** Only when the winner's score was in the bottom half of the week. */
   luckiest?: RecapLuck;
@@ -193,7 +193,7 @@ const worstBenching = (
   week: number,
   games: RecapGame[]
 ): RecapBenching | undefined => {
-  if (hasApproximateLineups(year)) return undefined;
+  if (hasIncompleteBench(year)) return undefined;
   const sides = weekSides(seasons[year].matchups, week);
 
   let worst: RecapBenching | undefined;

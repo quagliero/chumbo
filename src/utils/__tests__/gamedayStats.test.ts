@@ -47,11 +47,14 @@ describe("the week's flows", () => {
     expect(flows.length).toBeLessThanOrEqual(games.length / 2);
   });
 
-  it("leaves 2019 out of every record built on it", () => {
-    // Its lineups are a reconstruction, so its timelines are a guess at the
-    // shape of the game, not only at a total.
-    for (const id of ["biggest-comeback", "latest-decisive-play"]) {
-      expect(computeStat(id).some((entry) => entry.year === 2019)).toBe(false);
+  it("includes 2019, which is built from its starters alone", () => {
+    // A timeline never reads the bench, and 2019's starters are right — the
+    // play-by-play rebuilds 99.5% of them to the hundredth.
+    const flows2019 = getStatContext().flows.filter(({ game }) => game.year === 2019);
+    expect(flows2019.length).toBeGreaterThan(80);
+    expect(computeStat("latest-decisive-play").some((entry) => entry.year === 2019)).toBe(true);
+    for (const id of ["biggest-comeback", "latest-decisive-play", "monday-night-wins"]) {
+      expect(computeStat(id).some((entry) => entry.approximate), id).toBe(false);
     }
   });
 });
@@ -130,8 +133,7 @@ describe("the latest decisive play", () => {
     // this is what keeps it that way.
     const { flows } = getStatContext();
     const byPlay = flows.filter(
-      ({ game, flow }) =>
-        !game.lineupsApproximate && flow.decided && !flow.decided.correction
+      ({ flow }) => flow.decided && !flow.decided.correction
     );
     expect(computeStat("latest-decisive-play")).toHaveLength(byPlay.length);
   });
@@ -158,7 +160,6 @@ describe("Monday night winners", () => {
   it("adds up to the games the timelines say were won on Monday night", () => {
     const mondays = getStatContext().flows.filter(
       ({ game, flow }) =>
-        !game.lineupsApproximate &&
         game.managerId &&
         flow.decided &&
         !flow.decided.correction &&

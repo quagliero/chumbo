@@ -1,6 +1,6 @@
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
-import { hasApproximateLineups } from "@/domain/dataQuality";
+import { hasIncompleteBench } from "@/domain/dataQuality";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
 import { memoiseOverSeasons } from "@/utils/cache";
@@ -72,7 +72,7 @@ const toGame = ({
     startersPoints: self.starters_points ?? [],
     playersPoints: self.players_points ?? {},
     players: (self.players ?? []).map(String),
-    lineupsApproximate: approximate,
+    benchIncomplete: approximate,
     hasOpponent: opponent !== null,
     raw: self,
   };
@@ -143,7 +143,7 @@ const buildContext = (_version: number): StatContext => {
     if (!season?.matchups || !season.rosters) continue;
 
     const playoffWeekStart = getPlayoffWeekStart(season);
-    const approximate = hasApproximateLineups(year);
+    const approximate = hasIncompleteBench(year);
 
     const ownerByRoster = new Map<number, string>(
       season.rosters.map((roster) => [roster.roster_id, roster.owner_id])
@@ -228,7 +228,7 @@ const buildContext = (_version: number): StatContext => {
             startersPoints: self.starters_points ?? [],
             playersPoints: self.players_points ?? {},
             players: (self.players ?? []).map(String),
-            lineupsApproximate: approximate,
+            benchIncomplete: approximate,
             hasOpponent: true,
             raw: self,
           };

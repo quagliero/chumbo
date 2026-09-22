@@ -355,8 +355,6 @@ export const onThisDay = defineStat({
   format: "count",
   direction: "high",
   requiresTimelines: true,
-  // 2019's lineups are inferred, so the moment its games were over is too.
-  allowsApproximateLineups: true,
   precomputeAll: true,
   compute: onThisDayEntries,
 });

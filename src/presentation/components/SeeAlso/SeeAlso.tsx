@@ -55,7 +55,7 @@ export const SeeAlso = ({
                         {item.approximate && (
                           <span
                             className="text-ink-faint"
-                            title="2019's per-player data is reconstructed, not recorded"
+                            title="Rests on 2019's bench scores, which are incomplete"
                           >
                             {" · reconstructed"}
                           </span>

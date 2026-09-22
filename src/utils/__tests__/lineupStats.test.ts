@@ -124,7 +124,7 @@ describe("lineup stats", () => {
     const playerId = top.href!.replace("/players/", "");
     let total = 0;
     for (const game of getStatContext().teamWeeks) {
-      if (game.lineupsApproximate || game.points <= 0) continue;
+      if (game.benchIncomplete || game.points <= 0) continue;
       if (game.starters.includes(playerId)) continue;
       if (!game.players.includes(playerId)) continue;
       const points = game.playersPoints[playerId] ?? 0;
