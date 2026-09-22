@@ -10,8 +10,9 @@ import type { DraftScatterData, DraftScatterPoint } from "./useDraftScatter";
 /**
  * The draft value scatter (D6).
  *
- * Overall pick number along the bottom, points that player went on to score
- * that season, for whoever had him, up the side — every pick of every draft the
+ * Overall pick number along the bottom; up the side, what that player's season
+ * was worth against the last starter at his position (over the games he
+ * played, for whoever had him) — every pick of every draft the
  * league has finished, in one box. The dashed curve is what a pick at that
  * number has actually returned across fourteen drafts, so the chart answers
  * "was that a good pick" against this league's own history rather than
@@ -19,7 +20,8 @@ import type { DraftScatterData, DraftScatterPoint } from "./useDraftScatter";
  * judgements it inherits from `utils/stats/draftStats.ts`.
  *
  * **Overplotting is the design problem, not the scales.** 2,460 marks in one
- * box, ~600 of them stacked on zero — the players who were cut in September.
+ * box, hundreds of them stacked along the floor — the players who were cut in
+ * September.
  * Four things make it readable, and all four matter:
  *
  *   - small radius and low fill opacity, so density reads as density: the
@@ -70,8 +72,9 @@ const signed = (value: number) =>
 
 const describe = (point: DraftScatterPoint) =>
   `${point.name}, ${point.year} pick ${point.pickNo} (round ${point.round}) ` +
-  `by ${point.managerId}: ${point.total.toFixed(1)} points against ` +
-  `${point.baseline.toFixed(1)} for that slot, ${signed(point.value)}` +
+  `by ${point.managerId}: ${point.total.toFixed(1)} points, ` +
+  `${signed(point.aboveReplacement)} over a starting ${point.position}, against ` +
+  `${signed(point.baseline)} for that slot: ${signed(point.value)}` +
   (point.pointsElsewhere > 0
     ? `, ${point.pointsElsewhere.toFixed(1)} of them for other teams`
     : "") +
@@ -110,10 +113,13 @@ export const DraftScatter = ({
   // the dots, not the ruler, or two positions cannot be compared by eye.
   const { x, y } = useMemo(() => {
     const maxPick = points.reduce((max, p) => Math.max(max, p.pickNo), 0);
-    const maxPoints = points.reduce((max, p) => Math.max(max, p.total), 0);
+    // Below zero is a real place on this chart — a player worse than the
+    // last starter at his position — so the axis runs to the worst of them.
+    const maxAbove = points.reduce((max, p) => Math.max(max, p.aboveReplacement), 0);
+    const minAbove = points.reduce((min, p) => Math.min(min, p.aboveReplacement), 0);
     return {
       x: niceTicks(0, maxPick, 4),
-      y: niceTicks(0, maxPoints, 5),
+      y: niceTicks(minAbove, maxAbove, 6),
     };
   }, [points]);
 
@@ -188,8 +194,8 @@ export const DraftScatter = ({
           height={height}
           margin={MARGIN}
           label={
-            `Every draft pick from ${span}: overall pick number against the ` +
-            `the points that player scored that season`
+            `Every draft pick from ${span}: overall pick number against what ` +
+            `that player's season was worth over the last starter at his position`
           }
           fallback={<DraftTable points={shown} />}
           overlay={(frame) => (
@@ -210,12 +216,23 @@ export const DraftScatter = ({
             return (
               <>
                 <YAxis ticks={y.ticks} scale={scaleY} length={frame.width} />
+                {/* Zero: a starter at his position. Everything the chart says
+                    is measured from here, so it is the one line with weight. */}
+                <line
+                  x1={0}
+                  x2={frame.width}
+                  y1={scaleY(0)}
+                  y2={scaleY(0)}
+                  stroke="currentColor"
+                  className="text-ink-faint"
+                  aria-hidden="true"
+                />
                 <XAxis ticks={x.ticks} scale={scaleX} length={frame.height} />
 
                 {points.map((point) => {
                   const dim = !visible(point);
                   const cx = scaleX(point.pickNo);
-                  const cy = scaleY(point.total);
+                  const cy = scaleY(point.aboveReplacement);
                   const colour = colourFor(point.value);
 
                   // A dimmed mark is context, not a target: rendering it as a
@@ -284,7 +301,7 @@ export const DraftScatter = ({
                   named.map((point) => ({
                     point,
                     cx: scaleX(point.pickNo),
-                    cy: scaleY(point.total),
+                    cy: scaleY(point.aboveReplacement),
                   })),
                   frame.width
                 ).map(({ point, cx, cy, labelX, labelY, anchor }) => (
@@ -355,7 +372,7 @@ export const DraftScatter = ({
                   className="text-ink-muted"
                   aria-hidden="true"
                 >
-                  Points that season
+                  Points over a starter at his position
                 </text>
               </>
             );
@@ -387,10 +404,16 @@ export const DraftScatter = ({
       </div>
 
       <p className="mt-2 max-w-prose text-xs text-ink-faint">
-        The dashed line is{" "}
+        Each player is measured against{" "}
+        <strong className="font-medium">the last starter at his position</strong>{" "}
+        that season, over the weeks he was in somebody&rsquo;s starting lineup
+        — zero on this chart is a starting-calibre player, whatever he plays.
+        On raw points a merely adequate quarterback outscores almost every
+        running back, and a week a player missed or spent on a bench counted
+        against him, when his team simply played somebody else. The dashed line is{" "}
         <strong className="font-medium">what that pick usually returns</strong>{" "}
-        — the average of every pick within six of it, across every draft. A pick
-        is scored on everything the player did that season, bench included and
+        on the same scale — the average of every pick within six of it, across
+        every draft. A pick is scored on everything the player did that season,
         whoever had him: a player traded in week 1 was still a good or bad pick,
         and what the trade did is a separate question, answered when you click
         the dot. Drafts are only counted once their
@@ -487,7 +510,8 @@ const DraftTable = ({ points }: { points: DraftScatterPoint[] }) => {
           <th scope="col">Season</th>
           <th scope="col">Pick</th>
           <th scope="col">Drafted by</th>
-          <th scope="col">Points for him</th>
+          <th scope="col">Points</th>
+          <th scope="col">Over a starter</th>
           <th scope="col">Going rate</th>
           <th scope="col">Difference</th>
         </tr>
@@ -503,7 +527,8 @@ const DraftTable = ({ points }: { points: DraftScatterPoint[] }) => {
             <td>{point.pickNo}</td>
             <td>{point.managerId}</td>
             <td>{point.total.toFixed(1)}</td>
-            <td>{point.baseline.toFixed(1)}</td>
+            <td>{signed(point.aboveReplacement)}</td>
+            <td>{signed(point.baseline)}</td>
             <td>{signed(point.value)}</td>
           </tr>
         ))}

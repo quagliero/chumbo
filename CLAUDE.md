@@ -294,13 +294,39 @@ record pages. Only lists whose entries belong to a season are in it.
 The Explorer has two addresses: `/explorer/points` (the filter builder, and
 what `/explorer` shows) and `/explorer/draft`. The Draft page is one
 computation (`useDraftScatter`, then `utils/draftReport.ts`) behind the chart
-and every table, with a team filter kept in the URL (`?teams=rich,thd`). A
-draft is one manager's picks in one season, valued as the sum of the D6 pick
-values (what each player scored against what that pick number usually
-returns), ranked within its season and set against how that season finished
-(`finalStandings.ts`, settled seasons only). "Does a good draft win?" and the
-strategies table are league-wide on purpose and print their sample sizes: a
-strategy five managers tried is an anecdote, and the page fades those rows.
+and every table, with a team filter kept in the URL (`?teams=rich,thd`).
+
+**How a pick is valued** (`utils/draftValue.ts`, one model for the chart, the
+Draft page and the best/worst-pick records): a player's weeks **in somebody's
+starting lineup**, against the **last starter at his position** that season
+(per start), against what that **pick number** usually returns on the same
+scale. Each step fixed a way the raw version lied:
+
+- Raw points made the board a list of quarterbacks — the last starting QB
+  scores about twice what the last starting RB does — so a merely adequate
+  late QB read as a steal. Against the last starter at his position, a late
+  QB's median value is zero.
+- The last STARTER, not the first player off the bench, because the data only
+  has rostered players, and QB13 in a one-QB league is usually on nobody's
+  roster. How many starters a position has includes its measured share of the
+  flex (about half RB, half WR). `STARTING_SLOTS` must match every season's
+  lineup; a test checks it.
+- Weeks STARTED, because a missed or benched week is one the team played
+  somebody else — it costs nothing. Otherwise an injured star, and a round-10
+  back stashed on a bench scoring 1.2 a week, were the worst picks ever.
+
+Draft rank against finish correlates at 0.40 on this measure (0.29 on raw
+points), which is some evidence it measures something real.
+
+**Where samples are small, it says so** — empirical Bayes rather than faith:
+a manager's average draft is shrunk toward the league by `drafterSpread`'s k
+(within-manager variance over between-manager variance), and when the
+managers' averages are spread no wider than luck alone would spread them — as
+they are today — the page says nobody's drafting stands out from luck and
+shows each average with its 95% range instead of a rating. Strategies'
+playoff rates are blended with `PRIOR_DRAFTS` (10) league-average drafts.
+Rows and managers with too few drafts are faded, and managers with fewer than
+five are not ranked.
 
 ## The week: recaps and previews (J2, K1)
 

@@ -1626,6 +1626,18 @@ the morning after with everything else.
   > The season's best draft made the playoffs 11 times in 14 and won once;
   > the worst made them 3 times and never won; draft rank and finish
   > correlate at 0.29. The redraft is still to do.
+  >
+  > **Positional value (2026-09-22, commissioner's request).** "Best picks"
+  > was a list of quarterbacks, because raw points are. A pick is now valued
+  > on the player's starts against the last starter at his position, against
+  > what the pick number returns on that scale — so a late QB's median value
+  > is zero, the best picks ever are Gurley '18, Charles '13, Taylor '21 and
+  > Lamar '19/'24, and the worst are the famous busts (Etienne '24, the 2015
+  > running backs). Draft rank now predicts finish at 0.40. Managers' average
+  > drafts are shrunk by empirical Bayes — and on this measure their spread is
+  > no wider than luck's, so the page says nobody's drafting stands out and
+  > shows ranges instead of ratings. Strategy playoff rates are shrunk toward
+  > the league's; every strategy lands within a few points of it.
 - **M3 What-ifs:** your season with the optimal lineup every week; your record
   with someone else's schedule (the schedule comparison, in narrative form).
 

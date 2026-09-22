@@ -1,5 +1,14 @@
 import { getPlayer, seasons } from "@/data";
+import {
+  COMPLETE_SEASON_WEEKS,
+  replacementLevels,
+  scoreDraftPicks,
+  withBaseline,
+  type DraftPick,
+  type ValuedPick,
+} from "@/utils/draftValue";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
+import { getPlayerPosition } from "@/utils/playerDataUtils";
 import { defineStat } from "./registry";
 import type { Game, StatContext, StatEntry } from "./types";
 
@@ -27,32 +36,20 @@ import type { Game, StatContext, StatEntry } from "./types";
  * `one-that-got-away` is still about the drafter's share, because that is its
  * subject. The D6 scatter makes the same call, and a test holds them together.
  *
+ * **A player is measured against the last starter at his position**, over
+ * the weeks he was in somebody's starting lineup (`utils/draftValue.ts`). On
+ * raw points the board was a list of quarterbacks — the last starting
+ * quarterback scores about twice what the last starting running back does —
+ * and a missed or benched week counted as a zero, when his team simply played
+ * somebody else.
+ *
  * **The baseline is the overall pick number, not the round.** Pick 11 takes
  * roughly the eleventh-best player left whether the league has ten teams or
  * twelve, so overall pick number pools the 2012-2013 ten-team drafts with the
  * rest honestly, where "round 2, slot 1" would be comparing pick 11 against
- * pick 13. See `baselineByPickNumber` for how the thin end is handled.
+ * pick 13. See `baselineByPickNumber` in `utils/draftValue.ts` for how the
+ * thin end is handled.
  */
-
-/**
- * A season needs this many played weeks before its picks can be scored.
- *
- * Without it, a draft with a fortnight of football behind it (2026 right now)
- * would put every one of its picks at the bottom of `worst-draft-picks`.
- */
-const COMPLETE_SEASON_WEEKS = 14;
-
-/**
- * Half-width, in picks, of the window the baseline averages over.
- *
- * A single pick number has one observation per season — thirteen, and only
- * eleven above pick 150, where the ten-team drafts have already ended. That is
- * far too few to say what pick 137 is worth, and it means the two league sizes
- * contribute unevenly at the tail. Averaging a +/- 6 pick window puts 80-170
- * observations behind every baseline instead, and smooths the seam where the
- * ten-team seasons drop out rather than leaving a step in it.
- */
-const BASELINE_WINDOW = 6;
 
 const oneDecimal = (value: number) => Math.round(value * 10) / 10;
 
@@ -77,206 +74,108 @@ const managerOf = (ownerId: string, fallback: number | string) =>
   getManagerIdBySleeperOwnerId(ownerId) ?? String(fallback);
 
 /* ------------------------------------------------------------------ *
- * Season index: who scored what, for whom.
+ * Valued picks — the one model, shared with the draft chart.
  * ------------------------------------------------------------------ */
 
-interface SeasonScoring {
-  /** player id -> roster id -> points scored for that roster this season. */
-  byPlayer: Map<string, Map<number, number>>;
-  managerByRoster: Map<number, string>;
-  /** Distinct weeks played — the completeness check. */
-  weeks: Set<number>;
-}
-
-const indexSeasons = (games: Game[]): Map<number, SeasonScoring> => {
-  const index = new Map<number, SeasonScoring>();
-
-  for (const game of games) {
-    let season = index.get(game.year);
-    if (!season) {
-      season = {
-        byPlayer: new Map(),
-        managerByRoster: new Map(),
-        weeks: new Set(),
-      };
-      index.set(game.year, season);
-    }
-
-    season.weeks.add(game.week);
-    season.managerByRoster.set(
-      game.rosterId,
-      game.managerId ?? String(game.rosterId)
-    );
-
-    for (const [playerId, points] of Object.entries(game.playersPoints)) {
-      if (!Number.isFinite(points)) continue;
-      let byRoster = season.byPlayer.get(playerId);
-      if (!byRoster) {
-        byRoster = new Map();
-        season.byPlayer.set(playerId, byRoster);
-      }
-      byRoster.set(game.rosterId, (byRoster.get(game.rosterId) ?? 0) + points);
-    }
-  }
-
-  return index;
-};
-
-/* ------------------------------------------------------------------ *
- * Scored picks.
- * ------------------------------------------------------------------ */
-
-interface ScoredPick {
-  year: number;
-  round: number;
-  pickNo: number;
-  playerId: string;
+interface RecordPick extends ValuedPick {
   /** The internal manager id of whoever made the pick. */
   managerId: string;
-  /** Everything the player scored that season, for anyone. What is valued. */
-  total: number;
-  /** The part of `total` scored while on the drafting roster. */
-  pointsForDrafter: number;
-  /** Points scored for everyone else that season, best owner first. */
-  elsewhere: Array<{ managerId: string; points: number }>;
+  /** Who else he scored for, as managers, most first. */
+  elsewhereBy: Array<{ managerId: string; points: number }>;
 }
 
-const totalElsewhere = (pick: ScoredPick) =>
-  pick.elsewhere.reduce((sum, owner) => sum + owner.points, 0);
-
 /**
- * Every pick from every season complete enough to score, joined to what its
- * player went on to do. Seasons absent from `games` — anything not yet loaded
- * — simply never appear, rather than arriving as a draft where nobody scored.
+ * Every pick from every season complete enough to score, valued by
+ * `utils/draftValue.ts` — against the last starter at the player's position,
+ * then against the going rate for the pick number — so a record and the chart
+ * are the same number. Seasons absent from `games` never appear.
  *
- * 2019 is present. Its per-player data is a reconstruction, but it is a good
- * one for this purpose: 96.8% of rostered players and 99.8% of starters carry
- * a score, the average roster is the same size as every other season's (15.0),
- * and the mean points-per-pick (67.7) sits above 2015-2018 rather than below
- * anything. Excluding it lost a whole draft to protect a baseline it does not
- * move. The three stats built on this declare `allowsIncompleteBench`, so
- * their 2019 entries are marked rather than hidden.
+ * 2019 is present. Its bench scores are incomplete, but a season total is
+ * within the normal spread of every season around it, and excluding it lost a
+ * whole draft to protect a baseline it does not move. The stats built on this
+ * declare `allowsIncompleteBench`, so their 2019 entries are marked.
  */
-const scorePicks = (games: Game[]): ScoredPick[] => {
-  const index = indexSeasons(games);
-  const scored: ScoredPick[] = [];
-
-  for (const [year, season] of index) {
-    if (season.weeks.size < COMPLETE_SEASON_WEEKS) continue;
-
-    for (const pick of seasons[year]?.picks ?? []) {
-      const playerId = String(pick.player_id);
-      const byRoster = season.byPlayer.get(playerId);
-
-      let pointsForDrafter = 0;
-      const elsewhere: ScoredPick["elsewhere"] = [];
-
-      for (const [rosterId, points] of byRoster ?? []) {
-        if (rosterId === pick.roster_id) {
-          pointsForDrafter += points;
-        } else {
-          elsewhere.push({
-            managerId: season.managerByRoster.get(rosterId) ?? String(rosterId),
-            points,
-          });
-        }
-      }
-
-      elsewhere.sort((a, b) => b.points - a.points);
-
-      scored.push({
-        year,
-        round: pick.round,
-        pickNo: pick.pick_no,
-        playerId,
-        managerId: managerOf(pick.picked_by, pick.roster_id),
-        total:
-          pointsForDrafter +
-          elsewhere.reduce((sum, owner) => sum + owner.points, 0),
-        pointsForDrafter,
-        elsewhere,
-      });
-    }
+const valuedPicks = (games: Game[]): RecordPick[] => {
+  const managerByRoster = new Map<string, string>();
+  for (const game of games) {
+    managerByRoster.set(`${game.year}|${game.rosterId}`, game.managerId ?? String(game.rosterId));
   }
 
-  return scored;
-};
-
-/**
- * What a pick at each position is worth, as a moving average over
- * `BASELINE_WINDOW` picks either side. See the note on that constant.
- */
-const baselineByPickNumber = (picks: ScoredPick[]): Map<number, number> => {
-  const byPickNo = new Map<number, number[]>();
-  for (const pick of picks) {
-    const bucket = byPickNo.get(pick.pickNo);
-    if (bucket) bucket.push(pick.total);
-    else byPickNo.set(pick.pickNo, [pick.total]);
+  const drafts = new Map<number, DraftPick[]>();
+  const drafter = new Map<string, string>();
+  for (const [key, season] of Object.entries(seasons)) {
+    const year = Number(key);
+    if (!Number.isFinite(year)) continue;
+    drafts.set(
+      year,
+      (season?.picks ?? []).map((pick) => {
+        const playerId = String(pick.player_id);
+        drafter.set(`${year}|${pick.pick_no}`, managerOf(pick.picked_by, pick.roster_id));
+        return {
+          year,
+          round: pick.round,
+          pickNo: pick.pick_no,
+          playerId,
+          rosterId: pick.roster_id,
+          position: pick.position || getPlayer(playerId, year)?.position || "UNK",
+        };
+      })
+    );
   }
 
-  const baseline = new Map<number, number>();
-  for (const pickNo of byPickNo.keys()) {
-    let total = 0;
-    let count = 0;
-    for (let n = pickNo - BASELINE_WINDOW; n <= pickNo + BASELINE_WINDOW; n++) {
-      for (const points of byPickNo.get(n) ?? []) {
-        total += points;
-        count += 1;
-      }
-    }
-    if (count) baseline.set(pickNo, total / count);
-  }
-
-  return baseline;
+  return withBaseline(
+    scoreDraftPicks(games, drafts),
+    replacementLevels(games, (id, year) => getPlayerPosition(id, year))
+  ).map((pick) => ({
+    ...pick,
+    managerId: drafter.get(`${pick.year}|${pick.pickNo}`) ?? String(pick.rosterId),
+    elsewhereBy: pick.elsewhere.map((owner) => ({
+      managerId: managerByRoster.get(`${pick.year}|${owner.rosterId}`) ?? String(owner.rosterId),
+      points: owner.points,
+    })),
+  }));
 };
 
 /**
  * Both value stats rank the same list — how far above or below the going rate
  * for that pick the player came in — so they are built once, here.
  */
-const valueEntries = ({ games }: StatContext): StatEntry[] => {
-  const picks = scorePicks(games);
-  const baseline = baselineByPickNumber(picks);
+const signed = (value: number) => `${value < 0 ? "−" : "+"}${shown(Math.abs(value))}`;
 
-  return picks.flatMap((pick) => {
-    const expected = baseline.get(pick.pickNo);
-    if (expected === undefined) return [];
-
+const valueEntries = ({ games }: StatContext): StatEntry[] =>
+  valuedPicks(games).map((pick) => {
     // Where the points went, when not all of them went to the drafter. The
     // value is the player's whole season; this is who enjoyed it.
-    const gone = totalElsewhere(pick);
-    const [topOwner] = pick.elsewhere;
+    const gone = pick.pointsElsewhere;
+    const [topOwner] = pick.elsewhereBy;
     const others =
-      pick.elsewhere.length === 1
+      pick.elsewhereBy.length === 1
         ? topOwner.managerId
-        : `${pick.elsewhere.length} other teams`;
+        : `${pick.elsewhereBy.length} other teams`;
     const where =
       gone <= 0
         ? ""
-        : pick.pointsForDrafter <= 0
+        : pick.points <= 0
           ? `, all of it for ${others}`
           : `, ${shown(gone)} of it for ${others}`;
 
-    return [
-      {
-        value: oneDecimal(pick.total - expected),
-        subject: playerName(pick.playerId, pick.year),
-        href: draftHref(pick.year),
-        detail:
-          `${pick.managerId}, ${pick.year} round ${pick.round} ` +
-          `(pick ${pick.pickNo}) — ${shown(pick.total)} pts ` +
-          `against ${shown(expected)} for that slot${where}`,
-        year: pick.year,
-      },
-    ];
+    return {
+      value: oneDecimal(pick.value),
+      subject: playerName(pick.playerId, pick.year),
+      href: draftHref(pick.year),
+      detail:
+        `${pick.managerId}, ${pick.year} round ${pick.round} (pick ${pick.pickNo}) — ` +
+        `${shown(pick.total)} pts, ${signed(pick.aboveReplacement)} over a starting ` +
+        `${pick.position}; that pick usually gives ${signed(pick.baseline)}${where}`,
+      year: pick.year,
+    };
   });
-};
 
 export const bestDraftPicks = defineStat({
   id: "best-draft-picks",
   label: "Best draft picks",
   description:
-    "The picks that returned most above what that slot usually returns. Two hundred points is a steal in round 12 and a catastrophe in round 1, so this ranks on the difference, not the total. Quarterbacks run the board: the going rate for a pick is blind to position, and a late quarterback outscores everyone taken around him.",
+    "The picks that returned most for where they were taken. A player is measured against the last starter at his position that season, over the weeks he was in a starting lineup — so a merely adequate quarterback, who outscores every running back, is worth what he is, which is about what twelve teams already had — and then against what that pick number usually returns on the same scale.",
   scope: "league",
   format: "points",
   direction: "high",
@@ -288,7 +187,7 @@ export const worstDraftPicks = defineStat({
   id: "worst-draft-picks",
   label: "Worst draft picks",
   description:
-    "The other end of the same list: picks that returned least for where they were taken. Almost all of them are early-round players who got hurt, which is the whole risk of a first-rounder.",
+    "The other end of the same list: picks that returned least for where they were taken. A week a player missed, or spent on a bench, is not held against him — his team played somebody else — so this is early picks who started and disappointed, not simply the injured or the late fliers who never got a start.",
   scope: "league",
   format: "points",
   direction: "low",
@@ -522,21 +421,21 @@ export const oneThatGotAway = defineStat({
   direction: "high",
   allowsIncompleteBench: true,
   compute: ({ games }) =>
-    scorePicks(games).flatMap((pick) => {
-      const [topOwner] = pick.elsewhere;
+    valuedPicks(games).flatMap((pick) => {
+      const [topOwner] = pick.elsewhereBy;
       if (!topOwner) return [];
 
       // Only a loss if they did more elsewhere than they did for the drafter.
-      const gone = totalElsewhere(pick);
-      if (gone <= pick.pointsForDrafter) return [];
+      const gone = pick.pointsElsewhere;
+      if (gone <= pick.points) return [];
 
       // The value is everything he scored after leaving; where that was split
       // between teams, say so rather than printing one team's share next to
       // a total that does not match it.
       const after =
-        pick.elsewhere.length === 1
+        pick.elsewhereBy.length === 1
           ? `${topOwner.managerId} got ${shown(gone)}`
-          : `${shown(gone)} went to ${pick.elsewhere.length} other teams, ` +
+          : `${shown(gone)} went to ${pick.elsewhereBy.length} other teams, ` +
             `most of it ${topOwner.managerId}'s (${shown(topOwner.points)})`;
 
       return [
@@ -546,7 +445,7 @@ export const oneThatGotAway = defineStat({
           href: playerHref(pick.playerId),
           detail:
             `${pick.managerId} drafted him in round ${pick.round} of ` +
-            `${pick.year} and got ${shown(pick.pointsForDrafter)} pts — ` +
+            `${pick.year} and got ${shown(pick.points)} pts — ` +
             after,
           year: pick.year,
         },

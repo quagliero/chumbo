@@ -117,7 +117,16 @@ export const DraftPickPopover = ({
       <PopoverRows
         rows={[
           ["Season", `${one(point.total)} pts`],
-          ["That pick usually", `${one(point.baseline)} pts`],
+          [
+            `Started`,
+            `${point.started} week${point.started === 1 ? "" : "s"}, ${one(point.startedPoints)} pts`,
+          ],
+          [
+            `Over a starting ${point.position}`,
+            // Against the last starter's average, over the weeks he started.
+            `${signed(point.aboveReplacement)} (${one(point.replacementPerGame)} a start)`,
+          ],
+          ["That pick usually", signed(point.baseline)],
           [
             "Value",
             <strong

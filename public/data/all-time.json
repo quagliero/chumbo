@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-22T10:19:18.198Z",
+  "generatedAt": "2026-09-22T10:52:02.669Z",
   "years": [
     2012,
     2013,
@@ -2862,7 +2862,7 @@
     {
       "id": "best-draft-picks",
       "label": "Best draft picks",
-      "description": "The picks that returned most above what that slot usually returns. Two hundred points is a steal in round 12 and a catastrophe in round 1, so this ranks on the difference, not the total. Quarterbacks run the board: the going rate for a pick is blind to position, and a late quarterback outscores everyone taken around him.",
+      "description": "The picks that returned most for where they were taken. A player is measured against the last starter at his position that season, over the weeks he was in a starting lineup — so a merely adequate quarterback, who outscores every running back, is worth what he is, which is about what twelve teams already had — and then against what that pick number usually returns on the same scale.",
       "scope": "league",
       "format": "points",
       "direction": "high",
@@ -2873,188 +2873,188 @@
       "total": 2460,
       "entries": [
         {
-          "value": 333.6,
-          "subject": "Lamar Jackson",
-          "href": "/seasons/2019/draft",
-          "detail": "thd, 2019 round 10 (pick 109) — 415.7 pts against 82.1 for that slot",
-          "year": 2019,
-          "approximate": true
-        },
-        {
-          "value": 318.8,
-          "subject": "Patrick Mahomes",
+          "value": 153.2,
+          "subject": "Todd Gurley",
           "href": "/seasons/2018/draft",
-          "detail": "rich, 2018 round 11 (pick 130) — 399.7 pts against 81.0 for that slot",
+          "detail": "jay, 2018 round 1 (pick 1) — 307.3 pts, +203.3 over a starting RB; that pick usually gives +50.1",
           "year": 2018
         },
         {
-          "value": 296.4,
-          "subject": "Josh Allen",
-          "href": "/seasons/2020/draft",
-          "detail": "jay, 2020 round 10 (pick 114) — 375.8 pts against 79.4 for that slot, 313.1 of it for sol",
-          "year": 2020
-        },
-        {
-          "value": 280.3,
-          "subject": "Patrick Mahomes",
-          "href": "/seasons/2022/draft",
-          "detail": "ryan, 2022 round 5 (pick 59) — 401.4 pts against 121.1 for that slot",
-          "year": 2022
-        },
-        {
-          "value": 278.4,
-          "subject": "Lamar Jackson",
-          "href": "/seasons/2024/draft",
-          "detail": "thd, 2024 round 4 (pick 42) — 407.4 pts against 129.0 for that slot, all of it for hadkiss",
-          "year": 2024
-        },
-        {
-          "value": 275.7,
-          "subject": "Aaron Rodgers",
-          "href": "/seasons/2020/draft",
-          "detail": "ryan, 2020 round 11 (pick 121) — 356.3 pts against 80.6 for that slot",
-          "year": 2020
-        },
-        {
-          "value": 270.3,
-          "subject": "Cam Newton",
-          "href": "/seasons/2015/draft",
-          "detail": "kitch, 2015 round 8 (pick 96) — 356.4 pts against 86.0 for that slot, 316.5 of it for ant",
-          "year": 2015
-        },
-        {
-          "value": 265.4,
-          "subject": "Joe Burrow",
-          "href": "/seasons/2024/draft",
-          "detail": "ant, 2024 round 9 (pick 102) — 343.0 pts against 77.6 for that slot",
-          "year": 2024
-        },
-        {
-          "value": 258.3,
-          "subject": "Tom Brady",
-          "href": "/seasons/2021/draft",
-          "detail": "jay, 2021 round 8 (pick 89) — 349.7 pts against 91.4 for that slot",
-          "year": 2021
-        },
-        {
-          "value": 252,
-          "subject": "Kyler Murray",
-          "href": "/seasons/2020/draft",
-          "detail": "rich, 2020 round 6 (pick 67) — 359.6 pts against 107.6 for that slot",
-          "year": 2020
-        },
-        {
-          "value": 242.4,
-          "subject": "Drake Maye",
-          "href": "/seasons/2025/draft",
-          "detail": "thd, 2025 round 13 (pick 145) — 308.9 pts against 66.5 for that slot, 294.1 of it for jay",
-          "year": 2025
-        },
-        {
-          "value": 240.2,
-          "subject": "Dak Prescott",
-          "href": "/seasons/2019/draft",
-          "detail": "fin, 2019 round 12 (pick 142) — 308.2 pts against 68.0 for that slot",
-          "year": 2019,
-          "approximate": true
-        },
-        {
-          "value": 237.7,
-          "subject": "Josh Allen",
-          "href": "/seasons/2022/draft",
-          "detail": "htc, 2022 round 3 (pick 29) — 376.5 pts against 138.8 for that slot",
-          "year": 2022
-        },
-        {
-          "value": 236.6,
-          "subject": "Jared Goff",
-          "href": "/seasons/2024/draft",
-          "detail": "fin, 2024 round 15 (pick 180) — 288.4 pts against 51.8 for that slot",
-          "year": 2024
-        },
-        {
-          "value": 233.2,
-          "subject": "Josh Allen",
-          "href": "/seasons/2021/draft",
-          "detail": "htc, 2021 round 4 (pick 38) — 357.8 pts against 124.6 for that slot",
-          "year": 2021
-        },
-        {
-          "value": 231.9,
-          "subject": "Dak Prescott",
-          "href": "/seasons/2025/draft",
-          "detail": "ryan, 2025 round 12 (pick 137) — 301.1 pts against 69.2 for that slot",
-          "year": 2025
-        },
-        {
-          "value": 231.8,
-          "subject": "Jayden Daniels",
-          "href": "/seasons/2024/draft",
-          "detail": "sol, 2024 round 8 (pick 95) — 319.8 pts against 88.0 for that slot, 58.1 of it for jay",
-          "year": 2024
-        },
-        {
-          "value": 231,
-          "subject": "Dak Prescott",
-          "href": "/seasons/2023/draft",
-          "detail": "ryan, 2023 round 11 (pick 121) — 311.6 pts against 80.6 for that slot",
-          "year": 2023
-        },
-        {
-          "value": 229.2,
-          "subject": "Joe Burrow",
-          "href": "/seasons/2022/draft",
-          "detail": "ant, 2022 round 8 (pick 89) — 320.6 pts against 91.4 for that slot",
-          "year": 2022
-        },
-        {
-          "value": 227,
-          "subject": "Justin Herbert",
-          "href": "/seasons/2021/draft",
-          "detail": "ant, 2021 round 7 (pick 76) — 330.3 pts against 103.3 for that slot",
-          "year": 2021
-        },
-        {
-          "value": 226.6,
-          "subject": "Ben Roethlisberger",
-          "href": "/seasons/2018/draft",
-          "detail": "thd, 2018 round 11 (pick 132) — 305.0 pts against 78.4 for that slot, 205.5 of it for 2 other teams",
-          "year": 2018
-        },
-        {
-          "value": 226.5,
-          "subject": "Jalen Hurts",
-          "href": "/seasons/2021/draft",
-          "detail": "hadkiss, 2021 round 11 (pick 127) — 312.2 pts against 85.7 for that slot",
-          "year": 2021
-        },
-        {
-          "value": 225.8,
-          "subject": "Peyton Manning",
+          "value": 151.8,
+          "subject": "Jamaal Charles",
           "href": "/seasons/2013/draft",
-          "detail": "jay, 2013 round 2 (pick 18) — 383.3 pts against 157.6 for that slot",
+          "detail": "hadkiss, 2013 round 1 (pick 7) — 308.0 pts, +193.5 over a starting RB; that pick usually gives +41.7",
           "year": 2013
         },
         {
-          "value": 224,
-          "subject": "Russell Wilson",
-          "href": "/seasons/2020/draft",
-          "detail": "htc, 2020 round 6 (pick 64) — 341.6 pts against 117.7 for that slot",
-          "year": 2020
+          "value": 150.2,
+          "subject": "Jonathan Taylor",
+          "href": "/seasons/2021/draft",
+          "detail": "thd, 2021 round 1 (pick 12) — 323.6 pts, +187.5 over a starting RB; that pick usually gives +37.2, 282.1 of it for jay",
+          "year": 2021
         },
         {
-          "value": 215.2,
-          "subject": "Russell Wilson",
+          "value": 142.5,
+          "subject": "Lamar Jackson",
+          "href": "/seasons/2024/draft",
+          "detail": "thd, 2024 round 4 (pick 42) — 407.4 pts, +155.9 over a starting QB; that pick usually gives +13.3, all of it for hadkiss",
+          "year": 2024
+        },
+        {
+          "value": 140.2,
+          "subject": "Lamar Jackson",
+          "href": "/seasons/2019/draft",
+          "detail": "thd, 2019 round 10 (pick 109) — 415.7 pts, +139.9 over a starting QB; that pick usually gives −0.3",
+          "year": 2019,
+          "approximate": true
+        },
+        {
+          "value": 139.5,
+          "subject": "Patrick Mahomes",
+          "href": "/seasons/2022/draft",
+          "detail": "ryan, 2022 round 5 (pick 59) — 401.4 pts, +142.4 over a starting QB; that pick usually gives +2.8",
+          "year": 2022
+        },
+        {
+          "value": 136,
+          "subject": "Jonathan Taylor",
+          "href": "/seasons/2025/draft",
+          "detail": "hadkiss, 2025 round 2 (pick 15) — 302.3 pts, +170.4 over a starting RB; that pick usually gives +34.4",
+          "year": 2025
+        },
+        {
+          "value": 128.9,
+          "subject": "Todd Gurley",
+          "href": "/seasons/2017/draft",
+          "detail": "dix, 2017 round 2 (pick 23) — 293.8 pts, +157.3 over a starting RB; that pick usually gives +28.4",
+          "year": 2017
+        },
+        {
+          "value": 121.2,
+          "subject": "James Conner",
+          "href": "/seasons/2018/draft",
+          "detail": "nick, 2018 round 13 (pick 152) — 215.6 pts, +119.6 over a starting RB; that pick usually gives −1.6",
+          "year": 2018
+        },
+        {
+          "value": 120.5,
+          "subject": "Jalen Hurts",
+          "href": "/seasons/2022/draft",
+          "detail": "jay, 2022 round 5 (pick 60) — 334.9 pts, +124.4 over a starting QB; that pick usually gives +3.9, 60.5 of it for 2 other teams",
+          "year": 2022
+        },
+        {
+          "value": 120.1,
+          "subject": "Christian McCaffrey",
+          "href": "/seasons/2018/draft",
+          "detail": "rich, 2018 round 2 (pick 15) — 274.5 pts, +154.5 over a starting RB; that pick usually gives +34.4",
+          "year": 2018
+        },
+        {
+          "value": 119.1,
+          "subject": "David Johnson",
+          "href": "/seasons/2016/draft",
+          "detail": "hadkiss, 2016 round 1 (pick 4) — 311.3 pts, +164.3 over a starting RB; that pick usually gives +45.1",
+          "year": 2016
+        },
+        {
+          "value": 116.3,
+          "subject": "Christian McCaffrey",
+          "href": "/seasons/2019/draft",
+          "detail": "nick, 2019 round 1 (pick 4) — 325.9 pts, +161.4 over a starting RB; that pick usually gives +45.1",
+          "year": 2019,
+          "approximate": true
+        },
+        {
+          "value": 116,
+          "subject": "Cooper Kupp",
+          "href": "/seasons/2021/draft",
+          "detail": "kitch, 2021 round 4 (pick 43) — 249.2 pts, +128.4 over a starting WR; that pick usually gives +12.4",
+          "year": 2021
+        },
+        {
+          "value": 115.5,
+          "subject": "Jaxon Smith-Njigba",
+          "href": "/seasons/2025/draft",
+          "detail": "ant, 2025 round 5 (pick 52) — 225.3 pts, +119.9 over a starting WR; that pick usually gives +4.4",
+          "year": 2025
+        },
+        {
+          "value": 115.3,
+          "subject": "Adrian Peterson",
+          "href": "/seasons/2012/draft",
+          "detail": "dix, 2012 round 4 (pick 37) — 275.3 pts, +126.1 over a starting RB; that pick usually gives +10.7",
+          "year": 2012
+        },
+        {
+          "value": 109.2,
+          "subject": "Christian McCaffrey",
+          "href": "/seasons/2025/draft",
+          "detail": "jay, 2025 round 1 (pick 6) — 284.8 pts, +152.9 over a starting RB; that pick usually gives +43.7, 219.8 of it for dix",
+          "year": 2025
+        },
+        {
+          "value": 107.2,
+          "subject": "Joe Burrow",
+          "href": "/seasons/2024/draft",
+          "detail": "ant, 2024 round 9 (pick 102) — 343.0 pts, +107.2 over a starting QB; that pick usually gives +0.0",
+          "year": 2024
+        },
+        {
+          "value": 100.8,
+          "subject": "Josh Allen",
+          "href": "/seasons/2022/draft",
+          "detail": "htc, 2022 round 3 (pick 29) — 376.5 pts, +117.4 over a starting QB; that pick usually gives +16.7",
+          "year": 2022
+        },
+        {
+          "value": 100.7,
+          "subject": "Bijan Robinson",
+          "href": "/seasons/2025/draft",
+          "detail": "dix, 2025 round 1 (pick 3) — 287.5 pts, +146.8 over a starting RB; that pick usually gives +46.1, 217.1 of it for 2 other teams",
+          "year": 2025
+        },
+        {
+          "value": 100.3,
+          "subject": "LeSean McCoy",
+          "href": "/seasons/2013/draft",
+          "detail": "ant, 2013 round 1 (pick 5) — 259.2 pts, +144.7 over a starting RB; that pick usually gives +44.4",
+          "year": 2013
+        },
+        {
+          "value": 99.7,
+          "subject": "Alvin Kamara",
+          "href": "/seasons/2018/draft",
+          "detail": "chris, 2018 round 1 (pick 4) — 256.9 pts, +144.9 over a starting RB; that pick usually gives +45.1, all of it for thd",
+          "year": 2018
+        },
+        {
+          "value": 99.1,
+          "subject": "Antonio Brown",
           "href": "/seasons/2014/draft",
-          "detail": "sol, 2014 round 8 (pick 87) — 307.9 pts against 92.7 for that slot, 102.4 of it for ant",
+          "detail": "htc, 2014 round 3 (pick 25) — 220.8 pts, +123.2 over a starting WR; that pick usually gives +24.0",
           "year": 2014
+        },
+        {
+          "value": 96.3,
+          "subject": "Knowshon Moreno",
+          "href": "/seasons/2013/draft",
+          "detail": "thd, 2013 round 12 (pick 117) — 224.2 pts, +95.8 over a starting RB; that pick usually gives −0.5, 190.5 of it for dix",
+          "year": 2013
+        },
+        {
+          "value": 93.2,
+          "subject": "Saquon Barkley",
+          "href": "/seasons/2018/draft",
+          "detail": "thd, 2018 round 1 (pick 6) — 248.9 pts, +136.9 over a starting RB; that pick usually gives +43.7, all of it for 2 other teams",
+          "year": 2018
         }
       ]
     },
     {
       "id": "worst-draft-picks",
       "label": "Worst draft picks",
-      "description": "The other end of the same list: picks that returned least for where they were taken. Almost all of them are early-round players who got hurt, which is the whole risk of a first-rounder.",
+      "description": "The other end of the same list: picks that returned least for where they were taken. A week a player missed, or spent on a bench, is not held against him — his team played somebody else — so this is early picks who started and disappointed, not simply the injured or the late fliers who never got a start.",
       "scope": "league",
       "format": "points",
       "direction": "low",
@@ -3065,180 +3065,179 @@
       "total": 2460,
       "entries": [
         {
-          "value": -176.4,
-          "subject": "Le'Veon Bell",
-          "href": "/seasons/2018/draft",
-          "detail": "sol, 2018 round 1 (pick 3) — 0.0 pts against 176.4 for that slot",
-          "year": 2018
-        },
-        {
-          "value": -172.4,
-          "subject": "David Johnson",
-          "href": "/seasons/2017/draft",
-          "detail": "thd, 2017 round 1 (pick 1) — 7.0 pts against 179.4 for that slot",
-          "year": 2017
-        },
-        {
-          "value": -170.1,
-          "subject": "Saquon Barkley",
-          "href": "/seasons/2020/draft",
-          "detail": "sol, 2020 round 1 (pick 2) — 9.4 pts against 179.5 for that slot",
-          "year": 2020
-        },
-        {
-          "value": -168.8,
-          "subject": "Adrian Peterson",
-          "href": "/seasons/2016/draft",
-          "detail": "phil, 2016 round 1 (pick 6) — 6.0 pts against 174.8 for that slot, 0.3 of it for jay",
-          "year": 2016
-        },
-        {
-          "value": -166.6,
-          "subject": "Adrian Peterson",
-          "href": "/seasons/2014/draft",
-          "detail": "jay, 2014 round 1 (pick 5) — 9.3 pts against 175.9 for that slot",
-          "year": 2014
-        },
-        {
-          "value": -154.3,
-          "subject": "Nick Chubb",
-          "href": "/seasons/2023/draft",
-          "detail": "kitch, 2023 round 1 (pick 7) — 19.1 pts against 173.4 for that slot",
-          "year": 2023
-        },
-        {
-          "value": -151.2,
-          "subject": "Devonta Freeman",
-          "href": "/seasons/2018/draft",
-          "detail": "ant, 2018 round 2 (pick 16) — 9.1 pts against 160.3 for that slot, 4.1 of it for nick",
-          "year": 2018
-        },
-        {
-          "value": -148.9,
-          "subject": "Keenan Allen",
-          "href": "/seasons/2016/draft",
-          "detail": "kitch, 2016 round 2 (pick 19) — 6.3 pts against 155.2 for that slot",
-          "year": 2016
-        },
-        {
-          "value": -147.8,
-          "subject": "Jamaal Charles",
-          "href": "/seasons/2016/draft",
-          "detail": "kitch, 2016 round 2 (pick 15) — 11.4 pts against 159.2 for that slot",
-          "year": 2016
-        },
-        {
-          "value": -146.6,
-          "subject": "Christian McCaffrey",
+          "value": -148,
+          "subject": "Travis Etienne",
           "href": "/seasons/2024/draft",
-          "detail": "sol, 2024 round 1 (pick 1) — 32.8 pts against 179.4 for that slot",
+          "detail": "fin, 2024 round 2 (pick 13) — 77.7 pts, −111.8 over a starting RB; that pick usually gives +36.2",
           "year": 2024
         },
         {
-          "value": -142.1,
-          "subject": "Montee Ball",
-          "href": "/seasons/2014/draft",
-          "detail": "sol, 2014 round 1 (pick 10) — 27.4 pts against 169.5 for that slot, 1.8 of it for fin",
-          "year": 2014
-        },
-        {
-          "value": -135.1,
-          "subject": "Antonio Brown",
-          "href": "/seasons/2019/draft",
-          "detail": "sol, 2019 round 3 (pick 25) — 12.1 pts against 147.2 for that slot",
-          "year": 2019,
-          "approximate": true
-        },
-        {
-          "value": -132.9,
-          "subject": "Javonte Williams",
-          "href": "/seasons/2022/draft",
-          "detail": "ant, 2022 round 2 (pick 17) — 26.0 pts against 158.9 for that slot, 8.7 of it for jay",
-          "year": 2022
-        },
-        {
-          "value": -131.5,
-          "subject": "Jerick McKinnon",
-          "href": "/seasons/2018/draft",
-          "detail": "ant, 2018 round 3 (pick 33) — 0.0 pts against 131.5 for that slot",
-          "year": 2018
-        },
-        {
-          "value": -129.8,
-          "subject": "David Wilson",
-          "href": "/seasons/2013/draft",
-          "detail": "ant, 2013 round 3 (pick 25) — 17.4 pts against 147.2 for that slot, all of it for thd",
-          "year": 2013
-        },
-        {
-          "value": -128.2,
-          "subject": "Gus Edwards",
-          "href": "/seasons/2021/draft",
-          "detail": "jay, 2021 round 4 (pick 41) — 0.0 pts against 128.2 for that slot",
-          "year": 2021
+          "value": -131,
+          "subject": "C.J. Anderson",
+          "href": "/seasons/2015/draft",
+          "detail": "thd, 2015 round 1 (pick 9) — 101.3 pts, −90.2 over a starting RB; that pick usually gives +40.8, 90.9 of it for rich",
+          "year": 2015
         },
         {
           "value": -127.5,
-          "subject": "Malik Nabers",
-          "href": "/seasons/2025/draft",
-          "detail": "fin, 2025 round 1 (pick 12) — 39.1 pts against 166.6 for that slot",
-          "year": 2025
+          "subject": "Eddie Lacy",
+          "href": "/seasons/2015/draft",
+          "detail": "ant, 2015 round 1 (pick 2) — 116.5 pts, −79.4 over a starting RB; that pick usually gives +48.1",
+          "year": 2015
         },
         {
-          "value": -127.3,
-          "subject": "Allen Robinson",
-          "href": "/seasons/2017/draft",
-          "detail": "fin, 2017 round 4 (pick 42) — 1.7 pts against 129.0 for that slot",
-          "year": 2017
+          "value": -113.5,
+          "subject": "Melvin Gordon",
+          "href": "/seasons/2015/draft",
+          "detail": "brock, 2015 round 3 (pick 29) — 70.6 pts, −96.8 over a starting RB; that pick usually gives +16.7",
+          "year": 2015
         },
         {
-          "value": -125.8,
-          "subject": "Odell Beckham",
-          "href": "/seasons/2017/draft",
-          "detail": "kitch, 2017 round 1 (pick 6) — 49.0 pts against 174.8 for that slot",
-          "year": 2017
+          "value": -111,
+          "subject": "Jeremy Hill",
+          "href": "/seasons/2015/draft",
+          "detail": "dix, 2015 round 1 (pick 11) — 124.7 pts, −74.9 over a starting RB; that pick usually gives +36.1, 34.3 of it for jay",
+          "year": 2015
         },
         {
-          "value": -123.7,
-          "subject": "Michael Thomas",
+          "value": -99.8,
+          "subject": "Ameer Abdullah",
+          "href": "/seasons/2015/draft",
+          "detail": "brock, 2015 round 5 (pick 53) — 74.0 pts, −96.4 over a starting RB; that pick usually gives +3.5",
+          "year": 2015
+        },
+        {
+          "value": -98.2,
+          "subject": "Clyde Edwards-Helaire",
           "href": "/seasons/2020/draft",
-          "detail": "nick, 2020 round 2 (pick 15) — 35.5 pts against 159.2 for that slot, 26.0 of it for 2 other teams",
+          "detail": "ant, 2020 round 1 (pick 5) — 140.0 pts, −53.8 over a starting RB; that pick usually gives +44.4, 90.7 of it for 3 other teams",
           "year": 2020
         },
         {
-          "value": -123.3,
-          "subject": "Doug Martin",
-          "href": "/seasons/2013/draft",
-          "detail": "rich, 2013 round 1 (pick 2) — 56.2 pts against 179.5 for that slot",
-          "year": 2013
+          "value": -93.5,
+          "subject": "Randall Cobb",
+          "href": "/seasons/2015/draft",
+          "detail": "brock, 2015 round 2 (pick 20) — 120.1 pts, −60.0 over a starting WR; that pick usually gives +33.5",
+          "year": 2015
         },
         {
-          "value": -122.7,
-          "subject": "Kaleb Johnson",
-          "href": "/seasons/2025/draft",
-          "detail": "rich, 2025 round 5 (pick 53) — 2.1 pts against 124.8 for that slot, all of it for htc",
-          "year": 2025
-        },
-        {
-          "value": -122.6,
-          "subject": "Ray Rice",
-          "href": "/seasons/2014/draft",
-          "detail": "chris, 2014 round 6 (pick 62) — 0.0 pts against 122.6 for that slot",
-          "year": 2014
-        },
-        {
-          "value": -121.6,
-          "subject": "Courtland Sutton",
-          "href": "/seasons/2020/draft",
-          "detail": "fin, 2020 round 4 (pick 41) — 6.6 pts against 128.2 for that slot",
-          "year": 2020
-        },
-        {
-          "value": -118.1,
-          "subject": "Jonathon Brooks",
+          "value": -90.1,
+          "subject": "Christian McCaffrey",
           "href": "/seasons/2024/draft",
-          "detail": "htc, 2024 round 6 (pick 62) — 4.5 pts against 122.6 for that slot",
+          "detail": "sol, 2024 round 1 (pick 1) — 32.8 pts, −40.1 over a starting RB; that pick usually gives +50.1",
           "year": 2024
+        },
+        {
+          "value": -88.1,
+          "subject": "Frank Gore",
+          "href": "/seasons/2015/draft",
+          "detail": "chris, 2015 round 2 (pick 15) — 145.9 pts, −53.7 over a starting RB; that pick usually gives +34.4",
+          "year": 2015
+        },
+        {
+          "value": -88.1,
+          "subject": "Kenneth Walker",
+          "href": "/seasons/2024/draft",
+          "detail": "ant, 2024 round 2 (pick 18) — 135.2 pts, −54.7 over a starting RB; that pick usually gives +33.4, 81.1 of it for 3 other teams",
+          "year": 2024
+        },
+        {
+          "value": -81.9,
+          "subject": "Dez Bryant",
+          "href": "/seasons/2015/draft",
+          "detail": "sol, 2015 round 2 (pick 13) — 57.2 pts, −45.7 over a starting WR; that pick usually gives +36.2, 52.4 of it for 2 other teams",
+          "year": 2015
+        },
+        {
+          "value": -81,
+          "subject": "Denver Broncos",
+          "href": "/seasons/2017/draft",
+          "detail": "htc, 2017 round 11 (pick 124) — 77.0 pts, −79.6 over a starting DEF; that pick usually gives +1.3, 9.0 of it for hadkiss",
+          "year": 2017
+        },
+        {
+          "value": -79.6,
+          "subject": "Justin Forsett",
+          "href": "/seasons/2015/draft",
+          "detail": "sol, 2015 round 2 (pick 23) — 91.4 pts, −51.2 over a starting RB; that pick usually gives +28.4, 17.8 of it for jay",
+          "year": 2015
+        },
+        {
+          "value": -78.2,
+          "subject": "Najee Harris",
+          "href": "/seasons/2024/draft",
+          "detail": "hadkiss, 2024 round 5 (pick 54) — 157.0 pts, −74.7 over a starting RB; that pick usually gives +3.5",
+          "year": 2024
+        },
+        {
+          "value": -78.1,
+          "subject": "Rachaad White",
+          "href": "/seasons/2024/draft",
+          "detail": "hadkiss, 2024 round 3 (pick 34) — 148.6 pts, −67.9 over a starting RB; that pick usually gives +10.2, 60.9 of it for kitch",
+          "year": 2024
+        },
+        {
+          "value": -77.7,
+          "subject": "Breece Hall",
+          "href": "/seasons/2024/draft",
+          "detail": "kitch, 2024 round 1 (pick 3) — 163.4 pts, −31.6 over a starting RB; that pick usually gives +46.1, 112.9 of it for 2 other teams",
+          "year": 2024
+        },
+        {
+          "value": -75,
+          "subject": "Demaryius Thomas",
+          "href": "/seasons/2015/draft",
+          "detail": "thd, 2015 round 2 (pick 21) — 137.2 pts, −42.9 over a starting WR; that pick usually gives +32.1, all of it for 2 other teams",
+          "year": 2015
+        },
+        {
+          "value": -74.7,
+          "subject": "Golden Tate",
+          "href": "/seasons/2015/draft",
+          "detail": "hadkiss, 2015 round 5 (pick 52) — 96.5 pts, −70.3 over a starting WR; that pick usually gives +4.4",
+          "year": 2015
+        },
+        {
+          "value": -74.6,
+          "subject": "Jordan Matthews",
+          "href": "/seasons/2015/draft",
+          "detail": "htc, 2015 round 3 (pick 32) — 90.0 pts, −62.1 over a starting WR; that pick usually gives +12.5, 26.9 of it for jay",
+          "year": 2015
+        },
+        {
+          "value": -72.7,
+          "subject": "Calvin Johnson",
+          "href": "/seasons/2015/draft",
+          "detail": "jay, 2015 round 2 (pick 18) — 153.7 pts, −39.3 over a starting WR; that pick usually gives +33.4, 127.8 of it for 2 other teams",
+          "year": 2015
+        },
+        {
+          "value": -71.9,
+          "subject": "AJ Dillon",
+          "href": "/seasons/2022/draft",
+          "detail": "thd, 2022 round 4 (pick 45) — 117.2 pts, −62.1 over a starting RB; that pick usually gives +9.8, 79.8 of it for 2 other teams",
+          "year": 2022
+        },
+        {
+          "value": -71.2,
+          "subject": "Marshawn Lynch",
+          "href": "/seasons/2015/draft",
+          "detail": "brock, 2015 round 1 (pick 5) — 69.7 pts, −26.8 over a starting RB; that pick usually gives +44.4, 48.8 of it for 4 other teams",
+          "year": 2015
+        },
+        {
+          "value": -71.1,
+          "subject": "De'Von Achane",
+          "href": "/seasons/2024/draft",
+          "detail": "thd, 2024 round 1 (pick 7) — 203.8 pts, −29.4 over a starting RB; that pick usually gives +41.7",
+          "year": 2024
+        },
+        {
+          "value": -70.7,
+          "subject": "Shane Vereen",
+          "href": "/seasons/2015/draft",
+          "detail": "sol, 2015 round 7 (pick 84) — 71.9 pts, −72.5 over a starting RB; that pick usually gives −1.8, 0.6 of it for hadkiss",
+          "year": 2015
         }
       ]
     },

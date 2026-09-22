@@ -5,12 +5,14 @@ import { hasIncompleteBench } from "@/domain/dataQuality";
 import { useAllSeasons } from "@/hooks/useSeasonData";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
 import { getStatContext } from "@/utils/stats/traverse";
+import { getPlayerPosition } from "@/utils/playerDataUtils";
 import {
+  replacementLevels,
   scoreDraftPicks,
   withBaseline,
   type DraftPick,
   type ValuedPick,
-} from "./draftValue";
+} from "@/utils/draftValue";
 
 /** One mark on the scatter: a pick, what it returned, and who it was. */
 export interface DraftScatterPoint extends ValuedPick {
@@ -78,15 +80,16 @@ export const buildDraftScatter = () => {
       year,
       picks.map((pick) => {
         const playerId = String(pick.player_id);
+        // 2012-2018 picks carry the position the player was drafted at; from
+        // 2019 they do not, so the dictionary — with that season's overlay,
+        // since Sleeper reclassifies people — answers instead.
+        const position =
+          pick.position || getPlayer(playerId, year)?.position || "UNK";
         extras.set(`${year}-${pick.pick_no}`, {
           managerId:
             getManagerIdBySleeperOwnerId(pick.picked_by) ??
             String(pick.roster_id),
-          // 2012-2018 picks carry the position the player was drafted at;
-          // from 2019 they do not, so the dictionary — with that season's
-          // overlay, since Sleeper reclassifies people — answers instead.
-          position:
-            pick.position || getPlayer(playerId, year)?.position || "UNK",
+          position,
         });
         return {
           year,
@@ -94,13 +97,15 @@ export const buildDraftScatter = () => {
           pickNo: pick.pick_no,
           playerId,
           rosterId: pick.roster_id,
+          position,
         };
       })
     );
   }
 
   const points: DraftScatterPoint[] = withBaseline(
-    scoreDraftPicks(games, drafts)
+    scoreDraftPicks(games, drafts),
+    replacementLevels(games, (id, year) => getPlayerPosition(id, year))
   ).map((pick) => {
     const extra = extras.get(`${pick.year}-${pick.pickNo}`);
     return {

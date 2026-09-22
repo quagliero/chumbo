@@ -1,10 +1,10 @@
 /**
  * Who drafts well, how, and whether it matters (the Draft explorer).
  *
- * Built on the D6 pick values (`Chart/DraftScatter/draftValue.ts`): every pick
- * is what its player scored that season minus what that pick number has
- * returned on average. A DRAFT is one manager's picks in one season, and its
- * value is the sum — points above the going rate, for the whole draft.
+ * Built on the D6 pick values (`utils/draftValue.ts`): every pick is what its
+ * player's season was worth against the last starter at his position, minus
+ * what that pick number usually returns on the same scale. A DRAFT is one
+ * manager's picks in one season, and its value is the sum.
  *
  * Then the question the league actually argues about: does a good draft win?
  * Each settled season's drafts are ranked, and set against how that season
@@ -139,6 +139,17 @@ export interface Drafter {
   drafts: number;
   /** Mean of their drafts' values. */
   averageValue: number;
+  /**
+   * The same, shrunk toward the league (zero) by how little a handful of
+   * drafts says — see `drafterShrinkage`. The number to rank drafters on.
+   */
+  rating: number;
+  /**
+   * Half-width of a 95% range for their true average: how far the average
+   * could be from what their drafting is really worth, given how much drafts
+   * swing from year to year.
+   */
+  margin: number;
   /** Mean of their drafts' ranks, as a share of the field (0 best, 1 worst). */
   averagePlace: number;
   /** Share of all their picks that beat the going rate. */
@@ -148,6 +159,62 @@ export interface Drafter {
   outcome: Outcome;
 }
 
+/**
+ * How many drafts' worth of "average" to add to a manager before trusting
+ * their average: empirical Bayes, from the league's own drafts.
+ *
+ * Draft value swings a lot from year to year for the same manager (injuries,
+ * breakouts nobody saw coming), and differs only somewhat between managers.
+ * The ratio of the two — within-manager variance over the variance of their
+ * true averages — is how many ordinary drafts a manager's own are worth. With
+ * that, one great draft from a manager who only played one season cannot top
+ * the table over someone who has drafted well for fourteen.
+ */
+export interface DrafterSpread {
+  /** How many league-average drafts a manager's record is blended with. */
+  k: number;
+  /** Year-to-year variance of one manager's drafts. */
+  within: number;
+  /** The standard deviation of managers' averages, as observed. */
+  spreadSd: number;
+  /** What that would be if every manager were the same drafter. */
+  noiseSd: number;
+}
+
+export const drafterShrinkage = (byManager: readonly (readonly number[])[]): number =>
+  drafterSpread(byManager).k;
+
+/**
+ * The same measurement, kept whole: the page reports it as well as uses it.
+ * When `spreadSd` is no bigger than `noiseSd`, the managers' averages differ
+ * by no more than luck would make them — which is itself the finding.
+ */
+export const drafterSpread = (byManager: readonly (readonly number[])[]): DrafterSpread => {
+  const means = byManager.map((values) => values.reduce((a, b) => a + b, 0) / values.length);
+  let within = 0;
+  let dof = 0;
+  byManager.forEach((values, i) => {
+    for (const value of values) within += (value - means[i]) ** 2;
+    dof += values.length - 1;
+  });
+  const withinVar = dof > 0 ? within / dof : 0;
+  const grand = means.reduce((a, b) => a + b, 0) / (means.length || 1);
+  const spread =
+    means.reduce((sum, mean) => sum + (mean - grand) ** 2, 0) / Math.max(1, means.length - 1);
+  // The spread of observed averages includes their own noise; take it out.
+  const noise =
+    byManager.reduce((sum, values) => sum + withinVar / values.length, 0) /
+    (byManager.length || 1);
+  const between = spread - noise;
+  return {
+    // No real difference between managers at all: everyone is the league.
+    k: between > 0 ? withinVar / between : Number.POSITIVE_INFINITY,
+    within: withinVar,
+    spreadSd: Math.sqrt(spread),
+    noiseSd: Math.sqrt(noise),
+  };
+};
+
 export const buildDrafters = (drafts: readonly Draft[]): Drafter[] => {
   const byManager = new Map<string, Draft[]>();
   for (const draft of drafts) {
@@ -155,13 +222,17 @@ export const buildDrafters = (drafts: readonly Draft[]): Drafter[] => {
     list.push(draft);
     byManager.set(draft.managerId, list);
   }
+  const { k, within } = drafterSpread([...byManager.values()].map((own) => own.map((d) => d.value)));
   return [...byManager].map(([managerId, own]) => {
     const sorted = [...own].sort((a, b) => b.value - a.value);
     const picks = own.reduce((sum, draft) => sum + draft.picks, 0);
+    const mean = own.reduce((sum, d) => sum + d.value, 0) / own.length;
     return {
       managerId,
       drafts: own.length,
-      averageValue: round1(own.reduce((sum, d) => sum + d.value, 0) / own.length),
+      averageValue: round1(mean),
+      rating: Number.isFinite(k) ? round1((mean * own.length) / (own.length + k)) : 0,
+      margin: round1(1.96 * Math.sqrt(within / own.length)),
       averagePlace:
         own.reduce((sum, d) => sum + (d.of > 1 ? (d.rank - 1) / (d.of - 1) : 0), 0) /
         own.length,
@@ -228,7 +299,24 @@ export interface Strategy {
   rule: string;
   drafts: Draft[];
   outcome: Outcome;
+  /**
+   * Its playoff rate after adding `PRIOR_DRAFTS` ordinary drafts at the
+   * league's rate — what the record suggests once a small sample is not
+   * allowed to speak louder than it can. Null before any season has ended.
+   */
+  playoffChance: number | null;
 }
+
+/**
+ * How many league-average drafts each strategy's record is blended with. Ten
+ * means a strategy tried ten times is judged half on its own results and half
+ * on the league's; tried forty times, mostly on its own.
+ */
+export const PRIOR_DRAFTS = 10;
+
+/** A rate, pulled toward the league's by `PRIOR_DRAFTS` of its drafts. */
+const shrinkRate = (hits: number, trials: number, leagueRate: number) =>
+  (hits + PRIOR_DRAFTS * leagueRate) / (trials + PRIOR_DRAFTS);
 
 /** The early rounds, where a strategy is a strategy. */
 const EARLY = 4;
@@ -259,11 +347,16 @@ export const strategiesOf = (
     list.push(pick.position);
     early.set(key, list);
   }
+  const league = outcomeOf(drafts);
+  const leagueRate = league.finished ? league.playoffs / league.finished : null;
+  const chance = (outcome: Outcome) =>
+    leagueRate === null ? null : shrinkRate(outcome.playoffs, outcome.finished, leagueRate);
   const all: Strategy = {
     label: "Every draft",
     rule: "For comparison",
     drafts: [...drafts],
-    outcome: outcomeOf(drafts),
+    outcome: league,
+    playoffChance: leagueRate,
   };
   return [
     all,
@@ -271,7 +364,8 @@ export const strategiesOf = (
       const matching = drafts.filter((draft) =>
         test(early.get(`${draft.year}|${draft.managerId}`) ?? [])
       );
-      return { label, rule, drafts: matching, outcome: outcomeOf(matching) };
+      const outcome = outcomeOf(matching);
+      return { label, rule, drafts: matching, outcome, playoffChance: chance(outcome) };
     }),
   ];
 };

@@ -2,15 +2,17 @@ import { describe, expect, it } from "vitest";
 import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { computeStat } from "@/utils/stats";
-import { getStatContext } from "@/utils/stats/traverse";
 import type { Game } from "@/utils/stats/types";
 import {
   baselineByPickNumber,
+  replacementLevels,
   scoreDraftPicks,
   withBaseline,
   COMPLETE_SEASON_WEEKS,
+  STARTING_SLOTS,
   type DraftPick,
 } from "../draftValue";
+import { buildDraftScatter } from "@/presentation/components/Chart/DraftScatter/useDraftScatter";
 
 /**
  * D6's derivation, tested rather than eyeballed.
@@ -46,13 +48,15 @@ const pick = (
   pickNo: number,
   playerId: string,
   rosterId: number,
-  year = 2020
+  year = 2020,
+  position = "RB"
 ): DraftPick => ({
   year,
   round: Math.ceil(pickNo / 12),
   pickNo,
   playerId,
   rosterId,
+  position,
 });
 
 describe("scoreDraftPicks", () => {
@@ -167,8 +171,8 @@ describe("baselineByPickNumber", () => {
 describe("withBaseline", () => {
   it("values a pick as its return minus the going rate for that slot", () => {
     const valued = withBaseline([
-      { ...pick(1, "a", 1), total: 100, points: 100, pointsElsewhere: 0 },
-      { ...pick(2, "b", 2), total: 0, points: 0, pointsElsewhere: 0 },
+      { ...pick(1, "a", 1), total: 100, points: 100, pointsElsewhere: 0, elsewhere: [], started: 10, startedPoints: 100 },
+      { ...pick(2, "b", 2), total: 0, points: 0, pointsElsewhere: 0, elsewhere: [], started: 0, startedPoints: 0 },
     ]);
 
     // Both picks are inside one window of each other, so both baselines are 50.
@@ -183,27 +187,7 @@ describe("withBaseline", () => {
  * ------------------------------------------------------------------ */
 
 /** What `useDraftScatter` builds, without React. */
-const realDrafts = () => {
-  const drafts = new Map<number, DraftPick[]>();
-  for (const year of YEAR_NUMBERS) {
-    const picks = seasons[year]?.picks;
-    if (!picks?.length) continue;
-    drafts.set(
-      year,
-      picks.map((raw) => ({
-        year,
-        round: raw.round,
-        pickNo: raw.pick_no,
-        playerId: String(raw.player_id),
-        rosterId: raw.roster_id,
-      }))
-    );
-  }
-  return drafts;
-};
-
-const realPoints = () =>
-  withBaseline(scoreDraftPicks(getStatContext().games, realDrafts()));
+const realPoints = () => buildDraftScatter().points;
 
 describe("the real drafts", () => {
   it("scores every pick of every finished draft, and none of an unfinished one", () => {
@@ -240,16 +224,17 @@ describe("the real drafts", () => {
     }
   });
 
-  it("keeps 2019, whose lineups are reconstructed, rather than hiding it", () => {
+  it("keeps 2019, whose bench scores are incomplete, rather than hiding it", () => {
     // The chart marks these rather than dropping them (see the component).
     // `draftStats.ts` made the same call for the records tables.
     expect(realPoints().some((point) => point.year === 2019)).toBe(true);
   });
 
   it("agrees with the records tables about the best and worst picks ever", () => {
-    // `best-draft-picks` is a second, independent implementation of the same
-    // two decisions. If the scatter's top steal is not its top entry, one of
-    // them is wrong — and a scatter is the one where nobody would notice.
+    // `best-draft-picks` and the scatter share the model now, but not the
+    // plumbing into it — the positions, the drafts, the games. If the
+    // scatter's top steal is not the records' top entry, one of those joins
+    // is wrong, and a scatter is the one where nobody would notice.
     const valued = [...realPoints()].sort((a, b) => b.value - a.value);
     const best = computeStat("best-draft-picks", 1)[0];
     const worst = computeStat("worst-draft-picks", 1)[0];
@@ -262,5 +247,120 @@ describe("the real drafts", () => {
     expect(Math.round(last.value * 10) / 10).toBe(worst.value);
     expect(worst.detail).toContain(`pick ${last.pickNo}`);
     expect(worst.year).toBe(last.year);
+  });
+});
+
+/* ------------------------------------------------------------------ *
+ * The last starter at each position.
+ * ------------------------------------------------------------------ */
+
+describe("replacementLevels", () => {
+  /** Twelve teams, one week: each lineup a QB, two RBs, two WRs, a flex RB or WR. */
+  const week = (weekNo: number, scores: (team: number) => Record<string, number>, flexRb: (team: number) => boolean) =>
+    Array.from({ length: 12 }, (_, t) => {
+      const team = t + 1;
+      const players = scores(team);
+      // Both receiver slots are always filled, as every real lineup's are,
+      // so the flex is whatever comes after them.
+      const starters = [
+        `qb${team}`,
+        `rb${team}a`,
+        `rb${team}b`,
+        `wr${team}a`,
+        `wr${team}b`,
+        flexRb(team) ? `rb${team}c` : `wr${team}c`,
+      ];
+      return {
+        year: 2020,
+        week: weekNo,
+        rosterId: team,
+        playersPoints: players,
+        starters,
+        startersPoints: starters.map((id) => players[id] ?? 0),
+      } as unknown as Game;
+    });
+
+  const positionOf = (id: string) => (id.startsWith("qb") ? "QB" : id.startsWith("rb") ? "RB" : "WR");
+
+  it("measures a quarterback against quarterbacks", () => {
+    // Every quarterback scores 20 a week; running backs 5 to 16. On raw points
+    // every one of them beats every back. Against the last starting QB, the
+    // league's twelve interchangeable quarterbacks are worth nothing extra.
+    const games = week(
+      1,
+      (team) => ({
+        [`qb${team}`]: 20,
+        [`rb${team}a`]: 5 + team,
+        [`rb${team}b`]: 4 + team,
+        [`rb${team}c`]: 3,
+        [`wr${team}c`]: 3,
+      }),
+      () => true
+    );
+    const levels = replacementLevels(games, positionOf).get(2020)!;
+    expect(levels.get("QB")).toBe(20);
+    expect(levels.get("QB")! - 20).toBe(0);
+    expect(levels.get("RB")).toBeLessThan(20);
+  });
+
+  it("counts a position's share of the flex from who actually started there", () => {
+    // Half the league starts a third back in the flex, so backs have 2.5
+    // starters a team (30), not 2 (24): the last starter is further down.
+    const games = week(
+      1,
+      (team) => ({
+        [`qb${team}`]: 20,
+        [`rb${team}a`]: 100 - team,
+        [`rb${team}b`]: 70 - team,
+        [`rb${team}c`]: 40 - team,
+        [`wr${team}c`]: 30,
+      }),
+      (team) => team % 2 === 0
+    );
+    const halfFlex = replacementLevels(games, positionOf).get(2020)!.get("RB")!;
+    const noFlex = replacementLevels(
+      week(1, (team) => ({ [`qb${team}`]: 20, [`rb${team}a`]: 100 - team, [`rb${team}b`]: 70 - team, [`rb${team}c`]: 40 - team, [`wr${team}c`]: 30 }), () => false),
+      positionOf
+    ).get(2020)!.get("RB")!;
+    expect(halfFlex).toBeLessThan(noFlex);
+  });
+
+  it("does not hold a missed or benched week against a player", () => {
+    // Two backs averaging 10 a start; one started half the season. Over the
+    // weeks each started they were the same player, and a pick that got the
+    // second is not worth less for the weeks somebody else filled in.
+    const picks = withBaseline(
+      [
+        { ...pick(1, "full", 1), total: 140, points: 140, pointsElsewhere: 0, elsewhere: [], started: 14, startedPoints: 140 },
+        { ...pick(2, "half", 2), total: 70, points: 70, pointsElsewhere: 0, elsewhere: [], started: 7, startedPoints: 70 },
+      ],
+      new Map([[2020, new Map([["RB", 10]])]])
+    );
+    expect(picks.map((p) => p.aboveReplacement)).toEqual([0, 0]);
+  });
+
+  it("describes the lineup every season has actually used", () => {
+    // If the league changes its lineup, the last-starter counts are wrong
+    // until STARTING_SLOTS is told. This is how it gets told.
+    for (const year of YEAR_NUMBERS) {
+      const slots = (seasons[year].league?.roster_positions ?? []).filter((p) => p !== "BN");
+      const counted: Record<string, number> = {};
+      for (const slot of slots) counted[slot] = (counted[slot] ?? 0) + 1;
+      expect(counted, String(year)).toEqual({ ...STARTING_SLOTS, FLEX: 1 });
+    }
+  });
+});
+
+describe("the real drafts, by position", () => {
+  it("no longer makes a late quarterback a steal for being a quarterback", () => {
+    // The whole point. On raw points every quarterback taken in round 9 or
+    // later outscored the picks around him; measured against the last
+    // starting quarterback, the typical one is worth about what his slot is.
+    const late = realPoints()
+      .filter((p) => p.position === "QB" && p.round >= 9)
+      .map((p) => p.value)
+      .sort((a, b) => a - b);
+    const median = late[Math.floor(late.length / 2)];
+    expect(Math.abs(median)).toBeLessThan(30);
   });
 });

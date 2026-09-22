@@ -5,6 +5,8 @@ import {
   buildDrafters,
   buildDrafts,
   draftFinishCorrelation,
+  drafterShrinkage,
+  PRIOR_DRAFTS,
   outcomeOf,
   strategiesOf,
   tiersOf,
@@ -102,14 +104,15 @@ describe("a strategy", () => {
   });
 });
 
+const realDrafts = buildDrafts(buildDraftScatter().points, (year, rosterId) => {
+  if (!isSeasonSettled(seasons[year])) return null;
+  const standings = getFinalStandings(year);
+  const at = standings.find((s) => s.rosterId === rosterId);
+  return at ? { position: at.position, of: standings.length, playoffTeams: 6 } : null;
+});
+
 describe("the real drafts", () => {
-  const { points } = buildDraftScatter();
-  const drafts = buildDrafts(points, (year, rosterId) => {
-    if (!isSeasonSettled(seasons[year])) return null;
-    const standings = getFinalStandings(year);
-    const at = standings.find((s) => s.rosterId === rosterId);
-    return at ? { position: at.position, of: standings.length, playoffTeams: 6 } : null;
-  });
+  const drafts = realDrafts;
 
   it("are one per manager per season, every one ranked within its season", () => {
     const keys = drafts.map((d) => `${d.year}|${d.managerId}`);
@@ -133,5 +136,83 @@ describe("the real drafts", () => {
     const [, top, middle, bottom] = tiersOf(drafts);
     const settled = drafts.filter((d) => d.finish).length;
     expect(top.outcome.drafts + middle.outcome.drafts + bottom.outcome.drafts).toBe(settled);
+  });
+});
+
+describe("the Bayesian adjustments", () => {
+  it("shrinks a manager's average by how noisy drafts are against how much managers differ", () => {
+    // Everyone's drafts swing by ±100 year to year, and the managers' true
+    // averages barely differ: an average should mean very little.
+    const noisy = [
+      [100, -100, 100, -100],
+      [110, -90, 110, -90],
+      [90, -110, 90, -110],
+    ];
+    // Same swings, but the managers really are 100 apart: trust the averages.
+    const distinct = [
+      [200, 0, 200, 0],
+      [100, -100, 100, -100],
+      [0, -200, 0, -200],
+    ];
+    expect(drafterShrinkage(noisy)).toBeGreaterThan(drafterShrinkage(distinct));
+    // No difference between managers at all: everyone is the league.
+    expect(drafterShrinkage([[10, -10], [10, -10]])).toBe(Number.POSITIVE_INFINITY);
+  });
+
+  it("rates a manager as their average pulled toward the league by k drafts", () => {
+    const picks: ReportPick[] = Array.from({ length: 12 }, (_, i) =>
+      pick({
+        managerId: `m${i % 4}`,
+        rosterId: i % 4,
+        year: 2020 + Math.floor(i / 4),
+        value: ((i * 37) % 90) - 45,
+        pickNo: i,
+      })
+    );
+    const drafters = buildDrafters(buildDrafts(picks, () => null));
+    const byManager = new Map<string, number[]>();
+    for (const d of buildDrafts(picks, () => null)) {
+      byManager.set(d.managerId, [...(byManager.get(d.managerId) ?? []), d.value]);
+    }
+    const k = drafterShrinkage([...byManager.values()]);
+    for (const d of drafters) {
+      const values = byManager.get(d.managerId)!;
+      const mean = values.reduce((a, b) => a + b, 0) / values.length;
+      const expected = Number.isFinite(k) ? (mean * values.length) / (values.length + k) : 0;
+      expect(d.rating).toBeCloseTo(expected, 1);
+    }
+  });
+
+  it("gives every manager a range as wide as their number of drafts deserves", () => {
+    // The fewer drafts, the wider: a manager with five cannot be pinned down
+    // as closely as one with fourteen.
+    const drafters = buildDrafters(realDrafts);
+    const few = drafters.find((d) => d.drafts <= 5)!;
+    const many = drafters.find((d) => d.drafts >= 14)!;
+    expect(few.margin).toBeGreaterThan(many.margin);
+    for (const d of drafters) expect(d.margin).toBeGreaterThan(0);
+  });
+
+  it("will not let a strategy tried a handful of times speak louder than that", () => {
+    // Four drafts, all four made the playoffs; the league's rate is a half.
+    const picks: ReportPick[] = [];
+    const finishes = new Map<string, Finish>();
+    for (let i = 0; i < 40; i++) {
+      const managerId = `m${i}`;
+      const zeroRb = i < 4;
+      for (let round = 1; round <= 4; round++) {
+        picks.push(
+          pick({ managerId, rosterId: i, year: 2020, round, pickNo: round * 100 + i, position: zeroRb ? "WR" : "RB" })
+        );
+      }
+      finishes.set(managerId, { position: zeroRb || i % 2 ? 1 : 12, of: 12, playoffTeams: 6 });
+    }
+    const drafts = buildDrafts(picks, (_, rosterId) => finishes.get(`m${rosterId}`) ?? null);
+    const zero = strategiesOf(drafts, picks).find((s) => s.label === "Zero RB")!;
+    expect(zero.outcome.playoffs / zero.outcome.finished).toBe(1);
+    // (4 + 10 × 0.55) / (4 + 10): far from certain.
+    const league = strategiesOf(drafts, picks)[0].playoffChance!;
+    expect(zero.playoffChance).toBeCloseTo((4 + PRIOR_DRAFTS * league) / (4 + PRIOR_DRAFTS), 10);
+    expect(zero.playoffChance!).toBeLessThan(0.75);
   });
 });

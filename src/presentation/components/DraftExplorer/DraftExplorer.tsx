@@ -21,6 +21,8 @@ import {
   buildDrafters,
   buildDrafts,
   draftFinishCorrelation,
+  drafterSpread,
+  PRIOR_DRAFTS,
   strategiesOf,
   tiersOf,
   type Draft,
@@ -33,6 +35,8 @@ const nameOf = (id: string) => NAMES.get(id) ?? id;
 
 /** Fewer drafts than this and a row is an anecdote, and says so. */
 const FEW = 10;
+/** A manager with fewer drafts than this is listed, but not ranked. */
+const FEW_DRAFTS = 5;
 
 const signed = (value: number) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${Math.abs(value).toFixed(1)}`;
 const ordinal = (n: number) => {
@@ -92,9 +96,25 @@ const DraftExplorer = () => {
   );
 
   const drafts = useMemo(() => buildDrafts(data.points, finishOf), [data]);
+  const spread = useMemo(() => {
+    const byManager = new Map<string, number[]>();
+    for (const d of drafts) byManager.set(d.managerId, [...(byManager.get(d.managerId) ?? []), d.value]);
+    return drafterSpread([...byManager.values()]);
+  }, [drafts]);
+  // Ranked by the shrunk rating when managers genuinely differ; when they do
+  // not (see `spread`), the rating is zero for everyone and the average is
+  // shown with its range instead.
+  const distinct = Number.isFinite(spread.k);
+  // Managers with only a handful of drafts go last, faded, whatever their
+  // average: one lucky season is the thing a ranking must not reward.
   const drafters = useMemo(
-    () => buildDrafters(drafts).sort((a, b) => b.averageValue - a.averageValue),
-    [drafts]
+    () =>
+      buildDrafters(drafts).sort(
+        (a, b) =>
+          Number(b.drafts >= FEW_DRAFTS) - Number(a.drafts >= FEW_DRAFTS) ||
+          (distinct ? b.rating - a.rating : b.averageValue - a.averageValue)
+      ),
+    [drafts, distinct]
   );
   const tiers = useMemo(() => tiersOf(drafts), [drafts]);
   const rho = useMemo(() => draftFinishCorrelation(drafts), [drafts]);
@@ -161,12 +181,12 @@ const DraftExplorer = () => {
       <Card>
         <h2 className="text-lg font-semibold text-ink">Does a good draft win?</h2>
         <p className="mt-1 max-w-3xl text-sm text-ink-muted">
-          A draft&rsquo;s value is the sum of its picks&rsquo; — what each player scored that
-          season, against what that pick number usually returns — and each season&rsquo;s drafts
-          are ranked against each other. Set against how those {settledSeasons} seasons finished:
+          A draft&rsquo;s value is the sum of its picks&rsquo;: each player&rsquo;s season against
+          the last starter at his position, over the weeks he started, against what that pick
+          number usually returns. Each season&rsquo;s drafts are ranked against each other. Set against how those {settledSeasons} seasons finished:
           {rho === null
             ? "."
-            : ` the two go together, but loosely — a rank correlation of ${rho.toFixed(2)}, where 1 would be "the best draft always wins" and 0 "the draft tells you nothing".`}
+            : ` the two go together, though far from perfectly — a rank correlation of ${rho.toFixed(2)}, where 1 would be "the best draft always wins" and 0 "the draft tells you nothing".`}
         </p>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full text-sm">
@@ -194,8 +214,26 @@ const DraftExplorer = () => {
       <Card>
         <h2 className="text-lg font-semibold text-ink">The drafters</h2>
         <p className="mt-1 text-sm text-ink-muted">
-          Every manager&rsquo;s drafts, best on average first. &ldquo;Beat their slot&rdquo; is the
-          share of their picks that returned more than that pick number usually does.
+          {distinct ? (
+            <>
+              Ranked by <strong className="font-medium">rating</strong>: a manager&rsquo;s
+              average draft, pulled toward the league&rsquo;s by as much as their number of drafts
+              deserves — their record counts for about as much as {Math.round(spread.k)} ordinary
+              drafts, which is what the league&rsquo;s own drafts say.
+            </>
+          ) : (
+            <>
+              <strong className="font-medium">Nobody&rsquo;s drafting stands out from luck.</strong>{" "}
+              A draft swings by about {Math.round(Math.sqrt(spread.within))} points from one year
+              to the next for the same manager, and the managers&rsquo; averages are spread by{" "}
+              {Math.round(spread.spreadSd)} — about the {Math.round(spread.noiseSd)} that luck
+              alone would give if every manager drafted equally well. So each average is shown with its likely
+              range; a range that crosses zero is a manager who cannot be told from average.
+            </>
+          )}{" "}
+          Managers with fewer than {FEW_DRAFTS} drafts are listed last, faded. &ldquo;Beat their
+          slot&rdquo; is the share of their picks that returned more than that pick number
+          usually does.
         </p>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full text-sm">
@@ -203,7 +241,9 @@ const DraftExplorer = () => {
               <tr className="border-b border-line">
                 <th className={TH}>Manager</th>
                 <th className={`${TH} text-right`}>Drafts</th>
+                {distinct && <th className={`${TH} text-right`}>Rating</th>}
                 <th className={`${TH} text-right`}>Avg draft</th>
+                <th className={`${TH} text-right`}>Likely range</th>
                 <th className={`${TH} text-right`}>Beat their slot</th>
                 <th className={TH}>Best</th>
                 <th className={TH}>Worst</th>
@@ -214,14 +254,25 @@ const DraftExplorer = () => {
               {drafters
                 .filter((d) => picked(d.managerId))
                 .map((d) => (
-                  <tr key={d.managerId} className="border-b border-line last:border-0">
+                  <tr
+                    key={d.managerId}
+                    className={`border-b border-line last:border-0 ${d.drafts < FEW_DRAFTS ? "text-ink-faint" : ""}`}
+                  >
                     <td className={`${TD} font-medium text-ink`}>
                       <Link to={`/managers/${d.managerId}`} className="hover:underline">
                         {nameOf(d.managerId)}
                       </Link>
                     </td>
                     <td className={`${TD} text-right tabular-nums`}>{d.drafts}</td>
-                    <td className={`${TD} text-right font-semibold tabular-nums`}>{signed(d.averageValue)}</td>
+                    {distinct && (
+                      <td className={`${TD} text-right font-semibold tabular-nums`}>{signed(d.rating)}</td>
+                    )}
+                    <td className={`${TD} text-right tabular-nums ${distinct ? "text-ink-muted" : "font-semibold"}`}>
+                      {signed(d.averageValue)}
+                    </td>
+                    <td className={`${TD} text-right tabular-nums text-ink-muted`}>
+                      {signed(d.averageValue - d.margin)} to {signed(d.averageValue + d.margin)}
+                    </td>
                     <td className={`${TD} text-right tabular-nums`}>{Math.round(d.hitRate * 100)}%</td>
                     <td className={`${TD} tabular-nums text-ink-muted`}>
                       {d.best.year} ({signed(d.best.value)})
@@ -265,8 +316,10 @@ const DraftExplorer = () => {
         <h2 className="text-lg font-semibold text-ink">Draft strategies</h2>
         <p className="mt-1 max-w-3xl text-sm text-ink-muted">
           Drafts sorted by what their first rounds went on, and how the seasons ended. A draft
-          can be in more than one row. Rows with fewer than {FEW} drafts are faded: a strategy
-          a handful of managers tried is a story, not a finding.
+          can be in more than one row. &ldquo;Likely&rdquo; is the playoff rate once each
+          strategy&rsquo;s record is blended with {PRIOR_DRAFTS} ordinary drafts at the
+          league&rsquo;s rate, so a strategy tried seven times cannot speak louder than seven
+          drafts can. Rows with fewer than {FEW} drafts are faded.
         </p>
         <div className="mt-3 overflow-x-auto">
           <table className="w-full text-sm">
@@ -277,6 +330,7 @@ const DraftExplorer = () => {
                 <th className={`${TH} text-right`}>Avg finish</th>
                 <th className={`${TH} text-right`}>Playoffs</th>
                 <th className={`${TH} text-right`}>Titles</th>
+                <th className={`${TH} text-right`}>Likely</th>
                 <th className={`${TH} text-right`}>Avg draft</th>
               </tr>
             </thead>
@@ -291,6 +345,9 @@ const DraftExplorer = () => {
                     <span className="block text-xs text-ink-faint">{s.rule}</span>
                   </td>
                   <OutcomeCells outcome={s.outcome} />
+                  <td className={`${TD} text-right font-semibold tabular-nums`}>
+                    {s.playoffChance === null ? "—" : `${Math.round(s.playoffChance * 100)}%`}
+                  </td>
                   <td className={`${TD} text-right tabular-nums`}>{signed(s.outcome.averageValue)}</td>
                 </tr>
               ))}
