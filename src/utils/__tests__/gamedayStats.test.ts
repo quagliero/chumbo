@@ -144,7 +144,7 @@ describe("Monday night winners", () => {
     const entries = computeStat("monday-night-wins");
     const [top] = entries;
     expect(top.subject).toBe("hadkiss");
-    expect(top.value).toBeGreaterThanOrEqual(27);
+    expect(top.value).toBeGreaterThanOrEqual(26);
     // The detail names a game, so the link is that game.
     expect(top.href).toMatch(/^\/seasons\/\d{4}\/matchups\/\d+\/\d+$/);
     expect(top.detail).toMatch(/^Most recently \d{4} Week \d+ vs /);

@@ -201,9 +201,13 @@ same fact cannot be computed two different ways in two places.
 - **`src/utils/stats/`** — the stat registry (C1). One flattened pass over
   history, thirty-two statistics reading it. `defineStat` registers one;
   `computeStat(id)` runs it. Three lists, and the differences matter: `games` is
-  paired matchups only (for anything about winning), `teamWeeks` is EVERY
-  team-week that scored (for anything about lineups), because an eliminated
-  team still sets a lineup and there are 48 such team-weeks worth 4,287 points.
+  paired matchups only (for anything about winning), `teamWeeks` is every
+  team-week that scored (for anything about lineups), including any without an
+  opponent. **No list has a consolation game in it**: a playoff week keeps only
+  its eliminations and the final (`isMeaningfulPlayoffGame`), because by the
+  consolation bracket half the league has stopped setting valid lineups — the
+  biggest margin ever used to be one. The games for third and fifth, and an
+  eliminated team's idle weeks, are out for the same reason.
   `flows` is every decided game as it unfolded through the NFL week (L2), the
   winner always side 0 — and it is empty unless someone has called
   `provideTimelines`, which is why a stat that reads it declares
@@ -255,7 +259,7 @@ Three data-quality rules these all obey:
 ## The records watch (J3)
 
 `utils/recordsWatch.ts` is the one thing on the site that talks about what has
-NOT happened: who is on pace for the season points record, whose run is nearly
+NOT happened: who is scoring at a record points-per-game rate, whose run is nearly
 the longest the league has seen, who is a win or a week from a round number
 (every 25th win, every 5,000th point — the same milestones K1's previews count
 down to, from the same module, so the two cannot disagree). It is a **registry
@@ -274,9 +278,12 @@ record to the hundredth the records page shows while rounding its own pace to
 a tenth, and links to the list it is measured against.
 
 It needed three records the registry did not have, all of them regular season
-only and all now on `/records`: **most points in a season** (which prints the
-number of games, because the league played thirteen from 2014 to 2020 and
-fourteen either side), **most points, ever** and **most wins, ever**. The
+only and all now on `/records`: **most points per game in a season** — per
+game, the league's benchmark, because it played thirteen-game seasons from
+2014 to 2020 and fourteen either side, so a total ranks the longer seasons
+first (the worst bench-warming season is per game for the same reason; both
+count a season only once its playoffs have begun) — **most points, ever** and
+**most wins, ever**. The
 career pair come from the registry's own games rather than `getManagerStats`,
 which in "regular" mode trusts Sleeper's roster totals — the two differ by a
 point or two over fifteen seasons, and a sentence has to quote the list it

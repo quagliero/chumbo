@@ -29,7 +29,8 @@ const noStreaks = () => ({
 const input = (overrides: Partial<WatchInput> = {}): WatchInput => ({
   games: 14,
   teams: [{ managerId: "dix", played: 8, points: 1000 }],
-  seasonRecord: { value: 1588.36, managerId: "sol", year: 2013, games: 14 },
+  // Points per game: sol's 1,588.36 over fourteen games in 2013.
+  seasonRecord: { value: 113.45, managerId: "sol", year: 2013 },
   careers: [],
   streaks: noStreaks(),
   nameOf: (id) => id,
@@ -61,7 +62,7 @@ describe("what the watch will not say", () => {
   });
 
   it("ignores a pace that is not nearly the record", () => {
-    // 1,400 on the season against a 1,588.36 record: a good year, not a watch.
+    // 100 a game against a record of 113.45: a good year, not a watch.
     const items = buildRecordsWatch(
       input({ teams: [{ managerId: "dix", played: 7, points: 700 }] })
     );
@@ -106,14 +107,14 @@ describe("what the watch will not say", () => {
 });
 
 describe("what it says when it does speak", () => {
-  it("names the pace, the games left and whose record it is", () => {
+  it("names the average, the games left and whose record it is", () => {
     const [item] = buildRecordsWatch(
       input({ teams: [{ managerId: "dix", played: 8, points: 950 }] })
     );
     expect(item.text).toBe(
-      // The pace is a tenth (it is a projection); the record is the hundredth
-    // the list shows, because a reader can click through to it.
-    "is on pace for 1,662.5 with six games to play — past the record, 1,588.36 (sol, 2013)."
+      // The average is a tenth (it is still moving); the record is the
+      // hundredth the list shows, because a reader can click through to it.
+      "is averaging 118.8 a game with six games to play — above the best season ever, 113.45 (sol, 2013)."
     );
     expect(item.href).toBe("/records/most-points-season");
   });
@@ -122,22 +123,24 @@ describe("what it says when it does speak", () => {
     const [item] = buildRecordsWatch(
       input({
         teams: [{ managerId: "sol", played: 8, points: 950 }],
-        seasonRecord: { value: 1588.36, managerId: "sol", year: 2013, games: 14 },
+        seasonRecord: { value: 113.45, managerId: "sol", year: 2013 },
       })
     );
-    expect(item.text).toContain("past the record, 1,588.36 (their own, from 2013)");
+    expect(item.text).toContain("above the best season ever, 113.45 (their own, from 2013)");
   });
 
-  it("says when the record was set over a different number of games", () => {
-    // 2014-2020 played thirteen; a total from one of those is not the same
-    // distance as a total from this season.
+  it("compares averages, so a thirteen-game season is a fair record", () => {
+    // 2014-2020 played thirteen games. Per game, a record from one of those
+    // is the same measure as this season's.
     const [item] = buildRecordsWatch(
       input({
-        seasonRecord: { value: 1534.9, managerId: "sol", year: 2020, games: 13 },
-        teams: [{ managerId: "dix", played: 8, points: 900 }],
+        seasonRecord: { value: 118.07, managerId: "sol", year: 2020 },
+        teams: [{ managerId: "dix", played: 8, points: 930 }],
       })
     );
-    expect(item.text).toContain("(sol, 2020, over thirteen games)");
+    expect(item.text).toBe(
+      "is averaging 116.3 a game with six games to play, just short of the best season ever: 118.07 (sol, 2020)."
+    );
   });
 
   it("counts a run that has already passed the record as the record", () => {

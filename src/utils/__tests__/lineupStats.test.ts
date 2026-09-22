@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { computeStat, getStatContext } from "@/utils/stats";
 import type { Game } from "@/utils/stats";
 import { getPlayerRows } from "@/utils/lineupAnalysis";
+import { benchPointsAllTime, benchPointsSeason } from "@/utils/stats/lineupStats";
+import { finishedRegularSeasons } from "@/utils/stats/matchupStats";
 
 /**
  * Lineup stats (C2).
@@ -159,16 +161,30 @@ describe("lineup stats", () => {
    * disagree one of them is double-counting or dropping team-weeks.
    */
   it("reconciles career bench points with the seasons that make them up", () => {
+    // Over finished seasons only: a season in progress is in the career
+    // total but not yet a season. Both stats run on the same context, as the
+    // registry would give them (2019's bench is left out of both).
+    const context = getStatContext();
+    const finished = finishedRegularSeasons(context.games);
+    const keep = (game: Game) => finished.has(game.year) && !game.benchIncomplete;
+    const scoped = {
+      ...context,
+      games: context.games.filter(keep),
+      teamWeeks: context.teamWeeks.filter(keep),
+    };
+
     const bySeason = new Map<string, number>();
-    for (const entry of computeStat("bench-points-season")) {
-      bySeason.set(
-        entry.subject,
-        (bySeason.get(entry.subject) ?? 0) + entry.value
-      );
+    // A season is ranked per game (seasons are not all one length); its
+    // total is in the detail.
+    for (const entry of benchPointsSeason.compute(scoped)) {
+      const total = Number(/— ([\d.]+) benched over (\d+) games/.exec(entry.detail ?? "")?.[1]);
+      const games = Number(/over (\d+) games/.exec(entry.detail ?? "")?.[1]);
+      expect(entry.value).toBeCloseTo(total / games, 0);
+      bySeason.set(entry.subject, (bySeason.get(entry.subject) ?? 0) + total);
     }
 
     const mismatched: string[] = [];
-    for (const entry of computeStat("bench-points")) {
+    for (const entry of benchPointsAllTime.compute(scoped)) {
       const summed = bySeason.get(entry.subject) ?? 0;
       // Each season is rounded before it is summed, so allow a little drift.
       if (Math.abs(summed - entry.value) > 1) {

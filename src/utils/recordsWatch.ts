@@ -8,8 +8,9 @@
  * thresholds below exist to enforce them:
  *
  *   1. **A pace is arithmetic, not a prediction.** It is this season's points
- *      per game over the games that are left, and the sentence always says how
- *      many games it is from and how many remain. Nothing is smoothed,
+ *      per game, set against the best points per game of any season (per
+ *      game, because seasons have been thirteen games and fourteen), and the
+ *      sentence always says how many games are left. Nothing is smoothed,
  *      weighted or regressed, because a reader can check straight-line
  *      division and cannot check a model.
  *   2. **Not until there is a season to divide.** Four games. A pace from two
@@ -55,11 +56,10 @@ export interface WatchTeam {
 }
 
 export interface WatchRecord {
+  /** Points per game: seasons have been thirteen games and fourteen. */
   value: number;
   managerId: string;
   year: number;
-  /** How many games that season was, which is not always this season's. */
-  games: number;
 }
 
 export interface WatchCareer {
@@ -124,9 +124,9 @@ const whole = (value: number) => Math.round(value).toLocaleString("en-GB");
 /**
  * A record, to the hundredth, exactly as `/records` prints it.
  *
- * The pace beside it is rounded to a tenth on purpose — it is a projection,
- * and a projection to the hundredth is false precision. The record is not a
- * projection, and the reader can click through to the list, so it is quoted
+ * The average beside it is rounded to a tenth on purpose — it is still
+ * moving, and a moving number to the hundredth is false precision. The
+ * record is not moving, and the reader can click through to the list, so it is quoted
  * to the digit that list shows.
  */
 const exact = (value: number) => {
@@ -157,11 +157,6 @@ const count = (n: number) => WORDS[n] ?? String(n);
 
 const games = (n: number) => `${count(n)} game${n === 1 ? "" : "s"}`;
 
-/** "(dix, 2013)", or "(dix, 2013, over thirteen games)" when that differs. */
-const heldBy = (record: WatchRecord, thisYear: number, nameOf: WatchInput["nameOf"]) =>
-  record.games === thisYear
-    ? `${nameOf(record.managerId)}, ${record.year}`
-    : `${nameOf(record.managerId)}, ${record.year}, over ${games(record.games)}`;
 
 /* ------------------------------------------------------------ the watches */
 
@@ -172,27 +167,23 @@ const seasonPoints = (input: WatchInput): WatchItem[] => {
   return input.teams.flatMap((team) => {
     if (team.played < MIN_PACE_GAMES || team.played >= input.games) return [];
     const left = input.games - team.played;
-    const pace = (team.points / team.played) * input.games;
-    if (pace < record.value * PACE_WITHIN) return [];
+    const average = team.points / team.played;
+    if (average < record.value * PACE_WITHIN) return [];
 
     // "past the record (dix, 2013)" printed under dix's own name is a card
     // that has not noticed whose record it is.
     const mine = record.managerId === team.managerId;
     const held = mine
       ? `their own, from ${record.year}`
-      : heldBy(record, input.games, input.nameOf);
+      : `${input.nameOf(record.managerId)}, ${record.year}`;
     const text =
-      team.points > record.value
-        ? `is already past the most points ever scored in a season, with ${games(
+      average > record.value
+        ? `is averaging ${points(average)} a game with ${games(
             left
-          )} to play — the record was ${exact(record.value)} (${held}).`
-        : pace > record.value
-          ? `is on pace for ${points(pace)} with ${games(
-              left
-            )} to play — past the record, ${exact(record.value)} (${held}).`
-          : `is on pace for ${points(pace)} with ${games(left)} to play, just short of the record: ${exact(
-              record.value
-            )} (${held}).`;
+          )} to play — above the best season ever, ${exact(record.value)} (${held}).`
+        : `is averaging ${points(average)} a game with ${games(
+            left
+          )} to play, just short of the best season ever: ${exact(record.value)} (${held}).`;
 
     return [
       {
@@ -200,7 +191,7 @@ const seasonPoints = (input: WatchInput): WatchItem[] => {
         managerId: team.managerId,
         text,
         href: "/records/most-points-season",
-        urgency: Math.min(1, pace / record.value),
+        urgency: Math.min(1, average / record.value),
       },
     ];
   });

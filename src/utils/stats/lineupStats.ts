@@ -1,5 +1,6 @@
 import { getOptimalLineup, getPlayerRows } from "@/utils/lineupAnalysis";
 import { getPlayerName } from "@/utils/playerDataUtils";
+import { finishedRegularSeasons } from "./matchupStats";
 import { defineStat } from "./registry";
 import type { Game, StatEntry } from "./types";
 
@@ -212,7 +213,7 @@ export const benchPointsSeason = defineStat({
   id: "bench-points-season",
   label: "Worst bench-warming season",
   description:
-    "The most points anyone has left on the bench in a single season. One bad autumn of lineup decisions.",
+    "The most points anyone has left on the bench in a season, per game — seasons have been thirteen games and fourteen, plus however far a team went in the playoffs. One bad autumn of lineup decisions.",
   scope: "season",
   format: "points",
   direction: "high",
@@ -223,7 +224,10 @@ export const benchPointsSeason = defineStat({
       { managerId: string; year: number; points: number; weeks: number }
     >();
 
+    // A season still being played is not a season: two games is not a rate.
+    const finished = finishedRegularSeasons(games);
     for (const { game, read } of gradable(games)) {
+      if (!finished.has(game.year)) continue;
       const managerId = game.managerId as string;
       const key = `${managerId}|${game.year}`;
       const entry = totals.get(key) ?? {
@@ -239,10 +243,10 @@ export const benchPointsSeason = defineStat({
 
     return [...totals.values()].map(
       (total): StatEntry => ({
-        value: round1(total.points),
+        value: round1(total.points / total.weeks),
         subject: total.managerId,
         href: managerHref(total.managerId),
-        detail: `${total.year} — ${round1(total.points / total.weeks)} a week over ${total.weeks} games`,
+        detail: `${total.year} — ${round1(total.points)} benched over ${total.weeks} games`,
         year: total.year,
       })
     );

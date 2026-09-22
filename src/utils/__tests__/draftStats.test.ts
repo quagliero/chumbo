@@ -99,7 +99,8 @@ describe("draft value", () => {
     expect(kamara?.detail).toContain("(pick 4)");
     expect(kamara?.detail).toMatch(/, all of it for \w+$/);
     const total = Number(/— ([\d.]+) pts/.exec(kamara?.detail ?? "")?.[1]);
-    expect(total).toBeCloseTo(256.9, 1);
+    // Real games only: his consolation-bracket weeks are not in league history.
+    expect(total).toBeCloseTo(234.4, 1);
   });
 
   it("credits the drafting roster, not whoever ended up with the player", () => {

@@ -68,18 +68,18 @@ const careers = (games: Game[]): WatchCareer[] =>
     perGame: career.played ? career.points / career.played : 0,
   }));
 
-/** The most points anyone has scored in a finished regular season. */
+/**
+ * The best points per game of any finished regular season — the
+ * `most-points-season` list's top, to the same hundredth.
+ */
 const seasonRecord = (games: Game[]) => {
+  const perGame = (team: ReturnType<typeof completeSeasonTotals>[number]) =>
+    Math.round((team.points / team.played) * 100) / 100;
   const best = completeSeasonTotals(games).reduce<
     ReturnType<typeof completeSeasonTotals>[number] | undefined
-  >((top, team) => (!top || team.points > top.points ? team : top), undefined);
+  >((top, team) => (!top || perGame(team) > perGame(top) ? team : top), undefined);
   return best?.managerId
-    ? {
-        value: best.points,
-        managerId: best.managerId,
-        year: best.year,
-        games: best.played,
-      }
+    ? { value: perGame(best), managerId: best.managerId, year: best.year }
     : undefined;
 };
 

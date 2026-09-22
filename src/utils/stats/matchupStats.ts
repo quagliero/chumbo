@@ -494,25 +494,44 @@ export const seasonLengths = (totals: ReturnType<typeof seasonTotals>) => {
 export const completeSeasonTotals = (games: Game[]) => {
   const totals = seasonTotals(games);
   const lengths = seasonLengths(totals);
-  return totals.filter((team) => team.played === lengths.get(team.year));
+  const finished = finishedRegularSeasons(games);
+  return totals.filter(
+    (team) => finished.has(team.year) && team.played === lengths.get(team.year)
+  );
 };
 
+/**
+ * The years whose regular season is over: the playoffs have begun. Two weeks
+ * into a season every team has played the same number of games too, and an
+ * average from two games is not a season.
+ */
+export const finishedRegularSeasons = (games: Game[]) =>
+  new Set(games.filter((game) => game.isPlayoff).map((game) => game.year));
+
+/**
+ * Points per game, not the total: the league has played thirteen-game regular
+ * seasons (2014–2020) and fourteen-game ones either side, so a total ranks
+ * the longer seasons first. The id is the old one so links still work.
+ */
 export const mostPointsSeason = defineStat({
   id: "most-points-season",
-  label: "Most points in a season",
+  label: "Most points per game in a season",
   description:
-    "The highest regular-season total anyone has scored. The number of games is given with each one: the league played thirteen from 2014 to 2020 and fourteen either side of that, so the totals are not all over the same distance.",
+    "The best regular-season scoring rate anyone has managed. Per game, because the league has played thirteen-game seasons (2014 to 2020) and fourteen-game ones either side, and a total would rank the longer seasons first.",
   scope: "season",
   format: "points",
   direction: "high",
   compute: ({ games }) =>
     completeSeasonTotals(games).map((team) => ({
-    value: team.points,
-    subject: team.managerId ?? String(team.rosterId),
-    href: `/seasons/${team.year}/standings`,
-    detail: `${team.year}, ${team.played} games`,
-    year: team.year,
-  })),
+      value: round2(team.points / team.played),
+      subject: team.managerId ?? String(team.rosterId),
+      href: `/seasons/${team.year}/standings`,
+      detail: `${team.year} — ${team.points.toLocaleString("en-GB", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })} over ${team.played} games`,
+      year: team.year,
+    })),
 });
 
 /** Every manager's regular-season games, for the two career lists. */

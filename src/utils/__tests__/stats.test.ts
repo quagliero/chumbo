@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { seasons } from "@/data";
 import { allStats, computeStat, getStatContext } from "@/utils/stats";
+import { getPlayoffWeekStart, isMeaningfulPlayoffGame } from "@/utils/playoffUtils";
 import { everyMatchup } from "./helpers";
 
 /**
@@ -22,6 +24,27 @@ describe("stat context", () => {
     // the flattened list can only be smaller, never larger.
     expect(games.length).toBeLessThanOrEqual(played.length);
     expect(games.length).toBeGreaterThan(2000);
+  });
+
+  it("has no consolation games, and every real playoff game", () => {
+    // A consolation game, or the games for third and fifth, is not league
+    // history: half the league has stopped setting lineups by then. 2022
+    // week 17's 125.98-point margin was one, and was the biggest ever.
+    const { games, teamWeeks } = getStatContext();
+    for (const game of teamWeeks.filter((g) => g.isPlayoff)) {
+      const season = seasons[game.year];
+      const start = getPlayoffWeekStart(season);
+      expect(isMeaningfulPlayoffGame(game.raw, season, game.week, start), `${game.year} w${game.week}`).toBe(true);
+    }
+    expect(
+      games.some((g) => g.year === 2022 && g.week === 17 && g.managerId === "hadkiss")
+    ).toBe(false);
+    // Five a season with byes (four eliminations and the final), three before.
+    const perSeason = (year: number) =>
+      games.filter((g) => g.isPlayoff && g.year === year).length / 2;
+    expect(perSeason(2013)).toBe(3);
+    expect(perSeason(2016)).toBe(5);
+    expect(perSeason(2024)).toBe(5);
   });
 
   it("pairs every game with its real opponent", () => {
@@ -101,7 +124,9 @@ describe("matchup records", () => {
 
     const beaten = winningScores.filter((p) => p < top.value).length;
     // It should out-score the great majority of games that actually won.
-    expect(beaten / winningScores.length).toBeGreaterThan(0.9);
+    // (Ant's 127.6 beats 87% of them; the 138.42 that used to top this list
+    // was a game for fifth place, which is not in league history.)
+    expect(beaten / winningScores.length).toBeGreaterThan(0.85);
   });
 
   it("closest game counts each game once, not once per team", () => {

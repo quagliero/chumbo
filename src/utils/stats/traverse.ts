@@ -2,7 +2,11 @@ import { seasons } from "@/data";
 import { YEAR_NUMBERS } from "@/domain/constants";
 import { hasIncompleteBench } from "@/domain/dataQuality";
 import { getManagerIdBySleeperOwnerId } from "@/utils/managerUtils";
-import { getPlayoffWeekStart, isPlayoffWeek } from "@/utils/playoffUtils";
+import {
+  getPlayoffWeekStart,
+  isMeaningfulPlayoffGame,
+  isPlayoffWeek,
+} from "@/utils/playoffUtils";
 import { memoiseOverSeasons } from "@/utils/cache";
 import { buildGameFlow } from "@/utils/gameFlow";
 import type { ExtendedMatchup } from "@/types/matchup";
@@ -168,11 +172,22 @@ const buildContext = (_version: number): StatContext => {
         else pairs.set(matchup.matchup_id, [matchup]);
       }
 
-      // Every scored team-week, including the ones with no opponent. Once the
-      // brackets are set, eliminated teams have matchup_id null for the
-      // remaining weeks: no opponent, but they still set a lineup and scored.
+      // A playoff week counts only its real playoff games: the eliminations
+      // and the final. Consolation games, the games for third and fifth, and
+      // an eliminated team's idle week are not in league history at all —
+      // nobody cares about them, and half the league has stopped setting a
+      // valid lineup by then, so a record set in one would be an accident.
+      const playoff = isPlayoffWeek(week, playoffWeekStart);
+      const counts = (matchup: ExtendedMatchup) =>
+        !playoff ||
+        (matchup.matchup_id != null &&
+          isMeaningfulPlayoffGame(matchup, season, week, playoffWeekStart));
+
+      // Every scored team-week with no opponent. With the playoffs filtered
+      // above this is none today, but a regular-season week with an odd team
+      // out would land here rather than vanish.
       for (const matchup of weekMatchups) {
-        if (matchup.matchup_id != null) continue;
+        if (matchup.matchup_id != null || !counts(matchup)) continue;
         const ownerId = ownerByRoster.get(matchup.roster_id) ?? "";
         teamWeeks.push(
           toGame({
@@ -190,7 +205,7 @@ const buildContext = (_version: number): StatContext => {
       }
 
       for (const [matchupId, pair] of pairs) {
-        if (pair.length !== 2) continue;
+        if (pair.length !== 2 || !pair.every(counts)) continue;
 
         for (const [self, opponent] of [
           [pair[0], pair[1]],
@@ -200,7 +215,6 @@ const buildContext = (_version: number): StatContext => {
           const opponentOwnerId =
             ownerByRoster.get(opponent.roster_id) ?? "";
           const margin = self.points - opponent.points;
-          const playoff = isPlayoffWeek(week, playoffWeekStart);
 
           const game: Game = {
             year,

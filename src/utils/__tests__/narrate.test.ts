@@ -71,7 +71,9 @@ describe("the narrative engine", () => {
   });
 
   it("ranks the record above the runner-up", () => {
-    const first = narrate(stats, { year: 2022, week: 17, managerIds: ["hadkiss"] });
+    // The biggest margin in league history (2022 week 17's 125.98 was a
+    // consolation game, and no longer counts).
+    const first = narrate(stats, { year: 2024, week: 7, managerIds: ["jay"] });
     expect(first.length).toBeGreaterThan(0);
     // Sorted by weight, descending.
     for (let i = 1; i < first.length; i++) {
