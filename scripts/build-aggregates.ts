@@ -36,6 +36,7 @@ import {
   type PrecomputedStat,
   type PrecomputedStats,
 } from "@/utils/stats/precomputed";
+import { buildSeasonTops } from "@/utils/stats/seasonTops";
 
 const arg = (flag: string, fallback: number) => {
   const i = process.argv.indexOf(flag);
@@ -104,6 +105,27 @@ const unchanged =
   previous !== null && withoutTimestamp(previous) === withoutTimestamp(next);
 
 /* ------------------------------------------------------------------ *
+ * Each record's top three in every season (`records-by-season.json`).
+ *
+ * The record pages show the all-time list and then season by season, and a
+ * season's best is mostly not in the all-time top 25 — so it is worked out
+ * here, from the full list, into a file only those pages fetch.
+ * ------------------------------------------------------------------ */
+const SEASON_OUT = path.resolve(process.cwd(), "public/data/records-by-season.json");
+
+const seasonTops = buildSeasonTops();
+const seasonNext = JSON.stringify(seasonTops, null, 2) + "\n";
+const seasonUnchanged =
+  fs.existsSync(SEASON_OUT) && fs.readFileSync(SEASON_OUT, "utf8") === seasonNext;
+if (!CHECK && !seasonUnchanged) {
+  fs.writeFileSync(SEASON_OUT, seasonNext);
+  console.log(
+    `records-by-season.json  ${Object.keys(seasonTops.stats).length} stats  ` +
+      `${(Buffer.byteLength(seasonNext) / 1024).toFixed(0)} kB`
+  );
+}
+
+/* ------------------------------------------------------------------ *
  * The legacy string-named players.
  *
  * Same argument as the stats above, at 1/20th the size: the pre-Sleeper
@@ -154,6 +176,10 @@ if (CHECK) {
   }
   if (!unchanged) {
     console.error("public/data/all-time.json is stale — run `yarn build-aggregates`.");
+    process.exit(1);
+  }
+  if (!seasonUnchanged) {
+    console.error("public/data/records-by-season.json is stale — run `yarn build-aggregates`.");
     process.exit(1);
   }
   console.log("all-time.json is up to date.");

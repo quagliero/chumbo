@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Breadcrumbs } from "@/presentation/components/Breadcrumbs";
 import { cardClassName } from "@/presentation/components/Card";
@@ -12,7 +12,12 @@ import {
   RECORD_VALUE_STATS,
   formatStatValue,
 } from "@/utils/narrative/recordValue";
-import type { PrecomputedStat } from "@/utils/stats/precomputed";
+import {
+  SEASON_TOPS_URL,
+  type PrecomputedStat,
+  type SeasonTops,
+} from "@/utils/stats/precomputed";
+import type { StatEntry } from "@/utils/stats/types";
 import type { StatScope } from "@/utils/stats/types";
 
 /**
@@ -220,7 +225,107 @@ const RecordList = ({ stat }: { stat: PrecomputedStat }) => {
           ? `The top ${stat.entries.length} of ${stat.total.toLocaleString("en-GB")}.`
           : `All ${stat.total}.`}
       </p>
+
+      <BySeason stat={stat} />
     </div>
+  );
+};
+
+/* ------------------------------------------------------------------ *
+ * Season by season
+ * ------------------------------------------------------------------ */
+
+let seasonTops: SeasonTops | null = null;
+let seasonTopsLoad: Promise<SeasonTops | null> | null = null;
+
+/**
+ * The season-by-season file, once. Not Suspense: the all-time list above is
+ * the page, and this is more of it arriving a moment later — a failed
+ * download leaves the page as it was rather than taking it down.
+ */
+const useSeasonTops = (): SeasonTops | null => {
+  const [tops, setTops] = useState(seasonTops);
+  useEffect(() => {
+    if (seasonTops) return;
+    seasonTopsLoad ??= fetch(SEASON_TOPS_URL)
+      .then((response) => (response.ok ? (response.json() as Promise<SeasonTops>) : null))
+      .catch(() => null);
+    let live = true;
+    seasonTopsLoad.then((loaded) => {
+      seasonTops = loaded;
+      if (live) setTops(loaded);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
+  return tops;
+};
+
+/** "2019 Week 3 vs ryan" under a 2019 heading is "Week 3 vs ryan". */
+const withoutYear = (detail: string | undefined, year: string) =>
+  detail?.startsWith(year) ? detail.slice(year.length).replace(/^(,| ·)?\s*/, "") : detail;
+
+/**
+ * Each season's top three, newest first. A season's best is mostly not in the
+ * all-time list above — 1,301 games cannot all be in a top 25 — so this is
+ * where "the biggest blowout of 2017" is, and the reader looking for their own
+ * season finds it without scrolling a list it is not in.
+ */
+const BySeason = ({ stat }: { stat: PrecomputedStat }) => {
+  const tops = useSeasonTops();
+  const seasons = tops?.stats[stat.id];
+  if (!seasons) return null;
+
+  const years = Object.keys(seasons).sort((a, b) => Number(b) - Number(a));
+  const live = tops?.live === undefined ? null : String(tops.live);
+
+  return (
+    <section aria-labelledby="by-season" className="space-y-3 pt-2">
+      <h2 id="by-season" className="text-lg font-semibold text-ink">
+        Season by season
+      </h2>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {years.map((year) => (
+          <div key={year} className={cardClassName({ padding: "sm" })}>
+            <h3 className="text-sm font-semibold text-ink">
+              {year}
+              {year === live && (
+                <span className="font-normal text-ink-faint"> · so far</span>
+              )}
+            </h3>
+            <ol className="mt-2 space-y-1.5">
+              {seasons[year].map((entry: StatEntry, index) => (
+                <li key={`${entry.subject}-${index}`} className="flex items-baseline gap-2 text-sm">
+                  <span className="w-3 shrink-0 text-right tabular-nums text-ink-faint">
+                    {index + 1}
+                  </span>
+                  {showsValue(stat) && (
+                    <span className="shrink-0 font-semibold tabular-nums text-ink">
+                      {formatStatValue(entry.value, stat.format)}
+                    </span>
+                  )}
+                  <span className="min-w-0">
+                    <span className="font-medium text-ink">{holderName(entry.subject)}</span>{" "}
+                    {entry.href ? (
+                      <Link
+                        to={entry.href}
+                        className="text-ink-muted underline decoration-dotted underline-offset-2 hover:text-ink"
+                      >
+                        {withoutYear(entry.detail, year) ?? "See it"}
+                      </Link>
+                    ) : (
+                      <span className="text-ink-muted">{withoutYear(entry.detail, year)}</span>
+                    )}
+                    {entry.approximate && <span className="text-ink-faint"> · reconstructed</span>}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 

@@ -128,7 +128,8 @@ const buildActions = (): IndexedItem[] => [
 ];
 
 const PAGES: { title: string; to: string; subtitle: string; words: string }[] = [
-  { title: "Records", to: "/", subtitle: "All-time standings and top scores", words: "home all time standings breakdown" },
+  { title: "Records", to: "/records", subtitle: "Every list the league keeps, and who tops it", words: "records best worst most ever" },
+  { title: "All-time stats", to: "/", subtitle: "All-time standings and top scores", words: "home all time standings breakdown" },
   { title: "Seasons", to: "/seasons", subtitle: "Every season, week by week", words: "history year draft matchups" },
   { title: "Players", to: "/players", subtitle: "Search the player archive", words: "nfl search" },
   { title: "Managers", to: "/managers", subtitle: "The league's owners", words: "owners teams careers" },

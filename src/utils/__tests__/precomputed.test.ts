@@ -2,6 +2,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 // Imported through Vite rather than read with `fs`: the app tsconfig covers
 // src/ and has no node types, and `?raw` gives the exact bytes that get served.
 import raw from "../../../public/data/all-time.json?raw";
+import seasonRaw from "../../../public/data/records-by-season.json?raw";
+import { buildSeasonTops } from "@/utils/stats/seasonTops";
 import { loadAllSeasons } from "@/data";
 import {
   allStats,
@@ -82,5 +84,14 @@ describe("precomputed all-time stats", () => {
     // The whole point is to avoid downloading every matchup and transaction to
     // answer these. If the file ever approaches that, the trade is gone.
     expect(raw.length / 1024).toBeLessThan(400);
+  });
+});
+
+describe("each record, season by season", () => {
+  it("matches what the registry computes right now", () => {
+    // Same failure mode as the file above: a stale season list renders fine.
+    expect(JSON.parse(seasonRaw), "run `yarn build-aggregates`").toEqual(
+      buildSeasonTops()
+    );
   });
 });

@@ -48,6 +48,26 @@ export interface PrecomputedStats {
 
 export const PRECOMPUTED_URL = "/data/all-time.json";
 
+/**
+ * Each record's top three in every season, for the record pages.
+ *
+ * Its own file because `all-time.json` keeps only each list's top 25 — a
+ * season's best entries are mostly not in it — and because the home page and
+ * every matchup page fetch that one, and have no use for this. Only lists
+ * whose entries belong to a season are here; a career total or a manager's
+ * all-time run has no "best of 2017".
+ */
+export const SEASON_TOPS_URL = "/data/records-by-season.json";
+export const SEASON_TOP = 3;
+
+export interface SeasonTops {
+  version: number;
+  /** The season still being played, whose lists are "so far"; absent in the off-season. */
+  live?: number;
+  /** stat id -> season -> its best entries that season, best first. */
+  stats: Record<string, Record<string, StatEntry[]>>;
+}
+
 let cache: PrecomputedStats | null = null;
 let inFlight: Promise<PrecomputedStats> | null = null;
 

@@ -163,7 +163,7 @@ describe("searchCommands", () => {
   it("only ever offers routes the app can render", () => {
     const routes = [
       /^\/$/,
-      /^\/(seasons|managers|players|h2h|hof|explorer|wiki|careers|luck|top-scores|breakdown|trades|schedule-comparison)/,
+      /^\/(seasons|managers|players|h2h|hof|explorer|records|wiki|careers|luck|top-scores|breakdown|trades|schedule-comparison)/,
     ];
 
     for (const query of ["", "a", "2019", "thd", "rodgers", "week 3"]) {
