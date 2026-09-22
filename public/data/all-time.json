@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-21T12:26:05.001Z",
+  "generatedAt": "2026-09-22T07:50:57.800Z",
   "years": [
     2012,
     2013,
@@ -246,17 +246,17 @@
       "entries": [
         {
           "value": 0.04,
-          "subject": "hadkiss",
+          "subject": "brock",
           "href": "/seasons/2013/matchups/13/4",
-          "detail": "2013 Week 13 vs brock",
+          "detail": "2013 Week 13 vs hadkiss",
           "year": 2013,
           "week": 13
         },
         {
           "value": 0.08,
-          "subject": "dix",
+          "subject": "sol",
           "href": "/seasons/2018/matchups/6/3",
-          "detail": "2018 Week 6 vs sol",
+          "detail": "2018 Week 6 vs dix",
           "year": 2018,
           "week": 6
         },
@@ -270,33 +270,33 @@
         },
         {
           "value": 0.1,
-          "subject": "jay",
+          "subject": "fin",
           "href": "/seasons/2015/matchups/3/6",
-          "detail": "2015 Week 3 vs fin",
+          "detail": "2015 Week 3 vs jay",
           "year": 2015,
           "week": 3
         },
         {
           "value": 0.12,
-          "subject": "thd",
+          "subject": "nick",
           "href": "/seasons/2019/matchups/13/2",
-          "detail": "2019 Week 13 vs nick",
+          "detail": "2019 Week 13 vs thd",
           "year": 2019,
           "week": 13
         },
         {
           "value": 0.14,
-          "subject": "kitch",
+          "subject": "rich",
           "href": "/seasons/2024/matchups/12/6",
-          "detail": "2024 Week 12 vs rich",
+          "detail": "2024 Week 12 vs kitch",
           "year": 2024,
           "week": 12
         },
         {
           "value": 0.14,
-          "subject": "ryan",
+          "subject": "fin",
           "href": "/seasons/2025/matchups/4/5",
-          "detail": "2025 Week 4 vs fin",
+          "detail": "2025 Week 4 vs ryan",
           "year": 2025,
           "week": 4
         },
@@ -310,17 +310,17 @@
         },
         {
           "value": 0.24,
-          "subject": "hadkiss",
+          "subject": "fin",
           "href": "/seasons/2021/matchups/3/5",
-          "detail": "2021 Week 3 vs fin",
+          "detail": "2021 Week 3 vs hadkiss",
           "year": 2021,
           "week": 3
         },
         {
           "value": 0.26,
-          "subject": "jay",
+          "subject": "ant",
           "href": "/seasons/2021/matchups/16/1",
-          "detail": "2021 Week 16 vs ant",
+          "detail": "2021 Week 16 vs jay",
           "year": 2021,
           "week": 16
         },
@@ -334,9 +334,9 @@
         },
         {
           "value": 0.5,
-          "subject": "jay",
+          "subject": "nick",
           "href": "/seasons/2020/matchups/6/2",
-          "detail": "2020 Week 6 vs nick",
+          "detail": "2020 Week 6 vs jay",
           "year": 2020,
           "week": 6
         },
@@ -358,17 +358,17 @@
         },
         {
           "value": 0.62,
-          "subject": "thd",
+          "subject": "kitch",
           "href": "/seasons/2022/matchups/2/2",
-          "detail": "2022 Week 2 vs kitch",
+          "detail": "2022 Week 2 vs thd",
           "year": 2022,
           "week": 2
         },
         {
           "value": 0.68,
-          "subject": "jay",
+          "subject": "rich",
           "href": "/seasons/2024/matchups/8/6",
-          "detail": "2024 Week 8 vs rich",
+          "detail": "2024 Week 8 vs jay",
           "year": 2024,
           "week": 8
         },
@@ -390,9 +390,9 @@
         },
         {
           "value": 0.86,
-          "subject": "thd",
+          "subject": "chris",
           "href": "/seasons/2017/matchups/2/5",
-          "detail": "2017 Week 2 vs chris",
+          "detail": "2017 Week 2 vs thd",
           "year": 2017,
           "week": 2
         },
@@ -4177,441 +4177,6 @@
       ]
     },
     {
-      "id": "on-this-day",
-      "label": "On this day in Chumbo history",
-      "description": "The same week of the season, in every year before this one. The week is read off the latest result in the data, so this moves on by itself as the season does.",
-      "scope": "league",
-      "format": "count",
-      "direction": "high",
-      "excluded": [],
-      "caveat": [],
-      "total": 82,
-      "entries": [
-        {
-          "value": 2025,
-          "subject": "ant",
-          "href": "/seasons/2025/matchups/1/4",
-          "detail": "2025 · ant beat fin, 114.58–101.62 — the highest-scoring game of the week, 216.20 between them",
-          "year": 2025,
-          "week": 1
-        },
-        {
-          "value": 2025,
-          "subject": "htc",
-          "href": "/seasons/2025/matchups/1/1",
-          "detail": "2025 · htc beat kitch, 100.16–71.62",
-          "year": 2025,
-          "week": 1
-        },
-        {
-          "value": 2025,
-          "subject": "rich",
-          "href": "/seasons/2025/matchups/1/2",
-          "detail": "2025 · rich beat dix, 86.02–76.24",
-          "year": 2025,
-          "week": 1
-        },
-        {
-          "value": 2025,
-          "subject": "sol",
-          "href": "/seasons/2025/matchups/1/3",
-          "detail": "2025 · sol beat hadkiss, 83.92–68.48",
-          "year": 2025,
-          "week": 1
-        },
-        {
-          "value": 2025,
-          "subject": "brock",
-          "href": "/seasons/2025/matchups/1/5",
-          "detail": "2025 · brock beat thd, 87.38–60.42",
-          "year": 2025,
-          "week": 1
-        },
-        {
-          "value": 2025,
-          "subject": "jay",
-          "href": "/seasons/2025/matchups/1/6",
-          "detail": "2025 · jay beat ryan, 85.96–51.72",
-          "year": 2025,
-          "week": 1
-        },
-        {
-          "value": 2024,
-          "subject": "rich",
-          "href": "/seasons/2024/matchups/1/6",
-          "detail": "2024 · rich beat kitch, 108.94–88.76 — the highest-scoring game of the week, 197.70 between them",
-          "year": 2024,
-          "week": 1
-        },
-        {
-          "value": 2024,
-          "subject": "ryan",
-          "href": "/seasons/2024/matchups/1/2",
-          "detail": "2024 · ryan beat htc, 113.22–81.88",
-          "year": 2024,
-          "week": 1
-        },
-        {
-          "value": 2024,
-          "subject": "hadkiss",
-          "href": "/seasons/2024/matchups/1/5",
-          "detail": "2024 · hadkiss beat sol, 115.62–79.46",
-          "year": 2024,
-          "week": 1
-        },
-        {
-          "value": 2024,
-          "subject": "thd",
-          "href": "/seasons/2024/matchups/1/1",
-          "detail": "2024 · thd beat dix, 102.38–85.58",
-          "year": 2024,
-          "week": 1
-        },
-        {
-          "value": 2024,
-          "subject": "brock",
-          "href": "/seasons/2024/matchups/1/3",
-          "detail": "2024 · brock beat jay, 92.58–90.82 — the closest game of the week, by 1.76",
-          "year": 2024,
-          "week": 1
-        },
-        {
-          "value": 2024,
-          "subject": "ant",
-          "href": "/seasons/2024/matchups/1/4",
-          "detail": "2024 · ant beat fin, 101.96–64.48",
-          "year": 2024,
-          "week": 1
-        },
-        {
-          "value": 2023,
-          "subject": "ryan",
-          "href": "/seasons/2023/matchups/1/6",
-          "detail": "2023 · ryan beat brock, 121.56–92.58 — the highest-scoring game of the week, 214.14 between them",
-          "year": 2023,
-          "week": 1
-        },
-        {
-          "value": 2023,
-          "subject": "jay",
-          "href": "/seasons/2023/matchups/1/3",
-          "detail": "2023 · jay beat fin, 107.44–90.54",
-          "year": 2023,
-          "week": 1
-        },
-        {
-          "value": 2023,
-          "subject": "rich",
-          "href": "/seasons/2023/matchups/1/1",
-          "detail": "2023 · rich beat thd, 96.30–75.86",
-          "year": 2023,
-          "week": 1
-        },
-        {
-          "value": 2023,
-          "subject": "dix",
-          "href": "/seasons/2023/matchups/1/2",
-          "detail": "2023 · dix beat htc, 85.76–77.54",
-          "year": 2023,
-          "week": 1
-        },
-        {
-          "value": 2023,
-          "subject": "ant",
-          "href": "/seasons/2023/matchups/1/4",
-          "detail": "2023 · ant beat kitch, 85.74–74.92",
-          "year": 2023,
-          "week": 1
-        },
-        {
-          "value": 2023,
-          "subject": "hadkiss",
-          "href": "/seasons/2023/matchups/1/5",
-          "detail": "2023 · hadkiss beat sol, 99.24–59.78",
-          "year": 2023,
-          "week": 1
-        },
-        {
-          "value": 2022,
-          "subject": "htc",
-          "href": "/seasons/2022/matchups/1/1",
-          "detail": "2022 · htc beat thd, 126.08–90.16 — the highest-scoring game of the week, 216.24 between them",
-          "year": 2022,
-          "week": 1
-        },
-        {
-          "value": 2022,
-          "subject": "hadkiss",
-          "href": "/seasons/2022/matchups/1/2",
-          "detail": "2022 · hadkiss beat kitch, 111.96–79.78",
-          "year": 2022,
-          "week": 1
-        },
-        {
-          "value": 2022,
-          "subject": "ryan",
-          "href": "/seasons/2022/matchups/1/3",
-          "detail": "2022 · ryan beat jay, 118.00–66.12",
-          "year": 2022,
-          "week": 1
-        },
-        {
-          "value": 2022,
-          "subject": "fin",
-          "href": "/seasons/2022/matchups/1/5",
-          "detail": "2022 · fin beat sol, 96.02–86.50",
-          "year": 2022,
-          "week": 1
-        },
-        {
-          "value": 2022,
-          "subject": "dix",
-          "href": "/seasons/2022/matchups/1/6",
-          "detail": "2022 · dix beat rich, 117.30–63.80 — the heaviest beating of the week, by 53.50",
-          "year": 2022,
-          "week": 1
-        },
-        {
-          "value": 2022,
-          "subject": "brock",
-          "href": "/seasons/2022/matchups/1/4",
-          "detail": "2022 · brock beat ant, 81.32–75.12",
-          "year": 2022,
-          "week": 1
-        },
-        {
-          "value": 2021,
-          "subject": "htc",
-          "href": "/seasons/2021/matchups/1/2",
-          "detail": "2021 · htc beat jay, 113.30–99.76 — the highest-scoring game of the week, 213.06 between them",
-          "year": 2021,
-          "week": 1
-        }
-      ]
-    },
-    {
-      "id": "manager-archetypes",
-      "label": "Manager archetypes",
-      "description": "What fifteen years of results say about each manager, in one phrase. Every label is the measure that manager is furthest from the league average on — narrow losses, how far their scores swing, how much the schedule has flattered them — and the number behind it is in the line. Managers with fewer than 40 games are left out.",
-      "scope": "manager",
-      "format": "count",
-      "direction": "high",
-      "excluded": [],
-      "caveat": [],
-      "total": 14,
-      "entries": [
-        {
-          "value": 2.55,
-          "subject": "hadkiss",
-          "href": "/managers/hadkiss",
-          "detail": "The Cat Burglar — 25 wins by under five points, most in the league — wins nothing by a distance and everything by a whisker"
-        },
-        {
-          "value": 2.31,
-          "subject": "thd",
-          "href": "/managers/thd",
-          "detail": "The Heartbreaker — 23 losses by under five points, most in the league"
-        },
-        {
-          "value": 2.22,
-          "subject": "sol",
-          "href": "/managers/sol",
-          "detail": "The Punchbag — loses by 29.6 points on average, the largest in the league — which is not losing so much as being disposed of"
-        },
-        {
-          "value": 1.78,
-          "subject": "fin",
-          "href": "/managers/fin",
-          "detail": "The Metronome — scores swing by only ±18.1 points week to week, the narrowest in the league — the same thing, every Sunday, forever"
-        },
-        {
-          "value": 1.68,
-          "subject": "kitch",
-          "href": "/managers/kitch",
-          "detail": "The Trapdoor — 32 weeks spent in the bottom tenth of every score this league has ever posted, most in the league"
-        },
-        {
-          "value": 1.68,
-          "subject": "ryan",
-          "href": "/managers/ryan",
-          "detail": "The Closer — 35% through Week 6, 53% from Week 9 — a surge of 18 percentage points, the steepest surge in the league"
-        },
-        {
-          "value": 1.63,
-          "subject": "htc",
-          "href": "/managers/htc",
-          "detail": "The Coin Flip — 88-88 across 176 regular-season games, a win rate of 50.0%, the closest anyone has come to a coin toss over a whole career — fifteen years of being exactly as good as everybody else"
-        },
-        {
-          "value": 1.58,
-          "subject": "nick",
-          "href": "/managers/nick",
-          "detail": "The Machine — 100.6 points a week across a whole career, the highest average in the league"
-        },
-        {
-          "value": 1.57,
-          "subject": "jay",
-          "href": "/managers/jay",
-          "detail": "The Rollercoaster — scores swing by ±23.1 points week to week, the widest in the league — nobody, himself included, knows which team turns up"
-        },
-        {
-          "value": 1.48,
-          "subject": "chris",
-          "href": "/managers/chris",
-          "detail": "The Anchor — 87.0 points a week across a whole career, the lowest average in the league — a fixture everyone else pencils in as a win"
-        },
-        {
-          "value": 1.43,
-          "subject": "dix",
-          "href": "/managers/dix",
-          "detail": "The Bully — wins by 28.2 points on average, 2nd of 14 in the league — does not so much win as make a point"
-        },
-        {
-          "value": 1.11,
-          "subject": "brock",
-          "href": "/managers/brock",
-          "detail": "The September Hero — 51% through Week 6, 40% from Week 9 — a fade of 11 percentage points, 3rd of 14 in the league"
-        },
-        {
-          "value": 1,
-          "subject": "ant",
-          "href": "/managers/ant",
-          "detail": "The Fraud — wins 53% of his regular-season games on scores that beat only 51% of the league — 2.0 percentage points of pure fixture luck, 3rd of 14 in the league"
-        },
-        {
-          "value": 0.69,
-          "subject": "rich",
-          "href": "/managers/rich",
-          "detail": "The Iron Man — 221 games played, 4th of 14 in the league — has outlasted managers, teams and at least one league format"
-        }
-      ]
-    },
-    {
-      "id": "championship-inevitability",
-      "label": "When the title was decided",
-      "description": "Looking back at each championship: the week after which the eventual champion never again fell out of the top half of the playoff places — the top three of six, or the top two of four in the early years. Ranked on the standings after every week, by record then points scored. The earlier the week, the less doubt there ever was; 'never' means they were still outside that group on the last day and won it regardless.",
-      "scope": "season",
-      "format": "count",
-      "direction": "low",
-      "excluded": [],
-      "caveat": [],
-      "total": 14,
-      "entries": [
-        {
-          "value": 1,
-          "subject": "jay",
-          "href": "/seasons/2018/matchups/16/4",
-          "detail": "2018 · Week 1 — jay never left the top 3 again, finished 1st at 12-1, and won the final by 12.50 against sol",
-          "year": 2018,
-          "week": 16
-        },
-        {
-          "value": 6,
-          "subject": "thd",
-          "href": "/seasons/2024/matchups/17/1",
-          "detail": "2024 · Week 6 — thd was 6th after Week 5, then never left the top 3 again, finished 3rd at 9-5, and won the final by 40.92 against rich",
-          "year": 2024,
-          "week": 17
-        },
-        {
-          "value": 7,
-          "subject": "ant",
-          "href": "/seasons/2021/matchups/17/1",
-          "detail": "2021 · Week 7 — ant was 4th after Week 6, then never left the top 3 again, finished 1st at 10-4, and won the final by 41.12 against dix",
-          "year": 2021,
-          "week": 17
-        },
-        {
-          "value": 8,
-          "subject": "jay",
-          "href": "/seasons/2019/matchups/16/4",
-          "detail": "2019 · Week 8 — jay was 5th after Week 7, then never left the top 3 again, finished 3rd at 8-5, and won the final by 46.92 against nick",
-          "year": 2019,
-          "week": 16
-        },
-        {
-          "value": 8,
-          "subject": "dix",
-          "href": "/seasons/2022/matchups/17/1",
-          "detail": "2022 · Week 8 — dix was 4th after Week 7, then never left the top 3 again, finished 1st at 11-3, and won the final by 34.46 against htc",
-          "year": 2022,
-          "week": 17
-        },
-        {
-          "value": 9,
-          "subject": "dix",
-          "href": "/seasons/2017/matchups/16/4",
-          "detail": "2017 · Week 9 — dix was 4th after Week 8, then never left the top 3 again, finished 2nd at 9-4, and won the final by 7.78 against nick",
-          "year": 2017,
-          "week": 16
-        },
-        {
-          "value": 9,
-          "subject": "ryan",
-          "href": "/seasons/2023/matchups/17/1",
-          "detail": "2023 · Week 9 — ryan was 4th after Week 8, then never left the top 3 again, finished 2nd at 9-5, and won the final by 0.72 against rich",
-          "year": 2023,
-          "week": 17
-        },
-        {
-          "value": 10,
-          "subject": "nick",
-          "href": "/seasons/2020/matchups/16/1",
-          "detail": "2020 · Week 10 — nick was 5th after Week 9, then never left the top 3 again, finished 2nd at 9-4, and won the final by 5.10 against thd",
-          "year": 2020,
-          "week": 16
-        },
-        {
-          "value": 14,
-          "subject": "htc",
-          "href": "/seasons/2025/matchups/17/1",
-          "detail": "2025 · Week 14 — htc was 4th after Week 13, then never left the top 3 again, finished 3rd at 8-6, and won the final by 24.24 against hadkiss",
-          "year": 2025,
-          "week": 17
-        },
-        {
-          "value": 16,
-          "subject": "dix",
-          "href": "/seasons/2012/matchups/16/3",
-          "detail": "2012 · never — dix was outside the top 2 right to the end of Week 14, finished 4th at 8-6, and then won the final by 2.68 against thd anyway",
-          "year": 2012,
-          "week": 16
-        },
-        {
-          "value": 16,
-          "subject": "hadkiss",
-          "href": "/seasons/2013/matchups/16/3",
-          "detail": "2013 · never — hadkiss was outside the top 2 right to the end of Week 14, finished 4th at 7-7, and then won the final by 10.02 against jay anyway",
-          "year": 2013,
-          "week": 16
-        },
-        {
-          "value": 16,
-          "subject": "sol",
-          "href": "/seasons/2014/matchups/16/4",
-          "detail": "2014 · never — sol was outside the top 3 right to the end of Week 13, finished 5th at 7-6, and then won the final by 9.44 against kitch anyway",
-          "year": 2014,
-          "week": 16
-        },
-        {
-          "value": 16,
-          "subject": "ant",
-          "href": "/seasons/2015/matchups/16/4",
-          "detail": "2015 · never — ant was outside the top 3 right to the end of Week 13, finished 4th at 8-5, and then won the final by 4.38 against htc anyway",
-          "year": 2015,
-          "week": 16
-        },
-        {
-          "value": 16,
-          "subject": "fin",
-          "href": "/seasons/2016/matchups/16/4",
-          "detail": "2016 · never — fin was outside the top 3 right to the end of Week 13, finished 4th at 7-6, and then won the final by 3.58 against hadkiss anyway",
-          "year": 2016,
-          "week": 16
-        }
-      ]
-    },
-    {
       "id": "biggest-comeback",
       "label": "Biggest comeback",
       "description": "The largest deficit a team has faced at any point in the week and still won. Part heroics and part scheduling — a team whose players all play on Monday night spends Sunday a long way behind — which is exactly what makes it worth watching.",
@@ -5149,6 +4714,3545 @@
           "subject": "jimmie",
           "href": "/seasons/2012/matchups/6/1",
           "detail": "Most recently 2012 Week 6 vs thd"
+        }
+      ]
+    },
+    {
+      "id": "on-this-day",
+      "label": "On this day in Chumbo history",
+      "description": "Every game, filed under the calendar day it was over — the day its last starter stopped scoring, in US Eastern time — and one per season per day, the one with the most riding on it.",
+      "scope": "league",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [
+        2019
+      ],
+      "total": 409,
+      "entries": [
+        {
+          "value": 1231,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/17/1",
+          "detail": "ryan beat rich, 85.40–84.68 — the 2023 title game",
+          "year": 2023,
+          "week": 17
+        },
+        {
+          "value": 1230,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/17/1",
+          "detail": "thd beat rich, 154.78–113.86 — the 2024 title game",
+          "year": 2024,
+          "week": 17
+        },
+        {
+          "value": 1229,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/17/1",
+          "detail": "htc beat hadkiss, 120.08–95.84 — the 2025 title game",
+          "year": 2025,
+          "week": 17
+        },
+        {
+          "value": 1229,
+          "subject": "dix",
+          "href": "/seasons/2015/matchups/16/1",
+          "detail": "dix beat hadkiss, 122.24–87.94 — a playoff game",
+          "year": 2015,
+          "week": 16
+        },
+        {
+          "value": 1228,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/16/1",
+          "detail": "nick beat thd, 102.02–96.92 — the 2020 title game",
+          "year": 2020,
+          "week": 16
+        },
+        {
+          "value": 1228,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/16/4",
+          "detail": "ant beat htc, 125.28–120.90 — the 2015 title game",
+          "year": 2015,
+          "week": 16
+        },
+        {
+          "value": 1227,
+          "subject": "ant",
+          "href": "/seasons/2021/matchups/16/1",
+          "detail": "ant beat jay, 92.54–92.28 — a playoff game",
+          "year": 2021,
+          "week": 16
+        },
+        {
+          "value": 1226,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/16/1",
+          "detail": "dix beat sol, 143.08–68.16 — a playoff game",
+          "year": 2022,
+          "week": 16
+        },
+        {
+          "value": 1226,
+          "subject": "thd",
+          "href": "/seasons/2021/matchups/16/6",
+          "detail": "thd beat ryan, 146.56–138.42 — a playoff game",
+          "year": 2021,
+          "week": 16
+        },
+        {
+          "value": 1226,
+          "subject": "fin",
+          "href": "/seasons/2016/matchups/16/4",
+          "detail": "fin beat hadkiss, 96.86–93.28 — the 2016 title game",
+          "year": 2016,
+          "week": 16
+        },
+        {
+          "value": 1225,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/16/2",
+          "detail": "ryan beat ant, 110.72–97.72 — a playoff game",
+          "year": 2023,
+          "week": 16
+        },
+        {
+          "value": 1225,
+          "subject": "kitch",
+          "href": "/seasons/2022/matchups/16/3",
+          "detail": "kitch beat brock, 94.80–68.46 — a playoff game",
+          "year": 2022,
+          "week": 16
+        },
+        {
+          "value": 1225,
+          "subject": "htc",
+          "href": "/seasons/2017/matchups/16/5",
+          "detail": "htc beat hadkiss, 122.74–73.24 — a playoff game",
+          "year": 2017,
+          "week": 16
+        },
+        {
+          "value": 1225,
+          "subject": "thd",
+          "href": "/seasons/2016/matchups/16/6",
+          "detail": "thd beat ant, 107.42–99.98 — a playoff game",
+          "year": 2016,
+          "week": 16
+        },
+        {
+          "value": 1224,
+          "subject": "thd",
+          "href": "/seasons/2018/matchups/16/6",
+          "detail": "thd beat nick, 123.44–112.88 — a playoff game",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 1224,
+          "subject": "dix",
+          "href": "/seasons/2017/matchups/16/4",
+          "detail": "dix beat nick, 104.54–96.76 — the 2017 title game",
+          "year": 2017,
+          "week": 16
+        },
+        {
+          "value": 1223,
+          "subject": "hadkiss",
+          "href": "/seasons/2024/matchups/16/5",
+          "detail": "hadkiss beat ant, 119.38–112.28 — a playoff game",
+          "year": 2024,
+          "week": 16
+        },
+        {
+          "value": 1223,
+          "subject": "sol",
+          "href": "/seasons/2019/matchups/16/2",
+          "detail": "sol beat kitch, 122.38–82.56 — a playoff game",
+          "year": 2019,
+          "week": 16,
+          "approximate": true
+        },
+        {
+          "value": 1223,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/16/4",
+          "detail": "jay beat sol, 121.26–108.76 — the 2018 title game",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 1223,
+          "subject": "ant",
+          "href": "/seasons/2013/matchups/16/4",
+          "detail": "ant beat dix, 122.58–88.24 — a playoff game",
+          "year": 2013,
+          "week": 16
+        },
+        {
+          "value": 1223,
+          "subject": "dix",
+          "href": "/seasons/2012/matchups/16/3",
+          "detail": "dix beat thd, 118.04–115.36 — the 2012 title game",
+          "year": 2012,
+          "week": 16
+        },
+        {
+          "value": 1222,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/16/2",
+          "detail": "htc beat kitch, 117.30–88.48 — a playoff game",
+          "year": 2025,
+          "week": 16
+        },
+        {
+          "value": 1222,
+          "subject": "dix",
+          "href": "/seasons/2024/matchups/16/6",
+          "detail": "dix beat fin, 90.02–66.04 — a playoff game",
+          "year": 2024,
+          "week": 16
+        },
+        {
+          "value": 1222,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/16/4",
+          "detail": "jay beat nick, 124.12–77.20 — the 2019 title game",
+          "year": 2019,
+          "week": 16,
+          "approximate": true
+        },
+        {
+          "value": 1222,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/16/4",
+          "detail": "sol beat kitch, 101.86–92.42 — the 2014 title game",
+          "year": 2014,
+          "week": 16
+        },
+        {
+          "value": 1222,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/16/3",
+          "detail": "hadkiss beat jay, 98.62–88.60 — the 2013 title game",
+          "year": 2013,
+          "week": 16
+        },
+        {
+          "value": 1221,
+          "subject": "brock",
+          "href": "/seasons/2025/matchups/16/4",
+          "detail": "brock beat rich, 102.50–89.42 — a playoff game",
+          "year": 2025,
+          "week": 16
+        },
+        {
+          "value": 1221,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/15/1",
+          "detail": "jay beat htc, 99.66–81.60 — a playoff game",
+          "year": 2021,
+          "week": 15
+        },
+        {
+          "value": 1221,
+          "subject": "thd",
+          "href": "/seasons/2020/matchups/15/1",
+          "detail": "thd beat htc, 135.52–95.34 — a playoff game",
+          "year": 2020,
+          "week": 15
+        },
+        {
+          "value": 1221,
+          "subject": "htc",
+          "href": "/seasons/2015/matchups/15/4",
+          "detail": "htc beat thd, 128.34–90.76 — a playoff game",
+          "year": 2015,
+          "week": 15
+        },
+        {
+          "value": 1221,
+          "subject": "ant",
+          "href": "/seasons/2014/matchups/16/3",
+          "detail": "ant beat rich, 104.76–67.52 — a playoff game",
+          "year": 2014,
+          "week": 16
+        },
+        {
+          "value": 1220,
+          "subject": "sol",
+          "href": "/seasons/2020/matchups/15/4",
+          "detail": "sol beat ant, 143.76–90.26 — a playoff game",
+          "year": 2020,
+          "week": 15
+        },
+        {
+          "value": 1220,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/15/3",
+          "detail": "ant beat fin, 114.00–55.58 — a playoff game",
+          "year": 2015,
+          "week": 15
+        },
+        {
+          "value": 1219,
+          "subject": "ryan",
+          "href": "/seasons/2022/matchups/15/5",
+          "detail": "ryan beat thd, 115.04–90.62 — a playoff game",
+          "year": 2022,
+          "week": 15
+        },
+        {
+          "value": 1219,
+          "subject": "sol",
+          "href": "/seasons/2016/matchups/15/2",
+          "detail": "sol beat dix, 96.70–94.86 — a playoff game",
+          "year": 2016,
+          "week": 15
+        },
+        {
+          "value": 1218,
+          "subject": "jay",
+          "href": "/seasons/2023/matchups/15/2",
+          "detail": "jay beat dix, 151.92–87.54 — a playoff game",
+          "year": 2023,
+          "week": 15
+        },
+        {
+          "value": 1218,
+          "subject": "rich",
+          "href": "/seasons/2022/matchups/15/4",
+          "detail": "rich beat fin, 150.10–78.80 — a playoff game",
+          "year": 2022,
+          "week": 15
+        },
+        {
+          "value": 1218,
+          "subject": "dix",
+          "href": "/seasons/2017/matchups/15/4",
+          "detail": "dix beat htc, 116.80–107.54 — a playoff game",
+          "year": 2017,
+          "week": 15
+        },
+        {
+          "value": 1217,
+          "subject": "kitch",
+          "href": "/seasons/2023/matchups/15/5",
+          "detail": "kitch beat htc, 69.72–61.66 — a playoff game",
+          "year": 2023,
+          "week": 15
+        },
+        {
+          "value": 1217,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/15/3",
+          "detail": "jay beat dix, 99.66–71.84 — a playoff game",
+          "year": 2018,
+          "week": 15
+        },
+        {
+          "value": 1217,
+          "subject": "ant",
+          "href": "/seasons/2017/matchups/15/1",
+          "detail": "ant beat jay, 113.14–70.72 — a playoff game",
+          "year": 2017,
+          "week": 15
+        },
+        {
+          "value": 1217,
+          "subject": "jimmie",
+          "href": "/seasons/2012/matchups/15/2",
+          "detail": "jimmie beat kitch, 98.64–83.04 — a playoff game",
+          "year": 2012,
+          "week": 15
+        },
+        {
+          "value": 1216,
+          "subject": "hadkiss",
+          "href": "/seasons/2024/matchups/15/5",
+          "detail": "hadkiss beat fin, 112.20–103.56 — a playoff game",
+          "year": 2024,
+          "week": 15
+        },
+        {
+          "value": 1216,
+          "subject": "ryan",
+          "href": "/seasons/2019/matchups/15/1",
+          "detail": "ryan beat kitch, 147.68–114.74 — a playoff game",
+          "year": 2019,
+          "week": 15,
+          "approximate": true
+        },
+        {
+          "value": 1216,
+          "subject": "jay",
+          "href": "/seasons/2013/matchups/15/4",
+          "detail": "jay beat ant, 148.76–127.60 — a playoff game",
+          "year": 2013,
+          "week": 15
+        },
+        {
+          "value": 1216,
+          "subject": "dix",
+          "href": "/seasons/2012/matchups/15/3",
+          "detail": "dix beat ant, 127.68–108.44 — a playoff game",
+          "year": 2012,
+          "week": 15
+        },
+        {
+          "value": 1215,
+          "subject": "fin",
+          "href": "/seasons/2025/matchups/15/4",
+          "detail": "fin beat jay, 96.76–89.10 — a playoff game",
+          "year": 2025,
+          "week": 15
+        },
+        {
+          "value": 1215,
+          "subject": "nick",
+          "href": "/seasons/2019/matchups/15/3",
+          "detail": "nick beat thd, 118.40–104.08 — a playoff game",
+          "year": 2019,
+          "week": 15,
+          "approximate": true
+        },
+        {
+          "value": 1215,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/15/3",
+          "detail": "sol beat dix, 95.68–90.42 — a playoff game",
+          "year": 2014,
+          "week": 15
+        },
+        {
+          "value": 1215,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/15/3",
+          "detail": "hadkiss beat dix, 146.04–117.12 — a playoff game",
+          "year": 2013,
+          "week": 15
+        },
+        {
+          "value": 1214,
+          "subject": "dix",
+          "href": "/seasons/2025/matchups/15/5",
+          "detail": "dix beat brock, 129.74–96.50 — a playoff game",
+          "year": 2025,
+          "week": 15
+        },
+        {
+          "value": 1214,
+          "subject": "ryan",
+          "href": "/seasons/2020/matchups/14/4",
+          "detail": "ryan beat jay, 113.50–111.08 — a playoff game",
+          "year": 2020,
+          "week": 14
+        },
+        {
+          "value": 1214,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/14/3",
+          "detail": "ant beat chris, 154.50–94.78 — a playoff game",
+          "year": 2015,
+          "week": 14
+        },
+        {
+          "value": 1213,
+          "subject": "htc",
+          "href": "/seasons/2021/matchups/14/2",
+          "detail": "htc beat jay, 128.62–110.22 (htc 7-6, jay 8-5 going in) — won it on Sunday night, when Josh Allen scored",
+          "year": 2021,
+          "week": 14
+        },
+        {
+          "value": 1213,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/14/1",
+          "detail": "htc beat rich, 70.24–69.16 — a playoff game",
+          "year": 2020,
+          "week": 14
+        },
+        {
+          "value": 1212,
+          "subject": "ant",
+          "href": "/seasons/2022/matchups/14/4",
+          "detail": "ant beat ryan, 92.96–75.88 (ant 6-7, ryan 6-7 going in) — won it on Monday night, when the New England Patriots defence scored",
+          "year": 2022,
+          "week": 14
+        },
+        {
+          "value": 1212,
+          "subject": "thd",
+          "href": "/seasons/2021/matchups/14/4",
+          "detail": "thd beat dix, 115.08–82.84 (thd 5-8, dix 8-5 going in)",
+          "year": 2021,
+          "week": 14
+        },
+        {
+          "value": 1212,
+          "subject": "fin",
+          "href": "/seasons/2016/matchups/14/3",
+          "detail": "fin beat thd, 101.76–84.56 — a playoff game",
+          "year": 2016,
+          "week": 14
+        },
+        {
+          "value": 1211,
+          "subject": "thd",
+          "href": "/seasons/2023/matchups/14/2",
+          "detail": "thd beat dix, 115.92–103.64 (thd 6-7, dix 8-5 going in) — won it on Sunday night, when Brandon Aubrey scored",
+          "year": 2023,
+          "week": 14
+        },
+        {
+          "value": 1211,
+          "subject": "kitch",
+          "href": "/seasons/2022/matchups/14/1",
+          "detail": "kitch beat htc, 96.60–77.58 (kitch 8-5, htc 8-5 going in) — won it on Sunday night, when Tua Tagovailoa scored",
+          "year": 2022,
+          "week": 14
+        },
+        {
+          "value": 1211,
+          "subject": "nick",
+          "href": "/seasons/2017/matchups/14/3",
+          "detail": "nick beat chris, 99.64–92.34 — a playoff game",
+          "year": 2017,
+          "week": 14
+        },
+        {
+          "value": 1210,
+          "subject": "fin",
+          "href": "/seasons/2018/matchups/14/2",
+          "detail": "fin beat kitch, 115.72–91.88 — a playoff game",
+          "year": 2018,
+          "week": 14
+        },
+        {
+          "value": 1210,
+          "subject": "jimmie",
+          "href": "/seasons/2012/matchups/14/2",
+          "detail": "jimmie beat dix, 133.72–114.06 (jimmie 6-7, dix 8-5 going in) — the highest-scoring game of the week, 247.78 between them",
+          "year": 2012,
+          "week": 14
+        },
+        {
+          "value": 1209,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/14/5",
+          "detail": "rich beat sol, 112.50–75.14 (rich 8-5, sol 8-5 going in) — won it on Sunday night, when Patrick Mahomes scored",
+          "year": 2024,
+          "week": 14
+        },
+        {
+          "value": 1209,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/14/4",
+          "detail": "jay beat ant, 92.78–89.48 — a playoff game",
+          "year": 2019,
+          "week": 14,
+          "approximate": true
+        },
+        {
+          "value": 1209,
+          "subject": "dix",
+          "href": "/seasons/2018/matchups/14/3",
+          "detail": "dix beat nick, 94.80–86.34 — a playoff game",
+          "year": 2018,
+          "week": 14
+        },
+        {
+          "value": 1209,
+          "subject": "jay",
+          "href": "/seasons/2013/matchups/14/1",
+          "detail": "jay beat thd, 141.18–94.66 (jay 10-3, thd 6-7 going in) — the highest-scoring game of the week, 235.84 between them",
+          "year": 2013,
+          "week": 14
+        },
+        {
+          "value": 1209,
+          "subject": "kitch",
+          "href": "/seasons/2012/matchups/14/3",
+          "detail": "kitch beat fin, 107.88–88.46 (kitch 6-7, fin 4-9 going in)",
+          "year": 2012,
+          "week": 14
+        },
+        {
+          "value": 1208,
+          "subject": "brock",
+          "href": "/seasons/2025/matchups/14/5",
+          "detail": "brock beat jay, 110.20–95.88 (brock 6-7, jay 6-7 going in) — the highest-scoring game of the week, 206.08 between them",
+          "year": 2025,
+          "week": 14
+        },
+        {
+          "value": 1208,
+          "subject": "thd",
+          "href": "/seasons/2020/matchups/13/6",
+          "detail": "thd beat sol, 128.18–98.70 (thd 9-3, sol 4-8 going in) — won it on Tuesday night, when Lamar Jackson scored",
+          "year": 2020,
+          "week": 13
+        },
+        {
+          "value": 1208,
+          "subject": "fin",
+          "href": "/seasons/2019/matchups/14/1",
+          "detail": "fin beat htc, 112.86–99.52 — a playoff game",
+          "year": 2019,
+          "week": 14,
+          "approximate": true
+        },
+        {
+          "value": 1208,
+          "subject": "htc",
+          "href": "/seasons/2015/matchups/13/3",
+          "detail": "htc beat thd, 122.88–106.54 (htc 7-5, thd 9-3 going in)",
+          "year": 2015,
+          "week": 13
+        },
+        {
+          "value": 1208,
+          "subject": "thd",
+          "href": "/seasons/2014/matchups/14/4",
+          "detail": "thd beat hadkiss, 128.80–99.34 — a playoff game",
+          "year": 2014,
+          "week": 14
+        },
+        {
+          "value": 1208,
+          "subject": "kitch",
+          "href": "/seasons/2013/matchups/14/5",
+          "detail": "kitch beat brock, 96.32–89.92 (kitch 2-11, brock 7-6 going in) — won it on Sunday night, when Drew Brees scored",
+          "year": 2013,
+          "week": 14
+        },
+        {
+          "value": 1207,
+          "subject": "kitch",
+          "href": "/seasons/2025/matchups/14/1",
+          "detail": "kitch beat rich, 106.24–66.84 (kitch 10-3, rich 4-9 going in)",
+          "year": 2025,
+          "week": 14
+        },
+        {
+          "value": 1207,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/13/5",
+          "detail": "nick beat ant, 104.74–95.46 (nick 8-4, ant 6-6 going in) — won it on Monday night, when Raheem Mostert scored",
+          "year": 2020,
+          "week": 13
+        },
+        {
+          "value": 1207,
+          "subject": "chris",
+          "href": "/seasons/2015/matchups/13/6",
+          "detail": "chris beat fin, 133.96–106.82 (chris 7-5, fin 10-2 going in) — won it on Sunday night, when Martavis Bryant scored",
+          "year": 2015,
+          "week": 13
+        },
+        {
+          "value": 1206,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/13/2",
+          "detail": "jay beat sol, 144.82–120.62 (jay 7-5, sol 8-4 going in) — the highest-scoring game of the week, 265.44 between them",
+          "year": 2021,
+          "week": 13
+        },
+        {
+          "value": 1206,
+          "subject": "kitch",
+          "href": "/seasons/2020/matchups/13/4",
+          "detail": "kitch beat ryan, 86.60–71.70 (kitch 5-7, ryan 4-8 going in) — won it on Sunday night, when Harrison Butker scored",
+          "year": 2020,
+          "week": 13
+        },
+        {
+          "value": 1206,
+          "subject": "hadkiss",
+          "href": "/seasons/2016/matchups/13/6",
+          "detail": "hadkiss beat jay, 138.54–93.26 (hadkiss 7-5, jay 10-2 going in) — won it on Sunday night, when Thomas Rawls scored",
+          "year": 2016,
+          "week": 13
+        },
+        {
+          "value": 1205,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/13/6",
+          "detail": "dix beat sol, 94.70–80.04 (dix 9-3, sol 8-4 going in) — won it on Sunday night, when the Dallas Cowboys defence scored",
+          "year": 2022,
+          "week": 13
+        },
+        {
+          "value": 1205,
+          "subject": "ryan",
+          "href": "/seasons/2021/matchups/13/4",
+          "detail": "ryan beat thd, 112.16–93.72 (ryan 4-8, thd 5-7 going in) — won it on Sunday night, when Patrick Mahomes scored",
+          "year": 2021,
+          "week": 13
+        },
+        {
+          "value": 1205,
+          "subject": "fin",
+          "href": "/seasons/2016/matchups/13/1",
+          "detail": "fin beat chris, 119.00–81.68 (fin 6-6, chris 6-6 going in)",
+          "year": 2016,
+          "week": 13
+        },
+        {
+          "value": 1204,
+          "subject": "dix",
+          "href": "/seasons/2023/matchups/13/1",
+          "detail": "dix beat rich, 106.56–92.12 (dix 7-5, rich 11-1 going in) — won it on Monday night, when Ja'Marr Chase scored",
+          "year": 2023,
+          "week": 13
+        },
+        {
+          "value": 1204,
+          "subject": "jay",
+          "href": "/seasons/2022/matchups/13/3",
+          "detail": "jay beat ant, 108.50–102.64 (jay 6-6, ant 6-6 going in) — the highest-scoring game of the week, 211.14 between them",
+          "year": 2022,
+          "week": 13
+        },
+        {
+          "value": 1204,
+          "subject": "nick",
+          "href": "/seasons/2017/matchups/13/1",
+          "detail": "nick beat kitch, 101.98–83.68 (nick 8-4, kitch 6-6 going in) — won it on Sunday night, when Russell Wilson scored",
+          "year": 2017,
+          "week": 13
+        },
+        {
+          "value": 1204,
+          "subject": "phil",
+          "href": "/seasons/2016/matchups/13/4",
+          "detail": "phil beat thd, 94.06–82.50 (phil 5-7, thd 7-5 going in)",
+          "year": 2016,
+          "week": 13
+        },
+        {
+          "value": 1203,
+          "subject": "ant",
+          "href": "/seasons/2023/matchups/13/4",
+          "detail": "ant beat jay, 125.00–112.60 (ant 7-5, jay 6-6 going in)",
+          "year": 2023,
+          "week": 13
+        },
+        {
+          "value": 1203,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/13/3",
+          "detail": "sol beat ant, 97.08–49.92 (sol 9-3, ant 5-7 going in) — the heaviest beating of the week, by 47.16",
+          "year": 2018,
+          "week": 13
+        },
+        {
+          "value": 1203,
+          "subject": "ant",
+          "href": "/seasons/2017/matchups/13/6",
+          "detail": "ant beat chris, 85.86–72.32 (ant 4-8, chris 6-6 going in)",
+          "year": 2017,
+          "week": 13
+        },
+        {
+          "value": 1203,
+          "subject": "ant",
+          "href": "/seasons/2012/matchups/13/2",
+          "detail": "ant beat fin, 95.52–84.40 (ant 8-4, fin 4-8 going in) — won it on Monday night, when Alfred Morris scored",
+          "year": 2012,
+          "week": 13
+        },
+        {
+          "value": 1202,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/13/4",
+          "detail": "ant beat jay, 102.16–97.48 (ant 6-6, jay 6-6 going in) — won it on Monday night, when the Denver Broncos defence scored",
+          "year": 2024,
+          "week": 13
+        },
+        {
+          "value": 1202,
+          "subject": "thd",
+          "href": "/seasons/2020/matchups/12/6",
+          "detail": "thd beat fin, 157.22–88.22 (thd 8-3, fin 5-6 going in) — the highest-scoring game of the week, 245.44 between them",
+          "year": 2020,
+          "week": 12
+        },
+        {
+          "value": 1202,
+          "subject": "hadkiss",
+          "href": "/seasons/2019/matchups/13/4",
+          "detail": "hadkiss beat jay, 109.92–95.82 (hadkiss 4-8, jay 8-4 going in) — won it on Monday night, when Dalvin Cook scored",
+          "year": 2019,
+          "week": 13,
+          "approximate": true
+        },
+        {
+          "value": 1202,
+          "subject": "fin",
+          "href": "/seasons/2018/matchups/13/5",
+          "detail": "fin beat kitch, 79.28–75.24 (fin 3-9, kitch 3-9 going in) — won it on Sunday night, when Marcus Mariota scored",
+          "year": 2018,
+          "week": 13
+        },
+        {
+          "value": 1202,
+          "subject": "thd",
+          "href": "/seasons/2014/matchups/13/1",
+          "detail": "thd beat hadkiss, 110.16–107.30 (thd 6-6, hadkiss 9-3 going in) — won it on Sunday night, when Jamaal Charles scored",
+          "year": 2014,
+          "week": 13
+        },
+        {
+          "value": 1202,
+          "subject": "brock",
+          "href": "/seasons/2013/matchups/13/4",
+          "detail": "brock beat hadkiss, 116.14–116.10 (brock 6-6, hadkiss 6-6 going in) — won it on Monday night, when Russell Wilson scored",
+          "year": 2013,
+          "week": 13
+        },
+        {
+          "value": 1202,
+          "subject": "hadkiss",
+          "href": "/seasons/2012/matchups/13/3",
+          "detail": "hadkiss beat jimmie, 123.80–81.34 (hadkiss 6-6, jimmie 6-6 going in) — won it on Sunday night, when Bryce Brown scored",
+          "year": 2012,
+          "week": 13
+        },
+        {
+          "value": 1201,
+          "subject": "hadkiss",
+          "href": "/seasons/2025/matchups/13/3",
+          "detail": "hadkiss beat fin, 105.16–94.44 (hadkiss 10-2, fin 5-7 going in) — won it on Monday night, when Devin Singletary scored",
+          "year": 2025,
+          "week": 13
+        },
+        {
+          "value": 1201,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/13/6",
+          "detail": "rich beat hadkiss, 128.44–99.98 (rich 7-5, hadkiss 6-6 going in) — the highest-scoring game of the week, 228.42 between them",
+          "year": 2024,
+          "week": 13
+        },
+        {
+          "value": 1201,
+          "subject": "nick",
+          "href": "/seasons/2019/matchups/13/2",
+          "detail": "nick beat thd, 74.32–74.20 (nick 8-4, thd 8-4 going in) — won it on Sunday night, when the New England Patriots defence scored",
+          "year": 2019,
+          "week": 13,
+          "approximate": true
+        },
+        {
+          "value": 1201,
+          "subject": "thd",
+          "href": "/seasons/2015/matchups/12/3",
+          "detail": "thd beat rich, 101.74–81.70 (thd 8-3, rich 3-8 going in)",
+          "year": 2015,
+          "week": 12
+        },
+        {
+          "value": 1201,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/13/4",
+          "detail": "sol beat ant, 81.84–71.84 (sol 6-6, ant 4-8 going in) — won it on Sunday night, when C.J. Anderson scored",
+          "year": 2014,
+          "week": 13
+        },
+        {
+          "value": 1201,
+          "subject": "jay",
+          "href": "/seasons/2013/matchups/13/1",
+          "detail": "jay beat htc, 122.02–84.42 (jay 9-3, htc 5-7 going in)",
+          "year": 2013,
+          "week": 13
+        },
+        {
+          "value": 1130,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/13/2",
+          "detail": "htc beat rich, 153.52–81.54 (htc 6-6, rich 4-8 going in) — the highest-scoring game of the week, 235.06 between them",
+          "year": 2025,
+          "week": 13
+        },
+        {
+          "value": 1130,
+          "subject": "ant",
+          "href": "/seasons/2020/matchups/12/5",
+          "detail": "ant beat kitch, 105.44–65.80 (ant 5-6, kitch 5-6 going in)",
+          "year": 2020,
+          "week": 12
+        },
+        {
+          "value": 1130,
+          "subject": "hadkiss",
+          "href": "/seasons/2015/matchups/12/4",
+          "detail": "hadkiss beat fin, 93.68–84.92 (hadkiss 5-5-1, fin 10-1 going in) — won it on Monday night, when Justin Tucker scored",
+          "year": 2015,
+          "week": 12
+        },
+        {
+          "value": 1130,
+          "subject": "htc",
+          "href": "/seasons/2014/matchups/13/6",
+          "detail": "htc beat kitch, 114.22–104.68 (htc 6-6, kitch 9-3 going in) — the highest-scoring game of the week, 218.90 between them",
+          "year": 2014,
+          "week": 13
+        },
+        {
+          "value": 1129,
+          "subject": "dix",
+          "href": "/seasons/2021/matchups/12/3",
+          "detail": "dix beat ryan, 134.50–77.28 (dix 6-5, ryan 4-7 going in) — the highest-scoring game of the week, 211.78 between them",
+          "year": 2021,
+          "week": 12
+        },
+        {
+          "value": 1129,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/12/2",
+          "detail": "ant beat dix, 109.82–82.10 (ant 6-5, dix 7-4 going in)",
+          "year": 2015,
+          "week": 12
+        },
+        {
+          "value": 1128,
+          "subject": "ant",
+          "href": "/seasons/2022/matchups/12/4",
+          "detail": "ant beat brock, 151.80–75.76 (ant 5-6, brock 7-4 going in) — the highest-scoring game of the week, 227.56 between them",
+          "year": 2022,
+          "week": 12
+        },
+        {
+          "value": 1128,
+          "subject": "htc",
+          "href": "/seasons/2021/matchups/12/1",
+          "detail": "htc beat sol, 86.96–81.52 (htc 6-5, sol 8-3 going in)",
+          "year": 2021,
+          "week": 12
+        },
+        {
+          "value": 1128,
+          "subject": "phil",
+          "href": "/seasons/2016/matchups/12/4",
+          "detail": "phil beat rich, 74.62–63.00 (phil 4-7, rich 4-7 going in) — won it on Monday night, when Aaron Rodgers scored",
+          "year": 2016,
+          "week": 12
+        },
+        {
+          "value": 1127,
+          "subject": "htc",
+          "href": "/seasons/2023/matchups/12/2",
+          "detail": "htc beat dix, 126.16–111.38 (htc 3-8, dix 7-4 going in) — the highest-scoring game of the week, 237.54 between them",
+          "year": 2023,
+          "week": 12
+        },
+        {
+          "value": 1127,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/12/6",
+          "detail": "dix beat rich, 109.78–77.22 (dix 8-3, rich 2-9 going in)",
+          "year": 2022,
+          "week": 12
+        },
+        {
+          "value": 1127,
+          "subject": "nick",
+          "href": "/seasons/2017/matchups/12/1",
+          "detail": "nick beat hadkiss, 98.12–94.38 (nick 7-4, hadkiss 10-1 going in) — won it on Sunday night, when Antonio Brown scored",
+          "year": 2017,
+          "week": 12
+        },
+        {
+          "value": 1127,
+          "subject": "hadkiss",
+          "href": "/seasons/2016/matchups/12/2",
+          "detail": "hadkiss beat chris, 112.08–93.26 (hadkiss 6-5, chris 6-5 going in)",
+          "year": 2016,
+          "week": 12
+        },
+        {
+          "value": 1126,
+          "subject": "fin",
+          "href": "/seasons/2023/matchups/12/3",
+          "detail": "fin beat jay, 127.32–107.64 (fin 4-7, jay 6-5 going in)",
+          "year": 2023,
+          "week": 12
+        },
+        {
+          "value": 1126,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/12/5",
+          "detail": "jay beat kitch, 86.78–80.88 (jay 10-1, kitch 3-8 going in) — won it on Monday night, when the Houston Texans defence scored",
+          "year": 2018,
+          "week": 12
+        },
+        {
+          "value": 1126,
+          "subject": "htc",
+          "href": "/seasons/2017/matchups/12/4",
+          "detail": "htc beat kitch, 147.94–70.26 (htc 6-5, kitch 6-5 going in) — the highest-scoring game of the week, 218.20 between them",
+          "year": 2017,
+          "week": 12
+        },
+        {
+          "value": 1126,
+          "subject": "fin",
+          "href": "/seasons/2012/matchups/12/1",
+          "detail": "fin beat thd, 106.26–84.40 (fin 3-8, thd 7-4 going in) — won it on Sunday night, when the Baltimore Ravens defence scored",
+          "year": 2012,
+          "week": 12
+        },
+        {
+          "value": 1125,
+          "subject": "brock",
+          "href": "/seasons/2024/matchups/12/3",
+          "detail": "brock beat jay, 132.60–84.36 (brock 4-7, jay 6-5 going in) — won it on Sunday night, when the Green Bay Packers defence scored",
+          "year": 2024,
+          "week": 12
+        },
+        {
+          "value": 1125,
+          "subject": "thd",
+          "href": "/seasons/2019/matchups/12/6",
+          "detail": "thd beat fin, 103.26–87.58 (thd 7-4, fin 4-7 going in) — won it on Monday night, when Lamar Jackson scored",
+          "year": 2019,
+          "week": 12,
+          "approximate": true
+        },
+        {
+          "value": 1125,
+          "subject": "ant",
+          "href": "/seasons/2018/matchups/12/2",
+          "detail": "ant beat htc, 98.92–95.34 (ant 4-7, htc 4-7 going in) — the closest game of the week, by 3.58",
+          "year": 2018,
+          "week": 12
+        },
+        {
+          "value": 1125,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/12/6",
+          "detail": "kitch beat brock, 118.30–94.22 (kitch 8-3, brock 5-6 going in) — won it on Sunday night, when Odell Beckham scored",
+          "year": 2014,
+          "week": 12
+        },
+        {
+          "value": 1125,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/12/4",
+          "detail": "dix beat hadkiss, 113.76–103.18 (dix 9-2, hadkiss 6-5 going in) — won it on Sunday night, when Knowshon Moreno scored",
+          "year": 2013,
+          "week": 12
+        },
+        {
+          "value": 1125,
+          "subject": "hadkiss",
+          "href": "/seasons/2012/matchups/12/2",
+          "detail": "hadkiss beat dix, 110.02–106.78 (hadkiss 5-6, dix 8-3 going in) — won it on Sunday night, when Jordy Nelson scored",
+          "year": 2012,
+          "week": 12
+        },
+        {
+          "value": 1124,
+          "subject": "kitch",
+          "href": "/seasons/2025/matchups/12/1",
+          "detail": "kitch beat htc, 86.12–73.12 (kitch 8-3, htc 6-5 going in) — won it on Sunday night, when Matthew Stafford scored",
+          "year": 2025,
+          "week": 12
+        },
+        {
+          "value": 1124,
+          "subject": "dix",
+          "href": "/seasons/2019/matchups/12/2",
+          "detail": "dix beat ant, 117.38–113.88 (dix 6-5, ant 6-5 going in) — the highest-scoring game of the week, 231.26 between them",
+          "year": 2019,
+          "week": 12,
+          "approximate": true
+        },
+        {
+          "value": 1124,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/12/3",
+          "detail": "sol beat fin, 130.74–116.56 (sol 5-6, fin 6-5 going in) — won it on Sunday night, when Dez Bryant scored",
+          "year": 2014,
+          "week": 12
+        },
+        {
+          "value": 1123,
+          "subject": "thd",
+          "href": "/seasons/2025/matchups/12/5",
+          "detail": "thd beat brock, 140.92–116.06 (thd 7-4, brock 5-6 going in) — won it on Sunday night, when Davante Adams scored",
+          "year": 2025,
+          "week": 12
+        },
+        {
+          "value": 1123,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/11/2",
+          "detail": "htc beat jay, 92.58–72.88 (htc 5-5, jay 4-6 going in) — won it on Monday night, when Leonard Fournette scored",
+          "year": 2020,
+          "week": 11
+        },
+        {
+          "value": 1123,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/11/4",
+          "detail": "fin beat hadkiss, 93.10–82.62 (fin 9-1, hadkiss 5-4-1 going in) — won it on Sunday night, when Andy Dalton scored",
+          "year": 2015,
+          "week": 11
+        },
+        {
+          "value": 1122,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/11/3",
+          "detail": "jay beat ryan, 121.28–84.20 (jay 6-4, ryan 4-6 going in) — won it on Sunday night, when Diontae Johnson scored",
+          "year": 2021,
+          "week": 11
+        },
+        {
+          "value": 1122,
+          "subject": "thd",
+          "href": "/seasons/2020/matchups/11/3",
+          "detail": "thd beat hadkiss, 120.60–98.90 (thd 7-3, hadkiss 8-2 going in) — won it on Sunday night, when Travis Kelce scored",
+          "year": 2020,
+          "week": 11
+        },
+        {
+          "value": 1121,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/11/3",
+          "detail": "hadkiss beat ryan, 95.40–94.16 (hadkiss 6-4, ryan 5-5 going in) — won it on Monday night, when James Conner scored",
+          "year": 2022,
+          "week": 11
+        },
+        {
+          "value": 1121,
+          "subject": "sol",
+          "href": "/seasons/2021/matchups/11/1",
+          "detail": "sol beat fin, 89.54–79.34 (sol 7-3, fin 2-8 going in) — won it on Sunday night, when Chris Boswell scored",
+          "year": 2021,
+          "week": 11
+        },
+        {
+          "value": 1121,
+          "subject": "rich",
+          "href": "/seasons/2016/matchups/11/1",
+          "detail": "rich beat sol, 86.18–81.98 (rich 3-7, sol 2-8 going in) — won it on Monday night, when DeAndre Hopkins scored",
+          "year": 2016,
+          "week": 11
+        },
+        {
+          "value": 1120,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/11/2",
+          "detail": "ryan beat thd, 95.56–87.70 (ryan 6-4, thd 5-5 going in) — won it on Sunday night, when Courtland Sutton scored",
+          "year": 2023,
+          "week": 11
+        },
+        {
+          "value": 1120,
+          "subject": "sol",
+          "href": "/seasons/2022/matchups/11/5",
+          "detail": "sol beat ant, 111.00–98.30 (sol 6-4, ant 5-5 going in)",
+          "year": 2022,
+          "week": 11
+        },
+        {
+          "value": 1120,
+          "subject": "chris",
+          "href": "/seasons/2017/matchups/11/3",
+          "detail": "chris beat sol, 96.50–86.36 (chris 4-6, sol 5-5 going in) — won it on Monday night, when Matt Ryan scored",
+          "year": 2017,
+          "week": 11
+        },
+        {
+          "value": 1119,
+          "subject": "rich",
+          "href": "/seasons/2018/matchups/11/5",
+          "detail": "rich beat kitch, 114.62–79.98 (rich 6-4, kitch 3-7 going in) — won it on Monday night, when Patrick Mahomes scored",
+          "year": 2018,
+          "week": 11
+        },
+        {
+          "value": 1119,
+          "subject": "fin",
+          "href": "/seasons/2017/matchups/11/4",
+          "detail": "fin beat htc, 88.44–66.58 (fin 4-6, htc 6-4 going in)",
+          "year": 2017,
+          "week": 11
+        },
+        {
+          "value": 1119,
+          "subject": "dix",
+          "href": "/seasons/2012/matchups/11/3",
+          "detail": "dix beat rich, 125.36–80.24 (dix 7-3, rich 8-2 going in) — the heaviest beating of the week, by 45.12",
+          "year": 2012,
+          "week": 11
+        },
+        {
+          "value": 1118,
+          "subject": "dix",
+          "href": "/seasons/2024/matchups/11/1",
+          "detail": "dix beat rich, 128.48–127.44 (dix 5-5, rich 6-4 going in) — won it on Monday night, when the Houston Texans defence scored",
+          "year": 2024,
+          "week": 11
+        },
+        {
+          "value": 1118,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/11/1",
+          "detail": "jay beat sol, 110.94–80.98 (jay 7-3, sol 6-4 going in) — won it on Sunday night, when the Las Vegas Raiders defence scored",
+          "year": 2019,
+          "week": 11,
+          "approximate": true
+        },
+        {
+          "value": 1118,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/11/1",
+          "detail": "nick beat thd, 83.08–76.42 (nick 6-4, thd 5-5 going in) — won it on Sunday night, when the Minnesota Vikings defence scored",
+          "year": 2018,
+          "week": 11
+        },
+        {
+          "value": 1118,
+          "subject": "thd",
+          "href": "/seasons/2013/matchups/11/1",
+          "detail": "thd beat rich, 98.56–84.26 (thd 3-7, rich 4-6 going in) — won it on Monday night, when Cam Newton scored",
+          "year": 2013,
+          "week": 11
+        },
+        {
+          "value": 1118,
+          "subject": "ant",
+          "href": "/seasons/2012/matchups/11/4",
+          "detail": "ant beat karsten, 120.10–101.38 (ant 6-4, karsten 2-8 going in) — the highest-scoring game of the week, 221.48 between them",
+          "year": 2012,
+          "week": 11
+        },
+        {
+          "value": 1117,
+          "subject": "thd",
+          "href": "/seasons/2025/matchups/11/5",
+          "detail": "thd beat fin, 91.62–72.34 (thd 6-4, fin 5-5 going in) — won it on Monday night, when Jake Ferguson scored",
+          "year": 2025,
+          "week": 11
+        },
+        {
+          "value": 1117,
+          "subject": "htc",
+          "href": "/seasons/2024/matchups/11/4",
+          "detail": "htc beat brock, 107.18–94.20 (htc 6-4, brock 4-6 going in)",
+          "year": 2024,
+          "week": 11
+        },
+        {
+          "value": 1117,
+          "subject": "jay",
+          "href": "/seasons/2014/matchups/11/2",
+          "detail": "jay beat sol, 138.72–64.98 (jay 4-6, sol 5-5 going in) — the highest-scoring game of the week, 203.70 between them",
+          "year": 2014,
+          "week": 11
+        },
+        {
+          "value": 1117,
+          "subject": "htc",
+          "href": "/seasons/2013/matchups/11/4",
+          "detail": "htc beat kitch, 90.62–76.10 (htc 3-7, kitch 2-8 going in)",
+          "year": 2013,
+          "week": 11
+        },
+        {
+          "value": 1116,
+          "subject": "ant",
+          "href": "/seasons/2025/matchups/11/6",
+          "detail": "ant beat brock, 96.54–58.00 (ant 5-5, brock 5-5 going in)",
+          "year": 2025,
+          "week": 11
+        },
+        {
+          "value": 1116,
+          "subject": "hadkiss",
+          "href": "/seasons/2020/matchups/10/4",
+          "detail": "hadkiss beat ant, 86.88–65.18 (hadkiss 7-2, ant 5-4 going in) — won it on Sunday night, when the Baltimore Ravens defence scored",
+          "year": 2020,
+          "week": 10
+        },
+        {
+          "value": 1116,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/10/5",
+          "detail": "fin beat dix, 84.38–78.36 (fin 8-1, dix 6-3 going in) — won it on Monday night, when Giovani Bernard scored",
+          "year": 2015,
+          "week": 10
+        },
+        {
+          "value": 1116,
+          "subject": "ant",
+          "href": "/seasons/2014/matchups/11/6",
+          "detail": "ant beat brock, 112.92–84.58 (ant 3-7, brock 5-5 going in)",
+          "year": 2014,
+          "week": 11
+        },
+        {
+          "value": 1115,
+          "subject": "nick",
+          "href": "/seasons/2021/matchups/10/5",
+          "detail": "nick beat thd, 115.54–114.12 (nick 3-6, thd 5-4 going in) — won it on Monday night, when Matt Gay scored",
+          "year": 2021,
+          "week": 10
+        },
+        {
+          "value": 1115,
+          "subject": "rich",
+          "href": "/seasons/2020/matchups/10/2",
+          "detail": "rich beat fin, 110.40–90.84 (rich 5-4, fin 5-4 going in) — the highest-scoring game of the week, 201.24 between them",
+          "year": 2020,
+          "week": 10
+        },
+        {
+          "value": 1114,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/10/3",
+          "detail": "hadkiss beat jay, 78.64–75.10 (hadkiss 5-4, jay 5-4 going in) — the closest game of the week, by 3.54",
+          "year": 2022,
+          "week": 10
+        },
+        {
+          "value": 1114,
+          "subject": "dix",
+          "href": "/seasons/2021/matchups/10/6",
+          "detail": "dix beat hadkiss, 96.10–67.52 (dix 5-4, hadkiss 5-4 going in)",
+          "year": 2021,
+          "week": 10
+        },
+        {
+          "value": 1114,
+          "subject": "jay",
+          "href": "/seasons/2016/matchups/10/2",
+          "detail": "jay beat kitch, 137.64–101.52 (jay 7-2, kitch 6-3 going in) — won it on Sunday night, when Antonio Brown scored",
+          "year": 2016,
+          "week": 10
+        },
+        {
+          "value": 1113,
+          "subject": "thd",
+          "href": "/seasons/2023/matchups/10/2",
+          "detail": "thd beat brock, 95.72–67.98 (thd 4-5, brock 5-4 going in) — won it on Sunday night, when Breece Hall scored",
+          "year": 2023,
+          "week": 10
+        },
+        {
+          "value": 1113,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/10/2",
+          "detail": "dix beat thd, 142.68–71.12 (dix 6-3, thd 0-9 going in) — the highest-scoring game of the week, 213.80 between them",
+          "year": 2022,
+          "week": 10
+        },
+        {
+          "value": 1113,
+          "subject": "sol",
+          "href": "/seasons/2017/matchups/10/4",
+          "detail": "sol beat rich, 106.66–100.26 (sol 4-5, rich 1-8 going in) — won it on Monday night, when Jarvis Landry scored",
+          "year": 2017,
+          "week": 10
+        },
+        {
+          "value": 1112,
+          "subject": "hadkiss",
+          "href": "/seasons/2023/matchups/10/6",
+          "detail": "hadkiss beat ant, 111.82–110.12 (hadkiss 3-6, ant 6-3 going in)",
+          "year": 2023,
+          "week": 10
+        },
+        {
+          "value": 1112,
+          "subject": "dix",
+          "href": "/seasons/2018/matchups/10/2",
+          "detail": "dix beat thd, 106.84–105.42 (dix 5-4, thd 5-4 going in) — won it on Monday night, when Odell Beckham scored",
+          "year": 2018,
+          "week": 10
+        },
+        {
+          "value": 1112,
+          "subject": "fin",
+          "href": "/seasons/2017/matchups/10/5",
+          "detail": "fin beat nick, 97.66–81.62 (fin 3-6, nick 6-3 going in)",
+          "year": 2017,
+          "week": 10
+        },
+        {
+          "value": 1112,
+          "subject": "dix",
+          "href": "/seasons/2012/matchups/10/4",
+          "detail": "dix beat kitch, 126.02–54.76 (dix 6-3, kitch 4-5 going in) — the heaviest beating of the week, by 71.26",
+          "year": 2012,
+          "week": 10
+        },
+        {
+          "value": 1111,
+          "subject": "hadkiss",
+          "href": "/seasons/2024/matchups/10/6",
+          "detail": "hadkiss beat ant, 105.60–101.52 (hadkiss 5-4, ant 6-3 going in) — won it on Monday night, when Kyren Williams scored",
+          "year": 2024,
+          "week": 10
+        },
+        {
+          "value": 1111,
+          "subject": "ant",
+          "href": "/seasons/2019/matchups/10/3",
+          "detail": "ant beat fin, 143.98–107.58 (ant 5-4, fin 4-5 going in) — the highest-scoring game of the week, 251.56 between them",
+          "year": 2019,
+          "week": 10,
+          "approximate": true
+        },
+        {
+          "value": 1111,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/10/5",
+          "detail": "jay beat rich, 130.30–95.96 (jay 8-1, rich 6-3 going in) — won it on Sunday night, when Zach Ertz scored",
+          "year": 2018,
+          "week": 10
+        },
+        {
+          "value": 1111,
+          "subject": "ant",
+          "href": "/seasons/2013/matchups/10/3",
+          "detail": "ant beat htc, 117.66–76.46 (ant 5-4, htc 3-6 going in) — the heaviest beating of the week, by 41.20",
+          "year": 2013,
+          "week": 10
+        },
+        {
+          "value": 1111,
+          "subject": "rich",
+          "href": "/seasons/2012/matchups/10/2",
+          "detail": "rich beat hadkiss, 119.36–90.54 (rich 7-2, hadkiss 5-4 going in) — the highest-scoring game of the week, 209.90 between them",
+          "year": 2012,
+          "week": 10
+        },
+        {
+          "value": 1110,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/10/2",
+          "detail": "htc beat jay, 149.64–84.70 (htc 4-5, jay 5-4 going in) — the highest-scoring game of the week, 234.34 between them",
+          "year": 2025,
+          "week": 10
+        },
+        {
+          "value": 1110,
+          "subject": "jay",
+          "href": "/seasons/2024/matchups/10/4",
+          "detail": "jay beat htc, 107.14–101.00 (jay 4-5, htc 6-3 going in) — won it on Sunday night, when the Detroit Lions defence scored",
+          "year": 2024,
+          "week": 10
+        },
+        {
+          "value": 1110,
+          "subject": "kitch",
+          "href": "/seasons/2019/matchups/10/4",
+          "detail": "kitch beat htc, 93.06–52.68 (kitch 2-7, htc 3-6 going in) — the heaviest beating of the week, by 40.38",
+          "year": 2019,
+          "week": 10,
+          "approximate": true
+        },
+        {
+          "value": 1110,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/9/5",
+          "detail": "fin beat thd, 102.24–91.06 (fin 7-1, thd 7-1 going in) — won it on Sunday night, when DeMarco Murray scored",
+          "year": 2015,
+          "week": 9
+        },
+        {
+          "value": 1110,
+          "subject": "hadkiss",
+          "href": "/seasons/2014/matchups/10/4",
+          "detail": "hadkiss beat kitch, 77.48–69.48 (hadkiss 6-3, kitch 7-2 going in) — won it on Monday night, when Kelvin Benjamin scored",
+          "year": 2014,
+          "week": 10
+        },
+        {
+          "value": 1110,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/10/5",
+          "detail": "hadkiss beat rich, 120.68–98.74 (hadkiss 5-4, rich 4-5 going in) — won it on Sunday night, when Marques Colston scored",
+          "year": 2013,
+          "week": 10
+        },
+        {
+          "value": 1109,
+          "subject": "thd",
+          "href": "/seasons/2025/matchups/10/6",
+          "detail": "thd beat ant, 126.64–97.20 (thd 5-4, ant 5-4 going in)",
+          "year": 2025,
+          "week": 10
+        },
+        {
+          "value": 1109,
+          "subject": "hadkiss",
+          "href": "/seasons/2020/matchups/9/5",
+          "detail": "hadkiss beat sol, 118.86–96.60 (hadkiss 6-2, sol 1-7 going in) — won it on Monday night, when Cam Newton scored",
+          "year": 2020,
+          "week": 9
+        },
+        {
+          "value": 1109,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/9/2",
+          "detail": "ant beat dix, 88.98–81.26 (ant 4-4, dix 6-2 going in) — won it on Sunday night, when Ryan Mathews scored",
+          "year": 2015,
+          "week": 9
+        },
+        {
+          "value": 1109,
+          "subject": "rich",
+          "href": "/seasons/2014/matchups/10/2",
+          "detail": "rich beat chris, 125.10–103.50 (rich 1-8, chris 3-6 going in)",
+          "year": 2014,
+          "week": 10
+        },
+        {
+          "value": 1108,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/9/3",
+          "detail": "jay beat dix, 102.98–96.28 (jay 4-4, dix 5-3 going in) — won it on Sunday night, when the Los Angeles Rams defence scored",
+          "year": 2021,
+          "week": 9
+        },
+        {
+          "value": 1108,
+          "subject": "jay",
+          "href": "/seasons/2020/matchups/9/1",
+          "detail": "jay beat kitch, 97.54–50.06 (jay 3-5, kitch 4-4 going in) — the heaviest beating of the week, by 47.48",
+          "year": 2020,
+          "week": 9
+        },
+        {
+          "value": 1108,
+          "subject": "chris",
+          "href": "/seasons/2015/matchups/9/4",
+          "detail": "chris beat sol, 103.32–83.32 (chris 3-5, sol 2-6 going in)",
+          "year": 2015,
+          "week": 9
+        },
+        {
+          "value": 1107,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/9/3",
+          "detail": "hadkiss beat brock, 118.20–97.32 (hadkiss 4-4, brock 6-2 going in) — won it on Monday night, when Chris Olave scored",
+          "year": 2022,
+          "week": 9
+        },
+        {
+          "value": 1107,
+          "subject": "nick",
+          "href": "/seasons/2021/matchups/9/2",
+          "detail": "nick beat rich, 103.58–69.92 (nick 2-6, rich 3-5 going in)",
+          "year": 2021,
+          "week": 9
+        },
+        {
+          "value": 1107,
+          "subject": "htc",
+          "href": "/seasons/2016/matchups/9/1",
+          "detail": "htc beat thd, 116.58–107.74 (htc 2-6, thd 5-3 going in) — won it on Sunday night, when Jack Doyle scored",
+          "year": 2016,
+          "week": 9
+        },
+        {
+          "value": 1106,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/9/6",
+          "detail": "ryan beat jay, 119.16–86.60 (ryan 5-3, jay 4-4 going in) — the highest-scoring game of the week, 205.76 between them",
+          "year": 2023,
+          "week": 9
+        },
+        {
+          "value": 1106,
+          "subject": "sol",
+          "href": "/seasons/2022/matchups/9/1",
+          "detail": "sol beat htc, 87.04–77.40 (sol 5-3, htc 5-3 going in) — won it on Sunday night, when Derrick Henry scored",
+          "year": 2022,
+          "week": 9
+        },
+        {
+          "value": 1106,
+          "subject": "hadkiss",
+          "href": "/seasons/2017/matchups/9/4",
+          "detail": "hadkiss beat thd, 92.86–88.68 (hadkiss 7-1, thd 3-5 going in) — won it on Sunday night, when Michael Crabtree scored",
+          "year": 2017,
+          "week": 9
+        },
+        {
+          "value": 1106,
+          "subject": "ant",
+          "href": "/seasons/2016/matchups/9/4",
+          "detail": "ant beat rich, 101.46–79.50 (ant 5-3, rich 3-5 going in) — won it on Sunday night, when Derek Carr scored",
+          "year": 2016,
+          "week": 9
+        },
+        {
+          "value": 1105,
+          "subject": "rich",
+          "href": "/seasons/2023/matchups/9/1",
+          "detail": "rich beat hadkiss, 86.08–84.34 (rich 7-1, hadkiss 3-5 going in) — the closest game of the week, by 1.74",
+          "year": 2023,
+          "week": 9
+        },
+        {
+          "value": 1105,
+          "subject": "kitch",
+          "href": "/seasons/2018/matchups/9/3",
+          "detail": "kitch beat ant, 122.22–85.20 (kitch 2-6, ant 2-6 going in) — won it on Sunday night, when Michael Thomas scored",
+          "year": 2018,
+          "week": 9
+        },
+        {
+          "value": 1105,
+          "subject": "htc",
+          "href": "/seasons/2017/matchups/9/2",
+          "detail": "htc beat nick, 79.30–73.28 (htc 5-3, nick 6-2 going in) — won it on Sunday night, when Derek Carr scored",
+          "year": 2017,
+          "week": 9
+        },
+        {
+          "value": 1105,
+          "subject": "jay",
+          "href": "/seasons/2012/matchups/9/2",
+          "detail": "jay beat karsten, 97.58–96.00 (jay 3-5, karsten 1-7 going in) — won it on Monday night, when Michael Vick scored",
+          "year": 2012,
+          "week": 9
+        },
+        {
+          "value": 1104,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/9/3",
+          "detail": "ant beat ryan, 116.84–104.30 (ant 5-3, ryan 5-3 going in) — won it on Monday night, when DeAndre Hopkins scored",
+          "year": 2024,
+          "week": 9
+        },
+        {
+          "value": 1104,
+          "subject": "kitch",
+          "href": "/seasons/2019/matchups/9/5",
+          "detail": "kitch beat dix, 96.90–90.86 (kitch 1-7, dix 5-3 going in) — won it on Monday night, when the Dallas Cowboys defence scored",
+          "year": 2019,
+          "week": 9,
+          "approximate": true
+        },
+        {
+          "value": 1104,
+          "subject": "htc",
+          "href": "/seasons/2018/matchups/9/5",
+          "detail": "htc beat sol, 107.74–72.42 (htc 2-6, sol 6-2 going in)",
+          "year": 2018,
+          "week": 9
+        },
+        {
+          "value": 1104,
+          "subject": "ant",
+          "href": "/seasons/2013/matchups/9/5",
+          "detail": "ant beat fin, 98.84–93.08 (ant 4-4, fin 5-3 going in) — won it on Monday night, when Mason Crosby scored",
+          "year": 2013,
+          "week": 9
+        },
+        {
+          "value": 1104,
+          "subject": "jimmie",
+          "href": "/seasons/2012/matchups/9/4",
+          "detail": "jimmie beat fin, 120.32–62.20 (jimmie 4-4, fin 3-5 going in) — the heaviest beating of the week, by 58.12",
+          "year": 2012,
+          "week": 9
+        },
+        {
+          "value": 1103,
+          "subject": "sol",
+          "href": "/seasons/2025/matchups/9/6",
+          "detail": "sol beat ryan, 93.22–89.20 (sol 5-3, ryan 2-6 going in) — the closest game of the week, by 4.02",
+          "year": 2025,
+          "week": 9
+        },
+        {
+          "value": 1103,
+          "subject": "rich",
+          "href": "/seasons/2019/matchups/9/2",
+          "detail": "rich beat ryan, 111.24–85.86 (rich 4-4, ryan 3-5 going in) — the highest-scoring game of the week, 197.10 between them",
+          "year": 2019,
+          "week": 9,
+          "approximate": true
+        },
+        {
+          "value": 1103,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/9/3",
+          "detail": "kitch beat chris, 92.58–91.62 (kitch 6-2, chris 3-5 going in) — won it on Monday night, when Odell Beckham scored",
+          "year": 2014,
+          "week": 9
+        },
+        {
+          "value": 1102,
+          "subject": "ant",
+          "href": "/seasons/2025/matchups/9/3",
+          "detail": "ant beat dix, 151.90–87.78 (ant 4-4, dix 2-6 going in) — the highest-scoring game of the week, 239.68 between them",
+          "year": 2025,
+          "week": 9
+        },
+        {
+          "value": 1102,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/8/4",
+          "detail": "htc beat fin, 92.14–76.92 (htc 4-3, fin 5-2 going in) — won it on Monday night, when Leonard Fournette scored",
+          "year": 2020,
+          "week": 8
+        },
+        {
+          "value": 1102,
+          "subject": "htc",
+          "href": "/seasons/2015/matchups/8/6",
+          "detail": "htc beat hadkiss, 98.90–94.94 (htc 3-4, hadkiss 4-3 going in) — won it on Monday night, when Greg Olsen scored",
+          "year": 2015,
+          "week": 8
+        },
+        {
+          "value": 1101,
+          "subject": "ryan",
+          "href": "/seasons/2021/matchups/8/5",
+          "detail": "ryan beat nick, 92.60–80.16 (ryan 1-6, nick 2-5 going in) — won it on Monday night, when Patrick Mahomes scored",
+          "year": 2021,
+          "week": 8
+        },
+        {
+          "value": 1101,
+          "subject": "ant",
+          "href": "/seasons/2020/matchups/8/1",
+          "detail": "ant beat ryan, 123.62–91.94 (ant 3-4, ryan 2-5 going in) — the highest-scoring game of the week, 215.56 between them",
+          "year": 2020,
+          "week": 8
+        },
+        {
+          "value": 1031,
+          "subject": "sol",
+          "href": "/seasons/2022/matchups/8/2",
+          "detail": "sol beat thd, 115.30–103.00 (sol 4-3, thd 0-7 going in) — won it on Monday night, when Amari Cooper scored",
+          "year": 2022,
+          "week": 8
+        },
+        {
+          "value": 1031,
+          "subject": "thd",
+          "href": "/seasons/2021/matchups/8/3",
+          "detail": "thd beat jay, 111.10–102.70 (thd 4-3, jay 4-3 going in) — won it on Sunday night, when the Dallas Cowboys defence scored",
+          "year": 2021,
+          "week": 8
+        },
+        {
+          "value": 1031,
+          "subject": "kitch",
+          "href": "/seasons/2016/matchups/8/2",
+          "detail": "kitch beat sol, 83.10–71.92 (kitch 4-3, sol 1-6 going in) — won it on Monday night, when Stefon Diggs scored",
+          "year": 2016,
+          "week": 8
+        },
+        {
+          "value": 1030,
+          "subject": "thd",
+          "href": "/seasons/2023/matchups/8/2",
+          "detail": "thd beat hadkiss, 130.62–126.00 (thd 3-4, hadkiss 3-4 going in) — won it on Monday night, when the Detroit Lions defence scored",
+          "year": 2023,
+          "week": 8
+        },
+        {
+          "value": 1030,
+          "subject": "jay",
+          "href": "/seasons/2022/matchups/8/5",
+          "detail": "jay beat rich, 105.90–97.62 (jay 4-3, rich 2-5 going in)",
+          "year": 2022,
+          "week": 8
+        },
+        {
+          "value": 1030,
+          "subject": "dix",
+          "href": "/seasons/2017/matchups/8/6",
+          "detail": "dix beat chris, 98.52–85.96 (dix 4-3, chris 4-3 going in) — won it on Monday night, when C.J. Anderson scored",
+          "year": 2017,
+          "week": 8
+        },
+        {
+          "value": 1029,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/8/5",
+          "detail": "ryan beat fin, 123.36–50.04 (ryan 4-3, fin 2-5 going in) — the heaviest beating of the week, by 73.32",
+          "year": 2023,
+          "week": 8
+        },
+        {
+          "value": 1029,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/8/1",
+          "detail": "nick beat kitch, 113.70–96.50 (nick 4-3, kitch 2-5 going in)",
+          "year": 2018,
+          "week": 8
+        },
+        {
+          "value": 1029,
+          "subject": "hadkiss",
+          "href": "/seasons/2017/matchups/8/1",
+          "detail": "hadkiss beat rich, 107.14–70.96 (hadkiss 6-1, rich 1-6 going in)",
+          "year": 2017,
+          "week": 8
+        },
+        {
+          "value": 1029,
+          "subject": "rich",
+          "href": "/seasons/2012/matchups/8/2",
+          "detail": "rich beat kitch, 96.96–84.68 (rich 5-2, kitch 3-4 going in) — won it on Sunday night, when Demaryius Thomas scored",
+          "year": 2012,
+          "week": 8
+        },
+        {
+          "value": 1028,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/8/6",
+          "detail": "rich beat jay, 117.28–116.60 (rich 3-4, jay 3-4 going in) — won it on Monday night, when Chris Boswell scored",
+          "year": 2024,
+          "week": 8
+        },
+        {
+          "value": 1028,
+          "subject": "rich",
+          "href": "/seasons/2019/matchups/8/5",
+          "detail": "rich beat kitch, 96.66–86.96 (rich 3-4, kitch 1-6 going in) — won it on Monday night, when James Conner scored",
+          "year": 2019,
+          "week": 8,
+          "approximate": true
+        },
+        {
+          "value": 1028,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/8/5",
+          "detail": "sol beat fin, 127.90–110.44 (sol 5-2, fin 2-5 going in) — the highest-scoring game of the week, 238.34 between them",
+          "year": 2018,
+          "week": 8
+        },
+        {
+          "value": 1028,
+          "subject": "fin",
+          "href": "/seasons/2013/matchups/8/5",
+          "detail": "fin beat dix, 105.70–103.74 (fin 4-3, dix 7-0 going in) — won it on Sunday night, when Aaron Rodgers scored",
+          "year": 2013,
+          "week": 8
+        },
+        {
+          "value": 1028,
+          "subject": "thd",
+          "href": "/seasons/2012/matchups/8/1",
+          "detail": "thd beat karsten, 101.80–75.06 (thd 4-3, karsten 1-6 going in) — won it on Sunday night, when Peyton Manning scored",
+          "year": 2012,
+          "week": 8
+        },
+        {
+          "value": 1027,
+          "subject": "sol",
+          "href": "/seasons/2025/matchups/8/6",
+          "detail": "sol beat jay, 98.48–92.28 (sol 4-3, jay 5-2 going in) — won it on Monday night, when Rashee Rice scored",
+          "year": 2025,
+          "week": 8
+        },
+        {
+          "value": 1027,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/8/2",
+          "detail": "thd beat hadkiss, 125.80–97.26 (thd 5-2, hadkiss 5-2 going in)",
+          "year": 2024,
+          "week": 8
+        },
+        {
+          "value": 1027,
+          "subject": "fin",
+          "href": "/seasons/2019/matchups/8/6",
+          "detail": "fin beat nick, 128.58–116.66 (fin 3-4, nick 5-2 going in) — won it on Sunday night, when Aaron Jones scored",
+          "year": 2019,
+          "week": 8,
+          "approximate": true
+        },
+        {
+          "value": 1027,
+          "subject": "jay",
+          "href": "/seasons/2015/matchups/7/5",
+          "detail": "jay beat sol, 128.62–72.04 (jay 4-2, sol 2-4 going in) — the heaviest beating of the week, by 56.58",
+          "year": 2015,
+          "week": 7
+        },
+        {
+          "value": 1027,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/8/2",
+          "detail": "kitch beat rich, 113.44–108.60 (kitch 5-2, rich 1-6 going in) — won it on Sunday night, when Drew Brees scored",
+          "year": 2014,
+          "week": 8
+        },
+        {
+          "value": 1027,
+          "subject": "htc",
+          "href": "/seasons/2013/matchups/8/1",
+          "detail": "htc beat thd, 110.26–102.14 (htc 1-6, thd 2-5 going in) — the highest-scoring game of the week, 212.40 between them",
+          "year": 2013,
+          "week": 8
+        },
+        {
+          "value": 1026,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/7/1",
+          "detail": "htc beat ryan, 87.02–83.72 (htc 3-3, ryan 2-4 going in) — won it on Sunday night, when Russell Wilson scored",
+          "year": 2020,
+          "week": 7
+        },
+        {
+          "value": 1026,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/7/3",
+          "detail": "ant beat chris, 86.98–67.90 (ant 2-4, chris 3-3 going in) — won it on Sunday night, when Cam Newton scored",
+          "year": 2015,
+          "week": 7
+        },
+        {
+          "value": 1026,
+          "subject": "hadkiss",
+          "href": "/seasons/2014/matchups/8/6",
+          "detail": "hadkiss beat fin, 112.08–98.36 (hadkiss 4-3, fin 5-2 going in)",
+          "year": 2014,
+          "week": 8
+        },
+        {
+          "value": 1025,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/7/3",
+          "detail": "jay beat hadkiss, 103.74–101.54 (jay 3-3, hadkiss 3-3 going in) — won it on Monday night, when the New Orleans Saints defence scored",
+          "year": 2021,
+          "week": 7
+        },
+        {
+          "value": 1025,
+          "subject": "hadkiss",
+          "href": "/seasons/2020/matchups/7/3",
+          "detail": "hadkiss beat fin, 132.70–73.40 (hadkiss 4-2, fin 5-1 going in) — the heaviest beating of the week, by 59.30",
+          "year": 2020,
+          "week": 7
+        },
+        {
+          "value": 1025,
+          "subject": "ant",
+          "href": "/seasons/2016/matchups/7/2",
+          "detail": "ant beat htc, 101.70–99.48 (ant 4-2, htc 1-5 going in) — won it on Monday night, when Demaryius Thomas scored",
+          "year": 2016,
+          "week": 7
+        },
+        {
+          "value": 1024,
+          "subject": "kitch",
+          "href": "/seasons/2022/matchups/7/4",
+          "detail": "kitch beat rich, 99.64–83.12 (kitch 4-2, rich 2-4 going in) — won it on Sunday night, when Tua Tagovailoa scored",
+          "year": 2022,
+          "week": 7
+        },
+        {
+          "value": 1024,
+          "subject": "fin",
+          "href": "/seasons/2021/matchups/7/6",
+          "detail": "fin beat dix, 72.00–63.48 (fin 1-5, dix 5-1 going in) — won it on Sunday night, when Carson Wentz scored",
+          "year": 2021,
+          "week": 7
+        },
+        {
+          "value": 1024,
+          "subject": "rich",
+          "href": "/seasons/2016/matchups/7/3",
+          "detail": "rich beat fin, 88.74–85.84 (rich 2-4, fin 3-3 going in) — won it on Sunday night, when Larry Fitzgerald scored",
+          "year": 2016,
+          "week": 7
+        },
+        {
+          "value": 1023,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/7/4",
+          "detail": "ryan beat htc, 83.10–63.00 (ryan 3-3, htc 2-4 going in) — won it on Monday night, when Brandon Aiyuk scored",
+          "year": 2023,
+          "week": 7
+        },
+        {
+          "value": 1023,
+          "subject": "sol",
+          "href": "/seasons/2022/matchups/7/5",
+          "detail": "sol beat jay, 111.46–65.44 (sol 3-3, jay 4-2 going in)",
+          "year": 2022,
+          "week": 7
+        },
+        {
+          "value": 1023,
+          "subject": "thd",
+          "href": "/seasons/2017/matchups/7/4",
+          "detail": "thd beat rich, 98.42–92.34 (thd 1-5, rich 1-5 going in) — won it on Monday night, when Kirk Cousins scored",
+          "year": 2017,
+          "week": 7
+        },
+        {
+          "value": 1022,
+          "subject": "rich",
+          "href": "/seasons/2023/matchups/7/1",
+          "detail": "rich beat ant, 92.06–62.44 (rich 5-1, ant 6-0 going in)",
+          "year": 2023,
+          "week": 7
+        },
+        {
+          "value": 1022,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/7/3",
+          "detail": "jay beat ant, 147.16–106.64 (jay 5-1, ant 1-5 going in) — the highest-scoring game of the week, 253.80 between them",
+          "year": 2018,
+          "week": 7
+        },
+        {
+          "value": 1022,
+          "subject": "jay",
+          "href": "/seasons/2017/matchups/7/3",
+          "detail": "jay beat fin, 95.86–78.32 (jay 3-3, fin 3-3 going in) — won it on Sunday night, when Tom Brady scored",
+          "year": 2017,
+          "week": 7
+        },
+        {
+          "value": 1022,
+          "subject": "hadkiss",
+          "href": "/seasons/2012/matchups/7/5",
+          "detail": "hadkiss beat fin, 50.92–44.28 (hadkiss 3-3, fin 3-3 going in) — won it on Monday night, when Mikel Leshoure scored",
+          "year": 2012,
+          "week": 7
+        },
+        {
+          "value": 1021,
+          "subject": "hadkiss",
+          "href": "/seasons/2024/matchups/7/5",
+          "detail": "hadkiss beat brock, 123.34–90.90 (hadkiss 4-2, brock 3-3 going in) — won it on Monday night, when Lamar Jackson scored",
+          "year": 2024,
+          "week": 7
+        },
+        {
+          "value": 1021,
+          "subject": "thd",
+          "href": "/seasons/2019/matchups/7/3",
+          "detail": "thd beat kitch, 91.62–79.96 (thd 4-2, kitch 1-5 going in) — won it on Monday night, when the New England Patriots defence scored",
+          "year": 2019,
+          "week": 7,
+          "approximate": true
+        },
+        {
+          "value": 1021,
+          "subject": "hadkiss",
+          "href": "/seasons/2018/matchups/7/2",
+          "detail": "hadkiss beat fin, 91.58–88.50 (hadkiss 4-2, fin 2-4 going in) — won it on Sunday night, when Tyreek Hill scored",
+          "year": 2018,
+          "week": 7
+        },
+        {
+          "value": 1021,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/7/2",
+          "detail": "dix beat brock, 113.78–83.62 (dix 6-0, brock 2-4 going in) — the highest-scoring game of the week, 197.40 between them",
+          "year": 2013,
+          "week": 7
+        },
+        {
+          "value": 1020,
+          "subject": "hadkiss",
+          "href": "/seasons/2025/matchups/7/5",
+          "detail": "hadkiss beat thd, 130.42–100.04 (hadkiss 4-2, thd 4-2 going in) — the highest-scoring game of the week, 230.46 between them",
+          "year": 2025,
+          "week": 7
+        },
+        {
+          "value": 1020,
+          "subject": "htc",
+          "href": "/seasons/2024/matchups/7/4",
+          "detail": "htc beat kitch, 104.72–67.54 (htc 3-3, kitch 2-4 going in)",
+          "year": 2024,
+          "week": 7
+        },
+        {
+          "value": 1020,
+          "subject": "sol",
+          "href": "/seasons/2019/matchups/7/5",
+          "detail": "sol beat htc, 87.04–72.86 (sol 3-3, htc 2-4 going in) — won it on Sunday night, when Brett Maher scored",
+          "year": 2019,
+          "week": 7,
+          "approximate": true
+        },
+        {
+          "value": 1020,
+          "subject": "dix",
+          "href": "/seasons/2014/matchups/7/4",
+          "detail": "dix beat sol, 102.42–93.92 (dix 6-0, sol 3-3 going in) — won it on Sunday night, when Peyton Manning scored",
+          "year": 2014,
+          "week": 7
+        },
+        {
+          "value": 1020,
+          "subject": "rich",
+          "href": "/seasons/2013/matchups/7/5",
+          "detail": "rich beat hadkiss, 101.02–90.80 (rich 3-3, hadkiss 4-2 going in) — won it on Sunday night, when Eric Decker scored",
+          "year": 2013,
+          "week": 7
+        },
+        {
+          "value": 1019,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/6/3",
+          "detail": "htc beat kitch, 100.82–95.98 (htc 2-3, kitch 2-3 going in) — won it on Monday night, when Amari Cooper scored",
+          "year": 2020,
+          "week": 6
+        },
+        {
+          "value": 1019,
+          "subject": "dix",
+          "href": "/seasons/2015/matchups/6/4",
+          "detail": "dix beat jay, 124.54–100.98 (dix 4-1, jay 4-1 going in) — won it on Monday night, when Odell Beckham scored",
+          "year": 2015,
+          "week": 6
+        },
+        {
+          "value": 1019,
+          "subject": "fin",
+          "href": "/seasons/2014/matchups/7/5",
+          "detail": "fin beat chris, 81.54–67.10 (fin 4-2, chris 3-3 going in) — won it on Sunday night, when Demaryius Thomas scored",
+          "year": 2014,
+          "week": 7
+        },
+        {
+          "value": 1018,
+          "subject": "htc",
+          "href": "/seasons/2021/matchups/6/4",
+          "detail": "htc beat kitch, 113.42–106.74 (htc 3-2, kitch 2-3 going in) — won it on Monday night, when Josh Allen scored",
+          "year": 2021,
+          "week": 6
+        },
+        {
+          "value": 1018,
+          "subject": "fin",
+          "href": "/seasons/2020/matchups/6/4",
+          "detail": "fin beat ant, 105.14–77.34 (fin 4-1, ant 2-3 going in)",
+          "year": 2020,
+          "week": 6
+        },
+        {
+          "value": 1018,
+          "subject": "jay",
+          "href": "/seasons/2016/matchups/6/3",
+          "detail": "jay beat sol, 112.28–96.44 (jay 5-0, sol 1-4 going in) — won it on Sunday night, when Andrew Luck scored",
+          "year": 2016,
+          "week": 6
+        },
+        {
+          "value": 1018,
+          "subject": "thd",
+          "href": "/seasons/2015/matchups/6/2",
+          "detail": "thd beat sol, 99.24–81.70 (thd 4-1, sol 2-3 going in)",
+          "year": 2015,
+          "week": 6
+        },
+        {
+          "value": 1017,
+          "subject": "sol",
+          "href": "/seasons/2022/matchups/6/6",
+          "detail": "sol beat ryan, 97.34–75.02 (sol 2-3, ryan 2-3 going in) — won it on Sunday night, when DeVonta Smith scored",
+          "year": 2022,
+          "week": 6
+        },
+        {
+          "value": 1017,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/6/3",
+          "detail": "jay beat ant, 115.28–90.70 (jay 2-3, ant 4-1 going in)",
+          "year": 2021,
+          "week": 6
+        },
+        {
+          "value": 1017,
+          "subject": "ant",
+          "href": "/seasons/2016/matchups/6/4",
+          "detail": "ant beat thd, 96.10–77.54 (ant 3-2, thd 4-1 going in)",
+          "year": 2016,
+          "week": 6
+        },
+        {
+          "value": 1016,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/6/3",
+          "detail": "ryan beat dix, 120.68–104.62 (ryan 2-3, dix 3-2 going in) — won it on Monday night, when Dak Prescott scored",
+          "year": 2023,
+          "week": 6
+        },
+        {
+          "value": 1016,
+          "subject": "htc",
+          "href": "/seasons/2022/matchups/6/1",
+          "detail": "htc beat ant, 115.36–78.10 (htc 4-1, ant 2-3 going in) — the highest-scoring game of the week, 193.46 between them",
+          "year": 2022,
+          "week": 6
+        },
+        {
+          "value": 1016,
+          "subject": "fin",
+          "href": "/seasons/2017/matchups/6/6",
+          "detail": "fin beat ant, 130.42–87.44 (fin 2-3, ant 2-3 going in) — won it on Sunday night, when Hunter Henry scored",
+          "year": 2017,
+          "week": 6
+        },
+        {
+          "value": 1016,
+          "subject": "dix",
+          "href": "/seasons/2016/matchups/6/1",
+          "detail": "dix beat fin, 101.06–78.66 (dix 3-2, fin 3-2 going in)",
+          "year": 2016,
+          "week": 6
+        },
+        {
+          "value": 1015,
+          "subject": "brock",
+          "href": "/seasons/2023/matchups/6/4",
+          "detail": "brock beat htc, 84.10–56.26 (brock 3-2, htc 2-3 going in)",
+          "year": 2023,
+          "week": 6
+        },
+        {
+          "value": 1015,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/6/3",
+          "detail": "sol beat dix, 118.68–118.60 (sol 4-1, dix 4-1 going in) — won it on Monday night, when Davante Adams scored",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 1015,
+          "subject": "nick",
+          "href": "/seasons/2017/matchups/6/2",
+          "detail": "nick beat dix, 79.62–75.82 (nick 3-2, dix 3-2 going in) — won it on Sunday night, when the Pittsburgh Steelers defence scored",
+          "year": 2017,
+          "week": 6
+        },
+        {
+          "value": 1015,
+          "subject": "jimmie",
+          "href": "/seasons/2012/matchups/6/1",
+          "detail": "jimmie beat thd, 109.92–99.44 (jimmie 2-3, thd 3-2 going in) — won it on Monday night, when Eric Decker scored",
+          "year": 2012,
+          "week": 6
+        },
+        {
+          "value": 1014,
+          "subject": "htc",
+          "href": "/seasons/2024/matchups/6/4",
+          "detail": "htc beat rich, 101.20–79.90 (htc 2-3, rich 3-2 going in) — won it on Monday night, when Josh Allen scored",
+          "year": 2024,
+          "week": 6
+        },
+        {
+          "value": 1014,
+          "subject": "thd",
+          "href": "/seasons/2019/matchups/6/4",
+          "detail": "thd beat htc, 116.84–108.94 (thd 3-2, htc 2-3 going in) — the highest-scoring game of the week, 225.78 between them",
+          "year": 2019,
+          "week": 6,
+          "approximate": true
+        },
+        {
+          "value": 1014,
+          "subject": "hadkiss",
+          "href": "/seasons/2018/matchups/6/2",
+          "detail": "hadkiss beat rich, 105.40–101.78 (hadkiss 3-2, rich 3-2 going in) — won it on Sunday night, when Rob Gronkowski scored",
+          "year": 2018,
+          "week": 6
+        },
+        {
+          "value": 1014,
+          "subject": "rich",
+          "href": "/seasons/2013/matchups/6/3",
+          "detail": "rich beat fin, 71.54–70.10 (rich 2-3, fin 3-2 going in) — won it on Monday night, when Danny Woodhead scored",
+          "year": 2013,
+          "week": 6
+        },
+        {
+          "value": 1014,
+          "subject": "ant",
+          "href": "/seasons/2012/matchups/6/2",
+          "detail": "ant beat kitch, 98.78–89.22 (ant 3-2, kitch 3-2 going in) — won it on Sunday night, when Randall Cobb scored",
+          "year": 2012,
+          "week": 6
+        },
+        {
+          "value": 1013,
+          "subject": "dix",
+          "href": "/seasons/2025/matchups/6/3",
+          "detail": "dix beat ryan, 92.78–89.34 (dix 0-5, ryan 1-4 going in) — won it on Sunday night, when Jameson Williams scored",
+          "year": 2025,
+          "week": 6
+        },
+        {
+          "value": 1013,
+          "subject": "sol",
+          "href": "/seasons/2024/matchups/6/5",
+          "detail": "sol beat brock, 95.36–89.86 (sol 2-3, brock 3-2 going in) — won it on Sunday night, when Darius Slayton scored",
+          "year": 2024,
+          "week": 6
+        },
+        {
+          "value": 1013,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/5/5",
+          "detail": "nick beat fin, 93.64–92.72 (nick 3-1, fin 4-0 going in) — won it on Tuesday night, when Cole Beasley scored",
+          "year": 2020,
+          "week": 5
+        },
+        {
+          "value": 1013,
+          "subject": "sol",
+          "href": "/seasons/2019/matchups/6/1",
+          "detail": "sol beat kitch, 141.70–76.10 (sol 2-3, kitch 1-4 going in) — the heaviest beating of the week, by 65.60",
+          "year": 2019,
+          "week": 6,
+          "approximate": true
+        },
+        {
+          "value": 1013,
+          "subject": "hadkiss",
+          "href": "/seasons/2014/matchups/6/5",
+          "detail": "hadkiss beat sol, 138.24–114.84 (hadkiss 2-3, sol 3-2 going in) — the highest-scoring game of the week, 253.08 between them",
+          "year": 2014,
+          "week": 6
+        },
+        {
+          "value": 1013,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/6/1",
+          "detail": "dix beat thd, 162.00–95.08 (dix 5-0, thd 1-4 going in) — the highest-scoring game of the week, 257.08 between them",
+          "year": 2013,
+          "week": 6
+        },
+        {
+          "value": 1012,
+          "subject": "ryan",
+          "href": "/seasons/2020/matchups/5/1",
+          "detail": "ryan beat hadkiss, 86.20–75.34 (ryan 1-3, hadkiss 4-0 going in) — won it on Monday night, when Drew Brees scored",
+          "year": 2020,
+          "week": 5
+        },
+        {
+          "value": 1012,
+          "subject": "hadkiss",
+          "href": "/seasons/2015/matchups/5/1",
+          "detail": "hadkiss beat kitch, 98.90–97.40 (hadkiss 3-1, kitch 1-3 going in) — won it on Monday night, when Philip Rivers scored",
+          "year": 2015,
+          "week": 5
+        },
+        {
+          "value": 1011,
+          "subject": "thd",
+          "href": "/seasons/2021/matchups/5/2",
+          "detail": "thd beat rich, 141.58–115.16 (thd 1-3, rich 2-2 going in) — won it on Monday night, when Lamar Jackson scored",
+          "year": 2021,
+          "week": 5
+        },
+        {
+          "value": 1011,
+          "subject": "thd",
+          "href": "/seasons/2016/matchups/5/1",
+          "detail": "thd beat rich, 121.56–109.02 (thd 3-1, rich 1-3 going in) — won it on Sunday night, when Eddie Lacy scored",
+          "year": 2016,
+          "week": 5
+        },
+        {
+          "value": 1010,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/5/3",
+          "detail": "hadkiss beat sol, 100.92–96.18 (hadkiss 3-1, sol 2-2 going in) — won it on Monday night, when Davante Adams scored",
+          "year": 2022,
+          "week": 5
+        },
+        {
+          "value": 1010,
+          "subject": "dix",
+          "href": "/seasons/2021/matchups/5/1",
+          "detail": "dix beat sol, 130.18–95.06 (dix 3-1, sol 4-0 going in)",
+          "year": 2021,
+          "week": 5
+        },
+        {
+          "value": 1010,
+          "subject": "ant",
+          "href": "/seasons/2016/matchups/5/3",
+          "detail": "ant beat dix, 92.18–84.66 (ant 2-2, dix 3-1 going in) — won it on Monday night, when Jacquizz Rodgers scored",
+          "year": 2016,
+          "week": 5
+        },
+        {
+          "value": 1009,
+          "subject": "brock",
+          "href": "/seasons/2023/matchups/5/5",
+          "detail": "brock beat kitch, 113.58–106.90 (brock 2-2, kitch 2-2 going in) — the highest-scoring game of the week, 220.48 between them",
+          "year": 2023,
+          "week": 5
+        },
+        {
+          "value": 1009,
+          "subject": "kitch",
+          "href": "/seasons/2022/matchups/5/4",
+          "detail": "kitch beat fin, 90.36–72.70 (kitch 2-2, fin 3-1 going in)",
+          "year": 2022,
+          "week": 5
+        },
+        {
+          "value": 1009,
+          "subject": "kitch",
+          "href": "/seasons/2017/matchups/5/2",
+          "detail": "kitch beat dix, 101.06–88.64 (kitch 1-3, dix 3-1 going in) — won it on Sunday night, when Alex Smith scored",
+          "year": 2017,
+          "week": 5
+        },
+        {
+          "value": 1008,
+          "subject": "htc",
+          "href": "/seasons/2023/matchups/5/4",
+          "detail": "htc beat sol, 114.36–89.86 (htc 1-3, sol 1-3 going in)",
+          "year": 2023,
+          "week": 5
+        },
+        {
+          "value": 1008,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/5/1",
+          "detail": "sol beat nick, 130.76–111.42 (sol 3-1, nick 2-2 going in) — the highest-scoring game of the week, 242.18 between them",
+          "year": 2018,
+          "week": 5
+        },
+        {
+          "value": 1008,
+          "subject": "htc",
+          "href": "/seasons/2017/matchups/5/5",
+          "detail": "htc beat thd, 115.14–84.82 (htc 2-2, thd 1-3 going in) — won it on Sunday night, when Deshaun Watson scored",
+          "year": 2017,
+          "week": 5
+        },
+        {
+          "value": 1008,
+          "subject": "ant",
+          "href": "/seasons/2012/matchups/5/1",
+          "detail": "ant beat thd, 90.74–80.00 (ant 2-2, thd 3-1 going in) — won it on Sunday night, when Marques Colston scored",
+          "year": 2012,
+          "week": 5
+        },
+        {
+          "value": 1007,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/5/5",
+          "detail": "rich beat fin, 99.14–86.26 (rich 2-2, fin 1-3 going in) — won it on Monday night, when Patrick Mahomes scored",
+          "year": 2024,
+          "week": 5
+        },
+        {
+          "value": 1007,
+          "subject": "nick",
+          "href": "/seasons/2019/matchups/5/2",
+          "detail": "nick beat sol, 174.00–106.32 (nick 4-0, sol 2-2 going in) — the highest-scoring game of the week, 280.32 between them",
+          "year": 2019,
+          "week": 5,
+          "approximate": true
+        },
+        {
+          "value": 1007,
+          "subject": "rich",
+          "href": "/seasons/2018/matchups/5/3",
+          "detail": "rich beat ant, 108.12–65.02 (rich 2-2, ant 1-3 going in)",
+          "year": 2018,
+          "week": 5
+        },
+        {
+          "value": 1007,
+          "subject": "jay",
+          "href": "/seasons/2013/matchups/5/4",
+          "detail": "jay beat thd, 116.86–94.12 (jay 4-0, thd 1-3 going in) — won it on Sunday night, when Wes Welker scored",
+          "year": 2013,
+          "week": 5
+        },
+        {
+          "value": 1007,
+          "subject": "hadkiss",
+          "href": "/seasons/2012/matchups/5/4",
+          "detail": "hadkiss beat karsten, 93.50–59.56 (hadkiss 2-2, karsten 1-3 going in)",
+          "year": 2012,
+          "week": 5
+        },
+        {
+          "value": 1006,
+          "subject": "ant",
+          "href": "/seasons/2025/matchups/5/6",
+          "detail": "ant beat ryan, 123.34–115.08 (ant 1-3, ryan 1-3 going in) — won it on Sunday night, when Stefon Diggs scored",
+          "year": 2025,
+          "week": 5
+        },
+        {
+          "value": 1006,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/5/6",
+          "detail": "ant beat kitch, 108.28–103.84 (ant 4-0, kitch 1-3 going in) — the closest game of the week, by 4.44",
+          "year": 2024,
+          "week": 5
+        },
+        {
+          "value": 1006,
+          "subject": "dix",
+          "href": "/seasons/2019/matchups/5/6",
+          "detail": "dix beat htc, 128.04–95.00 (dix 3-1, htc 2-2 going in) — won it on Sunday night, when Marlon Mack scored",
+          "year": 2019,
+          "week": 5,
+          "approximate": true
+        },
+        {
+          "value": 1006,
+          "subject": "hadkiss",
+          "href": "/seasons/2014/matchups/5/4",
+          "detail": "hadkiss beat htc, 90.96–90.04 (hadkiss 1-3, htc 2-2 going in) — won it on Sunday night, when Giovani Bernard scored",
+          "year": 2014,
+          "week": 5
+        },
+        {
+          "value": 1006,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/5/1",
+          "detail": "dix beat rich, 105.70–82.66 (dix 4-0, rich 2-2 going in)",
+          "year": 2013,
+          "week": 5
+        },
+        {
+          "value": 1005,
+          "subject": "hadkiss",
+          "href": "/seasons/2025/matchups/5/2",
+          "detail": "hadkiss beat htc, 114.86–68.22 (hadkiss 2-2, htc 2-2 going in) — the heaviest beating of the week, by 46.64",
+          "year": 2025,
+          "week": 5
+        },
+        {
+          "value": 1005,
+          "subject": "hadkiss",
+          "href": "/seasons/2020/matchups/4/3",
+          "detail": "hadkiss beat kitch, 76.20–76.00 (hadkiss 3-0, kitch 1-2 going in) — won it on Monday night, when Matt Ryan scored",
+          "year": 2020,
+          "week": 4
+        },
+        {
+          "value": 1005,
+          "subject": "sol",
+          "href": "/seasons/2015/matchups/4/3",
+          "detail": "sol beat ant, 88.14–79.76 (sol 1-2, ant 1-2 going in) — won it on Monday night, when Thomas Rawls scored",
+          "year": 2015,
+          "week": 4
+        },
+        {
+          "value": 1004,
+          "subject": "hadkiss",
+          "href": "/seasons/2021/matchups/4/5",
+          "detail": "hadkiss beat kitch, 140.28–104.00 (hadkiss 1-2, kitch 2-1 going in) — the highest-scoring game of the week, 244.28 between them",
+          "year": 2021,
+          "week": 4
+        },
+        {
+          "value": 1004,
+          "subject": "rich",
+          "href": "/seasons/2020/matchups/4/5",
+          "detail": "rich beat sol, 106.72–104.92 (rich 2-1, sol 0-3 going in)",
+          "year": 2020,
+          "week": 4
+        },
+        {
+          "value": 1004,
+          "subject": "hadkiss",
+          "href": "/seasons/2016/matchups/4/4",
+          "detail": "hadkiss beat rich, 105.02–71.10 (hadkiss 1-2, rich 1-2 going in)",
+          "year": 2016,
+          "week": 4
+        },
+        {
+          "value": 1004,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/4/2",
+          "detail": "fin beat rich, 91.04–73.82 (fin 2-1, rich 0-3 going in)",
+          "year": 2015,
+          "week": 4
+        },
+        {
+          "value": 1003,
+          "subject": "kitch",
+          "href": "/seasons/2022/matchups/4/4",
+          "detail": "kitch beat sol, 108.58–80.24 (kitch 1-2, sol 2-1 going in) — won it on Sunday night, when Russell Wilson scored",
+          "year": 2022,
+          "week": 4
+        },
+        {
+          "value": 1003,
+          "subject": "sol",
+          "href": "/seasons/2021/matchups/4/1",
+          "detail": "sol beat thd, 82.22–79.34 (sol 3-0, thd 1-2 going in) — the closest game of the week, by 2.88",
+          "year": 2021,
+          "week": 4
+        },
+        {
+          "value": 1003,
+          "subject": "dix",
+          "href": "/seasons/2016/matchups/4/3",
+          "detail": "dix beat phil, 121.04–110.22 (dix 2-1, phil 0-3 going in) — won it on Monday night, when Jerick McKinnon scored",
+          "year": 2016,
+          "week": 4
+        },
+        {
+          "value": 1002,
+          "subject": "thd",
+          "href": "/seasons/2023/matchups/4/2",
+          "detail": "thd beat jay, 134.48–59.38 (thd 0-3, jay 2-1 going in) — the heaviest beating of the week, by 75.10",
+          "year": 2023,
+          "week": 4
+        },
+        {
+          "value": 1002,
+          "subject": "hadkiss",
+          "href": "/seasons/2017/matchups/4/6",
+          "detail": "hadkiss beat chris, 112.00–84.68 (hadkiss 2-1, chris 3-0 going in) — won it on Sunday night, when the Seattle Seahawks defence scored",
+          "year": 2017,
+          "week": 4
+        },
+        {
+          "value": 1001,
+          "subject": "kitch",
+          "href": "/seasons/2023/matchups/4/5",
+          "detail": "kitch beat ryan, 118.20–101.74 (kitch 1-2, ryan 2-1 going in) — the highest-scoring game of the week, 219.94 between them",
+          "year": 2023,
+          "week": 4
+        },
+        {
+          "value": 1001,
+          "subject": "hadkiss",
+          "href": "/seasons/2018/matchups/4/1",
+          "detail": "hadkiss beat kitch, 99.56–79.58 (hadkiss 1-2, kitch 2-1 going in) — won it on Sunday night, when Carlos Hyde scored",
+          "year": 2018,
+          "week": 4
+        },
+        {
+          "value": 1001,
+          "subject": "sol",
+          "href": "/seasons/2017/matchups/4/3",
+          "detail": "sol beat fin, 85.26–55.24 (sol 1-2, fin 2-1 going in)",
+          "year": 2017,
+          "week": 4
+        },
+        {
+          "value": 1001,
+          "subject": "rich",
+          "href": "/seasons/2012/matchups/4/5",
+          "detail": "rich beat karsten, 117.56–100.56 (rich 2-1, karsten 1-2 going in) — won it on Monday night, when the Chicago Bears defence scored",
+          "year": 2012,
+          "week": 4
+        },
+        {
+          "value": 930,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/4/6",
+          "detail": "ant beat rich, 114.68–114.10 (ant 3-0, rich 2-1 going in) — won it on Monday night, when DK Metcalf scored",
+          "year": 2024,
+          "week": 4
+        },
+        {
+          "value": 930,
+          "subject": "thd",
+          "href": "/seasons/2019/matchups/4/4",
+          "detail": "thd beat ryan, 132.58–85.40 (thd 1-2, ryan 1-2 going in) — the highest-scoring game of the week, 217.98 between them",
+          "year": 2019,
+          "week": 4,
+          "approximate": true
+        },
+        {
+          "value": 930,
+          "subject": "kitch",
+          "href": "/seasons/2013/matchups/4/2",
+          "detail": "kitch beat fin, 123.52–98.34 (kitch 0-3, fin 2-1 going in) — won it on Monday night, when Drew Brees scored",
+          "year": 2013,
+          "week": 4
+        },
+        {
+          "value": 929,
+          "subject": "fin",
+          "href": "/seasons/2025/matchups/4/5",
+          "detail": "fin beat ryan, 107.30–107.16 (fin 1-2, ryan 1-2 going in) — won it on Monday night, when the Denver Broncos defence scored",
+          "year": 2025,
+          "week": 4
+        },
+        {
+          "value": 929,
+          "subject": "nick",
+          "href": "/seasons/2019/matchups/4/1",
+          "detail": "nick beat htc, 124.24–69.88 (nick 3-0, htc 2-1 going in) — the heaviest beating of the week, by 54.36",
+          "year": 2019,
+          "week": 4,
+          "approximate": true
+        },
+        {
+          "value": 929,
+          "subject": "brock",
+          "href": "/seasons/2014/matchups/4/3",
+          "detail": "brock beat hadkiss, 95.18–92.84 (brock 1-2, hadkiss 1-2 going in) — won it on Monday night, when Shane Vereen scored",
+          "year": 2014,
+          "week": 4
+        },
+        {
+          "value": 928,
+          "subject": "thd",
+          "href": "/seasons/2025/matchups/4/4",
+          "detail": "thd beat rich, 93.68–90.32 (thd 1-2, rich 2-1 going in) — won it on Sunday night, when the Green Bay Packers defence scored",
+          "year": 2025,
+          "week": 4
+        },
+        {
+          "value": 928,
+          "subject": "dix",
+          "href": "/seasons/2020/matchups/3/2",
+          "detail": "dix beat rich, 127.00–88.30 (dix 0-2, rich 2-0 going in) — won it on Monday night, when Patrick Mahomes scored",
+          "year": 2020,
+          "week": 3
+        },
+        {
+          "value": 928,
+          "subject": "fin",
+          "href": "/seasons/2015/matchups/3/6",
+          "detail": "fin beat jay, 116.78–116.68 (fin 1-1, jay 2-0 going in) — won it on Monday night, when Travis Kelce scored",
+          "year": 2015,
+          "week": 3
+        },
+        {
+          "value": 927,
+          "subject": "sol",
+          "href": "/seasons/2021/matchups/3/1",
+          "detail": "sol beat htc, 114.54–99.62 (sol 2-0, htc 1-1 going in) — won it on Sunday night, when Mason Crosby scored",
+          "year": 2021,
+          "week": 3
+        },
+        {
+          "value": 927,
+          "subject": "fin",
+          "href": "/seasons/2020/matchups/3/5",
+          "detail": "fin beat kitch, 94.14–70.38 (fin 2-0, kitch 1-1 going in) — won it on Sunday night, when Alvin Kamara scored",
+          "year": 2020,
+          "week": 3
+        },
+        {
+          "value": 926,
+          "subject": "brock",
+          "href": "/seasons/2022/matchups/3/3",
+          "detail": "brock beat jay, 106.12–93.80 (brock 2-0, jay 1-1 going in) — the highest-scoring game of the week, 199.92 between them",
+          "year": 2022,
+          "week": 3
+        },
+        {
+          "value": 926,
+          "subject": "jay",
+          "href": "/seasons/2021/matchups/3/2",
+          "detail": "jay beat rich, 109.38–62.14 (jay 0-2, rich 1-1 going in)",
+          "year": 2021,
+          "week": 3
+        },
+        {
+          "value": 926,
+          "subject": "kitch",
+          "href": "/seasons/2016/matchups/3/6",
+          "detail": "kitch beat rich, 89.54–81.68 (kitch 2-0, rich 1-1 going in) — won it on Monday night, when Drew Brees scored",
+          "year": 2016,
+          "week": 3
+        },
+        {
+          "value": 925,
+          "subject": "ant",
+          "href": "/seasons/2023/matchups/3/3",
+          "detail": "ant beat fin, 155.42–92.08 (ant 2-0, fin 0-2 going in) — won it on Sunday night, when Davante Adams scored",
+          "year": 2023,
+          "week": 3
+        },
+        {
+          "value": 925,
+          "subject": "htc",
+          "href": "/seasons/2022/matchups/3/1",
+          "detail": "htc beat kitch, 102.10–65.20 (htc 2-0, kitch 1-1 going in)",
+          "year": 2022,
+          "week": 3
+        },
+        {
+          "value": 925,
+          "subject": "nick",
+          "href": "/seasons/2017/matchups/3/2",
+          "detail": "nick beat kitch, 117.72–93.88 (nick 1-1, kitch 0-2 going in) — won it on Sunday night, when Chris Thompson scored",
+          "year": 2017,
+          "week": 3
+        },
+        {
+          "value": 924,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/3/3",
+          "detail": "sol beat ant, 82.98–73.98 (sol 2-0, ant 0-2 going in) — won it on Monday night, when JuJu Smith-Schuster scored",
+          "year": 2018,
+          "week": 3
+        },
+        {
+          "value": 924,
+          "subject": "jay",
+          "href": "/seasons/2017/matchups/3/3",
+          "detail": "jay beat sol, 142.02–72.76 (jay 1-1, sol 1-1 going in) — the highest-scoring game of the week, 214.78 between them",
+          "year": 2017,
+          "week": 3
+        },
+        {
+          "value": 924,
+          "subject": "karsten",
+          "href": "/seasons/2012/matchups/3/5",
+          "detail": "karsten beat kitch, 117.72–112.56 (karsten 0-2, kitch 1-1 going in) — the highest-scoring game of the week, 230.28 between them",
+          "year": 2012,
+          "week": 3
+        },
+        {
+          "value": 923,
+          "subject": "ant",
+          "href": "/seasons/2024/matchups/3/3",
+          "detail": "ant beat brock, 112.68–108.88 (ant 2-0, brock 2-0 going in) — won it on Monday night, when Joe Burrow scored",
+          "year": 2024,
+          "week": 3
+        },
+        {
+          "value": 923,
+          "subject": "hadkiss",
+          "href": "/seasons/2019/matchups/3/5",
+          "detail": "hadkiss beat thd, 121.80–89.58 (hadkiss 0-2, thd 1-1 going in)",
+          "year": 2019,
+          "week": 3,
+          "approximate": true
+        },
+        {
+          "value": 923,
+          "subject": "dix",
+          "href": "/seasons/2018/matchups/3/5",
+          "detail": "dix beat jay, 121.86–79.18 (dix 1-1, jay 2-0 going in) — the heaviest beating of the week, by 42.68",
+          "year": 2018,
+          "week": 3
+        },
+        {
+          "value": 923,
+          "subject": "rich",
+          "href": "/seasons/2014/matchups/3/6",
+          "detail": "rich beat htc, 112.00–91.54 (rich 0-2, htc 1-1 going in) — the highest-scoring game of the week, 203.54 between them",
+          "year": 2014,
+          "week": 3
+        },
+        {
+          "value": 923,
+          "subject": "jay",
+          "href": "/seasons/2013/matchups/3/5",
+          "detail": "jay beat kitch, 111.20–74.68 (jay 2-0, kitch 0-2 going in) — won it on Monday night, when Peyton Manning scored",
+          "year": 2013,
+          "week": 3
+        },
+        {
+          "value": 922,
+          "subject": "hadkiss",
+          "href": "/seasons/2025/matchups/3/3",
+          "detail": "hadkiss beat ant, 133.32–104.70 (hadkiss 1-1, ant 1-1 going in) — won it on Monday night, when Mark Andrews scored",
+          "year": 2025,
+          "week": 3
+        },
+        {
+          "value": 922,
+          "subject": "dix",
+          "href": "/seasons/2019/matchups/3/6",
+          "detail": "dix beat fin, 150.56–105.84 (dix 1-1, fin 1-1 going in) — the highest-scoring game of the week, 256.40 between them",
+          "year": 2019,
+          "week": 3,
+          "approximate": true
+        },
+        {
+          "value": 922,
+          "subject": "thd",
+          "href": "/seasons/2015/matchups/2/6",
+          "detail": "thd beat brock, 103.60–73.82 (thd 1-0, brock 0-1 going in)",
+          "year": 2015,
+          "week": 2
+        },
+        {
+          "value": 922,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/3/5",
+          "detail": "kitch beat sol, 89.22–71.92 (kitch 2-0, sol 1-1 going in) — won it on Sunday night, when Le'Veon Bell scored",
+          "year": 2014,
+          "week": 3
+        },
+        {
+          "value": 922,
+          "subject": "htc",
+          "href": "/seasons/2013/matchups/3/1",
+          "detail": "htc beat brock, 75.40–72.70 (htc 0-2, brock 1-1 going in) — the closest game of the week, by 2.70",
+          "year": 2013,
+          "week": 3
+        },
+        {
+          "value": 921,
+          "subject": "fin",
+          "href": "/seasons/2020/matchups/2/5",
+          "detail": "fin beat thd, 103.58–100.22 (fin 1-0, thd 0-1 going in) — won it on Monday night, when Alvin Kamara scored",
+          "year": 2020,
+          "week": 2
+        },
+        {
+          "value": 921,
+          "subject": "chris",
+          "href": "/seasons/2015/matchups/2/1",
+          "detail": "chris beat htc, 109.34–90.30 (chris 0-1, htc 1-0 going in) — won it on Sunday night, when Russell Wilson scored",
+          "year": 2015,
+          "week": 2
+        },
+        {
+          "value": 921,
+          "subject": "chris",
+          "href": "/seasons/2014/matchups/3/4",
+          "detail": "chris beat brock, 77.68–76.20 (chris 1-1, brock 1-1 going in) — the closest game of the week, by 1.48",
+          "year": 2014,
+          "week": 3
+        },
+        {
+          "value": 920,
+          "subject": "kitch",
+          "href": "/seasons/2021/matchups/2/3",
+          "detail": "kitch beat dix, 140.52–103.82 (kitch 0-1, dix 1-0 going in) — won it on Monday night, when T.J. Hockenson scored",
+          "year": 2021,
+          "week": 2
+        },
+        {
+          "value": 920,
+          "subject": "hadkiss",
+          "href": "/seasons/2020/matchups/2/3",
+          "detail": "hadkiss beat jay, 131.62–124.70 (hadkiss 1-0, jay 0-1 going in) — won it on Sunday night, when Tyler Lockett scored",
+          "year": 2020,
+          "week": 2
+        },
+        {
+          "value": 919,
+          "subject": "jay",
+          "href": "/seasons/2022/matchups/2/3",
+          "detail": "jay beat ant, 153.52–94.86 (jay 0-1, ant 0-1 going in) — won it on Sunday night, when Aaron Jones scored",
+          "year": 2022,
+          "week": 2
+        },
+        {
+          "value": 919,
+          "subject": "hadkiss",
+          "href": "/seasons/2021/matchups/2/5",
+          "detail": "hadkiss beat nick, 100.40–70.98 (hadkiss 0-1, nick 1-0 going in)",
+          "year": 2021,
+          "week": 2
+        },
+        {
+          "value": 919,
+          "subject": "dix",
+          "href": "/seasons/2016/matchups/2/6",
+          "detail": "dix beat rich, 111.16–108.32 (dix 1-0, rich 1-0 going in) — won it on Monday night, when the Arizona Cardinals defence scored",
+          "year": 2016,
+          "week": 2
+        },
+        {
+          "value": 918,
+          "subject": "htc",
+          "href": "/seasons/2023/matchups/2/2",
+          "detail": "htc beat thd, 106.26–97.20 (htc 0-1, thd 0-1 going in) — won it on Monday night, when the New Orleans Saints defence scored",
+          "year": 2023,
+          "week": 2
+        },
+        {
+          "value": 918,
+          "subject": "dix",
+          "href": "/seasons/2017/matchups/2/3",
+          "detail": "dix beat sol, 102.42–87.58 (dix 1-0, sol 1-0 going in)",
+          "year": 2017,
+          "week": 2
+        },
+        {
+          "value": 917,
+          "subject": "rich",
+          "href": "/seasons/2023/matchups/2/1",
+          "detail": "rich beat dix, 109.82–80.38 (rich 1-0, dix 1-0 going in)",
+          "year": 2023,
+          "week": 2
+        },
+        {
+          "value": 917,
+          "subject": "sol",
+          "href": "/seasons/2018/matchups/2/3",
+          "detail": "sol beat hadkiss, 103.84–84.06 (sol 1-0, hadkiss 1-0 going in) — won it on Sunday night, when Saquon Barkley scored",
+          "year": 2018,
+          "week": 2
+        },
+        {
+          "value": 917,
+          "subject": "htc",
+          "href": "/seasons/2017/matchups/2/6",
+          "detail": "htc beat ant, 107.30–90.16 (htc 1-0, ant 1-0 going in) — won it on Sunday night, when the Denver Broncos defence scored",
+          "year": 2017,
+          "week": 2
+        },
+        {
+          "value": 917,
+          "subject": "thd",
+          "href": "/seasons/2012/matchups/2/1",
+          "detail": "thd beat hadkiss, 108.44–106.36 (thd 1-0, hadkiss 1-0 going in) — the highest-scoring game of the week, 214.80 between them",
+          "year": 2012,
+          "week": 2
+        },
+        {
+          "value": 916,
+          "subject": "rich",
+          "href": "/seasons/2024/matchups/2/6",
+          "detail": "rich beat hadkiss, 128.14–106.58 (rich 1-0, hadkiss 1-0 going in) — the highest-scoring game of the week, 234.72 between them",
+          "year": 2024,
+          "week": 2
+        },
+        {
+          "value": 916,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/2/1",
+          "detail": "jay beat ryan, 111.34–82.42 (jay 0-1, ryan 1-0 going in) — won it on Monday night, when Nick Chubb scored",
+          "year": 2019,
+          "week": 2,
+          "approximate": true
+        },
+        {
+          "value": 916,
+          "subject": "fin",
+          "href": "/seasons/2018/matchups/2/6",
+          "detail": "fin beat htc, 111.62–94.84 (fin 0-1, htc 1-0 going in)",
+          "year": 2018,
+          "week": 2
+        },
+        {
+          "value": 916,
+          "subject": "ant",
+          "href": "/seasons/2013/matchups/2/4",
+          "detail": "ant beat thd, 109.52–106.84 (ant 0-1, thd 0-1 going in) — won it on Monday night, when Dez Bryant scored",
+          "year": 2013,
+          "week": 2
+        },
+        {
+          "value": 916,
+          "subject": "rich",
+          "href": "/seasons/2012/matchups/2/3",
+          "detail": "rich beat dix, 104.40–91.30 (rich 0-1, dix 1-0 going in) — won it on Sunday night, when Frank Gore scored",
+          "year": 2012,
+          "week": 2
+        },
+        {
+          "value": 915,
+          "subject": "hadkiss",
+          "href": "/seasons/2025/matchups/2/3",
+          "detail": "hadkiss beat fin, 130.80–105.48 (hadkiss 0-1, fin 0-1 going in) — won it on Monday night, when Baker Mayfield scored",
+          "year": 2025,
+          "week": 2
+        },
+        {
+          "value": 915,
+          "subject": "kitch",
+          "href": "/seasons/2024/matchups/2/5",
+          "detail": "kitch beat sol, 116.10–107.74 (kitch 0-1, sol 0-1 going in) — won it on Sunday night, when Nico Collins scored",
+          "year": 2024,
+          "week": 2
+        },
+        {
+          "value": 915,
+          "subject": "thd",
+          "href": "/seasons/2019/matchups/2/5",
+          "detail": "thd beat fin, 134.98–96.76 (thd 0-1, fin 1-0 going in) — the highest-scoring game of the week, 231.74 between them",
+          "year": 2019,
+          "week": 2,
+          "approximate": true
+        },
+        {
+          "value": 915,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/2/6",
+          "detail": "kitch beat htc, 96.08–93.44 (kitch 1-0, htc 1-0 going in) — won it on Monday night, when Jeremy Maclin scored",
+          "year": 2014,
+          "week": 2
+        },
+        {
+          "value": 915,
+          "subject": "dix",
+          "href": "/seasons/2013/matchups/2/3",
+          "detail": "dix beat htc, 117.56–81.38 (dix 1-0, htc 0-1 going in) — won it on Sunday night, when Marshawn Lynch scored",
+          "year": 2013,
+          "week": 2
+        },
+        {
+          "value": 914,
+          "subject": "brock",
+          "href": "/seasons/2026/matchups/1/2",
+          "detail": "brock beat kitch, 124.30–95.54 — won it on Sunday night, when Jaxson Dart scored",
+          "year": 2026,
+          "week": 1
+        },
+        {
+          "value": 914,
+          "subject": "ryan",
+          "href": "/seasons/2025/matchups/2/5",
+          "detail": "ryan beat brock, 91.44–86.84 (ryan 0-1, brock 1-0 going in) — won it on Sunday night, when Justin Jefferson scored",
+          "year": 2025,
+          "week": 2
+        },
+        {
+          "value": 914,
+          "subject": "rich",
+          "href": "/seasons/2020/matchups/1/1",
+          "detail": "rich beat ryan, 111.60–110.56 — won it on Monday night, when Noah Fant scored",
+          "year": 2020,
+          "week": 1
+        },
+        {
+          "value": 914,
+          "subject": "thd",
+          "href": "/seasons/2015/matchups/1/5",
+          "detail": "thd beat ant, 117.72–116.58 — won it on Monday night, when Julio Jones scored",
+          "year": 2015,
+          "week": 1
+        },
+        {
+          "value": 914,
+          "subject": "dix",
+          "href": "/seasons/2014/matchups/2/3",
+          "detail": "dix beat chris, 92.78–82.24 (dix 1-0, chris 1-0 going in)",
+          "year": 2014,
+          "week": 2
+        },
+        {
+          "value": 913,
+          "subject": "ryan",
+          "href": "/seasons/2026/matchups/1/3",
+          "detail": "ryan beat jay, 94.86–86.82",
+          "year": 2026,
+          "week": 1
+        },
+        {
+          "value": 913,
+          "subject": "htc",
+          "href": "/seasons/2021/matchups/1/2",
+          "detail": "htc beat jay, 113.30–99.76 — the highest-scoring game of the week, 213.06 between them",
+          "year": 2021,
+          "week": 1
+        },
+        {
+          "value": 913,
+          "subject": "htc",
+          "href": "/seasons/2020/matchups/1/3",
+          "detail": "htc beat jay, 99.98–93.58 — won it on Sunday night, when Robert Woods scored",
+          "year": 2020,
+          "week": 1
+        },
+        {
+          "value": 912,
+          "subject": "hadkiss",
+          "href": "/seasons/2022/matchups/1/2",
+          "detail": "hadkiss beat kitch, 111.96–79.78 — won it on Sunday night, when Ryan Succop scored",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 912,
+          "subject": "nick",
+          "href": "/seasons/2021/matchups/1/4",
+          "detail": "nick beat fin, 116.32–71.16 — the heaviest beating of the week, by 45.16",
+          "year": 2021,
+          "week": 1
+        },
+        {
+          "value": 912,
+          "subject": "thd",
+          "href": "/seasons/2016/matchups/1/6",
+          "detail": "thd beat hadkiss, 111.06–103.60 — won it on Monday night, when Chris Boswell scored",
+          "year": 2016,
+          "week": 1
+        },
+        {
+          "value": 911,
+          "subject": "ant",
+          "href": "/seasons/2023/matchups/1/4",
+          "detail": "ant beat kitch, 85.74–74.92 — won it on Sunday night, when A.J. Brown scored",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 911,
+          "subject": "ryan",
+          "href": "/seasons/2022/matchups/1/3",
+          "detail": "ryan beat jay, 118.00–66.12",
+          "year": 2022,
+          "week": 1
+        },
+        {
+          "value": 911,
+          "subject": "sol",
+          "href": "/seasons/2017/matchups/1/2",
+          "detail": "sol beat nick, 87.68–84.94 — won it on Monday night, when C.J. Anderson scored",
+          "year": 2017,
+          "week": 1
+        },
+        {
+          "value": 910,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/1/6",
+          "detail": "ryan beat brock, 121.56–92.58 — the highest-scoring game of the week, 214.14 between them",
+          "year": 2023,
+          "week": 1
+        },
+        {
+          "value": 910,
+          "subject": "htc",
+          "href": "/seasons/2018/matchups/1/5",
+          "detail": "htc beat dix, 102.74–78.96 — won it on Sunday night, when Aaron Rodgers scored",
+          "year": 2018,
+          "week": 1
+        },
+        {
+          "value": 910,
+          "subject": "thd",
+          "href": "/seasons/2012/matchups/1/1",
+          "detail": "thd beat jay, 129.68–125.44 — won it on Monday night, when Ray Rice scored",
+          "year": 2012,
+          "week": 1
+        },
+        {
+          "value": 909,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/1/1",
+          "detail": "thd beat dix, 102.38–85.58 — won it on Sunday night, when Jahmyr Gibbs scored",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 909,
+          "subject": "rich",
+          "href": "/seasons/2019/matchups/1/4",
+          "detail": "rich beat hadkiss, 118.62–86.96 — won it on Monday night, when Deshaun Watson scored",
+          "year": 2019,
+          "week": 1,
+          "approximate": true
+        },
+        {
+          "value": 909,
+          "subject": "nick",
+          "href": "/seasons/2018/matchups/1/1",
+          "detail": "nick beat thd, 117.96–114.60 — the highest-scoring game of the week, 232.56 between them",
+          "year": 2018,
+          "week": 1
+        },
+        {
+          "value": 909,
+          "subject": "kitch",
+          "href": "/seasons/2014/matchups/1/6",
+          "detail": "kitch beat brock, 114.72–89.18 — the highest-scoring game of the week, 203.90 between them",
+          "year": 2014,
+          "week": 1
+        },
+        {
+          "value": 909,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/1/1",
+          "detail": "hadkiss beat htc, 111.00–109.38 — won it on Monday night, when Andre Johnson scored",
+          "year": 2013,
+          "week": 1
+        },
+        {
+          "value": 908,
+          "subject": "ant",
+          "href": "/seasons/2025/matchups/1/4",
+          "detail": "ant beat fin, 114.58–101.62 — won it on Sunday night, when Derrick Henry scored",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 908,
+          "subject": "ryan",
+          "href": "/seasons/2024/matchups/1/2",
+          "detail": "ryan beat htc, 113.22–81.88",
+          "year": 2024,
+          "week": 1
+        },
+        {
+          "value": 908,
+          "subject": "dix",
+          "href": "/seasons/2014/matchups/1/4",
+          "detail": "dix beat rich, 120.56–81.68 — won it on Sunday night, when Peyton Manning scored",
+          "year": 2014,
+          "week": 1
+        },
+        {
+          "value": 907,
+          "subject": "rich",
+          "href": "/seasons/2025/matchups/1/2",
+          "detail": "rich beat dix, 86.02–76.24",
+          "year": 2025,
+          "week": 1
+        },
+        {
+          "value": 103,
+          "subject": "sol",
+          "href": "/seasons/2021/matchups/17/4",
+          "detail": "sol beat hadkiss, 103.12–96.86 — a playoff game",
+          "year": 2021,
+          "week": 17
+        },
+        {
+          "value": 102,
+          "subject": "ant",
+          "href": "/seasons/2021/matchups/17/1",
+          "detail": "ant beat dix, 117.28–76.16 — the 2021 title game",
+          "year": 2021,
+          "week": 17
+        },
+        {
+          "value": 101,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/17/1",
+          "detail": "dix beat htc, 94.48–60.02 — the 2022 title game",
+          "year": 2022,
+          "week": 17
+        }
+      ]
+    },
+    {
+      "id": "manager-archetypes",
+      "label": "Manager archetypes",
+      "description": "What fifteen years of results say about each manager, in one phrase. Every label is the measure that manager is furthest from the league average on — narrow losses, how far their scores swing, how much the schedule has flattered them — and the number behind it is in the line. Managers with fewer than 40 games are left out.",
+      "scope": "manager",
+      "format": "count",
+      "direction": "high",
+      "excluded": [],
+      "caveat": [],
+      "total": 14,
+      "entries": [
+        {
+          "value": 2.55,
+          "subject": "hadkiss",
+          "href": "/managers/hadkiss",
+          "detail": "The Cat Burglar — 25 wins by under five points, most in the league — wins nothing by a distance and everything by a whisker"
+        },
+        {
+          "value": 2.31,
+          "subject": "thd",
+          "href": "/managers/thd",
+          "detail": "The Heartbreaker — 23 losses by under five points, most in the league"
+        },
+        {
+          "value": 2.22,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "The Punchbag — loses by 29.6 points on average, the largest in the league — which is not losing so much as being disposed of"
+        },
+        {
+          "value": 1.78,
+          "subject": "fin",
+          "href": "/managers/fin",
+          "detail": "The Metronome — scores swing by only ±18.1 points week to week, the narrowest in the league — the same thing, every Sunday, forever"
+        },
+        {
+          "value": 1.68,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "The Trapdoor — 32 weeks spent in the bottom tenth of every score this league has ever posted, most in the league"
+        },
+        {
+          "value": 1.68,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "The Closer — 35% through Week 6, 53% from Week 9 — a surge of 18 percentage points, the steepest surge in the league"
+        },
+        {
+          "value": 1.63,
+          "subject": "htc",
+          "href": "/managers/htc",
+          "detail": "The Coin Flip — 88-88 across 176 regular-season games, a win rate of 50.0%, the closest anyone has come to a coin toss over a whole career — fifteen years of being exactly as good as everybody else"
+        },
+        {
+          "value": 1.58,
+          "subject": "nick",
+          "href": "/managers/nick",
+          "detail": "The Machine — 100.6 points a week across a whole career, the highest average in the league"
+        },
+        {
+          "value": 1.57,
+          "subject": "jay",
+          "href": "/managers/jay",
+          "detail": "The Rollercoaster — scores swing by ±23.1 points week to week, the widest in the league — nobody, himself included, knows which team turns up"
+        },
+        {
+          "value": 1.48,
+          "subject": "chris",
+          "href": "/managers/chris",
+          "detail": "The Anchor — 87.0 points a week across a whole career, the lowest average in the league — a fixture everyone else pencils in as a win"
+        },
+        {
+          "value": 1.43,
+          "subject": "dix",
+          "href": "/managers/dix",
+          "detail": "The Bully — wins by 28.2 points on average, 2nd of 14 in the league — does not so much win as make a point"
+        },
+        {
+          "value": 1.11,
+          "subject": "brock",
+          "href": "/managers/brock",
+          "detail": "The September Hero — 51% through Week 6, 40% from Week 9 — a fade of 11 percentage points, 3rd of 14 in the league"
+        },
+        {
+          "value": 1,
+          "subject": "ant",
+          "href": "/managers/ant",
+          "detail": "The Fraud — wins 53% of his regular-season games on scores that beat only 51% of the league — 2.0 percentage points of pure fixture luck, 3rd of 14 in the league"
+        },
+        {
+          "value": 0.69,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "The Iron Man — 221 games played, 4th of 14 in the league — has outlasted managers, teams and at least one league format"
+        }
+      ]
+    },
+    {
+      "id": "championship-inevitability",
+      "label": "When the title was decided",
+      "description": "Looking back at each championship: the week after which the eventual champion never again fell out of the top half of the playoff places — the top three of six, or the top two of four in the early years. Ranked on the standings after every week, by record then points scored. The earlier the week, the less doubt there ever was; 'never' means they were still outside that group on the last day and won it regardless.",
+      "scope": "season",
+      "format": "count",
+      "direction": "low",
+      "excluded": [],
+      "caveat": [],
+      "total": 14,
+      "entries": [
+        {
+          "value": 1,
+          "subject": "jay",
+          "href": "/seasons/2018/matchups/16/4",
+          "detail": "2018 · Week 1 — jay never left the top 3 again, finished 1st at 12-1, and won the final by 12.50 against sol",
+          "year": 2018,
+          "week": 16
+        },
+        {
+          "value": 6,
+          "subject": "thd",
+          "href": "/seasons/2024/matchups/17/1",
+          "detail": "2024 · Week 6 — thd was 6th after Week 5, then never left the top 3 again, finished 3rd at 9-5, and won the final by 40.92 against rich",
+          "year": 2024,
+          "week": 17
+        },
+        {
+          "value": 7,
+          "subject": "ant",
+          "href": "/seasons/2021/matchups/17/1",
+          "detail": "2021 · Week 7 — ant was 4th after Week 6, then never left the top 3 again, finished 1st at 10-4, and won the final by 41.12 against dix",
+          "year": 2021,
+          "week": 17
+        },
+        {
+          "value": 8,
+          "subject": "jay",
+          "href": "/seasons/2019/matchups/16/4",
+          "detail": "2019 · Week 8 — jay was 5th after Week 7, then never left the top 3 again, finished 3rd at 8-5, and won the final by 46.92 against nick",
+          "year": 2019,
+          "week": 16
+        },
+        {
+          "value": 8,
+          "subject": "dix",
+          "href": "/seasons/2022/matchups/17/1",
+          "detail": "2022 · Week 8 — dix was 4th after Week 7, then never left the top 3 again, finished 1st at 11-3, and won the final by 34.46 against htc",
+          "year": 2022,
+          "week": 17
+        },
+        {
+          "value": 9,
+          "subject": "dix",
+          "href": "/seasons/2017/matchups/16/4",
+          "detail": "2017 · Week 9 — dix was 4th after Week 8, then never left the top 3 again, finished 2nd at 9-4, and won the final by 7.78 against nick",
+          "year": 2017,
+          "week": 16
+        },
+        {
+          "value": 9,
+          "subject": "ryan",
+          "href": "/seasons/2023/matchups/17/1",
+          "detail": "2023 · Week 9 — ryan was 4th after Week 8, then never left the top 3 again, finished 2nd at 9-5, and won the final by 0.72 against rich",
+          "year": 2023,
+          "week": 17
+        },
+        {
+          "value": 10,
+          "subject": "nick",
+          "href": "/seasons/2020/matchups/16/1",
+          "detail": "2020 · Week 10 — nick was 5th after Week 9, then never left the top 3 again, finished 2nd at 9-4, and won the final by 5.10 against thd",
+          "year": 2020,
+          "week": 16
+        },
+        {
+          "value": 14,
+          "subject": "htc",
+          "href": "/seasons/2025/matchups/17/1",
+          "detail": "2025 · Week 14 — htc was 4th after Week 13, then never left the top 3 again, finished 3rd at 8-6, and won the final by 24.24 against hadkiss",
+          "year": 2025,
+          "week": 17
+        },
+        {
+          "value": 16,
+          "subject": "dix",
+          "href": "/seasons/2012/matchups/16/3",
+          "detail": "2012 · never — dix was outside the top 2 right to the end of Week 14, finished 4th at 8-6, and then won the final by 2.68 against thd anyway",
+          "year": 2012,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "hadkiss",
+          "href": "/seasons/2013/matchups/16/3",
+          "detail": "2013 · never — hadkiss was outside the top 2 right to the end of Week 14, finished 4th at 7-7, and then won the final by 10.02 against jay anyway",
+          "year": 2013,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "sol",
+          "href": "/seasons/2014/matchups/16/4",
+          "detail": "2014 · never — sol was outside the top 3 right to the end of Week 13, finished 5th at 7-6, and then won the final by 9.44 against kitch anyway",
+          "year": 2014,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "ant",
+          "href": "/seasons/2015/matchups/16/4",
+          "detail": "2015 · never — ant was outside the top 3 right to the end of Week 13, finished 4th at 8-5, and then won the final by 4.38 against htc anyway",
+          "year": 2015,
+          "week": 16
+        },
+        {
+          "value": 16,
+          "subject": "fin",
+          "href": "/seasons/2016/matchups/16/4",
+          "detail": "2016 · never — fin was outside the top 3 right to the end of Week 13, finished 4th at 7-6, and then won the final by 3.58 against hadkiss anyway",
+          "year": 2016,
+          "week": 16
         }
       ]
     },

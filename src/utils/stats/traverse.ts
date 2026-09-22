@@ -107,23 +107,27 @@ export const provideTimelines = (source: TimelineSource | null): void => {
 export const getTimelineVersion = (): number => timelineVersion;
 
 /**
- * Every decided game whose week has a timeline, the winner's half first.
+ * Every game whose week has a timeline, once each: the winner's half, so
+ * `flow`'s side 0 is always the team that won — or for a tie (there has been
+ * one) the lower roster id's half, with no `decided` at all.
  *
- * Only games are walked, so a team with no opponent cannot appear, and only
- * the winner's half of each, so a game is counted once and `flow`'s side 0 is
- * always the team that won.
+ * Only games are walked, so a team with no opponent cannot appear.
  */
 const buildFlows = (games: Game[]): FlowGame[] => {
   if (!timelines) return [];
   const flows: FlowGame[] = [];
   for (const game of games) {
-    if (game.result !== "win") continue;
+    const tie = game.result === "tie";
+    if (game.result === "loss" || (tie && game.rosterId > game.opponentRosterId)) {
+      continue;
+    }
     const file = timelines(game.year, game.week);
     if (!file) continue;
     const flow = buildGameFlow(file, [game.rosterId, game.opponentRosterId]);
-    // No `decided` means the timelines end level — a week whose file is
-    // missing a team, or a game the corrections tied. Nothing to rank.
-    if (!flow?.decided) continue;
+    if (!flow) continue;
+    // A win whose timelines end level would be a file missing a team or a
+    // correction gone wrong: not a game to tell stories about.
+    if (!tie && !flow.decided) continue;
     flows.push({ game, flow });
   }
   return flows;

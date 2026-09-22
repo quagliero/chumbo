@@ -60,6 +60,21 @@ export interface Game {
 }
 
 /**
+ * One game as it unfolded through the NFL week (L2).
+ *
+ * `game` is the WINNER's half, and the flow is built with the winner as side
+ * 0 — so `flow.comeback` is the deficit the winner came back from and
+ * `flow.decided` is the moment they went ahead for good, with no stat having
+ * to work out which side is which. A tie is here too (the league has had one),
+ * as the lower roster id's half, with `flow.decided` undefined: a stat about
+ * who won skips it by skipping games with nothing decided.
+ */
+export interface FlowGame {
+  game: Game;
+  flow: GameFlow;
+}
+
+/**
  * Everything a stat is given. Built once, shared by all of them.
  *
  * There are two lists because the stats genuinely want different things, and
@@ -81,26 +96,12 @@ export interface Game {
  * 0` and `result: "tie"`; those fields are meaningless for it, which is
  * exactly why result-shaped questions should use `games`.
  */
-/**
- * One decided game as it unfolded through the NFL week (L2).
- *
- * `game` is always the WINNER's half, and the flow is built with the winner as
- * side 0 — so `flow.comeback` is the deficit the winner came back from and
- * `flow.decided` is the moment they went ahead for good, with no stat having
- * to work out which side is which. Ties have no flow: nothing was decided and
- * nobody came back.
- */
-export interface FlowGame {
-  game: Game;
-  flow: GameFlow;
-}
-
 export interface StatContext {
   games: Game[];
   teamWeeks: Game[];
   years: number[];
   /**
-   * Every decided game whose week has a committed timeline, or an empty list
+   * Every game whose week has a committed timeline, or an empty list
    * where none have been provided (`provideTimelines` in `./traverse`). A stat
    * that reads this must declare `requiresTimelines`, which makes the empty
    * case throw rather than quietly answer with no records at all.
@@ -176,5 +177,12 @@ export interface StatDefinition {
    * absent, which would otherwise look exactly like a league with no comebacks.
    */
   requiresTimelines?: boolean;
+  /**
+   * Keep EVERY entry in `all-time.json`, not the top 25. For a stat whose page
+   * picks by something the build cannot know — `on-this-day` picks by the
+   * reader's date, and the file is built three times a week — the top 25 is
+   * the wrong 25 on most days.
+   */
+  precomputeAll?: boolean;
   compute: (context: StatContext) => StatEntry[];
 }

@@ -53,12 +53,14 @@ export const closestMargin = defineStat({
   scope: "league",
   format: "points",
   direction: "low",
+  // The WINNER's half, not `oneSidePerGame`'s lower roster id: the entry's
+  // subject is who holds the record, and the narrative engine calls this "the
+  // narrowest win". Keeping the lower id credited hadkiss with the narrowest
+  // win in league history — 116.10 to 116.14, which hadkiss lost.
   compute: ({ games }) =>
-    oneSidePerGame(games)
-      .filter((game) => game.result !== "tie")
-      .map((game) =>
-        entry(game, Math.round(Math.abs(game.margin) * 100) / 100)
-      ),
+    games
+      .filter((game) => game.result === "win")
+      .map((game) => entry(game, Math.round(game.margin * 100) / 100)),
 });
 
 export const highestScoringLoss = defineStat({

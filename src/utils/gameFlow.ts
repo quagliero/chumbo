@@ -212,6 +212,43 @@ export const clockOf = (at: number): string => {
   return `${full}, ${twelve}:${String(minute).padStart(2, "0")} ${suffix}`;
 };
 
+const EASTERN_DATE = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  hourCycle: "h23",
+});
+
+/**
+ * The calendar day a moment belongs to, in Eastern time, with the same rule
+ * `slotOf` uses: a game running past midnight belongs to the night it started.
+ * Monday night's 12:40 am touchdown was scored on Monday.
+ */
+export const dayOf = (at: number): { year: number; month: number; day: number } => {
+  const parts = (time: number) =>
+    Object.fromEntries(
+      EASTERN_DATE.formatToParts(new Date(time * 1000)).map((p) => [p.type, p.value])
+    );
+  const first = parts(at);
+  const settled = Number(first.hour) < 6 ? parts(at - 6 * 3600) : first;
+  return {
+    year: Number(settled.year),
+    month: Number(settled.month),
+    day: Number(settled.day),
+  };
+};
+
+/**
+ * When a game was over: its last scoring moment that was a PLAY. A correction
+ * is dated by the play it follows, or for a team correction by the week's last
+ * moment, which can put a game that was over on Sunday into Monday night.
+ */
+export const finishedAt = (flow: GameFlow): number | undefined =>
+  [...flow.steps].reverse().find((step) => !step.correction)?.at ??
+  flow.steps[flow.steps.length - 1]?.at;
+
 /* ------------------------------------------------------------------ x axis */
 
 /** Longest stretch of nothing shown at its real width, in seconds. */

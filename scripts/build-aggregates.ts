@@ -80,7 +80,8 @@ const stats: PrecomputedStat[] = allStats().map((definition) => {
     caveat: caveatSeasons(definition),
     /** How many entries the stat actually has, before the cap below. */
     total: all.length,
-    entries: all.slice(0, LIMIT),
+    // Every entry for a stat whose page chooses by the reader's date.
+    entries: definition.precomputeAll ? all : all.slice(0, LIMIT),
   };
 });
 

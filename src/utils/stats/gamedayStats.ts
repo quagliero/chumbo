@@ -31,7 +31,7 @@ const versus = (game: Game) =>
   `${game.year} Week ${game.week} vs ${name(game.opponentManagerId)}`;
 
 /** Defences carry no `full_name`; ids from the NFL.com years are names already. */
-const playerName = (playerId: string, year: number): string => {
+export const playerName = (playerId: string, year: number): string => {
   if (!playerId) return "";
   const player = getPlayer(playerId, year);
   if (!player) return playerId;

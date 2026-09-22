@@ -26,15 +26,18 @@ const finished = <T extends { year?: number }>(entries: T[]) =>
   entries.filter((entry) => (entry.year ?? 0) <= PINNED_THROUGH);
 
 describe("the week's flows", () => {
-  it("is one per decided game, the winner first", () => {
+  it("is one per game, the winner first", () => {
     const { flows, games } = getStatContext();
 
     expect(flows.length).toBeGreaterThan(1000);
     // A game appears once, as its winner's half, and the flow agrees with the
     // official scores — which is what makes side 0 "the winner" everywhere.
+    // The league's one tie is here as well, with nothing decided.
+    const ties = flows.filter(({ game }) => game.result === "tie");
+    expect(ties.every(({ flow }) => flow.decided === undefined)).toBe(true);
     const wrong = flows.filter(
       ({ game, flow }) =>
-        game.result !== "win" ||
+        game.result === "loss" ||
         Math.abs(flow.final[0] - game.points) > 0.05 ||
         Math.abs(flow.final[1] - game.opponentPoints) > 0.05
     );
@@ -91,6 +94,8 @@ describe("the biggest comeback", () => {
     // ever scored.)
     const wrong: string[] = [];
     for (const { game, flow } of getStatContext().flows) {
+      // Nobody came back in a tie.
+      if (game.result === "tie") continue;
       const widest = Math.max(0, ...flow.steps.map((s) => s.score[1] - s.score[0]));
       const where = `${game.year} w${game.week} ${game.managerId}`;
       if (Math.abs(flow.comeback - widest) > 0.011) wrong.push(`${where}: ${flow.comeback} vs ${widest}`);
@@ -125,7 +130,8 @@ describe("the latest decisive play", () => {
     // this is what keeps it that way.
     const { flows } = getStatContext();
     const byPlay = flows.filter(
-      ({ game, flow }) => !game.lineupsApproximate && !flow.decided?.correction
+      ({ game, flow }) =>
+        !game.lineupsApproximate && flow.decided && !flow.decided.correction
     );
     expect(computeStat("latest-decisive-play")).toHaveLength(byPlay.length);
   });

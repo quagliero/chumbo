@@ -209,7 +209,7 @@ same fact cannot be computed two different ways in two places.
   `requiresTimelines` and the registry throws rather than reporting a league
   with no comebacks.
 - **`public/data/all-time.json`** — those answers, precomputed at build time by
-  `yarn build-aggregates` and committed. 19 kB gzip against the ~550 kB of
+  `yarn build-aggregates` and committed. 37 kB gzip against the ~550 kB of
   matchups and transactions the registry needs, so a page can carry a record
   without downloading the archive. `precomputed.test.ts` fails if it is stale.
 - **`src/utils/narrative/`** — turns a ranked entry into a sentence (E7): "The
@@ -346,6 +346,18 @@ not season data, so `build-aggregates` and the test setup call
 does, and nothing should — the browser reads the answers out of
 `all-time.json`. A moment that is a correction rather than a play can never
 hold the last two: it has no player and its time is borrowed.
+
+**"On this day" (E6) reads the timelines too.** Every game is filed under the
+calendar day it was over — its last starter's last scoring play in Eastern
+time, a game past midnight counted to the night it started (`dayOf`,
+`finishedAt` in `utils/gameFlow.ts`) — one per season per day, and the home
+page picks the READER's date. The stat is `precomputeAll`: the build runs
+three times a week and cannot know the date anyone reads it, so all 409
+season-days ship rather than a top 25. On a date nothing was over — most
+Tuesdays, all summer — the module is not there.
+
+Hovering the chart anywhere shows the score at that moment, snapped to the
+last scoring moment, with a crosshair; the key plays stay buttons that pin.
 
 **The card** is "Copy chart", at the end of the chart's heading
 (`gameFlowCard`): the same two lines, the same squeezed clock — `cardData`
@@ -524,7 +536,7 @@ budget, because it is still trusted.
   `picked_by` invariant in `invariants.test.ts` is what catches it.
 - **`public/data/all-time.json` is generated and committed.** It holds the stat
   registry's answers, computed at build time, so a records page renders from
-  19 kB gzip instead of downloading every matchup and transaction (~550 kB) to
+  37 kB gzip instead of downloading every matchup and transaction (~550 kB) to
   work them out in the browser. `yarn build` and the fetch scripts regenerate
   it; `precomputed.test.ts` fails if it no longer matches the registry, because
   a stale file is invisible — the page renders fine, with last month's records.

@@ -1,127 +1,83 @@
 /**
  * Picking what "On this day" shows (E6).
  *
- * The answer itself is computed at build time — `on-this-day` in the stat
- * registry, shipped in `public/data/all-time.json`. Nothing here recomputes
- * anything; it chooses which of the 25 shipped entries make it onto the home
- * page, and it is separated from the component so the choosing can be tested
- * in the node-environment vitest setup the rest of the repo uses.
+ * The games themselves are worked out at build time — `on-this-day` in the
+ * stat registry, shipped whole in `public/data/all-time.json`, one game per
+ * season per calendar day, each filed under the day it was over. What is left
+ * for the page is the one thing the build cannot know: what day it is for the
+ * person reading. That choosing lives here, apart from the component, so it
+ * can be tested with a fixed date.
  *
- * ## What the stat actually means, and why the heading says so
+ * ## What "this day" means
  *
- * It is NOT a calendar date. It is *the same week of the season* in every year
- * before this one, and the week is read off the latest result in the data. So
- * in mid-September it is Week 1 and in January it is still Week 17, because
- * Week 17 is the last week that was played. A module headed "on this day" that
- * silently showed the nearest thing it had would be lying twice over — about
- * the date, and about there being anything to show at all — so the week is
- * named on the page and an empty archive says it is empty.
+ * The reader's own calendar date, against the day each game was over in US
+ * Eastern time — the day its last starter stopped scoring, from the
+ * play-by-play. So on a Monday it shows games that went to Monday night, on a
+ * Sunday the ones settled by Sunday night, and on most Tuesdays, and all
+ * summer, nothing: no game in league history was over on that date. That is
+ * the honest answer and the module gives it by not appearing, rather than by
+ * reaching for the nearest week as it used to.
  */
 import type { PrecomputedStat } from "@/utils/stats/precomputed";
 import type { StatEntry } from "@/utils/stats/types";
 
-/** Four is a glance; the whole list of 25 is a page of its own. */
+/** Four is a glance; every season is a page of its own. */
 export const HOME_LIMIT = 4;
 
+export interface OnThisDayEntry extends StatEntry {
+  /** The year it was played in, which for a January game is not its season. */
+  calendarYear: number;
+}
+
 export interface OnThisDayView {
-  /**
-   * The week every entry is from, or null when there is nothing to look back
-   * on. Every entry shares it — that is what the stat is.
-   */
-  week: number | null;
-  /** One game per season, loudest first, newest season first. */
-  entries: StatEntry[];
-  /** How many games the stat found in all, before any cap. */
+  /** "22 September". */
+  date: string;
+  /** The newest seasons' games on this date, newest first. */
+  entries: OnThisDayEntry[];
+  /** How many past seasons had a game over on this date, before the cap. */
   total: number;
   /** True when any shown entry rests on reconstructed lineup data (2019). */
   approximate: boolean;
 }
 
+/** How the stat files a day: 922 for 22 September. */
+const monthDay = (date: Date) => (date.getMonth() + 1) * 100 + date.getDate();
+
 /**
- * The home page's slice of the stat, or `null` when the stat is not in the
- * file at all — a stale or failed `all-time.json`, which is a fact about the
- * build and not a story about the league, so the module simply does not
- * appear.
+ * A season runs September to January, so a game filed under a January day
+ * was played the calendar year after the season it belongs to.
+ */
+export const calendarYearOf = (entry: StatEntry): number =>
+  (entry.year ?? 0) + (Math.floor(entry.value / 100) < 7 ? 1 : 0);
+
+/**
+ * The home page's slice of the stat for `today`, or `null` when the stat is
+ * not in the file at all — a stale or failed `all-time.json`, which is a fact
+ * about the build and not about the league.
  *
- * An empty `entries` with a non-null result is the honest empty state: the
- * stat ran and found nothing for this week.
+ * Only earlier calendar years: a game that was over earlier today is news,
+ * not history.
  */
 export const selectOnThisDay = (
   stat: PrecomputedStat | undefined,
+  today: Date,
   limit: number = HOME_LIMIT
 ): OnThisDayView | null => {
   if (!stat) return null;
 
-  // One game per season, newest season first.
-  const byYear = new Map<number, StatEntry[]>();
-  for (const entry of stat.entries) {
-    const year = entry.year ?? entry.value;
-    const bucket = byYear.get(year);
-    if (bucket) bucket.push(entry);
-    else byYear.set(year, [entry]);
-  }
-  const years = [...byYear.keys()].sort((a, b) => b - a);
+  const day = monthDay(today);
+  const matching = stat.entries
+    .filter((entry) => entry.value === day)
+    .map((entry) => ({ ...entry, calendarYear: calendarYearOf(entry) }))
+    .filter((entry) => entry.calendarYear < today.getFullYear())
+    .sort((a, b) => b.calendarYear - a.calendarYear);
 
-  // Within a season the stat emits the loudest game first, so taking the first
-  // of each season gives four lines that all end "the highest-scoring game of
-  // the week" — true every time, and a mail merge to read. So a season yields
-  // its loudest game UNLESS a later one has a different kind of story to tell:
-  // a title game, the closest finish, the heaviest beating. First choice still
-  // goes to the newest season, which is the one people remember.
-  const usedKinds = new Set<string>();
-  const entries: StatEntry[] = [];
-  for (const year of years) {
-    if (limit > 0 && entries.length >= limit) break;
-    const candidates = byYear.get(year) ?? [];
-    const chosen =
-      candidates.find((entry) => !usedKinds.has(stakeKind(entry.detail))) ??
-      candidates[0];
-    if (!chosen) continue;
-    usedKinds.add(stakeKind(chosen.detail));
-    entries.push(chosen);
-  }
-
-  const weeks = new Set(
-    entries.map((entry) => entry.week).filter((week): week is number => !!week)
-  );
+  const entries = limit > 0 ? matching.slice(0, limit) : matching;
 
   return {
-    // One week or nothing: if the file somehow carries a mix, saying "Week 3"
-    // over a list that is not all Week 3 is exactly the lie E6 must not tell.
-    week: weeks.size === 1 ? [...weeks][0] : null,
+    date: today.toLocaleDateString("en-GB", { day: "numeric", month: "long" }),
     entries,
-    total: stat.total,
+    total: matching.length,
     approximate: entries.some((entry) => entry.approximate === true),
   };
-};
-
-/**
- * What sort of story a detail line is telling, so four of them are not the
- * same story four times: the clause the stat appends after an em dash, up to
- * its first comma ("the highest-scoring game of the week", "the 2019 title
- * game"). A game with nothing riding on it has no clause and answers "".
- *
- * A deliberately loose read of `identityStats.ts`'s prose. If that prose
- * changes, the worst case is that the variety rule stops finding duplicates —
- * the list is still correct, just less varied — which is the right way round
- * for a presentational nicety to fail.
- */
-export const stakeKind = (detail: string | undefined): string => {
-  if (!detail) return "";
-  const at = detail.lastIndexOf(" — ");
-  if (at === -1) return "";
-  return detail.slice(at + 3).split(",")[0].trim().toLowerCase();
-};
-
-/**
- * The stat's `detail` opens with the year it already shows in a badge
- * ("2025 · ant beat fin, …"). Strips that, and only that.
- */
-export const withoutYearPrefix = (
-  detail: string | undefined,
-  year: number | undefined
-): string => {
-  if (!detail) return "";
-  const prefix = `${year} · `;
-  return detail.startsWith(prefix) ? detail.slice(prefix.length) : detail;
 };

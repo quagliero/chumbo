@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { loadAllSeasons } from "@/data";
 import { computeStat, getStatContext } from "@/utils/stats";
 import type { Game } from "@/utils/stats";
-import { latestPlayedWeek } from "@/utils/stats/identityStats";
 
 /**
  * Identity and fun (C6).
@@ -27,20 +26,42 @@ const numbersIn = (text: string): number[] =>
   (text.match(/\d+(?:\.\d+)?/g) ?? []).map(Number);
 
 describe("on this day", () => {
-  it("never shows a game from a week that has not been played", () => {
-    const { games } = getStatContext();
-    const now = latestPlayedWeek(games);
-    if (!now) throw new Error("no played games — the fixture data is wrong");
-
+  it("files every game under a real calendar day", () => {
     const entries = computeStat("on-this-day");
-    expect(entries.length).toBeGreaterThan(0);
-
+    expect(entries.length).toBeGreaterThan(300);
     for (const entry of entries) {
-      // Strictly earlier seasons: nothing from the season in progress, and
-      // certainly nothing from one that has not started.
-      expect(entry.year).toBeLessThan(now.year);
-      expect(entry.week).toBe(now.week);
+      const month = Math.floor(entry.value / 100);
+      const day = entry.value % 100;
+      // The season runs September to January, and the odd game into early
+      // February is still inside it.
+      expect([1, 2, 9, 10, 11, 12], `${entry.value}`).toContain(month);
+      expect(day).toBeGreaterThanOrEqual(1);
+      expect(day).toBeLessThanOrEqual(31);
     }
+  });
+
+  it("keeps one game per season per day", () => {
+    const keys = computeStat("on-this-day").map((entry) => `${entry.year}|${entry.value}`);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it("puts 2020 week 12 on the Wednesday its last game was played", () => {
+    // Ravens–Steelers, moved by COVID to the afternoon of Wednesday 2 December.
+    // Five of that week's six games waited for it; the sixth, with nobody in
+    // it, was over on Monday night.
+    const week12 = computeStat("on-this-day").filter(
+      (entry) => entry.year === 2020 && entry.week === 12
+    );
+    expect(week12.map((entry) => entry.value).sort()).toEqual([1130, 1202]);
+  });
+
+  it("puts a game that ran past midnight on the night it started", () => {
+    // 2013 week 1's Monday doubleheader ended after 1am Eastern on Tuesday; the
+    // games it settled were over on Monday 9 September.
+    const week1 = computeStat("on-this-day").filter(
+      (entry) => entry.year === 2013 && entry.week === 1
+    );
+    expect(week1.map((entry) => entry.value)).not.toContain(910);
   });
 
   it("only shows games that were actually played", () => {
@@ -69,6 +90,12 @@ describe("on this day", () => {
   it("counts each game once, not once per team", () => {
     const hrefs = computeStat("on-this-day").map((entry) => entry.href);
     expect(new Set(hrefs).size).toBe(hrefs.length);
+  });
+
+  it("marks 2019, whose lineups — and so whose finishing times — are inferred", () => {
+    const from2019 = computeStat("on-this-day").filter((entry) => entry.year === 2019);
+    expect(from2019.length).toBeGreaterThan(0);
+    expect(from2019.every((entry) => entry.approximate)).toBe(true);
   });
 });
 

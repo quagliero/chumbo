@@ -50,6 +50,13 @@ interface ChartPopoverProps<T> {
    * pinning a bar in one panel closes the card in another.
    */
   owns?: (datum: T) => boolean;
+  /**
+   * Whether this datum can be pinned. Everything a mark opens can; a card
+   * that only follows the pointer (the game-flow chart's score at a moment)
+   * cannot, and must not print "Click to keep this open" above a click that
+   * does nothing.
+   */
+  pinnable?: (datum: T) => boolean;
 }
 
 export const ChartPopover = <T,>({
@@ -58,6 +65,7 @@ export const ChartPopover = <T,>({
   render,
   label,
   owns,
+  pinnable,
 }: ChartPopoverProps<T>) => {
   const { store } = popover;
   const state = useSyncExternalStore(store.subscribe, store.get, store.get);
@@ -173,11 +181,11 @@ export const ChartPopover = <T,>({
           >
             ×
           </button>
-        ) : (
+        ) : !pinnable || pinnable(item.datum) ? (
           <p className="mt-1.5 text-[0.65rem] text-ink-faint">
             Click to keep this open
           </p>
-        )}
+        ) : null}
       </div>
     </>
   );

@@ -1,8 +1,3 @@
 export { default as OnThisDay } from "./OnThisDay";
-export {
-  selectOnThisDay,
-  stakeKind,
-  withoutYearPrefix,
-  HOME_LIMIT,
-} from "./selection";
-export type { OnThisDayView } from "./selection";
+export { selectOnThisDay, calendarYearOf, HOME_LIMIT } from "./selection";
+export type { OnThisDayEntry, OnThisDayView } from "./selection";

@@ -55,7 +55,7 @@ describe("precomputed all-time stats", () => {
         stale.push(`${definition.id}: file has ${stored.total} entries, registry has ${live.length}`);
         continue;
       }
-      const expected = live.slice(0, file.limit);
+      const expected = definition.precomputeAll ? live : live.slice(0, file.limit);
       if (JSON.stringify(stored.entries) !== JSON.stringify(expected)) {
         stale.push(`${definition.id}: top ${file.limit} entries differ`);
       }

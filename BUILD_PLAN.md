@@ -551,7 +551,7 @@ dataset in the repo.
 
 - [x] **C6a** Manager archetypes — derived labels ("The Streamer", "The Set-and-Forget", "The Heartbreaker" for most narrow losses)
 - [x] **C6b** Championship probability by week, retrospectively — at what point did each title become inevitable?
-- [x] **C6c** On this day in Chumbo history — same week, previous seasons (feeds `E6`)
+- [x] **C6c** On this day in Chumbo history — the calendar day each game was over, previous seasons (feeds `E6`)
 
 ---
 
@@ -668,6 +668,24 @@ this is the exact mechanic that manufactures the WhatsApp nuggets you want.
 **Blocked by:** C6c
 
 - [x] E6
+
+> **Now a real date (2026-09-22, commissioner's request).** It was the same
+> WEEK of the season, because until the play-by-play the site did not know
+> what day anything happened. Now every game is filed under the calendar day
+> it was over — its last starter's last scoring play, US Eastern time, a game
+> past midnight counted to the night it started — and the rail shows the
+> reader's own date. So Mondays show the games that went to Monday night,
+> Christmas shows playoff games, 2 December shows the 2020 week that waited
+> on a Wednesday Ravens–Steelers game, and most Tuesdays and all summer show
+> nothing: the module is simply not there. One game per season per day, the
+> one with the most riding on it, which now includes "won it on Monday night,
+> when Mark Andrews scored". The file carries all 409 season-days
+> (`precomputeAll`), because the build runs three times a week and cannot
+> know the reader's date: `all-time.json` went from 23 to 37 kB gzip.
+>
+> Found on the way: the "Closest game" record was credited to whichever team
+> had the lower roster id, so the narrowest win in league history was
+> hadkiss's — 116.10 to 116.14, which hadkiss lost. It now goes to the winner.
 
 ### E7 · Narrative engine `L`
 **Blocked by:** C1
@@ -1544,6 +1562,15 @@ without a separate job.
 > different shape from the chart the sharer was looking at. The lines keep the
 > chart's blue and orange rather than the two managers' accents (F2: one
 > accent per card, and it is the winner's — the top rule and the ring).
+>
+> **Every moment, not just the key plays (2026-09-22, commissioner's
+> request).** Moving across the chart anywhere now shows the score at that
+> moment — both teams, who leads by how much, the play that last changed it,
+> and the time in Eastern — with a line down the chart and a dot on each team
+> there. It snaps to the last scoring moment rather than interpolating, so
+> every score it shows is one that existed. A finger dragged sideways does the
+> same on a phone; vertical swipes still scroll. The key plays are still
+> buttons that open the play and pin.
 >
 > The geometry took two goes. Clamping each end label into the plot and THEN
 > pushing the pair apart put the winner's name above the plot and into the

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useSyncExternalStore } from "react";
 import { Chart } from "../Chart";
 import { YAxis } from "../Axis";
 import { linearScale, niceTicks } from "../scale";
@@ -10,8 +10,10 @@ import {
   PopoverRows,
   PopoverTitle,
   useChartPopover,
+  type ChartPopoverHandle,
 } from "../Popover";
 import {
+  clockOf,
   shortSlot,
   slotOf,
   slotStarts,
@@ -29,6 +31,12 @@ import {
  * team the page lists is blue, the second orange. Not the managers' accents —
  * two accents on one chart is what the F2 note rules out.
  */
+
+/**
+ * What the popover is showing: a key play (a dot, hovered or pinned), or just
+ * the score at a moment, from moving across the chart anywhere else.
+ */
+type Hover = { kind: "play"; step: FlowStep } | { kind: "moment"; step: FlowStep };
 
 /** Exported so the section's legend cannot drift from the lines. */
 export const COLOURS = ["#2a78d6", "#eb6834"] as const;
@@ -83,7 +91,20 @@ export const GameFlowChart = ({
   playerName: (starterId: string) => string;
   className?: string;
 }) => {
-  const popover = useChartPopover<FlowStep>();
+  const popover = useChartPopover<Hover>();
+
+  // One object per datum, made once: the popover store ignores a preview of
+  // the datum it already shows, so a pointer moving within one moment does
+  // not re-render anything.
+  const plays = useMemo(
+    () => flow.keyPlays.map((step): Hover => ({ kind: "play", step })),
+    [flow]
+  );
+  const moments = useMemo(
+    () => flow.steps.map((step): Hover => ({ kind: "moment", step })),
+    [flow]
+  );
+  const lastMoment = useRef<string | null>(null);
 
   const { position, span } = useMemo(
     () => squeezedTime(flow.steps.map((s) => s.at)),
@@ -99,6 +120,9 @@ export const GameFlowChart = ({
     () => slotStarts(flow.steps.map((step) => step.at)),
     [flow]
   );
+
+  /** Where each moment sits on the squeezed clock, for finding one under the pointer. */
+  const offsets = useMemo(() => flow.steps.map((step) => position(step.at)), [flow, position]);
 
   const describe = (step: FlowStep) =>
     `${playerName(step.starterId)}, ${signed(step.pts)} for ${names[step.side]}, ` +
@@ -122,14 +146,19 @@ export const GameFlowChart = ({
           popover={popover}
           frame={frame}
           label="Key play"
-          render={(step, pinned) => (
-            <KeyPlayCard
-              step={step}
-              names={names}
-              player={playerName(step.starterId)}
-              pinned={pinned}
-            />
-          )}
+          pinnable={(hover) => hover.kind === "play"}
+          render={(hover, pinned) =>
+            hover.kind === "play" ? (
+              <KeyPlayCard
+                step={hover.step}
+                names={names}
+                player={playerName(hover.step.starterId)}
+                pinned={pinned}
+              />
+            ) : (
+              <MomentCard step={hover.step} names={names} playerName={playerName} />
+            )
+          }
         />
       )}
     >
@@ -214,6 +243,59 @@ export const GameFlowChart = ({
                 {flow.final[side].toFixed(1)}
               </text>
             ))}
+            {/* The whole plot, under the key plays: move across it and the
+                score at that moment shows, snapped to the last thing that
+                changed it. Pointer events rather than mouse ones so a finger
+                dragged sideways scrubs too; `pan-y` leaves vertical swipes to
+                the page. Not a mark — no role, no tab stop, and a press on it
+                closes a pinned card like a press anywhere else — because the
+                same facts are in the fallback list, and the key plays that
+                matter are still buttons. */}
+            <rect
+              x={0}
+              y={0}
+              width={frame.width}
+              height={frame.height}
+              fill="transparent"
+              pointerEvents="all"
+              style={{ touchAction: "pan-y" }}
+              onPointerMove={(event) => {
+                const box = event.currentTarget.getBoundingClientRect();
+                const at = ((event.clientX - box.left) / (box.width || 1)) * (span || 1);
+                // The last moment at or before the pointer.
+                let lo = 0;
+                let hi = offsets.length - 1;
+                if (hi < 0 || at < offsets[0]) {
+                  if (lastMoment.current) popover.store.leave(lastMoment.current);
+                  lastMoment.current = null;
+                  return;
+                }
+                while (lo < hi) {
+                  const mid = (lo + hi + 1) >> 1;
+                  if (offsets[mid] <= at) lo = mid;
+                  else hi = mid - 1;
+                }
+                const step = flow.steps[lo];
+                const key = `m-${lo}`;
+                lastMoment.current = key;
+                popover.store.preview({
+                  key,
+                  datum: moments[lo],
+                  x: X(step.at),
+                  y: y(Math.max(step.score[0], step.score[1])),
+                });
+              }}
+              onPointerLeave={() => {
+                if (lastMoment.current) popover.store.leave(lastMoment.current);
+                lastMoment.current = null;
+              }}
+            />
+            <Crosshair
+              popover={popover}
+              x={X}
+              y={y}
+              height={frame.height}
+            />
             {flow.keyPlays.map((step, i) => {
               const cx = X(step.at);
               const cy = y(step.score[step.side]);
@@ -223,7 +305,7 @@ export const GameFlowChart = ({
                   cx={cx}
                   cy={cy}
                   r={HIT_RADIUS}
-                  {...popover.hit(`kp-${i}`, step, cx, cy)}
+                  {...popover.hit(`kp-${i}`, plays[i], cx, cy)}
                 />
               );
             })}
@@ -239,7 +321,7 @@ export const GameFlowChart = ({
                   fill={COLOURS[step.side]}
                   stroke="#fff"
                   strokeWidth={1.5}
-                  {...popover.mark(`kp-${i}`, step, cx, cy, describe(step))}
+                  {...popover.mark(`kp-${i}`, plays[i], cx, cy, describe(step))}
                 />
               );
             })}
@@ -286,5 +368,94 @@ const KeyPlayCard = ({
         <PopoverLinks links={[{ to: `/players/${step.starterId}`, label: player }]} />
       )}
     </>
+  );
+};
+
+/**
+ * The score at one moment — what a reader wants from any point on the lines,
+ * not only the dots. Snapped to the last scoring moment, so what it says is a
+ * score that existed rather than one interpolated between two.
+ */
+const MomentCard = ({
+  step,
+  names,
+  playerName,
+}: {
+  step: FlowStep;
+  names: readonly [string, string];
+  playerName: (starterId: string) => string;
+}) => {
+  const [a, b] = step.score;
+  const gap = Math.abs(a - b);
+  const lead =
+    gap < 0.005 ? "Level" : `${names[a > b ? 0 : 1]} by ${gap.toFixed(2)}`;
+  const last = step.correction
+    ? "A score correction"
+    : `${playerName(step.starterId)} ${signed(step.pts)}`;
+  return (
+    <>
+      <PopoverTitle sub={`${clockOf(step.at)} ET`}>
+        <span style={{ color: COLOURS[0] }}>{names[0]}</span>{" "}
+        <span className="tabular-nums">
+          {a.toFixed(2)} – {b.toFixed(2)}
+        </span>{" "}
+        <span style={{ color: COLOURS[1] }}>{names[1]}</span>
+      </PopoverTitle>
+      <div className="mt-1.5">
+        <PopoverRows
+          rows={[
+            ["Lead", lead],
+            ["Last", `${last} for ${names[step.side]}`],
+          ]}
+        />
+      </div>
+    </>
+  );
+};
+
+/**
+ * A line down the chart at the moment being shown, and a dot on each team's
+ * line there. Subscribes to the popover store itself, so moving the pointer
+ * redraws these few marks and not the chart.
+ */
+const Crosshair = ({
+  popover,
+  x,
+  y,
+  height,
+}: {
+  popover: ChartPopoverHandle<Hover>;
+  x: (at: number) => number;
+  y: (score: number) => number;
+  height: number;
+}) => {
+  const { store } = popover;
+  const state = useSyncExternalStore(store.subscribe, store.get, store.get);
+  const hover = state.item?.datum;
+  if (!hover || hover.kind !== "moment") return null;
+  const cx = x(hover.step.at);
+  return (
+    <g pointerEvents="none" aria-hidden="true">
+      <line
+        x1={cx}
+        x2={cx}
+        y1={0}
+        y2={height}
+        stroke="currentColor"
+        strokeDasharray="3 3"
+        className="text-ink-faint"
+      />
+      {([0, 1] as const).map((side) => (
+        <circle
+          key={side}
+          cx={cx}
+          cy={y(hover.step.score[side])}
+          r={3.5}
+          fill={COLOURS[side]}
+          stroke="#fff"
+          strokeWidth={1.5}
+        />
+      ))}
+    </g>
   );
 };

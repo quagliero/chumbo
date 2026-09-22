@@ -1,6 +1,8 @@
 import { seasons } from "@/data";
+import { dayOf, finishedAt, slotOf, whenSlot } from "@/utils/gameFlow";
+import { playerName } from "./gamedayStats";
 import { defineStat } from "./registry";
-import type { Game, StatContext, StatDefinition, StatEntry } from "./types";
+import type { FlowGame, Game, StatContext, StatDefinition, StatEntry } from "./types";
 
 /**
  * Derived identity and fun (C6).
@@ -123,11 +125,8 @@ export interface SeasonPoint {
 }
 
 /**
- * Where the league is right now, read off the data rather than the clock.
- *
- * The latest season with a played game, and the latest week of it that has
- * been played. Nothing here looks at `Date`: the almanac is a static build, so
- * "now" has to mean "the last thing that happened".
+ * Where the league is right now, read off the data rather than the clock:
+ * the latest season with a played game, and the latest week of it.
  */
 export const latestPlayedWeek = (games: Game[]): SeasonPoint | null => {
   let year = -Infinity;
@@ -146,40 +145,45 @@ export const latestPlayedWeek = (games: Game[]): SeasonPoint | null => {
   return Number.isFinite(year) ? { year, week } : null;
 };
 
-/** Win-loss-tie records going into a given week, keyed `year|rosterId`. */
-const recordsEnteringWeek = (
-  games: Game[],
-  week: number
-): Map<string, string> => {
-  const tally = new Map<string, [number, number, number]>();
-
-  for (const game of games) {
-    if (!wasPlayed(game) || !game.isRegularSeason || game.week >= week) continue;
-    const key = `${game.year}|${game.rosterId}`;
-    const record = tally.get(key) ?? [0, 0, 0];
-    if (game.result === "win") record[0] += 1;
-    else if (game.result === "loss") record[1] += 1;
-    else record[2] += 1;
-    tally.set(key, record);
-  }
-
-  return new Map(
-    [...tally].map(([key, [wins, losses, ties]]) => [
-      key,
-      ties ? `${wins}-${losses}-${ties}` : `${wins}-${losses}`,
-    ])
+/** Win-loss-tie records going into every week, keyed `year|week|rosterId`. */
+const recordsEnteringWeeks = (games: Game[]): Map<string, string> => {
+  const byTeam = groupBy(
+    games.filter((game) => wasPlayed(game) && game.isRegularSeason),
+    (game) => `${game.year}|${game.rosterId}`
   );
+  const records = new Map<string, string>();
+  for (const [team, played] of byTeam) {
+    const tally = [0, 0, 0];
+    for (const game of [...played].sort((a, b) => a.week - b.week)) {
+      const [wins, losses, ties] = tally;
+      records.set(
+        `${team.split("|")[0]}|${game.week}|${game.rosterId}`,
+        ties ? `${wins}-${losses}-${ties}` : `${wins}-${losses}`
+      );
+      tally[game.result === "win" ? 0 : game.result === "loss" ? 1 : 2] += 1;
+    }
+  }
+  return records;
 };
 
 /**
  * What, if anything, was riding on this game — the line that turns a score
- * into a story. First match wins, most consequential first.
+ * into a story — and how much of a story it is, so the day's one entry can be
+ * the best one. Most consequential first; a lower `rank` wins.
  */
+interface Stakes {
+  rank: number;
+  text: string;
+}
+
+/** Slots a lead change is late enough in to be the story. */
+const LATE_SLOTS = new Set(["Sunday night", "Monday night", "Tuesday night"]);
+
 const stakesFor = (
-  game: Game,
+  { game, flow }: FlowGame,
   titles: Title[],
   weekBest: { combined: number; closest: number; widest: number }
-): string | null => {
+): Stakes | null => {
   const title = titles.find((t) => t.year === game.year);
   const inTitleGame =
     title &&
@@ -189,112 +193,171 @@ const stakesFor = (
       (game.rosterId === title.runnerUpRosterId &&
         game.opponentRosterId === title.championRosterId));
 
-  if (inTitleGame) return `the ${game.year} title game`;
-  if (game.isPlayoff) return "a playoff game";
+  if (inTitleGame) return { rank: 0, text: `the ${game.year} title game` };
+  if (game.isPlayoff) return { rank: 1, text: "a playoff game" };
+
+  // L2: a lead that changed hands for the last time in the week's last games.
+  // A correction is not a play and has no time of its own, so it cannot be it.
+  const decided = flow.decided;
+  if (
+    decided &&
+    !decided.correction &&
+    flow.leadChanges.length > 0 &&
+    LATE_SLOTS.has(slotOf(decided.at))
+  ) {
+    // A defence is a team code, and "when Denver Broncos scored" reads as the
+    // whole team; it was the defence.
+    const name = playerName(decided.starterId, game.year);
+    const who = /^[A-Z]{2,3}$/.test(decided.starterId) ? `the ${name} defence` : name;
+    return {
+      rank: 2,
+      text: `won it ${whenSlot(slotOf(decided.at))}${who ? `, when ${who} scored` : ""}`,
+    };
+  }
 
   const combined = game.points + game.opponentPoints;
   const gap = Math.abs(game.margin);
 
   if (combined === weekBest.combined) {
-    return `the highest-scoring game of the week, ${points(combined)} between them`;
+    return {
+      rank: 3,
+      text: `the highest-scoring game of the week, ${points(combined)} between them`,
+    };
   }
   if (gap === weekBest.closest && gap < 5) {
-    return `the closest game of the week, by ${points(gap)}`;
+    return { rank: 4, text: `the closest game of the week, by ${points(gap)}` };
   }
   if (gap === weekBest.widest && gap >= 40) {
-    return `the heaviest beating of the week, by ${points(gap)}`;
+    return { rank: 5, text: `the heaviest beating of the week, by ${points(gap)}` };
   }
   return null;
 };
 
-const onThisDayEntries = ({ games }: StatContext): StatEntry[] => {
-  const now = latestPlayedWeek(games);
-  if (!now) return [];
+/** The number an entry is filed under: 922 for 22 September, 102 for 2 January. */
+export const monthDay = (month: number, day: number): number => month * 100 + day;
 
-  // The same week, in seasons that have already finished with it. Strictly
-  // earlier years, so nothing from the future — or from this week's own
-  // still-unfolding results — can appear.
-  const sameWeek = games.filter(
-    (game) => wasPlayed(game) && game.week === now.week && game.year < now.year
-  );
-
-  // Each game is in the list twice. Keep the winner's half, so the subject is
-  // the manager the entry is about; on a tie keep the lower roster id. The
-  // loudest game of each season goes first: entries share a value (the year),
-  // and the registry's sort is stable, so this ordering survives ranking.
-  const oneSide = sameWeek
-    .filter(
-      (game) =>
-        game.result === "win" ||
-        (game.result === "tie" && game.rosterId < game.opponentRosterId)
-    )
-    .sort(
-      (a, b) =>
-        b.points + b.opponentPoints - (a.points + a.opponentPoints) ||
-        a.matchupId - b.matchupId
-    );
-
-  const records = recordsEnteringWeek(games, now.week);
+/**
+ * Every past game, filed under the calendar day it was OVER.
+ *
+ * A fantasy game is played across five days, so "the day it happened" has to
+ * mean one of them, and the one people mean is the day the result became
+ * final: the moment its last starter stopped scoring, from the play-by-play
+ * (L2), in Eastern time. So Sundays hold the games that were over by Sunday
+ * night, Mondays the ones that went to Monday night, and a Wednesday in
+ * December holds 2020 week 12, which waited on a Ravens–Steelers game COVID
+ * had moved.
+ *
+ * One game per season per day — the one with the most riding on it — so the
+ * file carries a few hundred entries, not twelve hundred. All of them ship
+ * (`precomputeAll`): the page picks by the READER's date, which the build,
+ * run three times a week, cannot know.
+ */
+const onThisDayEntries = ({ games, flows }: StatContext): StatEntry[] => {
   const titles = championships();
+  const records = recordsEnteringWeeks(games);
 
-  // "Best of the week" is per season, since every entry shares a week number.
-  const bestByYear = new Map(
-    [...groupBy(oneSide, (game) => String(game.year))].map(([year, yearly]) => [
-      year,
+  // "Of the week" claims are about the whole week, not just the games that
+  // happen to finish on the same day, so the bests are taken over all of it.
+  const weekBest = new Map(
+    [
+      ...groupBy(
+        games.filter(
+          (game) =>
+            wasPlayed(game) &&
+            (game.result === "win" ||
+              (game.result === "tie" && game.rosterId < game.opponentRosterId))
+        ),
+        (game) => `${game.year}|${game.week}`
+      ),
+    ].map(([key, weekly]) => [
+      key,
       {
-        combined: Math.max(...yearly.map((g) => g.points + g.opponentPoints)),
-        closest: Math.min(...yearly.map((g) => Math.abs(g.margin))),
-        widest: Math.max(...yearly.map((g) => Math.abs(g.margin))),
+        combined: Math.max(...weekly.map((g) => g.points + g.opponentPoints)),
+        closest: Math.min(...weekly.map((g) => Math.abs(g.margin))),
+        widest: Math.max(...weekly.map((g) => Math.abs(g.margin))),
       },
     ])
   );
 
-  return oneSide.map((game): StatEntry => {
+  const candidates = flows.flatMap((played) => {
+    const { game } = played;
+    if (!wasPlayed(game)) return [];
+    const end = finishedAt(played.flow);
+    if (end === undefined) return [];
+    const { month, day } = dayOf(end);
+
     const winner = named(game.managerId, game.rosterId);
     const loser = named(game.opponentManagerId, game.opponentRosterId);
     const verb = game.result === "tie" ? "tied" : "beat";
 
-    const winnerRecord = records.get(`${game.year}|${game.rosterId}`);
-    const loserRecord = records.get(`${game.year}|${game.opponentRosterId}`);
+    const winnerRecord = records.get(`${game.year}|${game.week}|${game.rosterId}`);
+    const loserRecord = records.get(
+      `${game.year}|${game.week}|${game.opponentRosterId}`
+    );
     const form =
-      now.week > 1 && winnerRecord && loserRecord
+      game.week > 1 && winnerRecord && loserRecord
         ? ` (${winner} ${winnerRecord}, ${loser} ${loserRecord} going in)`
         : "";
 
     const stakes = stakesFor(
-      game,
+      played,
       titles,
-      bestByYear.get(String(game.year)) ?? {
+      weekBest.get(`${game.year}|${game.week}`) ?? {
         combined: -1,
         closest: -1,
         widest: -1,
       }
     );
 
-    return {
-      value: game.year,
+    const entry: StatEntry = {
+      value: monthDay(month, day),
       subject: winner,
       href: matchupHref(game),
       detail:
-        `${game.year} · ${winner} ${verb} ${loser}, ` +
+        `${winner} ${verb} ${loser}, ` +
         `${points(game.points)}–${points(game.opponentPoints)}` +
-        `${form}${stakes ? ` — ${stakes}` : ""}`,
+        `${form}${stakes ? ` — ${stakes.text}` : ""}`,
       year: game.year,
       week: game.week,
     };
+    return [{ entry, rank: stakes?.rank ?? 9, combined: game.points + game.opponentPoints }];
   });
+
+  // The day's best: most riding on it, then the most points.
+  const best = new Map<string, (typeof candidates)[number]>();
+  for (const candidate of candidates) {
+    const key = `${candidate.entry.year}|${candidate.entry.value}`;
+    const held = best.get(key);
+    if (
+      !held ||
+      candidate.rank < held.rank ||
+      (candidate.rank === held.rank && candidate.combined > held.combined)
+    ) {
+      best.set(key, candidate);
+    }
+  }
+
+  // Newest season first within a day; the registry then sorts by day, and its
+  // sort is stable.
+  return [...best.values()]
+    .map((candidate) => candidate.entry)
+    .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
 };
 
 export const onThisDay = defineStat({
   id: "on-this-day",
   label: "On this day in Chumbo history",
   description:
-    "The same week of the season, in every year before this one. The week " +
-    "is read off the latest result in the data, so this moves on by itself " +
-    "as the season does.",
+    "Every game, filed under the calendar day it was over — the day its last " +
+    "starter stopped scoring, in US Eastern time — and one per season per " +
+    "day, the one with the most riding on it.",
   scope: "league",
   format: "count",
   direction: "high",
+  requiresTimelines: true,
+  // 2019's lineups are inferred, so the moment its games were over is too.
+  allowsApproximateLineups: true,
+  precomputeAll: true,
   compute: onThisDayEntries,
 });
 
