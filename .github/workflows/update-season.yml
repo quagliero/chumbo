@@ -6,14 +6,23 @@ name: Update the season
 
 on:
   schedule:
-    # 10:00 UTC, September to January: Tuesday (Monday night is over and
+    # 9am UK time, September to January: Tuesday (Monday night is over and
     # scored), Wednesday (waivers have run) and Friday (stat corrections).
-    - cron: "0 10 * 1,9-12 2,3,5"
-    # And again on Tuesday afternoon, for the play-by-play (L3). The 10:00 run
-    # is 5am in New York, about five hours after Monday night ends; nflverse
-    # publishes Sunday's games the same day, but a game that has just finished
-    # is a coin flip. This one lands the week's charts on Tuesday rather than
-    # Wednesday, and commits nothing when the morning run already had them.
+    #
+    # Cron only speaks UTC and the UK does not stay put: 9am is 08:00 UTC in
+    # summer time (until the last Sunday of October) and 09:00 UTC after it.
+    # So both are scheduled and the `clock` job below keeps whichever one is
+    # 9am in London that day — decided by the UK's offset, not by the time the
+    # run happens to start, because GitHub often starts a scheduled run late
+    # and a late 08:00 must not be mistaken for the 09:00.
+    - cron: "0 8 * 1,9-12 2,3,5"
+    - cron: "0 9 * 1,9-12 2,3,5"
+    # And again on Tuesday afternoon, for the play-by-play (L3) — and for the
+    # week itself, if Sleeper had not finished scoring it by the morning. The
+    # morning run is 4am in New York, a few hours after Monday night ends;
+    # nflverse publishes Sunday's games the same day, but a game that has just
+    # finished is a coin flip. This one lands the week's charts on Tuesday
+    # rather than Wednesday, and commits nothing when the morning had them.
     - cron: "0 15 * 1,9-12 2"
   workflow_dispatch:
 
@@ -36,7 +45,33 @@ env:
   GAMEDAY_TITLE: The play-by-play is behind
 
 jobs:
+  # Which of the two morning schedules is 9am in the UK today. Everything else
+  # — the afternoon run, Run workflow — always goes ahead.
+  clock:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          offset=$(TZ=Europe/London date +%z)
+          case "$SCHEDULE" in
+            "0 8 * 1,9-12 2,3,5") want="+0100" ;;  # British Summer Time
+            "0 9 * 1,9-12 2,3,5") want="+0000" ;;  # Greenwich Mean Time
+            *) want="" ;;
+          esac
+          if [ -n "$want" ] && [ "$offset" != "$want" ]; then
+            echo "Not 9am in the UK on this schedule today ($offset); the other one is."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   update:
+    needs: clock
+    if: needs.clock.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

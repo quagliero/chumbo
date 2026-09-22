@@ -374,10 +374,13 @@ collapse, has no play-by-play and so no box scores.
 ## The automatic update (J1)
 
 `.github/workflows/update-season.yml` keeps the live season current with
-nobody touching it: 10:00 UTC on Tuesdays, Wednesdays and Fridays from
+nobody touching it: 9am UK time on Tuesdays, Wednesdays and Fridays from
 September to January (after Monday night, after waivers, after stat
-corrections), again at 15:00 on Tuesdays for the play-by-play (L3, below),
-and on demand with **Run workflow**. It runs `yarn update-season`
+corrections), again at 15:00 UTC on Tuesdays for the play-by-play (L3, below),
+and on demand with **Run workflow**. Cron only knows UTC, so the morning is
+scheduled at both 08:00 and 09:00 UTC and a small `clock` job keeps the one
+that is 9am in London that day, judged by the UK's UTC offset rather than the
+start time, because GitHub often starts a scheduled run late. It runs `yarn update-season`
 (`scripts/update-season.js`): every week Sleeper has scored
 (`fetch-sleeper-data --completed`, which reads `last_scored_leg` and never
 commits a half-played week), `trim-picks`, a player-dictionary refresh only
