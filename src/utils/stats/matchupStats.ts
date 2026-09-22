@@ -65,7 +65,9 @@ export const closestMargin = defineStat({
 
 export const highestScoringLoss = defineStat({
   id: "highest-scoring-loss",
-  label: "Unluckiest loss",
+  // Not "Unluckiest loss": that name belongs to `beat-almost-everyone`, which
+  // judges a loss against the whole week, as the week recap's line does.
+  label: "Highest-scoring loss",
   description:
     "The most points anyone has ever scored and still lost. Any other week it would have won.",
   scope: "league",
@@ -79,9 +81,9 @@ export const highestScoringLoss = defineStat({
 
 export const lowestScoringWin = defineStat({
   id: "lowest-scoring-win",
-  label: "Luckiest win",
+  label: "Lowest-scoring win",
   description:
-    "The fewest points anyone has ever scored and still won. The opposite of the unluckiest loss.",
+    "The fewest points anyone has ever scored and still won. The opposite of the highest-scoring loss.",
   scope: "league",
   format: "points",
   direction: "low",
@@ -129,9 +131,11 @@ const gamesByManager = (games: Game[]): Map<string, Game[]> => {
 
 export const beatAlmostEveryone = defineStat({
   id: "beat-almost-everyone",
-  label: "Beat almost everyone",
+  // The same idea as the week recap's "Unluckiest loss" — a loss measured
+  // against every score that week — so the same name.
+  label: "Unluckiest loss",
   description:
-    "Losses that would have been wins against nearly the whole league. The number is how many of the other teams playing that week the losing score would have beaten — a score that tops ten of eleven and still loses is the worst luck the schedule can hand out.",
+    "Losses that would have been wins against nearly the whole league, ranked by how many of the week's other scores the losing score beat. Topping ten of eleven and still losing — outscored only by the one team you happened to play — is the worst luck the schedule can hand out. Where two losses beat as many, the higher score ranks first.",
   scope: "league",
   format: "count",
   direction: "high",

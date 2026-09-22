@@ -17,10 +17,11 @@ export const PHRASES: Record<string, string> = {
   "closest-margin": "narrowest win",
   "highest-scoring-loss": "highest-scoring loss",
   "lowest-scoring-win": "lowest-scoring win",
-  // Kept to a bare noun phrase: anything with its own clause lands the
-  // "in Chumbo history" tail in the wrong place ("...beaten almost everyone in
-  // Chumbo history"). The evidence lives in the stat's own detail, not here.
-  "beat-almost-everyone": "unluckiest week",
+  // One LOSS, judged against every score that week — not a week. "The 10th-
+  // unluckiest week" read as a bad week all round, under a single game. The
+  // measure is spelled out by the qualifier below, since a clause here would
+  // land the "in Chumbo history" tail in the wrong place.
+  "beat-almost-everyone": "unluckiest loss",
   "longest-win-streak": "longest winning streak",
   "longest-loss-streak": "longest losing streak",
   "rivalry-intensity": "closest rivalry",
@@ -71,6 +72,9 @@ export const PHRASES: Record<string, string> = {
  */
 export const QUALIFIERS: Record<string, string> = {
   "rivalry-intensity": "playoffs included",
+  // Unlucky by what? By how few of the week's other scores it lost to: a loss
+  // with the week's second-best score was beaten by the only team that could.
+  "beat-almost-everyone": "measured against every score that week",
 };
 
 /** "1st", "2nd", "23rd". */

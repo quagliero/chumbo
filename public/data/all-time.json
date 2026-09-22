@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-22T09:29:47.621Z",
+  "generatedAt": "2026-09-22T09:51:42.343Z",
   "years": [
     2012,
     2013,
@@ -448,7 +448,7 @@
     },
     {
       "id": "highest-scoring-loss",
-      "label": "Unluckiest loss",
+      "label": "Highest-scoring loss",
       "description": "The most points anyone has ever scored and still lost. Any other week it would have won.",
       "scope": "league",
       "format": "points",
@@ -661,8 +661,8 @@
     },
     {
       "id": "lowest-scoring-win",
-      "label": "Luckiest win",
-      "description": "The fewest points anyone has ever scored and still won. The opposite of the unluckiest loss.",
+      "label": "Lowest-scoring win",
+      "description": "The fewest points anyone has ever scored and still won. The opposite of the highest-scoring loss.",
       "scope": "league",
       "format": "points",
       "direction": "low",
@@ -874,8 +874,8 @@
     },
     {
       "id": "beat-almost-everyone",
-      "label": "Beat almost everyone",
-      "description": "Losses that would have been wins against nearly the whole league. The number is how many of the other teams playing that week the losing score would have beaten — a score that tops ten of eleven and still loses is the worst luck the schedule can hand out.",
+      "label": "Unluckiest loss",
+      "description": "Losses that would have been wins against nearly the whole league, ranked by how many of the week's other scores the losing score beat. Topping ten of eleven and still losing — outscored only by the one team you happened to play — is the worst luck the schedule can hand out. Where two losses beat as many, the higher score ranks first.",
       "scope": "league",
       "format": "count",
       "direction": "high",
