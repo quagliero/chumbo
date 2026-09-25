@@ -4291,12 +4291,12 @@
           "week": 2
         },
         {
-          "value": -2.7,
-          "subject": "thd",
+          "value": 0,
+          "subject": "jay",
           "href": "/seasons/2026/trades",
-          "detail": "2026 Week 2: got Keaton Mitchell (3.9); gave Juwan Johnson (6.6) to dix",
+          "detail": "2026 Week 3: got Michael Mayer (0.0) + Emeka Egbuka (0.0); gave Jalen Hurts (0.0) + Brian Thomas (0.0) to dix",
           "year": 2026,
-          "week": 2
+          "week": 3
         }
       ]
     },
@@ -4441,24 +4441,24 @@
       ],
       "2026": [
         {
-          "value": 27,
+          "value": 32,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "2026: 21 adds, 21 drops, 1 trades",
+          "detail": "2026: 24 adds, 24 drops, 2 trades",
           "year": 2026
         },
         {
-          "value": 18,
+          "value": 19,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "2026: 10 adds, 11 drops, 4 trades",
+          "detail": "2026: 11 adds, 11 drops, 4 trades",
           "year": 2026
         },
         {
-          "value": 13,
+          "value": 16,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "2026: 9 adds, 9 drops, 4 trades",
+          "detail": "2026: 12 adds, 12 drops, 4 trades",
           "year": 2026
         }
       ]
