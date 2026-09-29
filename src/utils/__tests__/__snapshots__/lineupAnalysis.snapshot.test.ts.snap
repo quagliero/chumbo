@@ -10680,5 +10680,53 @@ exports[`getOptimalLineup > 2026 — every matchup 1`] = `
     "optimalTotal": 95.08,
     "pointsLeftOnBench": 4.799999999999997,
   },
+  "w3 r1": {
+    "optimalTotal": 96.94000000000001,
+    "pointsLeftOnBench": 13.200000000000017,
+  },
+  "w3 r10": {
+    "optimalTotal": 101.38,
+    "pointsLeftOnBench": 7.299999999999997,
+  },
+  "w3 r11": {
+    "optimalTotal": 118.86,
+    "pointsLeftOnBench": 4.900000000000006,
+  },
+  "w3 r12": {
+    "optimalTotal": 112.28,
+    "pointsLeftOnBench": 29.64,
+  },
+  "w3 r2": {
+    "optimalTotal": 107.46000000000001,
+    "pointsLeftOnBench": 14.400000000000006,
+  },
+  "w3 r3": {
+    "optimalTotal": 99.38,
+    "pointsLeftOnBench": 12.920000000000002,
+  },
+  "w3 r4": {
+    "optimalTotal": 61.66,
+    "pointsLeftOnBench": 0.5,
+  },
+  "w3 r5": {
+    "optimalTotal": 85.34,
+    "pointsLeftOnBench": 5.299999999999997,
+  },
+  "w3 r6": {
+    "optimalTotal": 100.04,
+    "pointsLeftOnBench": 5.6000000000000085,
+  },
+  "w3 r7": {
+    "optimalTotal": 95,
+    "pointsLeftOnBench": 0,
+  },
+  "w3 r8": {
+    "optimalTotal": 89.91999999999999,
+    "pointsLeftOnBench": 2.299999999999983,
+  },
+  "w3 r9": {
+    "optimalTotal": 142.78,
+    "pointsLeftOnBench": 15.799999999999997,
+  },
 }
 `;

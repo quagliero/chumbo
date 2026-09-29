@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-25T13:12:54.289Z",
+  "generatedAt": "2026-09-29T10:41:00.822Z",
   "years": [
     2012,
     2013,
@@ -29,7 +29,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 1183,
+      "total": 1189,
       "entries": [
         {
           "value": 89.12,
@@ -242,7 +242,7 @@
       "direction": "low",
       "excluded": [],
       "caveat": [],
-      "total": 1183,
+      "total": 1189,
       "entries": [
         {
           "value": 0.04,
@@ -455,7 +455,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 1183,
+      "total": 1189,
       "entries": [
         {
           "value": 127.6,
@@ -668,7 +668,7 @@
       "direction": "low",
       "excluded": [],
       "caveat": [],
-      "total": 1183,
+      "total": 1189,
       "entries": [
         {
           "value": 50.92,
@@ -881,7 +881,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 1183,
+      "total": 1189,
       "entries": [
         {
           "value": 10,
@@ -1443,6 +1443,12 @@
           "detail": "14 meetings since 2014, kitch leads 9–5"
         },
         {
+          "value": 20.77,
+          "subject": "ant vs jay",
+          "href": "/h2h/ant/jay",
+          "detail": "22 meetings since 2012, jay leads 12–10"
+        },
+        {
           "value": 21.07,
           "subject": "dix vs hadkiss",
           "href": "/h2h/dix/hadkiss",
@@ -1453,12 +1459,6 @@
           "subject": "ant vs htc",
           "href": "/h2h/ant/htc",
           "detail": "17 meetings since 2013, htc leads 9–8"
-        },
-        {
-          "value": 21.36,
-          "subject": "ant vs jay",
-          "href": "/h2h/ant/jay",
-          "detail": "21 meetings since 2012, jay leads 12–9"
         },
         {
           "value": 21.56,
@@ -1503,6 +1503,12 @@
           "detail": "16 meetings since 2014, hadkiss leads 9–7"
         },
         {
+          "value": 23.35,
+          "subject": "fin vs hadkiss",
+          "href": "/h2h/fin/hadkiss",
+          "detail": "20 meetings since 2012, hadkiss leads 12–8"
+        },
+        {
           "value": 23.4,
           "subject": "ant vs dix",
           "href": "/h2h/ant/dix",
@@ -1537,12 +1543,6 @@
           "subject": "htc vs sol",
           "href": "/h2h/htc/sol",
           "detail": "17 meetings since 2014, htc leads 9–8"
-        },
-        {
-          "value": 24,
-          "subject": "dix vs kitch",
-          "href": "/h2h/dix/kitch",
-          "detail": "18 meetings since 2012, kitch leads 10–8"
         }
       ]
     },
@@ -1624,16 +1624,16 @@
           "detail": "8–15 in rematches after a 40+ point loss"
         },
         {
-          "value": 33.33,
-          "subject": "ryan",
-          "href": "/managers/ryan",
-          "detail": "3–6 in rematches after a 40+ point loss"
-        },
-        {
           "value": 30,
           "subject": "kitch",
           "href": "/managers/kitch",
           "detail": "6–14 in rematches after a 40+ point loss"
+        },
+        {
+          "value": 30,
+          "subject": "ryan",
+          "href": "/managers/ryan",
+          "detail": "3–7 in rematches after a 40+ point loss"
         }
       ]
     },
@@ -1837,76 +1837,76 @@
       "total": 17,
       "entries": [
         {
-          "value": 19206.66,
+          "value": 19294.28,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "2012–2026 · 191 games, 100.56 a game"
+          "detail": "2012–2026 · 192 games, 100.49 a game"
         },
         {
-          "value": 19017.64,
+          "value": 19104.1,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "2012–2026 · 191 games, 99.57 a game"
+          "detail": "2012–2026 · 192 games, 99.5 a game"
         },
         {
-          "value": 18490.6,
+          "value": 18574.34,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "2012–2026 · 191 games, 96.81 a game"
+          "detail": "2012–2026 · 192 games, 96.74 a game"
         },
         {
-          "value": 18252.4,
+          "value": 18347.4,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "2012–2026 · 191 games, 95.56 a game"
+          "detail": "2012–2026 · 192 games, 95.56 a game"
         },
         {
-          "value": 18115.86,
+          "value": 18208.92,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
-          "detail": "2012–2026 · 191 games, 94.85 a game"
+          "detail": "2012–2026 · 192 games, 94.84 a game"
         },
         {
-          "value": 17622.2,
+          "value": 17736.16,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "2012–2026 · 191 games, 92.26 a game"
+          "detail": "2012–2026 · 192 games, 92.38 a game"
         },
         {
-          "value": 17164.56,
+          "value": 17291.54,
           "subject": "kitch",
           "href": "/managers/kitch",
-          "detail": "2012–2026 · 191 games, 89.87 a game"
+          "detail": "2012–2026 · 192 games, 90.06 a game"
         },
         {
-          "value": 16819.66,
+          "value": 16880.82,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "2013–2026 · 177 games, 95.03 a game"
+          "detail": "2013–2026 · 178 games, 94.84 a game"
         },
         {
-          "value": 16759.2,
+          "value": 16841.84,
           "subject": "fin",
           "href": "/managers/fin",
-          "detail": "2012–2026 · 191 games, 87.74 a game"
+          "detail": "2012–2026 · 192 games, 87.72 a game"
         },
         {
-          "value": 14816.78,
+          "value": 14911.22,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "2014–2026 · 163 games, 90.9 a game"
+          "detail": "2014–2026 · 164 games, 90.92 a game"
         },
         {
-          "value": 9056.54,
+          "value": 9136.58,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "2019–2026 · 98 games, 92.41 a game"
+          "detail": "2019–2026 · 99 games, 92.29 a game"
         },
         {
-          "value": 8786.92,
+          "value": 8881,
           "subject": "brock",
           "href": "/managers/brock",
-          "detail": "2013–2026 · 98 games, 89.66 a game"
+          "detail": "2013–2026 · 99 games, 89.71 a game"
         },
         {
           "value": 6716.86,
@@ -1952,76 +1952,76 @@
       "total": 17,
       "entries": [
         {
-          "value": 113,
+          "value": 114,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "113–78 across 2012–2026"
+          "detail": "114–78 across 2012–2026"
         },
         {
-          "value": 106,
+          "value": 107,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
-          "detail": "106–84–1 across 2012–2026"
+          "detail": "107–84–1 across 2012–2026"
         },
         {
           "value": 105,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "105–85–1 across 2012–2026"
+          "detail": "105–86–1 across 2012–2026"
         },
         {
-          "value": 102,
+          "value": 103,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "102–89 across 2012–2026"
+          "detail": "103–89 across 2012–2026"
         },
         {
           "value": 98,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "98–93 across 2012–2026"
+          "detail": "98–94 across 2012–2026"
         },
         {
-          "value": 89,
+          "value": 90,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "89–102 across 2012–2026"
+          "detail": "90–102 across 2012–2026"
         },
         {
           "value": 88,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "88–89 across 2013–2026"
+          "detail": "88–90 across 2013–2026"
         },
         {
-          "value": 85,
+          "value": 86,
           "subject": "kitch",
           "href": "/managers/kitch",
-          "detail": "85–106 across 2012–2026"
+          "detail": "86–106 across 2012–2026"
         },
         {
           "value": 79,
           "subject": "fin",
           "href": "/managers/fin",
-          "detail": "79–112 across 2012–2026"
+          "detail": "79–113 across 2012–2026"
         },
         {
-          "value": 77,
+          "value": 78,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "77–86 across 2014–2026"
+          "detail": "78–86 across 2014–2026"
         },
         {
           "value": 45,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "45–53 across 2019–2026"
+          "detail": "45–54 across 2019–2026"
         },
         {
           "value": 43,
           "subject": "brock",
           "href": "/managers/brock",
-          "detail": "43–55 across 2013–2026"
+          "detail": "43–56 across 2013–2026"
         },
         {
           "value": 42,
@@ -2069,76 +2069,76 @@
       "total": 17,
       "entries": [
         {
-          "value": 2535.5,
+          "value": 2551.3,
           "subject": "kitch",
           "href": "/managers/kitch",
-          "detail": "13.9 a week across 183 games, 2012–2026; worst single week 50.9 in 2015 Week 13"
+          "detail": "13.9 a week across 184 games, 2012–2026; worst single week 50.9 in 2015 Week 13"
         },
         {
-          "value": 2472.7,
+          "value": 2485.9,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "12.8 a week across 193 games, 2012–2026; worst single week 60.3 in 2013 Week 3"
+          "detail": "12.8 a week across 194 games, 2012–2026; worst single week 60.3 in 2013 Week 3"
         },
         {
-          "value": 2451.5,
+          "value": 2464.4,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "13 a week across 189 games, 2012–2026; worst single week 59.8 in 2016 Week 3"
+          "detail": "13 a week across 190 games, 2012–2026; worst single week 59.8 in 2016 Week 3"
         },
         {
-          "value": 2388.6,
+          "value": 2393.5,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "12.7 a week across 188 games, 2012–2026; worst single week 59.3 in 2023 Week 3"
+          "detail": "12.7 a week across 189 games, 2012–2026; worst single week 59.3 in 2023 Week 3"
         },
         {
-          "value": 2195.4,
+          "value": 2225,
           "subject": "fin",
           "href": "/managers/fin",
-          "detail": "12.1 a week across 182 games, 2012–2026; worst single week 56.3 in 2015 Week 15"
+          "detail": "12.2 a week across 183 games, 2012–2026; worst single week 56.3 in 2015 Week 15"
         },
         {
-          "value": 2177.4,
+          "value": 2179.7,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "11.4 a week across 191 games, 2012–2026; worst single week 51.1 in 2017 Week 3"
+          "detail": "11.4 a week across 192 games, 2012–2026; worst single week 51.1 in 2017 Week 3"
         },
         {
-          "value": 2140.2,
+          "value": 2154.6,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
-          "detail": "11.3 a week across 189 games, 2012–2026; worst single week 46.4 in 2021 Week 1"
+          "detail": "11.3 a week across 190 games, 2012–2026; worst single week 46.4 in 2021 Week 1"
         },
         {
           "value": 2034,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "10.8 a week across 189 games, 2012–2026; worst single week 59.7 in 2023 Week 2"
+          "detail": "10.7 a week across 190 games, 2012–2026; worst single week 59.7 in 2023 Week 2"
         },
         {
-          "value": 1965.9,
+          "value": 1971.5,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "12.3 a week across 160 games, 2014–2026; worst single week 45.9 in 2025 Week 11"
+          "detail": "12.2 a week across 161 games, 2014–2026; worst single week 45.9 in 2025 Week 11"
         },
         {
-          "value": 1937.4,
+          "value": 1937.9,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "10.7 a week across 181 games, 2013–2026; worst single week 61 in 2023 Week 7"
+          "detail": "10.6 a week across 182 games, 2013–2026; worst single week 61 in 2023 Week 7"
         },
         {
-          "value": 1335.5,
+          "value": 1342.8,
           "subject": "brock",
           "href": "/managers/brock",
-          "detail": "13.5 a week across 99 games, 2013–2026; worst single week 44.7 in 2025 Week 11"
+          "detail": "13.4 a week across 100 games, 2013–2026; worst single week 44.7 in 2025 Week 11"
         },
         {
-          "value": 1001.2,
+          "value": 1006.5,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "11.4 a week across 88 games, 2020–2026; worst single week 50.3 in 2024 Week 4"
+          "detail": "11.3 a week across 89 games, 2020–2026; worst single week 50.3 in 2024 Week 4"
         },
         {
           "value": 751.8,
@@ -2382,34 +2382,34 @@
           "detail": "5943.6 started of 6535.1 available across 60 games — 591.5 left behind"
         },
         {
-          "value": 89.9,
+          "value": 90,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "18187.3 started of 20221.3 available across 189 games — 2034 left behind"
+          "detail": "18282.3 started of 20316.3 available across 190 games — 2034 left behind"
         },
         {
           "value": 89.9,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "17240.8 started of 19178.3 available across 181 games — 1937.4 left behind"
+          "detail": "17302 started of 19239.9 available across 182 games — 1937.9 left behind"
         },
         {
           "value": 89.8,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "19203.7 started of 21381.1 available across 191 games — 2177.4 left behind"
+          "detail": "19291.3 started of 21471 available across 192 games — 2179.7 left behind"
         },
         {
           "value": 89.4,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
-          "detail": "18070.2 started of 20210.5 available across 189 games — 2140.2 left behind"
+          "detail": "18163.3 started of 20317.9 available across 190 games — 2154.6 left behind"
         },
         {
-          "value": 89,
+          "value": 89.1,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "8141.1 started of 9142.3 available across 88 games — 1001.2 left behind"
+          "detail": "8221.1 started of 9227.7 available across 89 games — 1006.5 left behind"
         },
         {
           "value": 88.7,
@@ -2421,31 +2421,31 @@
           "value": 88.5,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "18805.9 started of 21257.4 available across 189 games — 2451.5 left behind"
+          "detail": "18892.3 started of 21356.8 available across 190 games — 2464.4 left behind"
         },
         {
           "value": 88.3,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "18728 started of 21200.7 available across 193 games — 2472.7 left behind"
+          "detail": "18811.7 started of 21297.6 available across 194 games — 2485.9 left behind"
         },
         {
           "value": 88.1,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "14511.8 started of 16477.7 available across 160 games — 1965.9 left behind"
+          "detail": "14606.3 started of 16577.7 available across 161 games — 1971.5 left behind"
         },
         {
           "value": 87.9,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "17355.7 started of 19744.3 available across 188 games — 2388.6 left behind"
+          "detail": "17469.6 started of 19863.2 available across 189 games — 2393.5 left behind"
         },
         {
-          "value": 87.9,
+          "value": 87.8,
           "subject": "fin",
           "href": "/managers/fin",
-          "detail": "15925.1 started of 18120.4 available across 182 games — 2195.4 left behind"
+          "detail": "16007.7 started of 18232.7 available across 183 games — 2225 left behind"
         },
         {
           "value": 87.8,
@@ -2460,16 +2460,16 @@
           "detail": "1273.1 started of 1451.8 available across 14 games — 178.7 left behind"
         },
         {
-          "value": 86.9,
+          "value": 87,
           "subject": "brock",
           "href": "/managers/brock",
-          "detail": "8862.2 started of 10197.7 available across 99 games — 1335.5 left behind"
+          "detail": "8956.3 started of 10299.1 available across 100 games — 1342.8 left behind"
         },
         {
           "value": 86.7,
           "subject": "kitch",
           "href": "/managers/kitch",
-          "detail": "16459.6 started of 18995.1 available across 183 games — 2535.5 left behind"
+          "detail": "16586.6 started of 19137.9 available across 184 games — 2551.3 left behind"
         },
         {
           "value": 85.9,
@@ -2490,7 +2490,7 @@
         2019
       ],
       "caveat": [],
-      "total": 1948,
+      "total": 1959,
       "entries": [
         {
           "value": 44.5,
@@ -2705,7 +2705,7 @@
         2019
       ],
       "caveat": [],
-      "total": 961,
+      "total": 964,
       "entries": [
         {
           "value": 589.4,
@@ -2816,6 +2816,12 @@
           "detail": "34 weeks on a bench, mostly by dix (136.1); best 22.7 in 2012 Week 15"
         },
         {
+          "value": 276.7,
+          "subject": "Trevor Lawrence",
+          "href": "/players/7523",
+          "detail": "17 weeks on a bench, mostly by thd (83.5); best 33.4 in 2022 Week 14"
+        },
+        {
           "value": 275.9,
           "subject": "Ryan Mathews",
           "href": "/players/571",
@@ -2850,12 +2856,6 @@
           "subject": "Jordan Love",
           "href": "/players/6804",
           "detail": "17 weeks on a bench, mostly by hadkiss (173.5); best 28.2 in 2024 Week 4"
-        },
-        {
-          "value": 259,
-          "subject": "Tyler Allgeier",
-          "href": "/players/8132",
-          "detail": "44 weeks on a bench, mostly by kitch (75); best 18.8 in 2024 Week 6"
         }
       ]
     },
@@ -3910,58 +3910,58 @@
       "total": 13,
       "entries": [
         {
-          "value": 20.61,
+          "value": 20.45,
           "subject": "fin",
           "href": "/managers/fin",
-          "detail": "103 pickups, 2122.3 points started (2965.8 rostered); best Ryan Tannehill (172.4 started, 2020)"
+          "detail": "104 pickups, 2126.3 points started (2969.8 rostered); best Ryan Tannehill (172.4 started, 2020)"
         },
         {
-          "value": 17.83,
+          "value": 17.93,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "127 pickups, 2264.1 points started (3405.9 rostered); best Chris Boswell (141.0 started, 2024)"
+          "detail": "127 pickups, 2277.1 points started (3418.9 rostered); best Chris Boswell (141.0 started, 2024)"
         },
         {
-          "value": 16.12,
+          "value": 16.33,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "110 pickups, 1772.7 points started (2565.9 rostered); best Justin Herbert (277.6 started, 2020)"
+          "detail": "110 pickups, 1796.5 points started (2589.7 rostered); best Justin Herbert (277.6 started, 2020)"
         },
         {
-          "value": 14.84,
+          "value": 14.91,
           "subject": "brock",
           "href": "/managers/brock",
-          "detail": "132 pickups, 1958.4 points started (3223.9 rostered); best Nick Folk (98.0 started, 2022)"
+          "detail": "133 pickups, 1982.9 points started (3249.8 rostered); best Nick Folk (98.0 started, 2022)"
+        },
+        {
+          "value": 11.74,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "304 pickups, 3569.8 points started (5814.7 rostered); best Matthew Stafford (287.9 started, 2021)"
         },
         {
           "value": 11.68,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
-          "detail": "105 pickups, 1226.2 points started (2625.9 rostered); best Dustin Hopkins (88.1 started, 2021)"
+          "detail": "105 pickups, 1226.2 points started (2629.7 rostered); best Dustin Hopkins (88.1 started, 2021)"
         },
         {
-          "value": 11.61,
-          "subject": "kitch",
-          "href": "/managers/kitch",
-          "detail": "304 pickups, 3530.5 points started (5771.5 rostered); best Matthew Stafford (287.9 started, 2021)"
-        },
-        {
-          "value": 10.38,
+          "value": 10.45,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "205 pickups, 2127.2 points started (3151.6 rostered); best Dak Prescott (277.4 started, 2023)"
+          "detail": "205 pickups, 2143.2 points started (3179.3 rostered); best Dak Prescott (277.4 started, 2023)"
         },
         {
           "value": 9.69,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "246 pickups, 2383.6 points started (3772.3 rostered); best Dak Prescott (145.6 started, 2022)"
+          "detail": "247 pickups, 2393.6 points started (3788.3 rostered); best Dak Prescott (145.6 started, 2022)"
         },
         {
-          "value": 9.59,
+          "value": 9.46,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "226 pickups, 2166.6 points started (3400.5 rostered); best Jason Myers (122.0 started, 2025)"
+          "detail": "229 pickups, 2166.6 points started (3406.8 rostered); best Jason Myers (122.0 started, 2025)"
         },
         {
           "value": 8.75,
@@ -3970,22 +3970,22 @@
           "detail": "98 pickups, 857.1 points started (1446.8 rostered); best Matt Gay (139.7 started, 2021)"
         },
         {
-          "value": 8.19,
+          "value": 8.21,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "336 pickups, 2753.0 points started (4704.8 rostered); best Brock Purdy (171.4 started, 2024)"
+          "detail": "337 pickups, 2766.9 points started (4735.3 rostered); best Brock Purdy (171.4 started, 2024)"
         },
         {
-          "value": 7.29,
+          "value": 7.41,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "294 pickups, 2144.4 points started (3737.4 rostered); best Drake Maye (282.0 started, 2025)"
+          "detail": "294 pickups, 2177.7 points started (3774.7 rostered); best Drake Maye (282.0 started, 2025)"
         },
         {
-          "value": 5.34,
+          "value": 5.42,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "454 pickups, 2425.5 points started (4632.3 rostered); best Chris Boswell (82.6 started, 2021)"
+          "detail": "454 pickups, 2460.5 points started (4674.6 rostered); best Chris Boswell (82.6 started, 2021)"
         }
       ]
     },
@@ -3998,7 +3998,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 83,
+      "total": 84,
       "entries": [
         {
           "value": 248,
@@ -4186,7 +4186,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 971,
+      "total": 976,
       "entries": [
         {
           "value": 77.4,
@@ -4399,7 +4399,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 1183,
+      "total": 1189,
       "entries": [
         {
           "value": 9922,
@@ -4721,7 +4721,7 @@
       "direction": "high",
       "excluded": [],
       "caveat": [],
-      "total": 393,
+      "total": 394,
       "entries": [
         {
           "value": 1231,
@@ -7245,6 +7245,14 @@
         },
         {
           "value": 928,
+          "subject": "rich",
+          "href": "/seasons/2026/matchups/3/1",
+          "detail": "rich beat brock, 113.96–94.08 (rich 1-1, brock 1-1 going in) — won it on Sunday night, when Matthew Stafford scored",
+          "year": 2026,
+          "week": 3
+        },
+        {
+          "value": 928,
           "subject": "thd",
           "href": "/seasons/2025/matchups/4/4",
           "detail": "thd beat rich, 93.68–90.32 (thd 1-2, rich 2-1 going in) — won it on Sunday night, when the Green Bay Packers defence scored",
@@ -7893,31 +7901,31 @@
           "detail": "The Heartbreaker — 20 losses by under five points, most in the league"
         },
         {
-          "value": 2.06,
+          "value": 2.08,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "The Metronome — scores swing by only ±17.4 points week to week, the narrowest in the league — the same thing, every Sunday, forever"
+          "detail": "The Metronome — scores swing by only ±17.3 points week to week, the narrowest in the league — the same thing, every Sunday, forever"
         },
         {
-          "value": 2.06,
+          "value": 2.01,
           "subject": "sol",
           "href": "/managers/sol",
-          "detail": "The Big-Game Hunter — 60% in the playoffs against 47% in the regular season — 13 percentage points better once it matters, the biggest step up in the league"
+          "detail": "The Big-Game Hunter — 60% in the playoffs against 48% in the regular season — 12 percentage points better once it matters, the biggest step up in the league"
         },
         {
-          "value": 1.83,
+          "value": 1.82,
           "subject": "kitch",
           "href": "/managers/kitch",
           "detail": "The Trapdoor — 31 weeks spent in the bottom tenth of every score this league has ever posted, most in the league"
         },
         {
-          "value": 1.62,
+          "value": 1.66,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "The Closer — 43% through Week 6, 59% from Week 9 — a surge of 17 percentage points, the steepest surge in the league"
+          "detail": "The Closer — 42% through Week 6, 59% from Week 9 — a surge of 17 percentage points, the steepest surge in the league"
         },
         {
-          "value": 1.54,
+          "value": 1.55,
           "subject": "nick",
           "href": "/managers/nick",
           "detail": "The Machine — 100.6 points a week across a whole career, the highest average in the league"
@@ -7926,43 +7934,43 @@
           "value": 1.51,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "The Nearly Man — his scores beat 58% of the league but he wins only 55% of his regular-season games — 2.8 percentage points handed back by the schedule, the worst robbery in the league"
+          "detail": "The Nearly Man — his scores beat 58% of the league but he wins only 55% of his regular-season games — 3.0 percentage points handed back by the schedule, the worst robbery in the league"
         },
         {
-          "value": 1.42,
+          "value": 1.43,
           "subject": "chris",
           "href": "/managers/chris",
           "detail": "The Anchor — 87.7 points a week across a whole career, the lowest average in the league — a fixture everyone else pencils in as a win"
         },
         {
-          "value": 1.39,
+          "value": 1.34,
           "subject": "fin",
           "href": "/managers/fin",
-          "detail": "The September Hero — 49% through Week 6, 35% from Week 9 — a fade of 14 percentage points, 2nd of 14 in the league"
+          "detail": "The September Hero — 48% through Week 6, 35% from Week 9 — a fade of 13 percentage points, 2nd of 14 in the league"
         },
         {
-          "value": 1.25,
+          "value": 1.23,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "The Rollercoaster — scores swing by ±22.5 points week to week, the widest in the league — nobody, himself included, knows which team turns up"
+          "detail": "The Rollercoaster — scores swing by ±22.4 points week to week, the widest in the league — nobody, himself included, knows which team turns up"
+        },
+        {
+          "value": 1.09,
+          "subject": "rich",
+          "href": "/managers/rich",
+          "detail": "The Choker — 47% in the regular season, 36% once the playoffs start — 11 percentage points worse when it matters, 2nd of 9 in the league"
         },
         {
           "value": 1.07,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "The Fraud — wins 53% of his regular-season games on scores that beat only 51% of the league — 2.2 percentage points of pure fixture luck, 3rd of 14 in the league"
+          "detail": "The Fraud — wins 54% of his regular-season games on scores that beat only 51% of the league — 2.3 percentage points of pure fixture luck, 3rd of 14 in the league"
         },
         {
-          "value": 1.06,
-          "subject": "rich",
-          "href": "/managers/rich",
-          "detail": "The Choker — 47% in the regular season, 36% once the playoffs start — 10 percentage points worse when it matters, 2nd of 9 in the league"
-        },
-        {
-          "value": 0.94,
+          "value": 0.88,
           "subject": "brock",
           "href": "/managers/brock",
-          "detail": "The Punchbag — loses by 26.4 points on average, 2nd of 14 in the league — which is not losing so much as being disposed of"
+          "detail": "The Punchbag — loses by 26.3 points on average, 3rd of 14 in the league — which is not losing so much as being disposed of"
         }
       ]
     },
@@ -8103,17 +8111,17 @@
       "total": 2,
       "entries": [
         {
+          "value": 76,
+          "subject": "sol",
+          "href": "/records/career-points",
+          "detail": "is 88.8 points from 15,000 in the regular season — about one game at that average.",
+          "year": 2026
+        },
+        {
           "value": 60,
           "subject": "thd",
           "href": "/records/career-wins",
           "detail": "is two wins from 100 regular-season wins.",
-          "year": 2026
-        },
-        {
-          "value": 50,
-          "subject": "sol",
-          "href": "/records/career-points",
-          "detail": "is 183.2 points from 15,000 in the regular season — about two games at that average.",
           "year": 2026
         }
       ]

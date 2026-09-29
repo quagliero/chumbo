@@ -30,18 +30,18 @@ exports[`calculateStrengthOfSchedule > 2025 1`] = `{}`;
 
 exports[`calculateStrengthOfSchedule > 2026 1`] = `
 {
-  "1": 7,
-  "10": 1,
+  "1": 5,
+  "10": 7,
   "11": 12,
-  "12": 5,
+  "12": 4,
   "2": 8,
   "3": 2,
-  "4": 4,
-  "5": 10,
+  "4": 1,
+  "5": 9,
   "6": 6,
-  "7": 11,
-  "8": 9,
-  "9": 3,
+  "7": 10,
+  "8": 3,
+  "9": 11,
 }
 `;
 
@@ -281,17 +281,17 @@ exports[`getStrengthOfSchedule > 2025 — per roster 1`] = `
 
 exports[`getStrengthOfSchedule > 2026 — per roster 1`] = `
 {
-  "roster 1": 7,
-  "roster 10": 1,
+  "roster 1": 5,
+  "roster 10": 7,
   "roster 11": 12,
-  "roster 12": 5,
+  "roster 12": 4,
   "roster 2": 8,
   "roster 3": 2,
-  "roster 4": 4,
-  "roster 5": 10,
+  "roster 4": 1,
+  "roster 5": 9,
   "roster 6": 6,
-  "roster 7": 11,
-  "roster 8": 9,
-  "roster 9": 3,
+  "roster 7": 10,
+  "roster 8": 3,
+  "roster 9": 11,
 }
 `;

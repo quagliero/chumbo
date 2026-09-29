@@ -369,6 +369,14 @@
       ],
       "2026": [
         {
+          "value": 46.94,
+          "subject": "kitch",
+          "href": "/seasons/2026/matchups/3/3",
+          "detail": "2026 Week 3 vs ryan",
+          "year": 2026,
+          "week": 3
+        },
+        {
           "value": 28.76,
           "subject": "brock",
           "href": "/seasons/2026/matchups/1/2",
@@ -377,20 +385,12 @@
           "week": 1
         },
         {
-          "value": 23.64,
-          "subject": "rich",
-          "href": "/seasons/2026/matchups/1/1",
-          "detail": "2026 Week 1 vs ant",
+          "value": 26.46,
+          "subject": "dix",
+          "href": "/seasons/2026/matchups/3/6",
+          "detail": "2026 Week 3 vs htc",
           "year": 2026,
-          "week": 1
-        },
-        {
-          "value": 21.32,
-          "subject": "ant",
-          "href": "/seasons/2026/matchups/2/1",
-          "detail": "2026 Week 2 vs brock",
-          "year": 2026,
-          "week": 2
+          "week": 3
         }
       ]
     },
@@ -777,12 +777,12 @@
           "week": 1
         },
         {
-          "value": 10.06,
-          "subject": "sol",
-          "href": "/seasons/2026/matchups/2/6",
-          "detail": "2026 Week 2 vs htc",
+          "value": 8.54,
+          "subject": "ant",
+          "href": "/seasons/2026/matchups/3/2",
+          "detail": "2026 Week 3 vs jay",
           "year": 2026,
-          "week": 2
+          "week": 3
         }
       ]
     },
@@ -1553,20 +1553,20 @@
           "week": 2
         },
         {
+          "value": 87.62,
+          "subject": "dix",
+          "href": "/seasons/2026/matchups/3/6",
+          "detail": "2026 Week 3 vs htc",
+          "year": 2026,
+          "week": 3
+        },
+        {
           "value": 90.2,
           "subject": "fin",
           "href": "/seasons/2026/matchups/1/5",
           "detail": "2026 Week 1 vs htc",
           "year": 2026,
           "week": 1
-        },
-        {
-          "value": 90.22,
-          "subject": "ant",
-          "href": "/seasons/2026/matchups/2/1",
-          "detail": "2026 Week 2 vs brock",
-          "year": 2026,
-          "week": 2
         }
       ]
     },
@@ -2944,12 +2944,12 @@
           "week": 1
         },
         {
-          "value": 11.2,
-          "subject": "hadkiss",
-          "href": "/seasons/2026/matchups/2/5",
-          "detail": "2026 Week 2, benched TreVeyon Henderson (13.6) for David Montgomery (2.4)",
+          "value": 15.9,
+          "subject": "fin",
+          "href": "/seasons/2026/matchups/3/4",
+          "detail": "2026 Week 3, benched Jaylen Warren (17.6) for De'Von Achane (1.7)",
           "year": 2026,
-          "week": 2
+          "week": 3
         }
       ]
     },
@@ -4275,28 +4275,28 @@
       ],
       "2026": [
         {
-          "value": 3.1,
-          "subject": "htc",
-          "href": "/seasons/2026/trades",
-          "detail": "2026 Week 2: got Jonah Coleman (11.8) + Jameson Williams (3.3); gave Jalen Coker (6.6) + Mike Evans (5.4) to kitch",
-          "year": 2026,
-          "week": 2
-        },
-        {
-          "value": 2.7,
+          "value": 7.3,
           "subject": "dix",
           "href": "/seasons/2026/trades",
-          "detail": "2026 Week 2: got Juwan Johnson (6.6); gave Keaton Mitchell (3.9) to thd",
+          "detail": "2026 Week 2: got Juwan Johnson (21.9); gave Keaton Mitchell (14.6) to thd",
           "year": 2026,
           "week": 2
         },
         {
-          "value": 0,
-          "subject": "jay",
+          "value": 7.22,
+          "subject": "dix",
           "href": "/seasons/2026/trades",
-          "detail": "2026 Week 3: got Michael Mayer (0.0) + Emeka Egbuka (0.0); gave Jalen Hurts (0.0) + Brian Thomas (0.0) to dix",
+          "detail": "2026 Week 3: got Jalen Hurts (12.6) + Brian Thomas (0.8); gave Emeka Egbuka (6.2) + Michael Mayer (0.0) to jay",
           "year": 2026,
           "week": 3
+        },
+        {
+          "value": 3.2,
+          "subject": "kitch",
+          "href": "/seasons/2026/trades",
+          "detail": "2026 Week 2: got Mike Evans (14.8) + Jalen Coker (8.4); gave Jonah Coleman (11.8) + Jameson Williams (8.2) to htc",
+          "year": 2026,
+          "week": 2
         }
       ]
     },
@@ -4441,10 +4441,10 @@
       ],
       "2026": [
         {
-          "value": 32,
+          "value": 33,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "2026: 24 adds, 24 drops, 2 trades",
+          "detail": "2026: 25 adds, 25 drops, 2 trades",
           "year": 2026
         },
         {
@@ -4455,10 +4455,10 @@
           "year": 2026
         },
         {
-          "value": 16,
+          "value": 18,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "2026: 12 adds, 12 drops, 4 trades",
+          "detail": "2026: 13 adds, 13 drops, 5 trades",
           "year": 2026
         }
       ]
@@ -4838,20 +4838,20 @@
           "week": 1
         },
         {
-          "value": 34.72,
-          "subject": "fin",
-          "href": "/seasons/2026/matchups/1/5",
-          "detail": "2026 Week 1 vs htc, 34.7 down on Thursday night",
+          "value": 44.96,
+          "subject": "ant",
+          "href": "/seasons/2026/matchups/3/2",
+          "detail": "2026 Week 3 vs jay, 45.0 down in Sunday's late games",
           "year": 2026,
-          "week": 1
+          "week": 3
         },
         {
-          "value": 30.9,
-          "subject": "fin",
-          "href": "/seasons/2026/matchups/2/4",
-          "detail": "2026 Week 2 vs thd, 30.9 down in Sunday's early games",
+          "value": 42.98,
+          "subject": "rich",
+          "href": "/seasons/2026/matchups/3/1",
+          "detail": "2026 Week 3 vs brock, 43.0 down in Sunday's early games",
           "year": 2026,
-          "week": 2
+          "week": 3
         }
       ]
     },
@@ -5230,20 +5230,20 @@
           "week": 2
         },
         {
+          "value": 7156,
+          "subject": "hadkiss",
+          "href": "/seasons/2026/matchups/3/4",
+          "detail": "2026 Week 3 vs fin · Sunday, 11:16 pm, Denver Broncos",
+          "year": 2026,
+          "week": 3
+        },
+        {
           "value": 7066,
           "subject": "brock",
           "href": "/seasons/2026/matchups/1/2",
           "detail": "2026 Week 1 vs kitch · Sunday, 9:46 pm, Jaxson Dart",
           "year": 2026,
           "week": 1
-        },
-        {
-          "value": 7060,
-          "subject": "ryan",
-          "href": "/seasons/2026/matchups/2/2",
-          "detail": "2026 Week 2 vs rich · Sunday, 9:40 pm, Jonathan Taylor",
-          "year": 2026,
-          "week": 2
         }
       ]
     },
