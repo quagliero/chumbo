@@ -2,11 +2,18 @@ import { useState, useMemo } from "react";
 import { ExtendedRoster } from "@/types/roster";
 import { ExtendedMatchup, ScheduledMatchup } from "@/types/matchup";
 import { ExtendedLeague } from "@/types/league";
-import { calculatePlayoffOdds } from "@/utils/playoffOdds";
+import {
+  calculatePlayoffOdds,
+  calculateScheduleOdds,
+} from "@/utils/playoffOdds";
 import ScenarioPlanner from "./ScenarioPlanner";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DataTable } from "../Table";
-import { mergeScheduledMatchups } from "@/utils/scheduleUtils";
+import {
+  mergeScheduledFixtures,
+  mergeScheduledMatchups,
+} from "@/utils/scheduleUtils";
+import { Link } from "react-router-dom";
 import { ManagerLink } from "@/presentation/components/Links";
 
 interface UserPick {
@@ -109,6 +116,21 @@ const PlayoffOdds = ({
 
     return calculatePlayoffOdds(seasonData, userScenario);
   }, [matchupsWithSchedule, league, rosters, userScenario]);
+
+  // The same odds on an average schedule (the Schedule Luck tab's number,
+  // seeded by the season so the two pages print the same one). Only while
+  // nothing is picked: a scenario fixes results the neutral run knows nothing
+  // about, so the difference would stop being the schedule.
+  const hasPicks = (userScenario?.picks.length ?? 0) > 0;
+  const fairOdds = useMemo(() => {
+    if (!matchups || !league) return new Map<number, number>();
+    const odds = calculateScheduleOdds(
+      { matchups, rosters, league },
+      mergeScheduledFixtures(matchups, schedule),
+      { seed: Number(league.season) || 1 }
+    );
+    return new Map(odds.map((o) => [o.rosterId, o.neutral]));
+  }, [matchups, schedule, league, rosters]);
 
   // Show loading or no data states
   if (!matchups || !league) {
@@ -254,6 +276,53 @@ const PlayoffOdds = ({
           getPlayoffColor(row.playoffOdds),
       },
     }),
+    ...(hasPicks || fairOdds.size === 0
+      ? []
+      : [
+          columnHelper.accessor((row) => fairOdds.get(row.rosterId) ?? 0, {
+            id: "fair",
+            header: "Avg schedule",
+            cell: ({ getValue }) => `${getValue().toFixed(1)}%`,
+            enableSorting: true,
+            sortDescFirst: true,
+            meta: {
+              kind: "numeric" as const,
+              align: "center" as const,
+              headerClassName: "min-w-24",
+            },
+          }),
+          columnHelper.accessor(
+            (row) => row.playoffOdds - (fairOdds.get(row.rosterId) ?? 0),
+            {
+              id: "schedule",
+              header: "Schedule",
+              cell: ({ getValue }) => {
+                const effect = getValue();
+                const text = `${effect > 0 ? "+" : effect < 0 ? "−" : ""}${Math.abs(effect).toFixed(1)}`;
+                return (
+                  <span
+                    className={
+                      effect >= 5
+                        ? "font-semibold text-result-win"
+                        : effect <= -5
+                        ? "font-semibold text-result-loss"
+                        : "text-ink-muted"
+                    }
+                  >
+                    {text}
+                  </span>
+                );
+              },
+              enableSorting: true,
+              sortDescFirst: true,
+              meta: {
+                kind: "numeric" as const,
+                align: "center" as const,
+                headerClassName: "min-w-20",
+              },
+            }
+          ),
+        ]),
   ];
 
   return (
@@ -264,6 +333,19 @@ const PlayoffOdds = ({
           Monte Carlo simulation (10,000 iterations) showing each team's
           probability of finishing in each position. Playoff odds = sum of
           positions 1-6.
+          {hasPicks ? null : (
+            <>
+              {" "}
+              <strong>Avg schedule</strong>: odds if every week's opponent
+              were random. <strong>Schedule</strong>: the difference.{" "}
+              <Link
+                to={`/seasons/${league.season}/schedule/playoffs`}
+                className="text-blue-800 hover:underline"
+              >
+                Schedule luck
+              </Link>
+            </>
+          )}
         </p>
         <div className="flex flex-wrap gap-6 mt-3 text-sm">
           <div className="flex items-center gap-2">

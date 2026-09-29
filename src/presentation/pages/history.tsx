@@ -13,8 +13,7 @@ import Standings from "@/presentation/components/Standings/Standings";
 import Matchups from "@/presentation/components/Matchups/Matchups";
 import PlayoffBracket from "@/presentation/components/PlayoffBracket/PlayoffBracket";
 import MatchupDetail from "@/presentation/components/MatchupDetail/MatchupDetail";
-import ScheduleComparison from "@/presentation/components/ScheduleComparison/ScheduleComparison";
-import Breakdown from "@/presentation/components/Breakdown/Breakdown";
+import Schedule from "@/presentation/components/Schedule/Schedule";
 import Trades from "@/presentation/components/Trades";
 import TradeCard from "@/presentation/components/TradeCard";
 import PlayoffOdds from "@/presentation/components/PlayoffOdds/PlayoffOdds";
@@ -77,6 +76,21 @@ const History = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Schedule Comparison and Breakdown were tabs of their own before they
+  // became views of Schedule; a shared link to either still lands on it.
+  useEffect(() => {
+    const moved: Record<string, string> = {
+      "schedule-comparison": "comparison",
+      breakdown: "breakdown",
+    };
+    if (tab && moved[tab]) {
+      navigate(`/seasons/${year ?? selectedYear}/schedule/${moved[tab]}`, {
+        replace: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
+
   // Update state when URL params change
   useEffect(() => {
     if (year) {
@@ -92,8 +106,7 @@ const History = () => {
         "matchups",
         "playoffs",
         "draft",
-        "schedule-comparison",
-        "breakdown",
+        "schedule",
         "trades",
         "playoff-odds",
       ].includes(tab)
@@ -155,7 +168,13 @@ const History = () => {
   // Handle year change with URL update
   const handleYearChange = (newYear: number) => {
     setSelectedYear(newYear);
-    navigate(`/seasons/${newYear}/${activeTab}`);
+    // Stay on the same Schedule view; one the new season lacks (Remaining,
+    // for a finished season) falls back to the default there.
+    navigate(
+      activeTab === "schedule" && week
+        ? `/seasons/${newYear}/schedule/${week}`
+        : `/seasons/${newYear}/${activeTab}`
+    );
   };
 
   // Handle tab change with URL update
@@ -426,8 +445,7 @@ const History = () => {
               "matchups",
               "playoffs",
               "draft",
-              "schedule-comparison",
-              "breakdown",
+              "schedule",
               "trades",
               ...(selectedYear === CURRENT_YEAR &&
               seasonData.league.status !== "complete"
@@ -443,11 +461,7 @@ const History = () => {
                 }`}
                 onClick={() => handleTabChange(tab as TabType)}
               >
-                {tab === "schedule-comparison"
-                  ? "Schedule Comparison"
-                  : tab === "breakdown"
-                  ? "Breakdown"
-                  : tab === "playoff-odds"
+                {tab === "playoff-odds"
                   ? "Playoff Odds"
                   : tab}
               </button>
@@ -644,24 +658,16 @@ const History = () => {
           </div>
         )}
 
-        {/* Schedule Comparison Tab */}
-        {activeTab === "schedule-comparison" && (
-          <ScheduleComparison
+        {/* Schedule Tab: luck, comparison and breakdown, one view at a time.
+            The view rides in the `:week` slot of the route. */}
+        {activeTab === "schedule" && (
+          <Schedule
+            year={selectedYear}
+            view={week}
             rosters={seasonData?.rosters || []}
             matchups={seasonData?.matchups}
             league={seasonData?.league}
             getTeamName={getTeamName}
-          />
-        )}
-
-        {/* Breakdown Tab */}
-        {activeTab === "breakdown" && (
-          <Breakdown
-            rosters={seasonData?.rosters || []}
-            matchups={seasonData?.matchups}
-            league={seasonData?.league}
-            getTeamName={getTeamName}
-            currentYear={selectedYear}
           />
         )}
 

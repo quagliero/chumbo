@@ -252,8 +252,10 @@ describe("every route renders from a cold loader", () => {
     ["/schedule-comparison/:view", "/schedule-comparison/league", home, "All Time"],
     ["/seasons/:year/:tab", "/seasons/2019/playoffs", history, "League History"],
     ["/seasons/:year/:tab", "/seasons/2014/trades", history, "League History"],
-    ["/seasons/:year/:tab", "/seasons/2021/breakdown", history, "League History"],
-    ["/seasons/:year/:tab", "/seasons/2023/schedule-comparison", history, "League History"],
+    ["/seasons/:year/:tab/:week", "/seasons/2021/schedule/breakdown", history, "Weekly Breakdown"],
+    ["/seasons/:year/:tab", "/seasons/2025/schedule", history, "Actual record vs. expected"],
+    ["/seasons/:year/:tab/:week", "/seasons/2025/schedule/playoffs", history, "Playoffs: real schedule vs. random"],
+    ["/seasons/:year/:tab/:week", "/seasons/2023/schedule/comparison", history, "Schedule Comparison"],
     ["/seasons/:year/:tab", "/seasons/2026/playoff-odds", history, "League History"],
     ["/seasons/:year/:tab/:week", "/seasons/2025/matchups/7", history, "Closest game"],
     [

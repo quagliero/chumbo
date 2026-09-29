@@ -30,8 +30,7 @@ export type TabType =
   | "matchups"
   | "playoffs"
   | "draft"
-  | "schedule-comparison"
-  | "breakdown"
+  | "schedule"
   | "trades"
   | "playoff-odds";
 

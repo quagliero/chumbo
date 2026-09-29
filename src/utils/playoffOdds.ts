@@ -560,3 +560,198 @@ export function calculateWeekStakes(
     ifLose: percent(counts.lostMade, counts.lost),
   }));
 }
+
+/** Playoff odds with and without the schedule (the schedule-luck page). */
+export interface ScheduleOdds {
+  rosterId: number;
+  /** On the real fixture list: the same question `calculatePlayoffOdds` answers. */
+  actual: number;
+  /** The real results so far, but a random draw for every game still to play. */
+  neutralRest: number;
+  /** A random draw for every week, played and unplayed: what the scores deserve. */
+  neutral: number;
+}
+
+/**
+ * How much of a team's playoff odds the schedule is responsible for.
+ *
+ * Three versions of the same simulation, run on the SAME simulated scores so
+ * the only thing that differs between them is who plays whom:
+ *
+ *   - `actual` — the real results so far, and the real fixtures to come;
+ *   - `neutralRest` — the real results so far, and each week still to play
+ *     paired at random;
+ *   - `neutral` — every week paired at random, the played weeks included, with
+ *     the scores that were really posted in them.
+ *
+ * So `actual − neutralRest` is what the fixtures still to come are worth,
+ * `neutralRest − neutral` is what the schedule has already done, and together
+ * they are everything the schedule has had to say. A random pairing is not a
+ * schedule the league could have drawn — a team could meet the same opponent
+ * twice in a row — but it is the fair draw the phrase "an average schedule"
+ * means, and it is what the all-play share already assumes week by week.
+ *
+ * Standings are ranked by record then points for, as the playoff odds are;
+ * points for does not depend on the schedule, so it breaks ties the same way
+ * in all three. Divisions are ignored, as they are there.
+ *
+ * Works on a finished regular season too, where `actual` is settled and
+ * `neutral` is the interesting one: "made the playoffs in 23% of schedules".
+ *
+ * `fixtures` is every regular-season pairing — played weeks from `matchups`,
+ * the rest from `schedule.json` (`mergeScheduledFixtures`).
+ */
+export function calculateScheduleOdds(
+  seasonData: SeasonData,
+  fixtures: Record<string, { matchup_id: number; roster_id: number }[]>,
+  { simulations = 10000, seed = 1 }: { simulations?: number; seed?: number } = {}
+): ScheduleOdds[] {
+  if (!seasonData.matchups || !seasonData.rosters?.length || !seasonData.league) {
+    return [];
+  }
+
+  const completedWeek = getCompletedWeek(seasonData.league);
+  const playoffWeekStart = getPlayoffWeekStart(seasonData);
+  const playoffTeams = seasonData.league.settings?.playoff_teams || 6;
+  const random = seededRandom(seed);
+
+  const ids = seasonData.rosters.map((roster) => roster.roster_id);
+  const n = ids.length;
+  const index = new Map(ids.map((id, i) => [id, i]));
+
+  const pairsIn = (week: number) => {
+    const byId = new Map<number, number[]>();
+    for (const { matchup_id, roster_id } of fixtures[String(week)] ?? []) {
+      const i = index.get(roster_id);
+      if (matchup_id == null || i === undefined) continue;
+      byId.set(matchup_id, [...(byId.get(matchup_id) ?? []), i]);
+    }
+    return [...byId.values()].filter((pair) => pair.length === 2);
+  };
+
+  const weeks = Object.keys(fixtures)
+    .map(Number)
+    .filter((week) => week < playoffWeekStart)
+    .sort((a, b) => a - b);
+  const isPlayed = (week: number) =>
+    (completedWeek === null || week <= completedWeek) &&
+    (seasonData.matchups[String(week)]?.length ?? 0) > 0;
+  const played = weeks.filter(isPlayed);
+  const toPlay =
+    completedWeek === null
+      ? []
+      : weeks.filter((week) => week > completedWeek && pairsIn(week).length);
+
+  // The played weeks, fixed: every score, and the real results.
+  const pastScores = played.map((week) => {
+    const scores = new Float64Array(n).fill(NaN);
+    for (const m of seasonData.matchups[String(week)]) {
+      const i = index.get(m.roster_id);
+      if (i !== undefined) scores[i] = Math.round(m.points * 100) / 100;
+    }
+    return scores;
+  });
+  const pastPlayers = pastScores.map((scores) =>
+    ids.map((_, i) => i).filter((i) => !Number.isNaN(scores[i]))
+  );
+
+  const basePoints = new Float64Array(n);
+  const basePointsFor = new Float64Array(n);
+  // Record as standings points — 2 a win, 1 a tie — which orders teams with
+  // the same number of games exactly as win percentage does.
+  const score = (
+    record: Float64Array,
+    a: number,
+    b: number,
+    sa: number,
+    sb: number
+  ) => {
+    if (sa > sb) record[a] += 2;
+    else if (sb > sa) record[b] += 2;
+    else {
+      record[a] += 1;
+      record[b] += 1;
+    }
+  };
+  played.forEach((week, w) => {
+    const scores = pastScores[w];
+    for (const i of pastPlayers[w]) basePointsFor[i] += scores[i];
+    for (const [a, b] of pairsIn(week)) {
+      if (Number.isNaN(scores[a]) || Number.isNaN(scores[b])) continue;
+      score(basePoints, a, b, scores[a], scores[b]);
+    }
+  });
+
+  const futurePairs = toPlay.map(pairsIn);
+  const futurePlayers = futurePairs.map((pairs) => pairs.flat());
+  const stats = new Map(
+    calculateTeamStats(seasonData, completedWeek ?? Infinity).map((s) => [
+      s.rosterId,
+      s,
+    ])
+  );
+  const means = ids.map((id) => stats.get(id)?.mean ?? 0);
+  const spreads = ids.map((id) => stats.get(id)?.stdDev ?? 0);
+
+  /** Pair the given teams at random (Fisher-Yates, then neighbours). */
+  const randomPairs = (teams: readonly number[]) => {
+    const order = [...teams];
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    const pairs: [number, number][] = [];
+    for (let i = 0; i + 1 < order.length; i += 2) pairs.push([order[i], order[i + 1]]);
+    return pairs;
+  };
+
+  const made = { actual: new Uint32Array(n), neutralRest: new Uint32Array(n), neutral: new Uint32Array(n) };
+  const order = ids.map((_, i) => i);
+  const tally = (record: Float64Array, pointsFor: Float64Array, into: Uint32Array) => {
+    order.sort((a, b) => record[b] - record[a] || pointsFor[b] - pointsFor[a]);
+    for (let k = 0; k < playoffTeams && k < n; k++) into[order[k]]++;
+  };
+
+  const actual = new Float64Array(n);
+  const neutralRest = new Float64Array(n);
+  const neutral = new Float64Array(n);
+  const pointsFor = new Float64Array(n);
+  const future = futurePairs.map(() => new Float64Array(n));
+
+  for (let s = 0; s < simulations; s++) {
+    actual.set(basePoints);
+    neutralRest.set(basePoints);
+    neutral.fill(0);
+    pointsFor.set(basePointsFor);
+
+    futurePairs.forEach((pairs, w) => {
+      const scores = future[w];
+      for (const i of futurePlayers[w]) {
+        scores[i] = means[i] + spreads[i] * randomNormal(random);
+        pointsFor[i] += scores[i];
+      }
+      for (const [a, b] of pairs) score(actual, a, b, scores[a], scores[b]);
+      for (const [a, b] of randomPairs(futurePlayers[w])) {
+        score(neutralRest, a, b, scores[a], scores[b]);
+        score(neutral, a, b, scores[a], scores[b]);
+      }
+    });
+    pastScores.forEach((scores, w) => {
+      for (const [a, b] of randomPairs(pastPlayers[w])) {
+        score(neutral, a, b, scores[a], scores[b]);
+      }
+    });
+
+    tally(actual, pointsFor, made.actual);
+    tally(neutralRest, pointsFor, made.neutralRest);
+    tally(neutral, pointsFor, made.neutral);
+  }
+
+  const percent = (count: number) => (count / simulations) * 100;
+  return ids.map((rosterId, i) => ({
+    rosterId,
+    actual: percent(made.actual[i]),
+    neutralRest: percent(made.neutralRest[i]),
+    neutral: percent(made.neutral[i]),
+  }));
+}
