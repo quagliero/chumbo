@@ -56,11 +56,11 @@
     "trade_review_days": 0,
     "bench_lock": 0,
     "offseason_adds": 0,
-    "leg": 3,
+    "leg": 4,
     "daily_waivers_base": 4,
     "reserve_slots": 0,
     "reserve_allow_cov": 1,
-    "daily_waivers_last_ran": 28
+    "daily_waivers_last_ran": 29
   },
   "avatar": "4a8d92eee8aea7b5eba43c4b98e667a7",
   "company_id": null,
