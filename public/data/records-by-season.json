@@ -4441,24 +4441,24 @@
       ],
       "2026": [
         {
-          "value": 33,
+          "value": 42,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "2026: 25 adds, 25 drops, 2 trades",
+          "detail": "2026: 32 adds, 32 drops, 2 trades",
           "year": 2026
         },
         {
-          "value": 20,
-          "subject": "sol",
-          "href": "/managers/sol",
-          "detail": "2026: 11 adds, 12 drops, 4 trades",
-          "year": 2026
-        },
-        {
-          "value": 18,
+          "value": 23,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "2026: 13 adds, 13 drops, 5 trades",
+          "detail": "2026: 16 adds, 17 drops, 6 trades",
+          "year": 2026
+        },
+        {
+          "value": 21,
+          "subject": "sol",
+          "href": "/managers/sol",
+          "detail": "2026: 12 adds, 12 drops, 4 trades",
           "year": 2026
         }
       ]

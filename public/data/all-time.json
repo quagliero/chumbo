@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-29T10:41:00.822Z",
+  "generatedAt": "2026-10-02T14:24:46.717Z",
   "years": [
     2012,
     2013,
@@ -3916,16 +3916,16 @@
           "detail": "104 pickups, 2126.3 points started (2969.8 rostered); best Ryan Tannehill (172.4 started, 2020)"
         },
         {
-          "value": 17.93,
+          "value": 17.79,
           "subject": "rich",
           "href": "/managers/rich",
-          "detail": "127 pickups, 2277.1 points started (3418.9 rostered); best Chris Boswell (141.0 started, 2024)"
+          "detail": "128 pickups, 2277.1 points started (3418.9 rostered); best Chris Boswell (141.0 started, 2024)"
         },
         {
-          "value": 16.33,
+          "value": 16.04,
           "subject": "ant",
           "href": "/managers/ant",
-          "detail": "110 pickups, 1796.5 points started (2589.7 rostered); best Justin Herbert (277.6 started, 2020)"
+          "detail": "112 pickups, 1796.5 points started (2589.7 rostered); best Justin Herbert (277.6 started, 2020)"
         },
         {
           "value": 14.91,
@@ -3934,34 +3934,34 @@
           "detail": "133 pickups, 1982.9 points started (3249.8 rostered); best Nick Folk (98.0 started, 2022)"
         },
         {
-          "value": 11.74,
-          "subject": "kitch",
-          "href": "/managers/kitch",
-          "detail": "304 pickups, 3569.8 points started (5814.7 rostered); best Matthew Stafford (287.9 started, 2021)"
-        },
-        {
           "value": 11.68,
           "subject": "hadkiss",
           "href": "/managers/hadkiss",
           "detail": "105 pickups, 1226.2 points started (2629.7 rostered); best Dustin Hopkins (88.1 started, 2021)"
         },
         {
-          "value": 10.45,
+          "value": 11.63,
+          "subject": "kitch",
+          "href": "/managers/kitch",
+          "detail": "307 pickups, 3569.8 points started (5814.7 rostered); best Matthew Stafford (287.9 started, 2021)"
+        },
+        {
+          "value": 10.35,
           "subject": "ryan",
           "href": "/managers/ryan",
-          "detail": "205 pickups, 2143.2 points started (3179.3 rostered); best Dak Prescott (277.4 started, 2023)"
+          "detail": "207 pickups, 2143.2 points started (3179.3 rostered); best Dak Prescott (277.4 started, 2023)"
         },
         {
-          "value": 9.69,
+          "value": 9.42,
           "subject": "dix",
           "href": "/managers/dix",
-          "detail": "247 pickups, 2393.6 points started (3788.3 rostered); best Dak Prescott (145.6 started, 2022)"
+          "detail": "254 pickups, 2393.6 points started (3788.3 rostered); best Dak Prescott (145.6 started, 2022)"
         },
         {
-          "value": 9.46,
+          "value": 9.38,
           "subject": "htc",
           "href": "/managers/htc",
-          "detail": "229 pickups, 2166.6 points started (3406.8 rostered); best Jason Myers (122.0 started, 2025)"
+          "detail": "231 pickups, 2166.6 points started (3406.8 rostered); best Jason Myers (122.0 started, 2025)"
         },
         {
           "value": 8.75,
@@ -3970,16 +3970,16 @@
           "detail": "98 pickups, 857.1 points started (1446.8 rostered); best Matt Gay (139.7 started, 2021)"
         },
         {
-          "value": 8.21,
+          "value": 8.14,
           "subject": "thd",
           "href": "/managers/thd",
-          "detail": "337 pickups, 2766.9 points started (4735.3 rostered); best Brock Purdy (171.4 started, 2024)"
+          "detail": "340 pickups, 2766.9 points started (4735.3 rostered); best Brock Purdy (171.4 started, 2024)"
         },
         {
-          "value": 7.41,
+          "value": 7.36,
           "subject": "jay",
           "href": "/managers/jay",
-          "detail": "294 pickups, 2177.7 points started (3774.7 rostered); best Drake Maye (282.0 started, 2025)"
+          "detail": "296 pickups, 2177.7 points started (3774.7 rostered); best Drake Maye (282.0 started, 2025)"
         },
         {
           "value": 5.42,
